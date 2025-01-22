@@ -1,0 +1,9 @@
+{
+  // Enable automatic formatting for Prettier & ESLint
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "prettier.requireConfig": true
+}
