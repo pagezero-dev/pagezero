@@ -1,236 +1,236 @@
-# name: 🚀 Deploy
+name: 🚀 Deploy
 
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#     types:
-#       - opened
-#       - repoened
-#       - synchronize
-#       - ready_for_review
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - repoened
+      - synchronize
+      - ready_for_review
 
-# jobs:
-#   format:
-#     name: 👔 Format
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: 📥 Checkout repo
-#         uses: actions/checkout@v4
+jobs:
+  format:
+    name: 👔 Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: ⎔ Setup node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20.x
-#           cache: npm
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
 
-#       - name: 📦 Install dependencies
-#         run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-#       - name: 👔 Format
-#         run: npm run format:check
+      - name: 👔 Format
+        run: npm run format:check
 
-#   lint:
-#     name: ⬣ ESLint
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: 📥 Checkout repo
-#         uses: actions/checkout@v4
+  lint:
+    name: ⬣ ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: ⎔ Setup node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20.x
-#           cache: npm
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
 
-#       - name: 📦 Install dependencies
-#         run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-#       - name: ⬣ Lint
-#         run: npm run lint
+      - name: ⬣ Lint
+        run: npm run lint
 
-#   types:
-#     name: ʦ Types check
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: 📥 Checkout repo
-#         uses: actions/checkout@v4
+  types:
+    name: ʦ Types check
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: ⎔ Setup node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20.x
-#           cache: npm
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
 
-#       - name: 📦 Install dependencies
-#         run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-#       - name: ʦ Types check
-#         run: npm run test:types
+      - name: ʦ Types check
+        run: npm run test:types
 
-#   unit-tests:
-#     name: ⚡️ Unit tests
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: 📥 Checkout repo
-#         uses: actions/checkout@v4
+  unit-tests:
+    name: ⚡️ Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: ⎔ Setup node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20.x
-#           cache: npm
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
 
-#       - name: 📦 Install dependencies
-#         run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-#       - name: ⚡️ Run Vitest
-#         run: npm run test:coverage
+      - name: ⚡️ Run Vitest
+        run: npm run test:coverage
 
-#   e2e-tests:
-#     name: 🎭 E2E tests
-#     timeout-minutes: 30
-#     runs-on: ubuntu-latest
-#     needs: [format, lint, types, unit-tests]
-#     steps:
-#       - name: 📥 Checkout repo
-#         uses: actions/checkout@v4
+  e2e-tests:
+    name: 🎭 E2E tests
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    needs: [format, lint, types, unit-tests]
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: ⎔ Setup node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20.16
-#           cache: npm
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.16
+          cache: npm
 
-#       - name: 📦 Install dependencies
-#         run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-#       - name: 📋 Copy environment variables
-#         run: cp .dev.vars.example .dev.vars
+      - name: 📋 Copy environment variables
+        run: cp .dev.vars.example .dev.vars
 
-#       - name: 🏷️ Store Playwright Version
-#         run: echo "PLAYWRIGHT_VERSION=`npx playwright -V | cut -d ' ' -f2`" >> $GITHUB_ENV
+      - name: 🏷️ Store Playwright Version
+        run: echo "PLAYWRIGHT_VERSION=`npx playwright -V | cut -d ' ' -f2`" >> $GITHUB_ENV
 
-#       - name: 📝 Cache Playwright Browsers
-#         id: cache-playwright-browsers
-#         uses: actions/cache@v4
-#         with:
-#           path: ~/.cache/ms-playwright
-#           key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
+      - name: 📝 Cache Playwright Browsers
+        id: cache-playwright-browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
 
-#       - name: 📦 Install Playwright Browsers
-#         if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-#         run: npx playwright install --with-deps chromium
+      - name: 📦 Install Playwright Browsers
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
 
-#       - name: 🛠️ Build
-#         run: npm run build
+      - name: 🛠️ Build
+        run: npm run build
 
-#       - name: 🗄️ Database setup
-#         run: npm run db:setup
+      - name: 🗄️ Database setup
+        run: npm run db:setup
 
-#       - name: 🎭 Run Playwright tests
-#         run: npm run test:e2e
+      - name: 🎭 Run Playwright tests
+        run: npm run test:e2e
 
-#   database:
-#     name: 🚚 Database migration
-#     runs-on: ubuntu-latest
-#     needs: [e2e-tests]
-#     if: github.ref == 'refs/heads/main' || github.event.pull_request.draft == false
-#     concurrency:
-#       group: database-${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
-#     env:
-#       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-#       CLOUDFLARE_DATABASE_ID: ${{ github.ref == 'refs/heads/main' && vars.CLOUDFLARE_DATABASE_ID_PRODUCTION || vars.CLOUDFLARE_DATABASE_ID_PREVIEW }}
-#     steps:
-#       - name: 📥 Checkout repo
-#         uses: actions/checkout@v4
+  database:
+    name: 🚚 Database migration
+    runs-on: ubuntu-latest
+    needs: [e2e-tests]
+    if: github.ref == 'refs/heads/main' || github.event.pull_request.draft == false
+    concurrency:
+      group: database-${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_DATABASE_ID: ${{ github.ref == 'refs/heads/main' && vars.CLOUDFLARE_DATABASE_ID_PRODUCTION || vars.CLOUDFLARE_DATABASE_ID_PREVIEW }}
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: ⎔ Setup node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20.x
-#           cache: npm
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
 
-#       - name: 📦 Install dependencies
-#         run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-#       - name: 🚚 Database migration
-#         run: npx drizzle-kit migrate --config ./db/drizzle.remote.config.ts
-#         env:
-#           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - name: 🚚 Database migration
+        run: npx drizzle-kit migrate --config ./db/drizzle.remote.config.ts
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
-#   deploy:
-#     name: 🚀 Deploy
-#     runs-on: ubuntu-latest
-#     needs: [database]
-#     permissions:
-#       contents: read
-#       deployments: write
-#     outputs:
-#       page_url: ${{ steps.deploy.outputs.url }}
-#     steps:
-#       - name: 📥 Checkout repo
-#         uses: actions/checkout@v4
+  deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-latest
+    needs: [database]
+    permissions:
+      contents: read
+      deployments: write
+    outputs:
+      page_url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: ⎔ Setup node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20.x
-#           cache: npm
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
 
-#       - name: 📦 Install dependencies
-#         run: npm ci
+      - name: 📦 Install dependencies
+        run: npm ci
 
-#       - name: 🛠️ Build
-#         run: npm run build
-#
-#       - name: 🚀 Deploy
-#         uses: cloudflare/pages-action@v1
-#         id: deploy
-#         with:
-#           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-#           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-#           projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
-#           directory: build/client
-#           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-#           wranglerVersion: "3"
+      - name: 🛠️ Build
+        run: npm run build
 
-#   smoke-tests:
-#     name: 🚬 Smoke tests
-#     timeout-minutes: 15
-#     runs-on: ubuntu-latest
-#     needs: [deploy]
-#     steps:
-#       - name: 📥 Checkout repo
-#         uses: actions/checkout@v4
+      - name: 🚀 Deploy
+        uses: cloudflare/pages-action@v1
+        id: deploy
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          directory: build/client
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: "3"
 
-#       - name: ⎔ Setup node
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 20.16.0
-#           cache: npm
+  smoke-tests:
+    name: 🚬 Smoke tests
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: 📦 Install dependencies
-#         run: npm ci
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.16.0
+          cache: npm
 
-#       - name: 🏷️ Store Playwright Version
-#         run: echo "PLAYWRIGHT_VERSION=`npx playwright -V | cut -d ' ' -f2`" >> $GITHUB_ENV
+      - name: 📦 Install dependencies
+        run: npm ci
 
-#       - name: 📝 Cache Playwright Browsers
-#         id: cache-playwright-browsers
-#         uses: actions/cache@v4
-#         with:
-#           path: ~/.cache/ms-playwright
-#           key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
+      - name: 🏷️ Store Playwright Version
+        run: echo "PLAYWRIGHT_VERSION=`npx playwright -V | cut -d ' ' -f2`" >> $GITHUB_ENV
 
-#       - name: 📦 Install Playwright Browsers
-#         if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-#         run: npx playwright install --with-deps chromium
+      - name: 📝 Cache Playwright Browsers
+        id: cache-playwright-browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
 
-#       - name: 🚬 Run smoke tests
-#         run: npm run test:smoke
-#         env:
-#           TEST_PAGE_URL: ${{ needs.deploy.outputs.page_url }}
-#           CLOUDFLARE_ACCESS_CLIENT_ID: ${{ vars.CLOUDFLARE_ACCESS_CLIENT_ID }}
-#           CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
+      - name: 📦 Install Playwright Browsers
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: 🚬 Run smoke tests
+        run: npm run test:smoke
+        env:
+          TEST_PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+          CLOUDFLARE_ACCESS_CLIENT_ID: ${{ vars.CLOUDFLARE_ACCESS_CLIENT_ID }}
+          CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
