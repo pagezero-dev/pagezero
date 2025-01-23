@@ -9,7 +9,7 @@ type GetLoadContext = (args: {
 }) => AppLoadContext
 
 // Shared implementation compatible with Vite, Wrangler, and Cloudflare Pages
-export const getLoadContext: GetLoadContext = ({ context, request }) => {
+export const getLoadContext: GetLoadContext = ({ context }) => {
   const env = context.cloudflare.env
   const dbBindingId = env.DB_BINDING
 
