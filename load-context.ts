@@ -29,6 +29,6 @@ export const getLoadContext: GetLoadContext = ({ context, request }) => {
   return {
     ...context,
     db,
-    env
+    env,
   }
 }
