@@ -20,7 +20,7 @@
     "db:setup": "npm run db:remove && npm run db:init && npm run db:generate && npm run db:migrate && npm run db:seed",
     "db:studio": "drizzle-kit studio",
     "dev": "NODE_OPTIONS=\"--inspect\" react-router dev",
-    "doctor": "npm run format:check && npm run lint && npm run test:types && npm test && npm audit && npm outdated",
+    "doctor": "npm run format:check && npm run lint && npm run test:types && npm test",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "generate": "tsx ./scripts/generate/generate.ts",
