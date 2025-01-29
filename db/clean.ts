@@ -6,6 +6,7 @@ async function main() {
   console.log("🧹 Cleaning database...")
 
   await db.run(sql`drop table if exists __drizzle_migrations`)
+  await db.run(sql`drop table if exists greetings`)
 
   console.log("✅ Cleaning complete!")
 }
