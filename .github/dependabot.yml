@@ -1,57 +1,53 @@
-# version: 2
-# updates:
-#   - package-ecosystem: "github-actions"
-#     directory: "/"
-#     schedule:
-#       interval: "monthly"
-#     open-pull-requests-limit: 1
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 1
 
-#   - package-ecosystem: "npm"
-#     directory: "/"
-#     schedule:
-#       interval: "monthly"
-#     open-pull-requests-limit: 4
-#     groups:
-#       react:
-#         patterns:
-#           - "react"
-#           - "react-dom"
-#           - "@types/react"
-#           - "@types/react-dom"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 4
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
 
-#       react-router:
-#         patterns:
-#           - "react-router"
-#           - "@react-router/*"
+      react-router:
+        patterns:
+          - "react-router"
+          - "@react-router/*"
 
-#       eslint:
-#         patterns:
-#           - "eslint*"
-#           - "@typescript-eslint/*"
+      eslint:
+        patterns:
+          - "eslint*"
+          - "@typescript-eslint/*"
 
-#       testing-library:
-#         patterns:
-#           - "@testing-library/*"
+      testing-library:
+        patterns:
+          - "@testing-library/*"
 
-#       storybook:
-#         patterns:
-#           - "@storybook/*"
-#           - "storybook"
+      storybook:
+        patterns:
+          - "@storybook/*"
+          - "storybook"
 
-#       drizzle-orm:
-#         patterns:
-#           - "drizzle-orm"
-#           - "drizzle-kit"
+      drizzle-orm:
+        patterns:
+          - "drizzle-orm"
+          - "drizzle-kit"
 
-#       radix-ui:
-#         patterns:
-#           - "@radix-ui/*"
+      radix-ui:
+        patterns:
+          - "@radix-ui/*"
 
-#       doc-search:
-#         patterns:
-#           - "@docsearch/*"
-
-#       security-patches:
-#         applies-to: "security-updates"
-#         update-types:
-#           - "patch"
+      security-patches:
+        applies-to: "security-updates"
+        update-types:
+          - "patch"
