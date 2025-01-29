@@ -5,4 +5,5 @@ test("has content", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Hello world!" }),
   ).toBeVisible()
+  await expect(page.getByText("Database says hello!")).toBeVisible()
 })
