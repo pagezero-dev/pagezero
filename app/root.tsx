@@ -25,6 +25,7 @@ export default function App() {
         <Links />
       </head>
       <Outlet />
+      <Scripts />
     </html>
   )
 }
