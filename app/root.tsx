@@ -24,8 +24,10 @@ export default function App() {
         <link rel="stylesheet" href={styles}></link>
         <Links />
       </head>
-      <Outlet />
-      <Scripts />
+      <body>
+        <Outlet />
+        <Scripts />
+      </body>
     </html>
   )
 }
