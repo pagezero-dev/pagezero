@@ -16,5 +16,5 @@ test("has content", async ({ page }) => {
   }
   const response = await page.goto(process.env.TEST_PAGE_URL || "")
   expect(response?.ok).toBeTruthy()
-  await expect(page.getByText("Database says hello!")).toBeVisible()
+  await expect(page.getByText("PageZERO")).toBeVisible()
 })
