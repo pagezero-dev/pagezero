@@ -6,6 +6,7 @@ import mdx from "@mdx-js/rollup"
 import rehypeHighlight from "rehype-highlight"
 import rehypeMdxCodeProps from "rehype-mdx-code-props"
 import { visualizer } from "rollup-plugin-visualizer"
+import tailwindcss from "@tailwindcss/vite"
 import { getLoadContext } from "./load-context"
 
 const isStorybook = process.argv[1]?.includes("storybook")
@@ -21,6 +22,7 @@ export default defineConfig({
     noExternal: ["@docsearch/react"],
   },
   plugins: [
+    tailwindcss(),
     ...(!process.env.VITEST && !isStorybook
       ? [
           mdx({
