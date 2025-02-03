@@ -29,7 +29,7 @@ export const Button = ({
     <Comp
       type="button"
       className={clsx(
-        "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex items-center justify-center gap-2 rounded-md text-sm font-semibold whitespace-nowrap transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50",
         {
           "bg-blue-600 text-white hover:bg-blue-600/90": variant === "primary",
           "bg-gray-200 hover:bg-gray-200/80": variant === "secondary",

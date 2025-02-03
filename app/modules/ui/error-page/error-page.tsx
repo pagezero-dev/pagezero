@@ -26,7 +26,7 @@ export const ErrorPage = ({ title, description, error }: ErrorPageProps) => {
         </p>
       )}
       {error instanceof Error && (
-        <pre className="overflow-x-auto rounded-lg border border-t-8 border-red-500 bg-red-50 p-5 text-sm text-red-500 shadow">
+        <pre className="overflow-x-auto rounded-lg border border-t-8 border-red-500 bg-red-50 p-5 text-sm text-red-500 shadow-sm">
           {error.stack}
         </pre>
       )}
