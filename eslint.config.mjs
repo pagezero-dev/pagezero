@@ -10,7 +10,7 @@ import storybook from "eslint-plugin-storybook"
 import globals from "globals"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import pluginJs from "@eslint/js"
+import eslint from "@eslint/js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -19,6 +19,10 @@ const gitignorePath = path.resolve(__dirname, ".gitignore")
 export default [
   // Ignore files
   includeIgnoreFile(gitignorePath),
+
+  // Basic defaults
+  eslint.configs.recommended,
+  ...typescriptEslint.configs.recommended,
 
   // All files
   {
@@ -33,7 +37,6 @@ export default [
     },
     rules: {
       ..._import.flatConfigs.recommended.rules,
-      ...pluginJs.configs.recommended.rules,
     },
     settings: {
       "import/resolver": {
@@ -54,7 +57,6 @@ export default [
       "react-hooks": reactHooks,
     },
     rules: {
-      ...typescriptEslint.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
     },
   },
