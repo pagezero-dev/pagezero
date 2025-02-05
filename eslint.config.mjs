@@ -19,6 +19,7 @@ const gitignorePath = path.resolve(__dirname, ".gitignore")
 export default [
   // Ignore files
   includeIgnoreFile(gitignorePath),
+
   // All files
   {
     plugins: {
@@ -41,6 +42,7 @@ export default [
       },
     },
   },
+
   // TypeScript files
   {
     files: ["**/*.{ts,tsx}"],
@@ -56,6 +58,7 @@ export default [
       ...reactHooks.configs.recommended.rules,
     },
   },
+
   // React files
   {
     files: ["**/*.tsx"],
@@ -71,6 +74,7 @@ export default [
       ...jsxA11Y.flatConfigs.recommended.rules,
     },
   },
+
   // Vitest files
   {
     files: ["**/*.test.{ts,tsx}"],
@@ -83,6 +87,7 @@ export default [
       ...testingLibrary.configs.react.rules,
     },
   },
+
   // Storybook files
   {
     files: ["**/*.stories.{ts,tsx}", ".storybook/*.ts"],
