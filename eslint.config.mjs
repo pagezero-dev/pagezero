@@ -1,8 +1,4 @@
-import {
-  fixupConfigRules,
-  fixupPluginRules,
-  includeIgnoreFile,
-} from "@eslint/compat"
+import { includeIgnoreFile } from "@eslint/compat"
 import typescriptEslint from "typescript-eslint"
 import react from "eslint-plugin-react"
 import reactHooks from "eslint-plugin-react-hooks"
@@ -14,17 +10,11 @@ import storybook from "eslint-plugin-storybook"
 import globals from "globals"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import js from "@eslint/js"
-import { FlatCompat } from "@eslint/eslintrc"
+import pluginJs from "@eslint/js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const gitignorePath = path.resolve(__dirname, ".gitignore")
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
 
 export default [
   // Ignore files
@@ -42,6 +32,7 @@ export default [
     },
     rules: {
       ..._import.flatConfigs.recommended.rules,
+      ...pluginJs.configs.recommended.rules,
     },
     settings: {
       "import/resolver": {
@@ -52,76 +43,54 @@ export default [
   },
   // TypeScript files
   {
-    files: ["**/*.ts?(x)"],
+    files: ["**/*.{ts,tsx}"],
     languageOptions: {
       parser: typescriptEslint.parser,
     },
     plugins: {
       "@typescript-eslint": typescriptEslint.plugin,
+      "react-hooks": reactHooks,
     },
     rules: {
       ...typescriptEslint.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
     },
   },
-  // ...fixupConfigRules(
-  //   compat.extends(
-  //     "eslint:recommended",
-  //     "prettier",
-  //     "plugin:@typescript-eslint/recommended",
-  //     "plugin:react/recommended",
-  //     "plugin:react/jsx-runtime",
-  //     "plugin:react-hooks/recommended",
-  //     "plugin:jsx-a11y/recommended",
-  //     "plugin:import/recommended",
-  //     "plugin:import/typescript",
-  //   ),
-  // ),
-  // {
-  //   plugins: {
-  //     "@typescript-eslint": fixupPluginRules(typescriptEslint),
-  //     react: fixupPluginRules(react),
-  //     "react-hooks": fixupPluginRules(reactHooks),
-  //     "jsx-a11y": fixupPluginRules(jsxA11Y),
-  //     import: fixupPluginRules(_import),
-  //     "jest-dom": jestDom,
-  //     "testing-library": testingLibrary,
-  //     storybook,
-  //   },
-
-  //   languageOptions: {
-  //     globals: {
-  //       ...globals.browser,
-  //       ...globals.node,
-  //     },
-
-  //     parser: tsParser,
-  //     ecmaVersion: "latest",
-  //     sourceType: "module",
-  //   },
-
-  //   settings: {
-  //     react: {
-  //       version: "detect",
-  //     },
-
-  //     "import/resolver": {
-  //       typescript: true,
-  //       node: true,
-  //     },
-  //   },
-
-  //   rules: {
-  //     "import/order": "error",
-  //   },
-  // },
-  // ...compat
-  //   .extends("plugin:jest-dom/recommended", "plugin:testing-library/react")
-  //   .map((config) => ({
-  //     ...config,
-  //     files: ["app/**/*.test.{ts,tsx}"],
-  //   })),
-  // ...compat.extends("plugin:storybook/recommended").map((config) => ({
-  //   ...config,
-  //   files: ["app/modules/ui/**/*.stories.{ts,tsx}", ".storybook/*.ts"],
-  // })),
+  // React files
+  {
+    files: ["**/*.tsx"],
+    languageOptions: {
+      parser: typescriptEslint.parser,
+    },
+    plugins: {
+      react,
+      "jsx-a11y": jsxA11Y,
+    },
+    rules: {
+      ...react.configs.flat["jsx-runtime"].rules,
+      ...jsxA11Y.flatConfigs.recommended.rules,
+    },
+  },
+  // Vitest files
+  {
+    files: ["**/*.test.{ts,tsx}"],
+    plugins: {
+      "jest-dom": jestDom,
+      "testing-library": testingLibrary,
+    },
+    rules: {
+      ...jestDom.configs["flat/recommended"].rules,
+      ...testingLibrary.configs.react.rules,
+    },
+  },
+  // Storybook files
+  {
+    files: ["**/*.stories.{ts,tsx}", ".storybook/*.ts"],
+    plugins: {
+      storybook,
+    },
+    rules: {
+      ...storybook.configs.recommended.rules,
+    },
+  },
 ]

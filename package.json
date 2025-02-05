@@ -25,7 +25,7 @@
     "format:check": "prettier . --check",
     "generate": "tsx ./scripts/generate/generate.ts",
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
-    "lint": "eslint --ignore-path .gitignore .",
+    "lint": "eslint .",
     "setup": "cp .dev.vars.example .dev.vars && playwright install --with-deps chromium && npm run db:setup",
     "start": "wrangler pages dev ./build/client --port 3000",
     "storybook": "storybook dev -p 6006 --no-open",
