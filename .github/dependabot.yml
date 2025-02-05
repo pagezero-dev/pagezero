@@ -29,6 +29,7 @@ updates:
           - "eslint*"
           - "@eslint/*"
           - "typescript-eslint"
+          - "@vitest/eslint-plugin"
 
       testing-library:
         patterns:

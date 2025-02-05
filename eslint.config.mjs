@@ -7,6 +7,7 @@ import _import from "eslint-plugin-import"
 import jestDom from "eslint-plugin-jest-dom"
 import testingLibrary from "eslint-plugin-testing-library"
 import storybook from "eslint-plugin-storybook"
+import vitest from "@vitest/eslint-plugin"
 import globals from "globals"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -79,12 +80,14 @@ export default [
   {
     files: ["**/*.test.{ts,tsx}"],
     plugins: {
+      vitest,
       "jest-dom": jestDom,
       "testing-library": testingLibrary,
     },
     rules: {
       ...jestDom.configs["flat/recommended"].rules,
       ...testingLibrary.configs.react.rules,
+      ...vitest.configs.recommended.rules,
     },
   },
 
