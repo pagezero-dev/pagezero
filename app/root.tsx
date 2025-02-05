@@ -1,10 +1,11 @@
 import { Links, Meta, Outlet, Scripts, useRouteError } from "react-router"
+import { type ReactNode } from "react"
 
 import styles from "./styles/index.css?url"
 import fonts from "./fonts/inter-normal-latin.woff2?url"
 import { ErrorPage } from "@/ui/error-page"
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>

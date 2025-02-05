@@ -14,11 +14,13 @@ declare module "react-router" {
   }
 
   // TODO: remove this once we've migrated to `Route.LoaderArgs` instead for our loaders
+  // eslint-disable-next-line no-unused-vars
   interface LoaderFunctionArgs {
     context: AppLoadContext
   }
 
   // TODO: remove this once we've migrated to `Route.ActionArgs` instead for our actions
+  // eslint-disable-next-line no-unused-vars
   interface ActionFunctionArgs {
     context: AppLoadContext
   }
