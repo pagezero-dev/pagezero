@@ -20,11 +20,9 @@ export default [
   // Ignore files
   includeIgnoreFile(gitignorePath),
 
-  // Basic defaults
+  // All files
   eslint.configs.recommended,
   ...typescriptEslint.configs.recommended,
-
-  // All files
   {
     plugins: {
       import: _import,
