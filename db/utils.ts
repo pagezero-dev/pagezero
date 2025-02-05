@@ -1,13 +1,10 @@
-// eslint-disable-next-line import/no-named-as-default
 import glob from "fast-glob"
 import { drizzle as drizzleLocal } from "drizzle-orm/better-sqlite3"
-// eslint-disable-next-line import/no-named-as-default
 import Database from "better-sqlite3"
 import { config } from "@dotenvx/dotenvx"
 import { drizzle as drizzleRemote } from "./d1-http-driver"
 
 export function getLocalSqliteDbUrl() {
-  // eslint-disable-next-line import/no-named-as-default-member
   const dbUrls = glob.sync("./.wrangler/**/*.sqlite")
 
   if (dbUrls.length > 1) {
