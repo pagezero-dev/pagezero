@@ -39,7 +39,6 @@ export default [
       parser: typescriptEslint.parser,
     },
     plugins: {
-      "@typescript-eslint": typescriptEslint.plugin,
       "react-hooks": reactHooks,
     },
     rules: {
@@ -73,19 +72,11 @@ export default [
     },
     rules: {
       ...jestDom.configs["flat/recommended"].rules,
-      ...testingLibrary.configs.react.rules,
+      ...testingLibrary.configs["flat/react"].rules,
       ...vitest.configs.recommended.rules,
     },
   },
 
   // Storybook files
-  {
-    files: ["**/*.stories.{ts,tsx}", ".storybook/*.ts"],
-    plugins: {
-      storybook,
-    },
-    rules: {
-      ...storybook.configs.recommended.rules,
-    },
-  },
+  ...storybook.configs["flat/recommended"],
 ]
