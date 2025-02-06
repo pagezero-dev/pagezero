@@ -1,4 +1,5 @@
 import { clsx } from "clsx"
+import { Slot } from "@radix-ui/react-slot"
 import { type ButtonHTMLAttributes } from "react"
 
 type ButtonVariant =
@@ -9,7 +10,6 @@ type ButtonVariant =
   | "danger"
   | "outline"
 
-import { Slot } from "@radix-ui/react-slot"
 type ButtonSize = "default" | "small" | "large"
 
 interface ButtonProps
