@@ -1,13 +1,18 @@
 import { clsx } from "clsx"
 import { Slot } from "@radix-ui/react-slot"
-import { ReactNode, createContext, useContext } from "react"
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  type AnchorHTMLAttributes,
+} from "react"
 
 type LinkSize = "default" | "small" | "large"
 
 const LinkContext = createContext({ size: "default" })
 
 interface LinkProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className"> {
+  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "className"> {
   size?: LinkSize
   asChild?: boolean
 }

@@ -1,5 +1,6 @@
 import { clsx } from "clsx"
 import { Slot } from "@radix-ui/react-slot"
+import { type ButtonHTMLAttributes } from "react"
 
 type ButtonVariant =
   | "primary"
@@ -12,7 +13,7 @@ type ButtonVariant =
 type ButtonSize = "default" | "small" | "large"
 
 interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
   variant?: ButtonVariant
   size?: ButtonSize
   asChild?: boolean
