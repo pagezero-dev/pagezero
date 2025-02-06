@@ -3,7 +3,6 @@ import typescriptEslint from "typescript-eslint"
 import react from "eslint-plugin-react"
 import reactHooks from "eslint-plugin-react-hooks"
 import jsxA11Y from "eslint-plugin-jsx-a11y"
-import _import from "eslint-plugin-import"
 import jestDom from "eslint-plugin-jest-dom"
 import testingLibrary from "eslint-plugin-testing-library"
 import storybook from "eslint-plugin-storybook"
@@ -25,22 +24,10 @@ export default [
   eslint.configs.recommended,
   ...typescriptEslint.configs.recommended,
   {
-    plugins: {
-      import: _import,
-    },
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
-      },
-    },
-    rules: {
-      ..._import.flatConfigs.recommended.rules,
-    },
-    settings: {
-      "import/resolver": {
-        typescript: true,
-        node: true,
       },
     },
   },
