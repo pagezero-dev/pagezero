@@ -168,7 +168,7 @@ jobs:
       contents: read
       deployments: write
     outputs:
-      page_url: ${{ steps.deploy.outputs.url }}
+      page_url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - name: 📥 Checkout repo
         uses: actions/checkout@v4
@@ -187,6 +187,7 @@ jobs:
 
       - name: 🚀 Deploy
         uses: cloudflare/wrangler-action@v3
+        id: deploy
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
