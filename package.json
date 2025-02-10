@@ -27,6 +27,7 @@
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
     "lint": "eslint .",
     "setup": "npm install && cp .dev.vars.example .dev.vars && playwright install --with-deps chromium && npm run db:setup",
+    "setup:template": "rm -rf .git && git init . && npm run setup",
     "start": "wrangler pages dev ./build/client --port 3000",
     "storybook": "storybook dev -p 6006 --no-open",
     "test": "vitest run",
