@@ -15,7 +15,7 @@ Guiding principles:
 
 In 3 steps:
 
-1. `git clone https://github.com/pagezero-dev/pagezero.git`
+1. `git clone --depth 1 https://github.com/pagezero-dev/pagezero.git`
 2. `npm run setup`
 3. `npm run dev`
 
