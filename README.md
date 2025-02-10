@@ -15,11 +15,13 @@ Guiding principles:
 
 In 3 steps:
 
-1. `npm install`
+1. `git clone https://github.com/pagezero-dev/pagezero.git`
 2. `npm run setup`
 3. `npm run dev`
 
-Now you should be able to open up development page under http://localhost:3000/.
+That's all! ✨
+
+You should be able to access http://localhost:3000/ development page now.
 
 ## 🧑‍💻 Tech stack
 
