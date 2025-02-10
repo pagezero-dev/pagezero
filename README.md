@@ -22,9 +22,9 @@ In 4 steps:
 
 You should be able to access http://localhost:3000/ development page now.
 
-## 🧑‍💻 Tech stack
+## 🧑‍💻 The stack
 
-Builing on strong foundations:
+Building on strong foundations:
 
 - Vite
 - React
