@@ -1,4 +1,4 @@
-# pagezero
+# PageZERO
 
 > Build your startup with a tiny team, fast!
 
