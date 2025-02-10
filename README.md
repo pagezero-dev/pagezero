@@ -11,7 +11,19 @@ Guiding principles:
 - Pleasure to develop
 - Cheap to maintain
 
-Built on strong foundations:
+## ⚡️ Quick start
+
+In 3 steps:
+
+1. `npm install`
+2. `npm run setup`
+3. `npm run dev`
+
+Now you should be able to open up development page under http://localhost:3000/.
+
+## 🧑‍💻 Tech stack
+
+Builing on strong foundations:
 
 - Vite
 - React
@@ -28,6 +40,6 @@ Built on strong foundations:
 - Storybook
 - MDX
 
-## Quick start
+## ⚔️ Deploy and conquer
 
-## Deploy to Cloudflare
+sdf
