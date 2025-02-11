@@ -17,10 +17,16 @@ In 4 steps:
 
 1. `git clone --depth 1 https://github.com/pagezero-dev/pagezero.git <your-project-name>`
 1. `cd <your-project-name>`
-1. `npm run setup:template`
+1. `npm run setup`
 1. `npm run dev`
 
 You should be able to access http://localhost:3000/ development page now.
+
+If you wish to start new git repository:
+
+```
+npm run git:reset
+```
 
 ## 🧑‍💻 The stack
 
