@@ -22,11 +22,13 @@ In 4 steps:
 
 You should be able to access http://localhost:3000/ development page now.
 
-If you wish to start new git repository:
+If you wish to start new Github repository based on PageZero:
 
 ```
-npm run git:reset
+gh repo create <your-project-name> -c --template pagezero-dev/pagezero
 ```
+
+> ℹ️ Above command requires [Github CLI](https://cli.github.com/)
 
 ## 🧑‍💻 The stack
 
