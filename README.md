@@ -47,6 +47,22 @@ Building on strong foundations:
 - Storybook
 - MDX
 
-## ⚔️ Deploy and conquer
+## 🚀 Deployment
 
 sdf
+
+## ✨ Scripts
+
+Essential npm scripts:
+
+- `npm run setup` - performs npm install, setups basic env vars, database and playwright browser drivers
+- `npm run dev` - boots development server
+- `npm run build` - builds the app
+- `npm start` - runs builded app, this is how your app will be run on producion
+- `npm test` - executes unit tests
+- `npm run test:types` - typescript types check
+- `npm run test:e2e:ui` - executes browser tests in UI mode, perfect for development
+- `npm run lint` - eslint check
+- `npm run format` - prettier check
+- `npm run storybook` - boots Storybook
+- `npm run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
