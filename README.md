@@ -66,4 +66,9 @@ Essential npm scripts:
 
 ## 🚀 Deployment
 
-sdf
+Deployment in PageZERO happens through Github Actions CI/CD pipeline. That means once pipeline is setup,
+every merge to `main` branch will trigger deploy to Cloudflare Pages and database migration for Cloudflare D1.
+
+Additionally, every PR will trigger "preview deployment", so you would be able to access deployed version of your app, for every PR. More about preview deployments: https://developers.cloudflare.com/pages/configuration/preview-deployments/.
+
+Database for preview deployments is shared. If you wish to reset it, you can manually trigger "Reset preview database" in Github Actions.
