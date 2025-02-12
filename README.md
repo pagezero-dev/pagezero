@@ -1,8 +1,6 @@
 # PageZERO
 
-> Build your startup with a tiny team, fast!
-
-The open-source, full-stack TypeScript project starter focused on speed of development.
+The open-source, full-stack TypeScript project starter.
 
 Guiding principles:
 
