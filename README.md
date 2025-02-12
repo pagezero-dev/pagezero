@@ -32,20 +32,21 @@ gh repo create <your-project-name> -c --template pagezero-dev/pagezero
 
 Building on strong foundations:
 
-- Vite
-- React
-- Cloudflare Infra
-- TypeScript
-- TailwindCSS
-- React Router v7
-- Drizzle ORM
-- Github Actions
-- Prettier
-- ESLint
-- Vitest
-- Playwright
-- Storybook
-- MDX
+- [Vite](https://vite.dev/)
+- [React](https://react.dev/)
+- [Cloudflare Pages (hosting)](https://pages.cloudflare.com/)
+- [Cloudflare D1 (database)](https://www.cloudflare.com/en-au/developer-platform/products/d1/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [React Router v7](https://reactrouter.com/)
+- [Drizzle ORM](https://orm.drizzle.team/)
+- [Github Actions](https://github.com/features/actions)
+- [Prettier](https://prettier.io/)
+- [ESLint](https://eslint.org/)
+- [Vitest](https://vitest.dev/)
+- [Playwright](https://playwright.dev/)
+- [Storybook](https://storybook.js.org/)
+- [MDX](https://mdxjs.com/)
 
 ## ✨ Scripts
 
