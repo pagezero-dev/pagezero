@@ -36,10 +36,10 @@ Building on strong foundations:
 - React
 - Cloudflare Infra
 - TypeScript
-- Github Actions
 - TailwindCSS
 - React Router v7
 - Drizzle ORM
+- Github Actions
 - Prettier
 - ESLint
 - Vitest
