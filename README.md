@@ -47,10 +47,6 @@ Building on strong foundations:
 - Storybook
 - MDX
 
-## 🚀 Deployment
-
-sdf
-
 ## ✨ Scripts
 
 Essential npm scripts:
@@ -66,3 +62,7 @@ Essential npm scripts:
 - `npm run format` - prettier check
 - `npm run storybook` - boots Storybook
 - `npm run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
+
+## 🚀 Deployment
+
+sdf
