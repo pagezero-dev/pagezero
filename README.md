@@ -94,6 +94,31 @@ However, to make it all work, we need to go through a few setup steps...
      - `APP_ENV=preview`
      - `DB_BINDING=DB_PREVIEW`
    - Bindings:
-     - [D1 database] `DB_PREVIEW=<project-name>_production`
+     - [D1 database] `DB_PREVIEW=<project-name>_preview`
 
 ### Github actions setup
+
+The only thing which we need to do on Github side, is to set proper secrets and variables in your Github project "Settings". This will allow Github actions to perform deploys to Cloudflare Pages and migrations for your Cloudflare D1 database.
+
+In "Settings / Secrets and variables / Actions" set the following VARIABLES:
+
+| Variable name                     | Value                                |
+| --------------------------------- | ------------------------------------ |
+| CLOUDFLARE_PROJECT_NAME           | Your Cloudflare Pages project name   |
+| DB_NAME_PRODUCTION                | `<project-name>_production`          |
+| DB_NAME_PREVIEW                   | `<project-name>_preview`             |
+| CLOUDFLARE_DATABASE_ID_PRODUCTION | Cloudflare D1 production database ID |
+| CLOUDFLARE_DATABASE_ID_PREVIEW    | Cloudflare D1 preview database ID    |
+| CLOUDFLARE_ACCOUNT_ID             | Your Cloudflare account ID           |
+
+In "Settings / Secrets and variables / Actions" set the following SECRETS:
+
+| Variable name        | Value                |
+| -------------------- | -------------------- |
+| CLOUDFLARE_API_TOKEN | Cloudflare API token |
+
+In "Settings / Secrets and variables / Dependabot" set the following SECRETS:
+
+| Variable name        | Value                |
+| -------------------- | -------------------- |
+| CLOUDFLARE_API_TOKEN | Cloudflare API token |
