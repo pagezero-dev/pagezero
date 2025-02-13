@@ -72,3 +72,28 @@ every merge to `main` branch will trigger deploy to Cloudflare Pages and databas
 Additionally, every PR will trigger "preview deployment", so you would be able to access version of your app, for every PR. More about preview deployments: https://developers.cloudflare.com/pages/configuration/preview-deployments/.
 
 Database for preview deployments is shared. If you wish to reset it, you can manually trigger "Reset preview database" workflow in Github Actions.
+
+However, to make it all work, we need to go through a few setup steps...
+
+### Cloudflare services setup
+
+1. If you don't have [Cloudflare](https://www.cloudflare.com/) account yet, create one
+1. In Cloudflare dashboard, go to "Storage & Databases / D1 SQL Database"
+1. Create 2 databases: `<project-name>_production` and `<project-name>_preview`
+1. In Cloudflare dashboard, go to "Compute (Workers) / Workers & Pages"
+1. Create new "Pages" project, through "Create using direct upload" method, however do not upload any assets
+1. Once "Pages" project is created, open up the project from "Workers & Pages" list
+1. In "Settings" section, for "production" environment, create:
+   - The following variables:
+     - `APP_ENV=production`
+     - `DB_BINDING=DB_PRODUCTION`
+   - Bindings:
+     - [D1 database] `DB_PRODUCTION=<project-name>_production`
+1. In "Settings" section, for "preview" environment, create:
+   - The following variables:
+     - `APP_ENV=preview`
+     - `DB_BINDING=DB_PREVIEW`
+   - Bindings:
+     - [D1 database] `DB_PREVIEW=<project-name>_production`
+
+### Github actions setup
