@@ -111,14 +111,24 @@ In "Settings / Secrets and variables / Actions" set the following VARIABLES:
 | CLOUDFLARE_DATABASE_ID_PREVIEW    | Cloudflare D1 preview database ID    |
 | CLOUDFLARE_ACCOUNT_ID             | Your Cloudflare account ID           |
 
+> ℹ️ Database ID's can be obtained through Cloudflare dashboard, under "Storage & Databases / D1 SQL Database"
+
+> ℹ️ Cloudflare account ID can be obtained through Cloudflare dashboard, under "Compute (Workers) / Workers & Pages" in the right sidebar
+
 In "Settings / Secrets and variables / Actions" set the following SECRETS:
 
 | Variable name        | Value                |
 | -------------------- | -------------------- |
 | CLOUDFLARE_API_TOKEN | Cloudflare API token |
 
+> ℹ️ Cloudflare API token can be obtained through Cloudflare dashboard, under "Manage account / Account API Tokens". You have to create the token there. Token will require the following permissions: D1:Edit, Cloudflare Pages:Edit
+
 In "Settings / Secrets and variables / Dependabot" set the following SECRETS:
 
 | Variable name        | Value                |
 | -------------------- | -------------------- |
 | CLOUDFLARE_API_TOKEN | Cloudflare API token |
+
+### Test everything out
+
+Now you can test everything out. Create a PR in your project Github repository. You should notice an action in "Actions" section being triggered.
