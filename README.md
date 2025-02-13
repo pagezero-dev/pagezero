@@ -131,4 +131,6 @@ In "Settings / Secrets and variables / Dependabot" set the following SECRETS:
 
 ### Test everything out
 
-Now you can test everything out. Create a PR in your project Github repository. You should notice an action in "Actions" section being triggered.
+Now you can test everything out. Create a PR in your project Github repository. You should notice an action in "Actions" section being triggered. If basic checks will pass, workflow will perform preview deployment to Github pages and database migration on your preview database. After deployment, "View deployment" button should show up in your PR, with link to your PR "preview" deployment.
+
+When you merge PR to "main", main deployment will happen and database migration will be performed on your production DB.
