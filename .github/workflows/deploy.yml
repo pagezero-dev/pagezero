@@ -199,7 +199,9 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     needs: [deploy]
-    if: ${{ vars.CLOUDFLARE_ACCESS_CLIENT_ID && secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
+    if: env.CLOUDFLARE_ACCESS_CLIENT_ID
+    env:
+      CLOUDFLARE_ACCESS_CLIENT_ID: ${{ vars.CLOUDFLARE_ACCESS_CLIENT_ID }}
     steps:
       - name: 📥 Checkout repo
         uses: actions/checkout@v4
@@ -231,5 +233,4 @@ jobs:
         run: npm run test:smoke
         env:
           TEST_PAGE_URL: ${{ needs.deploy.outputs.page_url }}
-          CLOUDFLARE_ACCESS_CLIENT_ID: ${{ vars.CLOUDFLARE_ACCESS_CLIENT_ID }}
           CLOUDFLARE_ACCESS_CLIENT_SECRET: ${{ secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
