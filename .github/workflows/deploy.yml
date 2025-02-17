@@ -199,7 +199,7 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     needs: [deploy]
-    if: vars.CLOUDFLARE_ACCESS_CLIENT_ID && secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET
+    if: ${{ vars.CLOUDFLARE_ACCESS_CLIENT_ID && secrets.CLOUDFLARE_ACCESS_CLIENT_SECRET }}
     steps:
       - name: 📥 Checkout repo
         uses: actions/checkout@v4
