@@ -40,7 +40,7 @@ Building on strong foundations:
 - [TailwindCSS](https://tailwindcss.com/)
 - [React Router v7](https://reactrouter.com/)
 - [Drizzle ORM](https://orm.drizzle.team/)
-- [Github Actions](https://GitHub.com/features/actions)
+- [Github Actions](https://github.com/features/actions)
 - [Prettier](https://prettier.io/)
 - [ESLint](https://eslint.org/)
 - [Vitest](https://vitest.dev/)
