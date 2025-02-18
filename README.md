@@ -129,10 +129,10 @@ In "Settings / Secrets and variables / Dependabot", set the following SECRETS:
 | -------------------- | -------------------- |
 | CLOUDFLARE_API_TOKEN | Cloudflare API token |
 
-> ℹ️ Dependabot has a separate set of secrets, so to make preview deployments work for Dependabot PR's, you will need to set the `CLOUDFLARE_API_TOKEN` secret for Dependabot as well.
+> ℹ️ Dependabot has a separate set of secrets, so to make preview deployments work for Dependabot PRs, you will need to set the `CLOUDFLARE_API_TOKEN` secret for Dependabot.
 
 ### Test everything out
 
-Now, you can test everything out. Create a PR in your project GitHub repository. You should notice an action in the "Actions" section being triggered. If the basic checks pass, the workflow will perform preview deployment to GitHub pages and database migration on your preview database. After deployment, the "View deployment" button should show up in your PR, with a link to your PR "preview" deployment.
+Now, you can test everything out. Create a PR in your project GitHub repository. You should notice an action in the "Actions" section being triggered. If the basic checks pass, the workflow will perform preview deployment to GitHub pages and database migration on your preview database. After deployment, the "View deployment" button should appear in your PR, with a link to your PR "preview" deployment.
 
 When you merge PR to "main", production deployment will happen, and database migration will be performed on your production DB.
