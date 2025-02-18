@@ -20,13 +20,13 @@ In 4 steps:
 
 You should be able to access http://localhost:3000/ development page now.
 
-If you wish to start new Github repository based on PageZero:
+If you wish to start a new GitHub repository based on PageZero:
 
 ```
 gh repo create <your-project-name> -c --template pagezero-dev/pagezero
 ```
 
-> ℹ️ Above command requires [Github CLI](https://cli.github.com/)
+> ℹ️ Above command requires [GitHub CLI](https://cli.github.com/)
 
 ## 🧑‍💻 The stack
 
@@ -40,7 +40,7 @@ Building on strong foundations:
 - [TailwindCSS](https://tailwindcss.com/)
 - [React Router v7](https://reactrouter.com/)
 - [Drizzle ORM](https://orm.drizzle.team/)
-- [Github Actions](https://github.com/features/actions)
+- [Github Actions](https://GitHub.com/features/actions)
 - [Prettier](https://prettier.io/)
 - [ESLint](https://eslint.org/)
 - [Vitest](https://vitest.dev/)
@@ -55,7 +55,7 @@ Essential npm scripts:
 - `npm run setup` - performs npm install, setups basic env vars, database and playwright browser drivers
 - `npm run dev` - boots development server
 - `npm run build` - builds the app
-- `npm start` - runs builded app, this is how your app will be run on producion
+- `npm start` - runs built app; this is how your app will be run on production
 - `npm test` - executes unit tests
 - `npm run test:types` - typescript types check
 - `npm run test:e2e:ui` - executes browser tests in UI mode, perfect for development
@@ -66,12 +66,12 @@ Essential npm scripts:
 
 ## 🚀 Deployment
 
-Deployment in PageZERO happens through Github Actions CI/CD pipeline. That means once pipeline is setup,
+Deployment in PageZERO happens through GitHub Actions CI/CD pipeline. That means once the pipeline is setup,
 every merge to `main` branch will trigger deploy to Cloudflare Pages and database migration for Cloudflare D1.
 
 Additionally, every PR will trigger "preview deployment", so you would be able to access version of your app, for every PR. More about preview deployments: https://developers.cloudflare.com/pages/configuration/preview-deployments/.
 
-Database for preview deployments is shared. If you wish to reset it, you can manually trigger "Reset preview database" workflow in Github Actions.
+Database for preview deployments is shared. If you wish to reset it, you can manually trigger "Reset preview database" workflow in GitHub Actions.
 
 However, to make it all work, we need to go through a few setup steps...
 
@@ -96,9 +96,9 @@ However, to make it all work, we need to go through a few setup steps...
    - Bindings:
      - [D1 database] `DB_PREVIEW=<project-name>_preview`
 
-### Github actions setup
+### GitHub actions setup
 
-The only thing which we need to do on Github side, is to set proper secrets and variables in your Github project "Settings". This will allow Github actions to perform deploys to Cloudflare Pages and migrations for your Cloudflare D1 database.
+The only thing which we need to do on GitHub side, is to set proper secrets and variables in your GitHub project "Settings". This will allow GitHub actions to perform deploys to Cloudflare Pages and migrations for your Cloudflare D1 database.
 
 In "Settings / Secrets and variables / Actions" set the following VARIABLES:
 
@@ -133,6 +133,6 @@ In "Settings / Secrets and variables / Dependabot" set the following SECRETS:
 
 ### Test everything out
 
-Now you can test everything out. Create a PR in your project Github repository. You should notice an action in "Actions" section being triggered. If basic checks will pass, workflow will perform preview deployment to Github pages and database migration on your preview database. After deployment, "View deployment" button should show up in your PR, with link to your PR "preview" deployment.
+Now you can test everything out. Create a PR in your project GitHub repository. You should notice an action in "Actions" section being triggered. If basic checks will pass, workflow will perform preview deployment to GitHub pages and database migration on your preview database. After deployment, "View deployment" button should show up in your PR, with link to your PR "preview" deployment.
 
 When you merge PR to "main", main deployment will happen and database migration will be performed on your production DB.
