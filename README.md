@@ -111,9 +111,9 @@ In "Settings / Secrets and variables / Actions" set the following VARIABLES:
 | CLOUDFLARE_DATABASE_ID_PREVIEW    | Cloudflare D1 preview database ID    |
 | CLOUDFLARE_ACCOUNT_ID             | Your Cloudflare account ID           |
 
-> ℹ️ Database ID's can be obtained through the Cloudflare dashboard, under "Storage & Databases / D1 SQL Database"
+> ℹ️ Database ID's can be obtained through the Cloudflare dashboard under "Storage & Databases / D1 SQL Database"
 
-> ℹ️ Cloudflare account ID can be obtained through the Cloudflare dashboard, under "Compute (Workers) / Workers & Pages" in the right sidebar
+> ℹ️ Cloudflare account ID can be obtained through the Cloudflare dashboard under "Compute (Workers) / Workers & Pages" in the right sidebar
 
 In "Settings / Secrets and variables / Actions" set the following SECRETS:
 
@@ -121,7 +121,7 @@ In "Settings / Secrets and variables / Actions" set the following SECRETS:
 | -------------------- | -------------------- |
 | CLOUDFLARE_API_TOKEN | Cloudflare API token |
 
-> ℹ️ Cloudflare API token can be obtained through the Cloudflare dashboard, under "Manage account / Account API Tokens". You have to create the token there. The token will require the following permissions: D1:Edit, Cloudflare Pages:Edit
+> ℹ️ Cloudflare API token can be obtained through the Cloudflare dashboard under "Manage account / Account API Tokens". You have to create the token there. The token will require the following permissions: D1:Edit, Cloudflare Pages:Edit
 
 In "Settings / Secrets and variables / Dependabot" set the following SECRETS:
 
@@ -133,6 +133,6 @@ In "Settings / Secrets and variables / Dependabot" set the following SECRETS:
 
 ### Test everything out
 
-Now, you can test everything out. Create a PR in your project GitHub repository. You should notice an action in "Actions" section being triggered. If basic checks will pass, workflow will perform preview deployment to GitHub pages and database migration on your preview database. After deployment, "View deployment" button should show up in your PR, with link to your PR "preview" deployment.
+Now, you can test everything out. Create a PR in your project GitHub repository. You should notice an action in the "Actions" section being triggered. If the basic checks pass, the workflow will perform preview deployment to GitHub pages and database migration on your preview database. After deployment, the "View deployment" button should show up in your PR, with a link to your PR "preview" deployment.
 
-When you merge PR to "main", main deployment will happen and database migration will be performed on your production DB.
+When you merge PR to "main", production deployment will happen, and database migration will be performed on your production DB.
