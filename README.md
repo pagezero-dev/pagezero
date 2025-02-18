@@ -66,30 +66,30 @@ Essential npm scripts:
 
 ## 🚀 Deployment
 
-Deployment in PageZERO happens through GitHub Actions CI/CD pipeline. That means once the pipeline is setup,
-every merge to `main` branch will trigger deploy to Cloudflare Pages and database migration for Cloudflare D1.
+Deployment in PageZERO happens through the GitHub Actions CI/CD pipeline. That means once the pipeline is set,
+every merge to the `main` branch will trigger deployment to Cloudflare Pages and database migration for Cloudflare D1.
 
-Additionally, every PR will trigger "preview deployment", so you would be able to access version of your app, for every PR. More about preview deployments: https://developers.cloudflare.com/pages/configuration/preview-deployments/.
+Additionally, every PR will trigger "preview deployment", so you can access the version of your app, for every PR. More about preview deployments: https://developers.cloudflare.com/pages/configuration/preview-deployments/.
 
-Database for preview deployments is shared. If you wish to reset it, you can manually trigger "Reset preview database" workflow in GitHub Actions.
+The database for preview deployments is shared. If you wish to reset it, you can manually trigger the "Reset preview database" workflow in GitHub Actions.
 
-However, to make it all work, we need to go through a few setup steps...
+However, to make it all work, we must go through a few setup steps...
 
 ### Cloudflare services setup
 
 1. If you don't have [Cloudflare](https://www.cloudflare.com/) account yet, create one
-1. In Cloudflare dashboard, go to "Storage & Databases / D1 SQL Database"
+1. In the Cloudflare dashboard, go to "Storage & Databases / D1 SQL Database"
 1. Create 2 databases: `<project-name>_production` and `<project-name>_preview`
-1. In Cloudflare dashboard, go to "Compute (Workers) / Workers & Pages"
-1. Create new "Pages" project, through "Create using direct upload" method, however do not upload any assets
+1. In the Cloudflare dashboard, go to "Compute (Workers) / Workers & Pages"
+1. Create new "Pages" project through "Create using direct upload" method, however, do not upload any assets
 1. Once "Pages" project is created, open up the project from "Workers & Pages" list
-1. In "Settings" section, for "production" environment, create:
+1. In the "Settings" section, for the "production" environment, create:
    - The following variables:
      - `APP_ENV=production`
      - `DB_BINDING=DB_PRODUCTION`
    - Bindings:
      - [D1 database] `DB_PRODUCTION=<project-name>_production`
-1. In "Settings" section, for "preview" environment, create:
+1. In the "Settings" section, for the "preview" environment, create:
    - The following variables:
      - `APP_ENV=preview`
      - `DB_BINDING=DB_PREVIEW`
@@ -98,7 +98,7 @@ However, to make it all work, we need to go through a few setup steps...
 
 ### GitHub actions setup
 
-The only thing which we need to do on GitHub side, is to set proper secrets and variables in your GitHub project "Settings". This will allow GitHub actions to perform deploys to Cloudflare Pages and migrations for your Cloudflare D1 database.
+The only thing we need to do on the GitHub side, is to set proper secrets and variables in your GitHub project "Settings". This will allow GitHub actions to perform deploys to Cloudflare Pages and migrations for your Cloudflare D1 database.
 
 In "Settings / Secrets and variables / Actions" set the following VARIABLES:
 
@@ -111,9 +111,9 @@ In "Settings / Secrets and variables / Actions" set the following VARIABLES:
 | CLOUDFLARE_DATABASE_ID_PREVIEW    | Cloudflare D1 preview database ID    |
 | CLOUDFLARE_ACCOUNT_ID             | Your Cloudflare account ID           |
 
-> ℹ️ Database ID's can be obtained through Cloudflare dashboard, under "Storage & Databases / D1 SQL Database"
+> ℹ️ Database ID's can be obtained through the Cloudflare dashboard, under "Storage & Databases / D1 SQL Database"
 
-> ℹ️ Cloudflare account ID can be obtained through Cloudflare dashboard, under "Compute (Workers) / Workers & Pages" in the right sidebar
+> ℹ️ Cloudflare account ID can be obtained through the Cloudflare dashboard, under "Compute (Workers) / Workers & Pages" in the right sidebar
 
 In "Settings / Secrets and variables / Actions" set the following SECRETS:
 
@@ -121,7 +121,7 @@ In "Settings / Secrets and variables / Actions" set the following SECRETS:
 | -------------------- | -------------------- |
 | CLOUDFLARE_API_TOKEN | Cloudflare API token |
 
-> ℹ️ Cloudflare API token can be obtained through Cloudflare dashboard, under "Manage account / Account API Tokens". You have to create the token there. Token will require the following permissions: D1:Edit, Cloudflare Pages:Edit
+> ℹ️ Cloudflare API token can be obtained through the Cloudflare dashboard, under "Manage account / Account API Tokens". You have to create the token there. The token will require the following permissions: D1:Edit, Cloudflare Pages:Edit
 
 In "Settings / Secrets and variables / Dependabot" set the following SECRETS:
 
@@ -129,10 +129,10 @@ In "Settings / Secrets and variables / Dependabot" set the following SECRETS:
 | -------------------- | -------------------- |
 | CLOUDFLARE_API_TOKEN | Cloudflare API token |
 
-> ℹ️ Dependabot has seperate set of secrets, so to make preview deployments work for Dependabot PR's you will need to set `CLOUDFLARE_API_TOKEN` secret for Dependabot as well.
+> ℹ️ Dependabot has a separate set of secrets, so to make preview deployments work for Dependabot PR'\s you will need to set the `CLOUDFLARE_API_TOKEN` secret for Dependabot as well.
 
 ### Test everything out
 
-Now you can test everything out. Create a PR in your project GitHub repository. You should notice an action in "Actions" section being triggered. If basic checks will pass, workflow will perform preview deployment to GitHub pages and database migration on your preview database. After deployment, "View deployment" button should show up in your PR, with link to your PR "preview" deployment.
+Now, you can test everything out. Create a PR in your project GitHub repository. You should notice an action in "Actions" section being triggered. If basic checks will pass, workflow will perform preview deployment to GitHub pages and database migration on your preview database. After deployment, "View deployment" button should show up in your PR, with link to your PR "preview" deployment.
 
 When you merge PR to "main", main deployment will happen and database migration will be performed on your production DB.
