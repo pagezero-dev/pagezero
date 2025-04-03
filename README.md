@@ -102,8 +102,6 @@ In "Settings / Secrets and variables / Actions", set the following VARIABLES:
 | Variable name                     | Value                                |
 | --------------------------------- | ------------------------------------ |
 | CLOUDFLARE_PROJECT_NAME           | Your Cloudflare Pages project name   |
-| DB_NAME_PRODUCTION                | `<project-name>_production`          |
-| DB_NAME_PREVIEW                   | `<project-name>_preview`             |
 | CLOUDFLARE_DATABASE_ID_PRODUCTION | Cloudflare D1 production database ID |
 | CLOUDFLARE_DATABASE_ID_PREVIEW    | Cloudflare D1 preview database ID    |
 | CLOUDFLARE_ACCOUNT_ID             | Your Cloudflare account ID           |
