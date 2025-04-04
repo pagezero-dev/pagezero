@@ -14,7 +14,7 @@ export const getLoadContext: GetLoadContext = ({ context }) => {
   const dbBinding = env.DB
 
   if (!dbBinding) {
-    throw new Error(`Cloudflare database binding "${dbBinding}" not found`)
+    throw new Error(`Cloudflare database binding "DB" not found`)
   }
 
   const db = drizzle(dbBinding, { schema })
