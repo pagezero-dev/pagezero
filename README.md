@@ -83,15 +83,13 @@ However, to make it all work, we must go through a few setup steps...
 1. In the "Settings" section, for the "production" environment, create:
    - The following variables:
      - `APP_ENV=production`
-     - `DB_BINDING=DB_PRODUCTION`
    - Bindings:
-     - [D1 database] `DB_PRODUCTION=<project-name>_production`
+     - [D1 database] `DB=<project-name>_production`
 1. In the "Settings" section, for the "preview" environment, create:
    - The following variables:
      - `APP_ENV=preview`
-     - `DB_BINDING=DB_PREVIEW`
    - Bindings:
-     - [D1 database] `DB_PREVIEW=<project-name>_preview`
+     - [D1 database] `DB=<project-name>_preview`
 
 ### GitHub actions setup
 
