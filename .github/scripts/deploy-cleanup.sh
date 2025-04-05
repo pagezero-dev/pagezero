@@ -32,7 +32,7 @@ fi
 
 echo "Fetching GitHub deployment IDs for branch: $PR_BRANCH"
 RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-  "https://api.github.com/repos/${{ github.repository }}/deployments")
+  "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments")
 
 GITHUB_DEPLOYMENT_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$PR_BRANCH" \
   '.[] | select(.ref == $branch) | .id')
@@ -44,7 +44,7 @@ else
   for GITHUB_DEPLOYMENT_ID in $GITHUB_DEPLOYMENT_IDS; do
     echo "Deleting GitHub deployment: $GITHUB_DEPLOYMENT_ID"
     HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
-      -X DELETE "https://api.github.com/repos/${{ github.repository }}/deployments/$GITHUB_DEPLOYMENT_ID" \
+      -X DELETE "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments/$GITHUB_DEPLOYMENT_ID" \
       -H "Authorization: token $GITHUB_TOKEN" \
       -H "Accept: application/vnd.github.v3+json")
 
