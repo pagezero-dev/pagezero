@@ -244,7 +244,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
-          # Fetch deployment event data for this PR
+          echo "Fetching GitHub deployment ID for branch: $PR_BRANCH"
           RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             "https://api.github.com/repos/${{ github.repository }}/deployments")
 
@@ -257,7 +257,7 @@ jobs:
             exit 0
           fi
 
-          echo "Found Deployment ID: $GITHUB_DEPLOYMENT_ID"
+          echo "Found GitHub Deployment ID: $GITHUB_DEPLOYMENT_ID"
           echo "github_deployment_id=$GITHUB_DEPLOYMENT_ID" >> $GITHUB_ENV
 
       - name: 🔍 Find Cloudflare Deployment ID
@@ -280,6 +280,7 @@ jobs:
             exit 0
           fi
 
+          echo "Found Cloudflare Deployment ID: $CLOUDFLARE_DEPLOYMENT_ID"
           echo "cloudflare_deployment_id=$CLOUDFLARE_DEPLOYMENT_ID" >> $GITHUB_ENV
 
       - name: 🗑️ Remove Cloudflare Preview Deployment
