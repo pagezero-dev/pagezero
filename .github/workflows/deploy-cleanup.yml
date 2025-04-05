@@ -10,6 +10,8 @@ jobs:
   cleanup:
     name: 🧹 Deploy Cleanup
     runs-on: ubuntu-latest
+    permissions:
+      deployments: write
     steps:
       - name: 📥 Checkout repo
         uses: actions/checkout@v4
