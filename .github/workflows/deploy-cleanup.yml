@@ -7,7 +7,7 @@ on:
 
 jobs:
   cleanup:
-    name: 🗑️ Remove Cloudflare Pages Deployment
+    name: 🧹 Deploy Cleanup
     runs-on: ubuntu-latest
     steps:
       - name: 🔍 Find deployment ID
@@ -31,7 +31,7 @@ jobs:
           echo "Found Deployment ID: $DEPLOYMENT_ID"
           echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_ENV
 
-      - name: 🗑️ Remove Preview Deployment
+      - name: 🗑️ Remove Cloudflare Preview Deployment
         if: env.deployment_id != ''
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
