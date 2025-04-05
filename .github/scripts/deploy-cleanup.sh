@@ -13,7 +13,6 @@ if [ -z "$GITHUB_DEPLOYMENT_ID" ]; then
 fi
 
 echo "Found GitHub Deployment ID: $GITHUB_DEPLOYMENT_ID"
-echo "github_deployment_id=$GITHUB_DEPLOYMENT_ID" >> $GITHUB_ENV
 
 
 echo "Fetching Cloudflare deployment ID for branch: $PR_BRANCH"
@@ -30,7 +29,6 @@ if [ -z "$CLOUDFLARE_DEPLOYMENT_ID" ]; then
 fi
 
 echo "Found Cloudflare Deployment ID: $CLOUDFLARE_DEPLOYMENT_ID"
-echo "cloudflare_deployment_id=$CLOUDFLARE_DEPLOYMENT_ID" >> $GITHUB_ENV
 
 
 echo "Deleting Cloudflare Pages deployment: $CLOUDFLARE_DEPLOYMENT_ID"
