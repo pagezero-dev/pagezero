@@ -53,3 +53,28 @@ jobs:
             cat response.json
             exit 1
           fi
+
+      - name: 🗑️ Remove GitHub Deployment
+        if: env.deployment_id != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOYMENT_ID: ${{ env.deployment_id }}
+        run: |
+          echo "Deleting GitHub deployment: $DEPLOYMENT_ID"
+          curl -X DELETE "https://api.github.com/repos/${{ github.repository }}/deployments/$DEPLOYMENT_ID" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -o response.json
+
+          # Check if the deletion was successful
+          if grep -q '"message":"Not Found"' response.json; then
+            echo "❌ Failed to delete GitHub deployment. Deployment not found."
+            cat response.json
+            exit 1
+          elif grep -q '"message":"Bad credentials"' response.json; then
+            echo "❌ Failed to delete GitHub deployment. Invalid credentials."
+            cat response.json
+            exit 1
+          else
+            echo "✅ Successfully deleted GitHub deployment."
+          fi
