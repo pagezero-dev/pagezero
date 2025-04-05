@@ -14,16 +14,17 @@ else
   echo "Found Cloudflare Deployment IDs: $CLOUDFLARE_DEPLOYMENT_IDS"
   for CLOUDFLARE_DEPLOYMENT_ID in $CLOUDFLARE_DEPLOYMENT_IDS; do
     echo "Deleting Cloudflare Pages deployment: $CLOUDFLARE_DEPLOYMENT_ID"
-    curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PROJECT_NAME/deployments/$CLOUDFLARE_DEPLOYMENT_ID" \
+    curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PROJECT_NAME/deployments/$CLOUDFLARE_DEPLOYMENT_ID?force=true" \
       -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
       -H "Content-Type: application/json" \
       -o response.json
 
-    if grep -q '"success":true' response.json; then
+    if grep -q '"success": true' response.json; then
       echo "✅ Successfully deleted Cloudflare deployment $CLOUDFLARE_DEPLOYMENT_ID."
     else
       echo "❌ Failed to delete Cloudflare deployment $CLOUDFLARE_DEPLOYMENT_ID."
       cat response.json
+      exit 1
     fi
   done
 fi
@@ -52,6 +53,7 @@ else
     else
       echo "❌ Unexpected error (HTTP $HTTP_STATUS) while deleting deployment $GITHUB_DEPLOYMENT_ID."
       cat response.json
+      exit 1
     fi
   done
 fi
