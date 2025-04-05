@@ -4,7 +4,6 @@ echo "Fetching GitHub deployment ID for branch: $PR_BRANCH"
 RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/${{ github.repository }}/deployments")
 
-# Extract the deployment ID related to the PR branch
 GITHUB_DEPLOYMENT_ID=$(echo "$RESPONSE" | jq -r --arg branch "$PR_BRANCH" \
   '.[] | select(.ref == $branch) | .id' | head -n 1)
 
@@ -40,7 +39,6 @@ curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUN
   -H "Content-Type: application/json" \
   -o response.json
 
-# Check if the deletion was successful
 if grep -q '"success":true' response.json; then
   echo "✅ Successfully deleted Cloudflare deployment."
 else
@@ -55,7 +53,6 @@ curl -X DELETE "https://api.github.com/repos/${{ github.repository }}/deployment
   -H "Accept: application/vnd.github.v3+json" \
   -o response.json
 
-# Check if the deletion was successful
 if grep -q '"message":"Not Found"' response.json; then
   echo "❌ Failed to delete GitHub deployment. Deployment not found."
   cat response.json
