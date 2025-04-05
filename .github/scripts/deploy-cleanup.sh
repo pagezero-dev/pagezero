@@ -41,6 +41,25 @@ if [ -z "$GITHUB_DEPLOYMENT_IDS" ]; then
   echo "No GitHub deployments found for this branch."
 else
   echo "Found GitHub Deployment IDs:\n$GITHUB_DEPLOYMENT_IDS"
+
+  for GITHUB_DEPLOYMENT_ID in $GITHUB_DEPLOYMENT_IDS; do
+    echo "Deactivating GitHub deployment: $GITHUB_DEPLOYMENT_ID"
+    HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" -X POST \
+      -H "Authorization: token $GITHUB_TOKEN" \
+      -H "Accept: application/vnd.github.v3+json" \
+      -d '{"state": "inactive"}' \
+      "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments/$GITHUB_DEPLOYMENT_ID/statuses")
+
+    if [ "$HTTP_STATUS" -eq 201 ]; then
+      echo "✅ Successfully deactivated GitHub deployment $GITHUB_DEPLOYMENT_ID."
+    else
+      echo "❌ Failed to deactivate GitHub deployment $GITHUB_DEPLOYMENT_ID. HTTP status: $HTTP_STATUS"
+      cat response.json
+      exit 1
+    fi
+  done
+
+
   for GITHUB_DEPLOYMENT_ID in $GITHUB_DEPLOYMENT_IDS; do
     echo "Deleting GitHub deployment: $GITHUB_DEPLOYMENT_ID"
     HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
