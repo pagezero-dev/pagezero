@@ -11,6 +11,9 @@ jobs:
     name: 🧹 Deploy Cleanup
     runs-on: ubuntu-latest
     steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
+
       - name: 🧹 Deploy Cleanup
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
