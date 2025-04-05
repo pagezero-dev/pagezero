@@ -10,8 +10,7 @@ jobs:
     name: 🗑️ Remove Cloudflare Pages Deployment
     runs-on: ubuntu-latest
     steps:
-      - name: 🔍 Check Deployment Event
-        id: get_deployment_id
+      - name: 🔍 Find deployment ID
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -32,17 +31,17 @@ jobs:
           echo "Found Deployment ID: $DEPLOYMENT_ID"
           echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_ENV
 
-      - name: 🗑️ Remove Cloudflare Pages Deployment
+      - name: 🗑️ Remove Preview Deployment
         if: env.deployment_id != ''
         env:
-          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CF_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          CF_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
           DEPLOYMENT_ID: ${{ env.deployment_id }}
         run: |
           echo "Deleting Cloudflare Pages deployment: $DEPLOYMENT_ID"
-          curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/$CF_PROJECT_NAME/deployments/$DEPLOYMENT_ID" \
-            -H "Authorization: Bearer $CF_API_TOKEN" \
+          curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PROJECT_NAME/deployments/$DEPLOYMENT_ID" \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
             -H "Content-Type: application/json" \
             -o response.json
 
