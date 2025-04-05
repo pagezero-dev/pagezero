@@ -11,7 +11,7 @@ CLOUDFLARE_DEPLOYMENT_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$PR_BRANCH" \
 if [ -z "$CLOUDFLARE_DEPLOYMENT_IDS" ]; then
   echo "No Cloudflare deployments found for this branch."
 else
-  echo "Found Cloudflare Deployment IDs: $CLOUDFLARE_DEPLOYMENT_IDS"
+  echo "Found Cloudflare Deployment IDs:\n$CLOUDFLARE_DEPLOYMENT_IDS"
   for CLOUDFLARE_DEPLOYMENT_ID in $CLOUDFLARE_DEPLOYMENT_IDS; do
     echo "Deleting Cloudflare Pages deployment: $CLOUDFLARE_DEPLOYMENT_ID"
     curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PROJECT_NAME/deployments/$CLOUDFLARE_DEPLOYMENT_ID?force=true" \
@@ -40,7 +40,7 @@ GITHUB_DEPLOYMENT_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$PR_BRANCH" \
 if [ -z "$GITHUB_DEPLOYMENT_IDS" ]; then
   echo "No GitHub deployments found for this branch."
 else
-  echo "Found GitHub Deployment IDs: $GITHUB_DEPLOYMENT_IDS"
+  echo "Found GitHub Deployment IDs:\n$GITHUB_DEPLOYMENT_IDS"
   for GITHUB_DEPLOYMENT_ID in $GITHUB_DEPLOYMENT_IDS; do
     echo "Deleting GitHub deployment: $GITHUB_DEPLOYMENT_ID"
     HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
