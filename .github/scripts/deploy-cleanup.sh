@@ -1,6 +1,6 @@
 #! /bin/bash
 
-echo "Fetching Cloudflare deployment IDs for branch: $PR_BRANCH"
+echo "⏳ Fetching Cloudflare deployment IDs for branch: $PR_BRANCH..."
 RESPONSE=$(curl -s -X GET "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PROJECT_NAME/deployments" \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
   -H "Content-Type: application/json")
@@ -13,7 +13,6 @@ if [ -z "$CLOUDFLARE_DEPLOYMENT_IDS" ]; then
 else
   echo "ℹ️ Found Cloudflare Deployment IDs:"
   echo $CLOUDFLARE_DEPLOYMENT_IDS
-  echo ""
   echo "⏳ Deleting Cloudflare Pages deployments..."
 
   for CLOUDFLARE_DEPLOYMENT_ID in $CLOUDFLARE_DEPLOYMENT_IDS; do
@@ -33,7 +32,7 @@ else
 fi
 
 
-echo "Fetching GitHub deployment IDs for branch: $PR_BRANCH"
+echo "⏳ Fetching GitHub deployment IDs for branch: $PR_BRANCH..."
 RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments")
 
@@ -45,7 +44,6 @@ if [ -z "$GITHUB_DEPLOYMENT_IDS" ]; then
 else
   echo "ℹ️ Found GitHub Deployment IDs:"
   echo $GITHUB_DEPLOYMENT_IDS
-  echo ""
   echo "⏳ Deactivating GitHub deployments..."
 
   for GITHUB_DEPLOYMENT_ID in $GITHUB_DEPLOYMENT_IDS; do
