@@ -11,9 +11,12 @@ CLOUDFLARE_DEPLOYMENT_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$PR_BRANCH" \
 if [ -z "$CLOUDFLARE_DEPLOYMENT_IDS" ]; then
   echo "No Cloudflare deployments found for this branch."
 else
-  echo "Found Cloudflare Deployment IDs:\n$CLOUDFLARE_DEPLOYMENT_IDS"
+  echo "ℹ️ Found Cloudflare Deployment IDs:"
+  echo $CLOUDFLARE_DEPLOYMENT_IDS
+  echo ""
+  echo "⏳ Deleting Cloudflare Pages deployments..."
+
   for CLOUDFLARE_DEPLOYMENT_ID in $CLOUDFLARE_DEPLOYMENT_IDS; do
-    echo "Deleting Cloudflare Pages deployment: $CLOUDFLARE_DEPLOYMENT_ID"
     curl -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$CLOUDFLARE_PROJECT_NAME/deployments/$CLOUDFLARE_DEPLOYMENT_ID?force=true" \
       -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
       -H "Content-Type: application/json" \
@@ -40,10 +43,12 @@ GITHUB_DEPLOYMENT_IDS=$(echo "$RESPONSE" | jq -r --arg branch "$PR_BRANCH" \
 if [ -z "$GITHUB_DEPLOYMENT_IDS" ]; then
   echo "No GitHub deployments found for this branch."
 else
-  echo "Found GitHub Deployment IDs:\n$GITHUB_DEPLOYMENT_IDS"
+  echo "ℹ️ Found GitHub Deployment IDs:"
+  echo $GITHUB_DEPLOYMENT_IDS
+  echo ""
+  echo "⏳ Deactivating GitHub deployments..."
 
   for GITHUB_DEPLOYMENT_ID in $GITHUB_DEPLOYMENT_IDS; do
-    echo "Deactivating GitHub deployment: $GITHUB_DEPLOYMENT_ID"
     HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" -X POST \
       -H "Authorization: token $GITHUB_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
@@ -59,9 +64,9 @@ else
     fi
   done
 
+  echo "⏳ Deleting GitHub deployments..."
 
   for GITHUB_DEPLOYMENT_ID in $GITHUB_DEPLOYMENT_IDS; do
-    echo "Deleting GitHub deployment: $GITHUB_DEPLOYMENT_ID"
     HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
       -X DELETE "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments/$GITHUB_DEPLOYMENT_ID" \
       -H "Authorization: token $GITHUB_TOKEN" \
