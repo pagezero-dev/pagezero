@@ -13,19 +13,16 @@ else
   echo "Found GitHub Deployment IDs: $GITHUB_DEPLOYMENT_IDS"
   for GITHUB_DEPLOYMENT_ID in $GITHUB_DEPLOYMENT_IDS; do
     echo "Deleting GitHub deployment: $GITHUB_DEPLOYMENT_ID"
-    curl -X DELETE "https://api.github.com/repos/${{ github.repository }}/deployments/$GITHUB_DEPLOYMENT_ID" \
+    HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
+      -X DELETE "https://api.github.com/repos/${{ github.repository }}/deployments/$GITHUB_DEPLOYMENT_ID" \
       -H "Authorization: token $GITHUB_TOKEN" \
-      -H "Accept: application/vnd.github.v3+json" \
-      -o response.json
+      -H "Accept: application/vnd.github.v3+json")
 
-    if grep -q '"message":"Not Found"' response.json; then
-      echo "❌ Failed to delete GitHub deployment $GITHUB_DEPLOYMENT_ID. Deployment not found."
-      cat response.json
-    elif grep -q '"message":"Bad credentials"' response.json; then
-      echo "❌ Failed to delete GitHub deployment $GITHUB_DEPLOYMENT_ID. Invalid credentials."
-      cat response.json
-    else
+    if [[ "$HTTP_STATUS" -eq 204 ]]; then
       echo "✅ Successfully deleted GitHub deployment $GITHUB_DEPLOYMENT_ID."
+    else
+      echo "❌ Unexpected error (HTTP $HTTP_STATUS) while deleting deployment $GITHUB_DEPLOYMENT_ID."
+      cat response.json
     fi
   done
 fi
