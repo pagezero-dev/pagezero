@@ -10,6 +10,7 @@ jobs:
     name: 🧹 Deploy Cleanup
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       deployments: write
     steps:
       - name: 📥 Checkout repo
