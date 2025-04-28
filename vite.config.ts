@@ -18,9 +18,6 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
-  ssr: {
-    noExternal: ["@docsearch/react"],
-  },
   plugins: [
     tailwindcss(),
     ...(!process.env.VITEST && !isStorybook
