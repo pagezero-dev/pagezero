@@ -5,7 +5,7 @@ An open-source TypeScript starter for full-stack web development on Cloudflare.
 Guiding principles:
 
 - Easy to learn
-- Fast to build
+- Fast to build with
 - Pleasure to develop
 - Cheap to maintain
 
