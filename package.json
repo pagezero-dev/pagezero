@@ -58,7 +58,7 @@
     "@faker-js/faker": "8.4.1",
     "@mdx-js/rollup": "3.0.1",
     "@playwright/test": "1.49.0",
-    "@react-router/dev": "7.4.1",
+    "@react-router/dev": "7.5.2",
     "@storybook/addon-essentials": "8.6.11",
     "@storybook/addon-interactions": "8.6.11",
     "@storybook/addon-links": "8.6.11",
