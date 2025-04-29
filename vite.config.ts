@@ -3,8 +3,6 @@ import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare"
 import { defineConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
 import mdx from "@mdx-js/rollup"
-import rehypeHighlight from "rehype-highlight"
-import rehypeMdxCodeProps from "rehype-mdx-code-props"
 import { visualizer } from "rollup-plugin-visualizer"
 import tailwindcss from "@tailwindcss/vite"
 import { getLoadContext } from "./load-context"
@@ -24,7 +22,6 @@ export default defineConfig({
       ? [
           mdx({
             providerImportSource: "@mdx-js/react",
-            rehypePlugins: [rehypeHighlight, rehypeMdxCodeProps],
           }),
           cloudflareDevProxy({ getLoadContext }),
           reactRouter(),
