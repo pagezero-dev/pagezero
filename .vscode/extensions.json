@@ -5,8 +5,6 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "yoavbls.pretty-ts-errors",
-    "github.copilot",
-    "github.copilot-chat",
     "unifiedjs.vscode-mdx"
   ]
 }
