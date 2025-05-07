@@ -7,7 +7,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "build": "react-router build && cp ./_headers ./build/client/_headers",
+    "build": "react-router build",
     "db:clean": "tsx ./db/clean.ts",
     "db:doctor": "drizzle-kit up && drizzle-kit check",
     "db:drop": "drizzle-kit drop",
