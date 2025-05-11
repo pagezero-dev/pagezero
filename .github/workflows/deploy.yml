@@ -11,6 +11,12 @@ on:
       - synchronize
       - ready_for_review
 
+env:
+  # This reliably gets the branch name regardless of event type
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  # Node.js version to use throughout the workflow
+  NODE_VERSION: 20
+
 jobs:
   format:
     name: 👔 Format
@@ -22,7 +28,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: 📦 Install dependencies
@@ -41,7 +47,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: 📦 Install dependencies
@@ -60,7 +66,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: 📦 Install dependencies
@@ -79,7 +85,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: 📦 Install dependencies
@@ -100,7 +106,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.16
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: 📦 Install dependencies
@@ -149,7 +155,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: 📦 Install dependencies
@@ -176,7 +182,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: 📦 Install dependencies
@@ -191,7 +197,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy build/client --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }} --branch=${{ github.head_ref || github.ref_name }}
+          command: pages deploy build/client --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }} --branch=${{ env.BRANCH_NAME }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
   smoke-tests:
@@ -207,7 +213,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.16.0
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: 📦 Install dependencies
