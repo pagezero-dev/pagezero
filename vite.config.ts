@@ -39,15 +39,10 @@ export default defineConfig({
     tsconfigPaths(),
   ],
   test: {
-    include: ["app/**/*.test.{ts,tsx}"],
-    setupFiles: ["./setup.vitest.ts"],
     // Will call .mockRestore() on all spies before each test. This will
     // clear mock history and reset its implementation to the original one.
     restoreMocks: true,
 
-    // Automatically assign environment based on globs.
-    // The first match will be used.
-    environmentMatchGlobs: [["app/**/*.tsx", "jsdom"]],
     coverage: {
       include: ["app/**/*.{ts,tsx}"],
       reporter: ["text"],
@@ -59,5 +54,25 @@ export default defineConfig({
         lines: 0,
       },
     },
+
+    workspace: [
+      {
+        extends: true,
+        test: {
+          name: "node",
+          environment: "node",
+          include: ["app/**/*.test.ts"],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "dom",
+          environment: "happy-dom",
+          include: ["app/**/*.test.tsx"],
+          setupFiles: ["./setup.dom.vitest.ts"],
+        },
+      },
+    ],
   },
 })
