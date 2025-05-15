@@ -70,7 +70,7 @@ export default defineConfig({
           name: "dom",
           environment: "happy-dom",
           include: ["app/**/*.test.tsx"],
-          setupFiles: ["./setup.vitest.ts"],
+          setupFiles: ["./setup.dom.vitest.ts"],
         },
       },
     ],
