@@ -24,6 +24,7 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "generate": "tsx ./scripts/generate/generate.ts",
+    "generate:types": "react-router typegen",
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
     "git:reset": "rm -rf .git && git init .",
     "lint": "eslint .",
