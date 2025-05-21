@@ -1,7 +1,8 @@
-import { useLoaderData, LoaderFunctionArgs } from "react-router"
+import { useLoaderData } from "react-router"
 import { greetings } from "../db/schema"
+import { Route } from "./+types/home"
 
-export const loader = async ({ context: { db } }: LoaderFunctionArgs) => {
+export const loader = async ({ context: { db } }: Route.LoaderArgs) => {
   const results = await db.select().from(greetings).all()
   return { greetings: results }
 }
