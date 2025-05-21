@@ -11,6 +11,10 @@ on:
       - synchronize
       - ready_for_review
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 env:
   # This reliably gets the branch name regardless of event type
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
