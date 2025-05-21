@@ -24,7 +24,6 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "generate": "tsx ./scripts/generate/generate.ts",
-    "generate:types": "react-router typegen",
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
     "git:reset": "rm -rf .git && git init .",
     "lint": "eslint .",
@@ -37,7 +36,7 @@
     "test:e2e:ui": "playwright test --ui --project=e2e",
     "test:smoke": "playwright test --project=smoke",
     "test:watch": "vitest watch",
-    "test:types": "tsc"
+    "test:types": "react-router typegen && tsc"
   },
   "dependencies": {
     "@heroicons/react": "2.1.3",
