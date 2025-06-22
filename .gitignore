@@ -11,6 +11,9 @@ node_modules
 # Mac
 .DS_Store
 
+# DB
+/db/schema.sql
+
 # Cloudflare
 /.wrangler
 /.dev.vars
