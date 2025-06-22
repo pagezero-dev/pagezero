@@ -95,6 +95,12 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
+      - name: 📋 Copy environment variables
+        run: cp .dev.vars.example .dev.vars
+
+      - name: 🗄️ Database setup
+        run: npm run db:setup
+
       - name: ⚡️ Run Vitest
         run: npm run test:coverage
 

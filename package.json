@@ -11,6 +11,7 @@
     "db:clean": "tsx ./db/clean.ts",
     "db:doctor": "drizzle-kit up && drizzle-kit check",
     "db:drop": "drizzle-kit drop",
+    "db:export": "drizzle-kit export > ./db/schema.sql",
     "db:generate": "drizzle-kit generate",
     "db:init": "dotenvx run -f .dev.vars -- sh -c  'wrangler d1 execute $DB_NAME --local --file=\"./db/init.sql\"'",
     "db:migrate": "drizzle-kit migrate",
@@ -30,12 +31,12 @@
     "setup": "npm install && cp .dev.vars.example .dev.vars && react-router typegen && playwright install --with-deps chromium && npm run db:setup",
     "start": "wrangler pages dev ./build/client --port 3000",
     "storybook": "storybook dev -p 6006 --no-open",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test": "npm run db:export && vitest run",
+    "test:coverage": "npm run db:export && vitest run --coverage",
     "test:e2e": "playwright test --project=e2e",
     "test:e2e:ui": "playwright test --ui --project=e2e",
     "test:smoke": "playwright test --project=smoke",
-    "test:watch": "vitest watch",
+    "test:watch": "npm run db:export && vitest watch",
     "test:types": "react-router typegen && tsc"
   },
   "dependencies": {
