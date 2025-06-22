@@ -49,36 +49,5 @@ export default function App() {
 export function ErrorBoundary() {
   const error = useRouteError()
 
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Application Error</title>
-        <Meta />
-        <style>
-          {`
-          html {
-            /*
-              Remove annoying horizontal layout shift whenever
-              user transitons between pages with and without scrollbar.
-            */
-            margin-left: calc(100vw - 100%);
-          }
-          `}
-        </style>
-        <link
-          rel="preload"
-          as="style"
-          href={styles}
-          crossOrigin="anonymous"
-        ></link>
-        <link rel="stylesheet" href={styles} crossOrigin="anonymous"></link>
-      </head>
-      <body className="text-gray-900">
-        <ErrorPage error={error} />
-        <Scripts />
-      </body>
-    </html>
-  )
+  return <ErrorPage error={error} />
 }
