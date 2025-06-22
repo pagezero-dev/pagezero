@@ -95,6 +95,9 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
+      - name: 🗄️ Database setup
+        run: npm run db:setup
+
       - name: ⚡️ Run Vitest
         run: npm run test:coverage
 
