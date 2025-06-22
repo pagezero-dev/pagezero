@@ -16,12 +16,22 @@ export function Layout({ children }: { children: ReactNode }) {
           // When link preload is present for styles, hot reloading for Tailwind
           // stops working. As such, let's not render preload links in development.
           <>
-            <link rel="preload" as="style" href={styles}></link>
-            <link rel="preload" as="font" href={fonts}></link>
+            <link
+              rel="preload"
+              as="style"
+              href={styles}
+              crossOrigin="anonymous"
+            ></link>
+            <link
+              rel="preload"
+              as="font"
+              href={fonts}
+              crossOrigin="anonymous"
+            ></link>
           </>
         )}
         <link rel="icon" href="data:image/x-icon;base64,AA" />
-        <link rel="stylesheet" href={styles}></link>
+        <link rel="stylesheet" href={styles} crossOrigin="anonymous"></link>
         <Links />
       </head>
       <body>
@@ -57,8 +67,13 @@ export function ErrorBoundary() {
           }
           `}
         </style>
-        <link rel="preload" as="style" href={styles}></link>
-        <link rel="stylesheet" href={styles}></link>
+        <link
+          rel="preload"
+          as="style"
+          href={styles}
+          crossOrigin="anonymous"
+        ></link>
+        <link rel="stylesheet" href={styles} crossOrigin="anonymous"></link>
       </head>
       <body className="text-gray-900">
         <ErrorPage error={error} />
