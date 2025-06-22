@@ -32,11 +32,11 @@
     "start": "wrangler pages dev ./build/client --port 3000",
     "storybook": "storybook dev -p 6006 --no-open",
     "test": "npm run db:export && vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "npm run db:export && vitest run --coverage",
     "test:e2e": "playwright test --project=e2e",
     "test:e2e:ui": "playwright test --ui --project=e2e",
     "test:smoke": "playwright test --project=smoke",
-    "test:watch": "vitest watch",
+    "test:watch": "npm run db:export && vitest watch",
     "test:types": "react-router typegen && tsc"
   },
   "dependencies": {
