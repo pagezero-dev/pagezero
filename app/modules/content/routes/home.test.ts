@@ -6,6 +6,7 @@ import { DrizzleD1Database } from "drizzle-orm/d1"
 import fs from "fs"
 import { greetings } from "db/schema"
 import { loader } from "./home"
+import { Route } from "./+types/home"
 
 describe("loader", () => {
   const sqlite = new Database(":memory:")
@@ -28,8 +29,9 @@ describe("loader", () => {
 
   it("should return the greetings", async () => {
     const result = await loader({
-      context: { db, env: {}, cloudflare: { env: {} } },
-    })
+      context: { db, cloudflare: { env: {} } },
+    } as Route.LoaderArgs)
+
     expect(result).toEqual({
       greetings: [{ id: 1, greeting: "Hello, world!" }],
     })
