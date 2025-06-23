@@ -6,6 +6,9 @@
   "type": "module",
   "author": "",
   "license": "MIT",
+  "engines": {
+    "node": ">=20.11.1"
+  },
   "scripts": {
     "build": "react-router build",
     "db:clean": "tsx ./db/clean.ts",
