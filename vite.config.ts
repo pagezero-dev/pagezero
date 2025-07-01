@@ -37,7 +37,7 @@ export default defineConfig({
       ? [
           visualizer({
             brotliSize: true,
-            emitFile: true, // `emitFile` is necessary since Remix builds more than one bundle!
+            emitFile: true,
           }),
         ]
       : []),
