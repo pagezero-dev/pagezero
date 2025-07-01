@@ -16,7 +16,13 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
+  optimizeDeps: {
+    // Prevents development error when dependencies reload:
+    // TypeError: Cannot read properties of undefined (reading 'useContext')
+    noDiscovery: true,
+  },
   plugins: [
+    tsconfigPaths(),
     tailwindcss(),
     ...(!process.env.VITEST && !isStorybook
       ? [
@@ -27,16 +33,14 @@ export default defineConfig({
           reactRouter(),
         ]
       : []),
-    ...(process.env.CI
-      ? []
-      : [
+    ...(!process.env.CI
+      ? [
           visualizer({
             brotliSize: true,
-            // `emitFile` is necessary since Remix builds more than one bundle!
             emitFile: true,
           }),
-        ]),
-    tsconfigPaths(),
+        ]
+      : []),
   ],
   test: {
     // Will call .mockRestore() on all spies before each test. This will
