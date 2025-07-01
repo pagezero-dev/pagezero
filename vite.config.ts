@@ -22,6 +22,7 @@ export default defineConfig({
     noExternal: ["@mdx-js/react"],
   },
   plugins: [
+    tsconfigPaths(),
     tailwindcss(),
     ...(!process.env.VITEST && !isStorybook
       ? [
@@ -40,7 +41,6 @@ export default defineConfig({
           }),
         ]
       : []),
-    tsconfigPaths(),
   ],
   test: {
     // Will call .mockRestore() on all spies before each test. This will
