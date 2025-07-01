@@ -16,11 +16,6 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
-  ssr: {
-    // Fixes occasionaly occuring error in development:
-    // TypeError: Cannot read properties of undefined (reading 'useContext')
-    noExternal: ["@mdx-js/react"],
-  },
   plugins: [
     tsconfigPaths(),
     tailwindcss(),
