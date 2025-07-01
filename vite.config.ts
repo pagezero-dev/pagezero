@@ -16,6 +16,11 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
+  optimizeDeps: {
+    // Prevents development error when dependencies reload:
+    // TypeError: Cannot read properties of undefined (reading 'useContext')
+    noDiscovery: true,
+  },
   plugins: [
     tsconfigPaths(),
     tailwindcss(),
