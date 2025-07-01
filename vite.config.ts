@@ -32,15 +32,14 @@ export default defineConfig({
           reactRouter(),
         ]
       : []),
-    ...(process.env.CI
-      ? []
-      : [
+    ...(!process.env.CI
+      ? [
           visualizer({
             brotliSize: true,
-            // `emitFile` is necessary since Remix builds more than one bundle!
-            emitFile: true,
+            emitFile: true, // `emitFile` is necessary since Remix builds more than one bundle!
           }),
-        ]),
+        ]
+      : []),
     tsconfigPaths(),
   ],
   test: {
