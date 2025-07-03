@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm"
-import { getLocalOrRemoteDb } from "./utils"
+import { getLocalOrRemoteDb } from "../utils"
 
 async function main() {
   const db = getLocalOrRemoteDb()

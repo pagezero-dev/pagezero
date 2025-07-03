@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: 🧹 Cleanup preview database
-        run: npx tsx ./db/clean.ts
+        run: npm run db:clean
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
@@ -37,6 +37,6 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: 🌱 Seed preview database
-        run: npx tsx ./db/seed.ts
+        run: npm run db:seed
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
