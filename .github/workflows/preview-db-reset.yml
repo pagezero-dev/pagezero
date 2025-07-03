@@ -32,7 +32,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: 🚚 Database migration
-        run: npx drizzle-kit migrate --config ./db/drizzle.remote.config.ts
+        run: npx drizzle-kit migrate
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
