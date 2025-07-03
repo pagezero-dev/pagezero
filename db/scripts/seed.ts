@@ -1,5 +1,5 @@
-import { getLocalOrRemoteDb } from "./utils"
-import { greetings } from "./schema"
+import { getLocalOrRemoteDb } from "../utils"
+import { greetings } from "../schema"
 
 async function main() {
   const db = getLocalOrRemoteDb()
