@@ -1,5 +1,4 @@
 APP_ENV=development
 
 # Database
-DB_BINDING=DB_DEV
 DB_NAME=pagezero_db_dev
