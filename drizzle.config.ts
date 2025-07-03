@@ -1,20 +1,16 @@
 import { defineConfig } from "drizzle-kit"
 import { getLocalSqliteDbUrl } from "./db/utils"
 
-if (
-  process.env.CI &&
-  (!process.env.CLOUDFLARE_ACCOUNT_ID ||
-    !process.env.CLOUDFLARE_DATABASE_ID ||
-    !process.env.CLOUDFLARE_API_TOKEN)
-) {
-  throw new Error("Missing Cloudflare credentials")
-}
+const hasCloudflareCredentials =
+  process.env.CLOUDFLARE_ACCOUNT_ID &&
+  process.env.CLOUDFLARE_DATABASE_ID &&
+  process.env.CLOUDFLARE_API_TOKEN
 
 export default defineConfig({
   dialect: "sqlite",
   schema: "./db/schema.ts",
   out: "./db/migrations",
-  ...(process.env.CI
+  ...(hasCloudflareCredentials
     ? {
         driver: "d1-http",
         dbCredentials: {
