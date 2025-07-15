@@ -1,33 +1,36 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { AppLoadContext } from "react-router"
 
 // Internal types utils
-type RouteLoaderOrAction = (...args: never[]) => Promise<unknown>
-type RouteLoaderOrActionArgs = {
+type LoaderOrAction = (...args: never[]) => Promise<unknown>
+type LoaderOrActionArgs = {
   request: Request
   params: Record<string, string | undefined>
   context: AppLoadContext
 }
 
-type RouteLoaderOrActionData<T extends RouteLoaderOrAction> =
+type LoaderOrActionData<T extends LoaderOrAction> =
   Exclude<Awaited<ReturnType<T>>, Response> extends { data: infer D }
     ? D
     : Exclude<Awaited<ReturnType<T>>, Response>
 
+type Loader = LoaderOrAction
+type Action = LoaderOrAction
+
+type LoaderData<T extends Loader> = LoaderOrActionData<T>
+type ActionData<T extends Action> = LoaderOrActionData<T>
+
 // External types utils
-export type RouteLoaderArgs = RouteLoaderOrActionArgs
-export type RouteActionArgs = RouteLoaderOrActionArgs
+export namespace Route {
+  export type LoaderArgs = LoaderOrActionArgs
+  export type ActionArgs = LoaderOrActionArgs
 
-export type RouteLoader = RouteLoaderOrAction
-export type RouteAction = RouteLoaderOrAction
-
-export type RouteLoaderData<T extends RouteLoader> = RouteLoaderOrActionData<T>
-export type RouteActionData<T extends RouteAction> = RouteLoaderOrActionData<T>
-
-export type RouteComponentProps<
-  T extends RouteLoaderOrAction | undefined = undefined,
-  U extends RouteLoaderOrAction | undefined = undefined,
-> = {
-  params: Record<string, string | undefined>
-  loaderData: T extends RouteLoader ? RouteLoaderData<T> : undefined
-  actionData: U extends RouteAction ? RouteActionData<U> : undefined
+  export type ComponentProps<
+    T extends Loader | undefined = undefined,
+    U extends Action | undefined = undefined,
+  > = {
+    params: Record<string, string | undefined>
+    loaderData: T extends Loader ? LoaderData<T> : undefined
+    actionData: U extends Action ? ActionData<U> : undefined
+  }
 }

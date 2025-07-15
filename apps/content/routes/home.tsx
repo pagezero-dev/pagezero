@@ -1,14 +1,14 @@
 import { greetings } from "db/schema"
-import { RouteComponentProps, RouteLoaderArgs } from "@/types/route"
+import { Route } from "@/types/route"
 
-export const loader = async ({ context: { db } }: RouteLoaderArgs) => {
+export const loader = async ({ context: { db } }: Route.LoaderArgs) => {
   const results = await db.select().from(greetings).all()
   return { greetings: results }
 }
 
 export default function Home({
   loaderData: { greetings },
-}: RouteComponentProps<typeof loader>) {
+}: Route.ComponentProps<typeof loader>) {
   return (
     <main className="flex h-screen items-center justify-center">
       <div className="flex flex-col items-center justify-center gap-2 bg-slate-100 px-10 py-8 shadow-sm">
