@@ -2,7 +2,7 @@ import { type PlatformProxy } from "wrangler"
 import { DrizzleD1Database } from "drizzle-orm/d1"
 import * as schema from "@/db/schema"
 
-import { Env } from "./config/env.type"
+import { Env } from "@/types/env"
 
 export type Cloudflare = Omit<PlatformProxy<Env>, "dispose">
 
