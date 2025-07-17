@@ -27,7 +27,7 @@
     "doctor": "npm run format:check && npm run lint && npm run test:types && npm test",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "generate": "tsx ./scripts/generate/generate.ts",
+    "generate": "tsx ./packages/generate/generate.ts",
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
     "git:reset": "rm -rf .git && git init .",
     "lint": "eslint .",
