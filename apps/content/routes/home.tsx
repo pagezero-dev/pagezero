@@ -1,4 +1,4 @@
-import { greetings } from "db/schema"
+import { greetings } from "@/db/schema"
 import { Route } from "@/types/route"
 
 export const loader = async ({ context: { db } }: Route.LoaderArgs) => {
