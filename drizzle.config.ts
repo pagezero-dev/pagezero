@@ -1,5 +1,5 @@
 import { defineConfig } from "drizzle-kit"
-import { getLocalSqliteDbUrl } from "./db/utils"
+import { getLocalSqliteDbUrl } from "./packages/db/utils"
 
 const hasCloudflareCredentials =
   process.env.CLOUDFLARE_ACCOUNT_ID &&
@@ -8,8 +8,8 @@ const hasCloudflareCredentials =
 
 export default defineConfig({
   dialect: "sqlite",
-  schema: "./db/schema.ts",
-  out: "./db/migrations",
+  schema: "./packages/db/schema.ts",
+  out: "./packages/db/migrations",
   ...(hasCloudflareCredentials
     ? {
         driver: "d1-http",

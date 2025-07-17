@@ -1,2 +1,2 @@
 # Drizzle DB migrations meta files
-db/migrations/meta/*
+packages/db/migrations/meta/*

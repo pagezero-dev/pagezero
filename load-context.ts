@@ -1,7 +1,7 @@
 import { type AppLoadContext } from "react-router"
 import { drizzle } from "drizzle-orm/d1"
-import * as schema from "./db/schema"
-import { type Cloudflare } from "./app/env"
+import * as schema from "./packages/db/schema"
+import { type Cloudflare } from "./apps/core/env"
 
 type GetLoadContext = (args: {
   request: Request

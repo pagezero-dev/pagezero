@@ -21,8 +21,7 @@
     "baseUrl": ".",
     "rootDirs": [".", "./.react-router/types"],
     "paths": {
-      "@/*": ["./app/modules/*"],
-      "~/*": ["./app/*"]
+      "@/*": ["./apps/*", "./packages/*"]
     },
 
     // Remix takes care of building everything in `remix build`.

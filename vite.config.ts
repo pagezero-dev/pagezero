@@ -43,7 +43,7 @@ export default defineConfig({
     restoreMocks: true,
 
     coverage: {
-      include: ["app/**/*.{ts,tsx}"],
+      include: ["{apps,packages}/**/*.{ts,tsx}"],
       reporter: ["text"],
       reportsDirectory: "./.reports/tests-coverage",
       thresholds: {
@@ -60,7 +60,7 @@ export default defineConfig({
         test: {
           name: "node",
           environment: "node",
-          include: ["app/**/*.test.ts"],
+          include: ["{apps,packages}/**/*.test.ts"],
         },
       },
       {
@@ -68,7 +68,7 @@ export default defineConfig({
         test: {
           name: "dom",
           environment: "happy-dom",
-          include: ["app/**/*.test.tsx"],
+          include: ["{apps,packages}/**/*.test.tsx"],
           setupFiles: ["./setup.dom.vitest.ts"],
         },
       },

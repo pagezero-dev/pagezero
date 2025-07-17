@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeAll, beforeEach } from "vitest"
 import { drizzle } from "drizzle-orm/better-sqlite3"
 import Database from "better-sqlite3"
-import * as schema from "db/schema"
+import * as schema from "@/db/schema"
 import { DrizzleD1Database } from "drizzle-orm/d1"
 import fs from "fs"
-import { greetings } from "db/schema"
+import { greetings } from "@/db/schema"
 import { loader } from "./home"
-import { Route } from "./+types/home"
+import { Route } from "@/types/route"
 
 describe("loader", () => {
   const sqlite = new Database(":memory:")
@@ -15,7 +15,7 @@ describe("loader", () => {
   >
 
   beforeAll(async () => {
-    const schemaSQL = fs.readFileSync("./db/schema.sql", "utf8")
+    const schemaSQL = fs.readFileSync("./packages/db/schema.sql", "utf8")
     sqlite.exec(schemaSQL)
   })
 
