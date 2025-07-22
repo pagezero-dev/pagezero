@@ -5,7 +5,7 @@ import { CogIcon } from "@heroicons/react/20/solid"
 import { Button } from "./button"
 
 const meta = {
-  title: "Core/Button",
+  title: "Packages/UI/Button",
   component: Button,
   parameters: {
     layout: "centered",
