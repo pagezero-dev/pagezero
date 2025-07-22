@@ -5,7 +5,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid"
 import { Link } from "./link"
 
 const meta = {
-  title: "Core/Link",
+  title: "Packages/UI/Link",
   component: Link,
   parameters: {
     layout: "centered",
