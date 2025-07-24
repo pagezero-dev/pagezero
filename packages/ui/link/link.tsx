@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/ui/utils"
 
 const linkVariants = cva(
-  "inline-flex cursor-pointer items-baseline gap-0.5 font-bold text-blue-600 underline-offset-4 visited:text-blue-900 hover:underline",
+  "inline-flex cursor-pointer items-baseline gap-0.5 font-bold text-blue-600 underline-offset-4 visited:text-blue-900 hover:underline [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       size: {
