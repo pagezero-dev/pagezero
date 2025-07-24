@@ -62,7 +62,7 @@ export const Icon: Story = {
   args: {
     variant: "secondary",
     size: "icon",
-    children: <Cog className="h-5 w-5" />,
+    children: <Cog />,
   },
 }
 
@@ -70,7 +70,7 @@ export const WithIcon: Story = {
   args: {
     children: (
       <>
-        <Cog className="h-5 w-5" />
+        <Cog />
         Button
       </>
     ),
