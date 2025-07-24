@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
-@plugin 'tailwindcss-animate';
+@import "tw-animate-css";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:is(.dark *));
 
 @theme {
   --font-sans: Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
