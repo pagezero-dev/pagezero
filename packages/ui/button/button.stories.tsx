@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { faker } from "@faker-js/faker"
-import { CogIcon } from "@heroicons/react/20/solid"
+import { Cog } from "lucide-react"
 import { Button } from "./button"
 
 const meta = {
@@ -62,7 +62,7 @@ export const WithIcon: Story = {
   args: {
     children: (
       <>
-        <CogIcon className="h-5 w-5" />
+        <Cog className="h-5 w-5" />
         Button
       </>
     ),

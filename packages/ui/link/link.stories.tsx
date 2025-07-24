@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { faker } from "@faker-js/faker"
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid"
+import { ExternalLink } from "lucide-react"
 import { Link } from "./link"
 
 const meta = {
@@ -41,7 +41,7 @@ export const Icon: Story = {
     children: (
       <>
         <Link.Icon>
-          <ArrowTopRightOnSquareIcon />
+          <ExternalLink />
         </Link.Icon>
         {faker.lorem.word()}
       </>

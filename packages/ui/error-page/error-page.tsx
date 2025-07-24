@@ -1,5 +1,5 @@
-import { ExclamationCircleIcon } from "@heroicons/react/24/solid"
 import { isRouteErrorResponse } from "react-router"
+import { CircleAlert } from "lucide-react"
 
 interface ErrorPageProps {
   title?: string
@@ -16,7 +16,7 @@ export const ErrorPage = ({ title, description, error }: ErrorPageProps) => {
     : null
   return (
     <main className="container mx-auto flex h-screen flex-col justify-center gap-5">
-      <ExclamationCircleIcon className="mx-auto h-16 w-16 text-red-500" />
+      <CircleAlert className="mx-auto h-16 w-16 text-red-500" />
       <h1 className="text-center text-4xl font-bold">
         {title || defaultTitle}
       </h1>
