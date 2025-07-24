@@ -19,9 +19,24 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
-    children: "Link",
+    children: "Default Link",
+    size: "default",
+  },
+}
+
+export const Small: Story = {
+  args: {
+    children: "Small Link",
+    size: "small",
+  },
+}
+
+export const Large: Story = {
+  args: {
+    children: "Large Link",
+    size: "large",
   },
 }
 
@@ -36,14 +51,14 @@ export const Inlined: Story = {
   ),
 }
 
-export const Icon: Story = {
+export const WithIcon: Story = {
   args: {
     children: (
       <>
+        External Link
         <Link.Icon>
           <ExternalLink />
         </Link.Icon>
-        {faker.lorem.word()}
       </>
     ),
   },
