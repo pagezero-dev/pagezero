@@ -37,9 +37,9 @@ export const Disabled: Story = {
   },
 }
 
-export const Danger: Story = {
+export const Destructive: Story = {
   args: {
-    variant: "danger",
+    variant: "destructive",
     children: "Button",
   },
 }
@@ -58,6 +58,14 @@ export const Ghost: Story = {
   },
 }
 
+export const Icon: Story = {
+  args: {
+    variant: "secondary",
+    size: "icon",
+    children: <Cog className="h-5 w-5" />,
+  },
+}
+
 export const WithIcon: Story = {
   args: {
     children: (
@@ -71,14 +79,21 @@ export const WithIcon: Story = {
 
 export const Large: Story = {
   args: {
-    size: "large",
+    size: "lg",
     children: "Button",
   },
 }
 
 export const Small: Story = {
   args: {
-    size: "small",
+    size: "sm",
+    children: "Button",
+  },
+}
+
+export const Link: Story = {
+  args: {
+    variant: "link",
     children: "Button",
   },
 }
