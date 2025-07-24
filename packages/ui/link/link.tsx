@@ -1,11 +1,6 @@
+import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  type AnchorHTMLAttributes,
-} from "react"
 
 import { cn } from "@/ui/utils"
 
@@ -15,8 +10,8 @@ const linkVariants = cva(
     variants: {
       size: {
         default: "",
-        small: "text-sm",
-        large: "text-lg",
+        sm: "text-sm",
+        lg: "text-lg",
       },
     },
     defaultVariants: {
@@ -25,53 +20,23 @@ const linkVariants = cva(
   },
 )
 
-type LinkSize = "default" | "small" | "large"
-
-const LinkContext = createContext({ size: "default" as LinkSize })
-
-interface LinkProps
-  extends AnchorHTMLAttributes<HTMLAnchorElement>,
-    VariantProps<typeof linkVariants> {
-  asChild?: boolean
-}
-
-export const Link = ({
+const Link = ({
   size = "default",
   asChild,
   children,
   className,
   ...props
-}: LinkProps) => {
+}: React.ComponentProps<"a"> &
+  VariantProps<typeof linkVariants> & {
+    asChild?: boolean
+  }) => {
   const Comp = asChild ? Slot : "a"
-  return (
-    <LinkContext.Provider value={{ size: size || "default" }}>
-      <Comp className={cn(linkVariants({ size, className }))} {...props}>
-        {children}
-      </Comp>
-    </LinkContext.Provider>
-  )
-}
 
-interface LinkIconProps {
-  children: ReactNode
-}
-
-const LinkIcon = ({ children }: LinkIconProps) => {
-  const { size } = useContext(LinkContext)
   return (
-    <div
-      className={cn("inline-block self-center", {
-        "h-5 w-5": size === "default",
-        "h-4 w-4": size === "small",
-        "h-6 w-6": size === "large",
-      })}
-    >
+    <Comp className={cn(linkVariants({ size, className }))} {...props}>
       {children}
-    </div>
+    </Comp>
   )
 }
 
-LinkIcon.displayName = "Link.Icon"
-Link.Icon = LinkIcon
-
-export { linkVariants }
+export { Link, linkVariants }
