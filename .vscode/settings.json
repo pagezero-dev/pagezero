@@ -5,6 +5,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
+
+  // Plugins
   "prettier.requireConfig": true,
   "tailwindCSS.classFunctions": ["cva", "clsx"]
 }
