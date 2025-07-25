@@ -23,6 +23,7 @@ export const Default: Story = {
   args: {
     children: "Link",
     size: "default",
+    href: faker.internet.url(),
   },
 }
 
@@ -30,6 +31,7 @@ export const Small: Story = {
   args: {
     children: "Link",
     size: "sm",
+    href: faker.internet.url(),
   },
 }
 
@@ -37,12 +39,14 @@ export const Large: Story = {
   args: {
     children: "Link",
     size: "lg",
+    href: faker.internet.url(),
   },
 }
 
 export const Inlined: Story = {
   args: {
     children: faker.lorem.word(),
+    href: faker.internet.url(),
   },
   render: (args) => (
     <p>
@@ -59,6 +63,7 @@ export const WithIcon: Story = {
         <ExternalLink />
       </>
     ),
+    href: faker.internet.url(),
   },
   render: (args) => (
     <p>
