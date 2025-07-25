@@ -1,65 +1,42 @@
-import { clsx } from "clsx"
+import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  type AnchorHTMLAttributes,
-} from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
-type LinkSize = "default" | "small" | "large"
+import { cn } from "@/ui/utils"
 
-const LinkContext = createContext({ size: "default" })
+const linkVariants = cva(
+  "text-primary focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center gap-0.5 font-medium whitespace-nowrap underline underline-offset-4 transition-all outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  {
+    variants: {
+      size: {
+        default: "",
+        sm: "text-sm",
+        lg: "text-lg",
+      },
+    },
+    defaultVariants: {
+      size: "default",
+    },
+  },
+)
 
-interface LinkProps
-  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "className"> {
-  size?: LinkSize
-  asChild?: boolean
-}
-
-export const Link = ({
+const Link = ({
   size = "default",
   asChild,
   children,
+  className,
   ...props
-}: LinkProps) => {
+}: React.ComponentProps<"a"> &
+  VariantProps<typeof linkVariants> & {
+    asChild?: boolean
+  }) => {
   const Comp = asChild ? Slot : "a"
-  return (
-    <LinkContext.Provider value={{ size }}>
-      <Comp
-        className={clsx(
-          "inline-flex cursor-pointer items-baseline gap-0.5 font-bold text-blue-600 underline-offset-4 visited:text-blue-900 hover:underline",
-          {
-            "text-sm": size === "small",
-            "text-lg": size === "large",
-          },
-        )}
-        {...props}
-      >
-        {children}
-      </Comp>
-    </LinkContext.Provider>
-  )
-}
 
-interface LinkIconProps {
-  children: ReactNode
-}
-
-const LinkIcon = ({ children }: LinkIconProps) => {
-  const { size } = useContext(LinkContext)
   return (
-    <div
-      className={clsx("inline-block self-center", {
-        "h-5 w-5": size === "default",
-        "h-4 w-4": size === "small",
-        "h-6 w-6": size === "large",
-      })}
-    >
+    <Comp className={cn(linkVariants({ size, className }))} {...props}>
       {children}
-    </div>
+    </Comp>
   )
 }
 
-LinkIcon.displayName = "Link.Icon"
-Link.Icon = LinkIcon
+export { Link, linkVariants }

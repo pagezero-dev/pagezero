@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { faker } from "@faker-js/faker"
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid"
+import { ExternalLink } from "lucide-react"
 import { Link } from "./link"
 
 const meta = {
@@ -19,15 +19,34 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
     children: "Link",
+    size: "default",
+    href: faker.internet.url(),
+  },
+}
+
+export const Small: Story = {
+  args: {
+    children: "Link",
+    size: "sm",
+    href: faker.internet.url(),
+  },
+}
+
+export const Large: Story = {
+  args: {
+    children: "Link",
+    size: "lg",
+    href: faker.internet.url(),
   },
 }
 
 export const Inlined: Story = {
   args: {
     children: faker.lorem.word(),
+    href: faker.internet.url(),
   },
   render: (args) => (
     <p>
@@ -36,16 +55,15 @@ export const Inlined: Story = {
   ),
 }
 
-export const Icon: Story = {
+export const WithIcon: Story = {
   args: {
     children: (
       <>
-        <Link.Icon>
-          <ArrowTopRightOnSquareIcon />
-        </Link.Icon>
         {faker.lorem.word()}
+        <ExternalLink />
       </>
     ),
+    href: faker.internet.url(),
   },
   render: (args) => (
     <p>

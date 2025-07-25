@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { faker } from "@faker-js/faker"
-import { CogIcon } from "@heroicons/react/20/solid"
+import { Cog } from "lucide-react"
 import { Button } from "./button"
 
 const meta = {
@@ -37,9 +37,9 @@ export const Disabled: Story = {
   },
 }
 
-export const Danger: Story = {
+export const Destructive: Story = {
   args: {
-    variant: "danger",
+    variant: "destructive",
     children: "Button",
   },
 }
@@ -58,11 +58,19 @@ export const Ghost: Story = {
   },
 }
 
+export const Icon: Story = {
+  args: {
+    variant: "secondary",
+    size: "icon",
+    children: <Cog />,
+  },
+}
+
 export const WithIcon: Story = {
   args: {
     children: (
       <>
-        <CogIcon className="h-5 w-5" />
+        <Cog />
         Button
       </>
     ),
@@ -71,14 +79,21 @@ export const WithIcon: Story = {
 
 export const Large: Story = {
   args: {
-    size: "large",
+    size: "lg",
     children: "Button",
   },
 }
 
 export const Small: Story = {
   args: {
-    size: "small",
+    size: "sm",
+    children: "Button",
+  },
+}
+
+export const Link: Story = {
+  args: {
+    variant: "link",
     children: "Button",
   },
 }
