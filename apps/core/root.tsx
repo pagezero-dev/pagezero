@@ -3,7 +3,7 @@ import { type ReactNode } from "react"
 
 import styles from "./styles/index.css?url"
 import fonts from "./fonts/inter-normal-latin.woff2?url"
-import { ErrorPage } from "@/ui/error-page"
+import { ErrorPage } from "@/core/components/error-page"
 
 export function Layout({ children }: { children: ReactNode }) {
   return (

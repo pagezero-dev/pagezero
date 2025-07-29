@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { ErrorPage } from "./error-page"
 
 const meta = {
-  title: "Packages/UI/ErrorPage",
+  title: "Apps/Core/ErrorPage",
   component: ErrorPage,
   parameters: {
     layout: "centered",
