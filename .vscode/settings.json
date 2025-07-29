@@ -8,5 +8,5 @@
 
   // Plugins
   "prettier.requireConfig": true,
-  "tailwindCSS.classFunctions": ["cva", "clsx"]
+  "tailwindCSS.classFunctions": ["cva", "cn", "clsx"]
 }
