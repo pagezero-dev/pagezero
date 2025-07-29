@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { fn } from "@storybook/test"
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { fn } from "storybook/test"
 import { faker } from "@faker-js/faker"
 import { ExternalLink } from "lucide-react"
 import { Link } from "./link"
