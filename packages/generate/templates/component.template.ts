@@ -1,13 +1,13 @@
 export const componentTemplate = ({ name }: { name: string }) => `
 
-import { clsx } from "clsx"
+import { cn } from "@/ui/utils"
 
 interface ${name}Props {
 }
 
 export const ${name} = ({}: ${name}Props) => {
   return (
-    <div className={clsx()}>Test text</div>
+    <div className={cn()}>Test text</div>
   )
 }
 `
