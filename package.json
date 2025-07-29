@@ -52,8 +52,8 @@
     "isbot": "5.1.21",
     "lucide-react": "0.525.0",
     "radix-ui": "1.4.2",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
     "react-router": "7.6.3",
     "swr": "2.3.0",
     "tailwind-merge": "3.3.1"
