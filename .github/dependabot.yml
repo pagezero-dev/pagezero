@@ -45,10 +45,6 @@ updates:
           - "drizzle-orm"
           - "drizzle-kit"
 
-      radix-ui:
-        patterns:
-          - "@radix-ui/*"
-
       security-patches:
         applies-to: "security-updates"
         update-types:

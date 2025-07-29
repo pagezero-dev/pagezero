@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
+import { Slot as SlotPrimitive } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/ui/utils"
@@ -30,7 +30,7 @@ const Link = ({
   VariantProps<typeof linkVariants> & {
     asChild?: boolean
   }) => {
-  const Comp = asChild ? Slot : "a"
+  const Comp = asChild ? SlotPrimitive.Slot : "a"
 
   return (
     <Comp className={cn(linkVariants({ size, className }))} {...props}>
