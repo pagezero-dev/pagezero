@@ -23,7 +23,7 @@ const preview: Preview = {
     },
     backgrounds: { disable: true },
     viewport: {
-      viewports: {
+      options: {
         xs: {
           name: "XS (mobile)",
           styles: {
