@@ -43,6 +43,22 @@ export const Large: Story = {
   },
 }
 
+export const NoUnderline: Story = {
+  args: {
+    children: "Link",
+    underline: "none",
+    href: faker.internet.url(),
+  },
+}
+
+export const UnderlineOnHover: Story = {
+  args: {
+    children: "Link",
+    underline: "hover",
+    href: faker.internet.url(),
+  },
+}
+
 export const Inlined: Story = {
   args: {
     children: faker.lorem.word(),

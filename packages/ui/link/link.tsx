@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/ui/utils"
 
 const linkVariants = cva(
-  "text-primary focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center gap-0.5 font-medium whitespace-nowrap underline underline-offset-4 transition-all outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "text-primary focus-visible:border-ring focus-visible:ring-ring/50 inline-flex items-center gap-0.5 font-medium whitespace-nowrap underline-offset-4 transition-all outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       size: {
@@ -13,15 +13,22 @@ const linkVariants = cva(
         sm: "text-sm",
         lg: "text-lg",
       },
+      underline: {
+        always: "underline",
+        none: "no-underline",
+        hover: "hover:underline",
+      },
     },
     defaultVariants: {
       size: "default",
+      underline: "always",
     },
   },
 )
 
 const Link = ({
   size = "default",
+  underline = "always",
   asChild,
   children,
   className,
@@ -33,7 +40,10 @@ const Link = ({
   const Comp = asChild ? SlotPrimitive.Slot : "a"
 
   return (
-    <Comp className={cn(linkVariants({ size, className }))} {...props}>
+    <Comp
+      className={cn(linkVariants({ size, underline, className }))}
+      {...props}
+    >
       {children}
     </Comp>
   )
