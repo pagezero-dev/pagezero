@@ -19,7 +19,7 @@ export function getLocalSqliteDbUrl() {
 }
 
 export function getLocalOrRemoteDb() {
-  config({ path: ".dev.vars" })
+  config({ path: ".env" })
   if (
     process.env.CLOUDFLARE_ACCOUNT_ID &&
     process.env.CLOUDFLARE_DATABASE_ID &&

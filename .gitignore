@@ -16,7 +16,7 @@ node_modules
 
 # Cloudflare
 /.wrangler
-/.dev.vars
+/.env*
 
 # Storybook
 *storybook.log

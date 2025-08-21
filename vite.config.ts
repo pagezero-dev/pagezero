@@ -24,7 +24,10 @@ export default defineConfig({
           mdx({
             providerImportSource: "@mdx-js/react",
           }),
-          cloudflareDevProxy({ getLoadContext }),
+          cloudflareDevProxy({
+            getLoadContext,
+            environment: process.env.CLOUDFLARE_ENV,
+          }),
           reactRouter(),
         ]
       : []),

@@ -54,6 +54,9 @@ export default defineConfig({
       command: process.env.CI ? "npm run start" : "npm run dev",
       url: "http://localhost:3000",
       reuseExistingServer: !process.env.CI,
+      env: {
+        CLOUDFLARE_ENV: "test",
+      },
     },
   }),
 })
