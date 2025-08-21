@@ -96,7 +96,7 @@ jobs:
         run: npm ci
 
       - name: 📋 Copy environment variables
-        run: cp .init.env .env
+        run: npm run setup:env
 
       - name: 🗄️ Database setup
         run: npm run db:setup
@@ -123,7 +123,7 @@ jobs:
         run: npm ci
 
       - name: 📋 Copy environment variables
-        run: cp .init.env .env
+        run: npm run setup:env
 
       - name: 🏷️ Store Playwright Version
         run: echo "PLAYWRIGHT_VERSION=`npx playwright -V | cut -d ' ' -f2`" >> $GITHUB_ENV
