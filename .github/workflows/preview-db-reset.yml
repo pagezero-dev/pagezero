@@ -3,7 +3,7 @@ name: 🔄 Reset preview database
 on: workflow_dispatch
 
 env:
-  NODE_VERSION: 20.19.4
+  NODE_VERSION: 20
 
 jobs:
   reset:
