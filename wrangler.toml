@@ -1,4 +1,9 @@
 compatibility_date = "2024-12-12"
 d1_databases = [
-  { binding = "DB", database_name = "pagezero_db_dev", database_id = "<DATABASE_ID>", migrations_table = "migrations", migrations_dir = "./db/migrations" },
+  { binding = "DB", database_name = "pagezero_db_dev", database_id = "<DATABASE_ID>" },
+]
+
+[env.test]
+d1_databases = [
+  { binding = "DB", database_name = "pagezero_db_dev", database_id = "<DATABASE_ID>" },
 ]
