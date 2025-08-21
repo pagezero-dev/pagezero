@@ -19,7 +19,7 @@ env:
   # This reliably gets the branch name regardless of event type
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
   # Node.js version to use throughout the workflow
-  NODE_VERSION: 20.11.1
+  NODE_VERSION: 24.6.0
 
 jobs:
   format:
