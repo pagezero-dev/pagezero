@@ -1,5 +1,17 @@
 {
-  "compatibility_date": "2024-12-12",
+  "name": "pagezero",
+  "compatibility_date": "2025-08-28",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "nodejs_compat_populate_process_env"
+  ],
+  "main": "workers/index.ts",
+  "assets": {
+    "directory": "./build/client",
+    "binding": "ASSETS"
+  },
+  "preview_urls": true,
+  "workers_dev": true,
   "d1_databases": [
     {
       "binding": "DB",
