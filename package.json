@@ -42,7 +42,7 @@
     "test:e2e:ui": "playwright test --ui --project=e2e",
     "test:smoke": "playwright test --project=smoke",
     "test:watch": "npm run db:export && vitest watch",
-    "test:types": "wrangler types &&react-router typegen && tsc"
+    "test:types": "wrangler types && react-router typegen && tsc"
   },
   "dependencies": {
     "@mdx-js/react": "3.1.0",
