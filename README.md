@@ -35,7 +35,7 @@ Building on strong foundations:
 _Core:_
 
 - ⚡ [Vite](https://vite.dev/) + [React](https://react.dev/) + [React Router v7](https://reactrouter.com/)
-- ☁️ [Cloudflare Pages](https://pages.cloudflare.com/) (hosting) + [D1](https://www.cloudflare.com/en-au/developer-platform/products/d1/) (database)
+- ☁️ [Cloudflare Workers](https://workers.cloudflare.com/) (hosting) + [Cloudflare D1](https://www.cloudflare.com/en-au/developer-platform/products/d1/) (database)
 - 🏗️ [TypeScript](https://www.typescriptlang.org/) + [TailwindCSS](https://tailwindcss.com/) + [Drizzle ORM](https://orm.drizzle.team/)
 
 _Tooling:_
@@ -43,7 +43,7 @@ _Tooling:_
 - ✅ [GitHub Actions](https://github.com/features/actions) (CI/CD)
 - ✨ [Prettier](https://prettier.io/) + [ESLint](https://eslint.org/) (code quality)
 - 🧪 [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) (testing)
-- 📖 [Storybook](https://storybook.js.org/) + [MDX](https://mdxjs.com/) (docs & components)
+- 📖 [Shadcn](https://ui.shadcn.com/) + [Storybook](https://storybook.js.org/) (UI components)
 
 ## ✨ Scripts
 
