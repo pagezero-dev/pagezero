@@ -211,6 +211,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env production
 
       - name: 🚀 Deploy Preview
         if: github.ref != 'refs/heads/main'
@@ -219,7 +220,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload
+          command: versions upload --env preview
 
   smoke-tests:
     name: 🚬 Smoke tests
