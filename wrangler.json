@@ -12,6 +12,10 @@
   },
   "preview_urls": true,
   "workers_dev": true,
+  "observability": {
+    "enabled": true
+  },
+  "upload_source_maps": true,
   "d1_databases": [
     {
       "binding": "DB",
