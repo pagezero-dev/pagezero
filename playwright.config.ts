@@ -52,7 +52,7 @@ export default defineConfig({
   ...(!process.env.TEST_PAGE_URL && {
     webServer: {
       command: process.env.CI ? "npm run preview" : "npm run dev",
-      url: "http://localhost:3000",
+      url: process.env.CI ? "http://localhost:3001" : "http://localhost:3000",
       reuseExistingServer: !process.env.CI,
       env: {
         CLOUDFLARE_ENV: "test",
