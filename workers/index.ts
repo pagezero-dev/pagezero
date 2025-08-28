@@ -11,14 +11,6 @@ declare module "react-router" {
     env: Env
     db: DrizzleD1Database<typeof schema>
   }
-
-  interface LoaderFunctionArgs {
-    context: AppLoadContext
-  }
-
-  interface ActionFunctionArgs {
-    context: AppLoadContext
-  }
 }
 
 const requestHandler = createRequestHandler(
