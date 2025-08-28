@@ -180,11 +180,14 @@ jobs:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
     needs: [database]
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+      url: ${{ steps.deploy-preview.outputs.deployment-url || steps.deploy-production.outputs.deployment-url }}
+    outputs:
+      page_url: ${{ steps.deploy-preview.outputs.deployment-url || steps.deploy-production.outputs.deployment-url }}
     permissions:
       contents: read
       deployments: write
-    outputs:
-      page_url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - name: 📥 Checkout repo
         uses: actions/checkout@v4
@@ -201,14 +204,22 @@ jobs:
       - name: 🛠️ Build
         run: npm run build
 
-      - name: 🚀 Deploy
+      - name: 🚀 Deploy Production
+        if: github.ref == 'refs/heads/main'
+        id: deploy-production
         uses: cloudflare/wrangler-action@v3
-        id: deploy
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy build/client --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }} --branch=${{ env.BRANCH_NAME }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🚀 Deploy Preview
+        if: github.ref != 'refs/heads/main'
+        id: deploy-preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload
 
   smoke-tests:
     name: 🚬 Smoke tests
