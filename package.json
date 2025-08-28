@@ -31,7 +31,7 @@
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
     "git:reset": "rm -rf .git && git init .",
     "lint": "eslint .",
-    "preview": "view preview",
+    "preview": "vite preview",
     "setup": "npm install && npm run setup:env && react-router typegen && playwright install --with-deps chromium && npm run db:setup",
     "setup:env": "cp .init.env .env",
     "setup:reset": "git clean -fdxq && npm run setup",
