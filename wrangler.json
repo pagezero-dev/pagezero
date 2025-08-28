@@ -11,7 +11,6 @@
     "binding": "ASSETS"
   },
   "preview_urls": true,
-  "workers_dev": true,
   "observability": {
     "enabled": true
   },
