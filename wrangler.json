@@ -1,6 +1,6 @@
 {
   "name": "pagezero",
-  "compatibility_date": "2025-08-28",
+  "compatibility_date": "2025-08-23",
   "compatibility_flags": [
     "nodejs_compat",
     "nodejs_compat_populate_process_env"
