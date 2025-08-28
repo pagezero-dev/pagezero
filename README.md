@@ -52,7 +52,7 @@ Essential npm scripts:
 - `npm run setup` - performs npm install, setups basic env vars, database and playwright browser drivers
 - `npm run dev` - boots development server
 - `npm run build` - builds the app
-- `npm start` - runs built app; this is how your app will be run on production
+- `npm run preview` - runs built app; this is how your app will be run on production
 - `npm test` - executes unit tests
 - `npm run test:types` - typescript types check
 - `npm run test:e2e:ui` - executes browser tests in UI mode, perfect for development
