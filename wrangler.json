@@ -23,6 +23,8 @@
     }
   ],
   "env": {
+    "production": {},
+    "preview": {},
     "test": {
       "d1_databases": [
         {
