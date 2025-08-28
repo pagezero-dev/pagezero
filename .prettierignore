@@ -1,2 +1,5 @@
 # Drizzle DB migrations meta files
 packages/db/migrations/meta/*
+
+# Cloudflare Workers generated types
+worker-configuration.d.ts
