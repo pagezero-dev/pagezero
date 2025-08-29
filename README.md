@@ -18,7 +18,7 @@ In 4 steps:
 1. `npm run setup`
 1. `npm run dev`
 
-You should be able to access http://localhost:3000/ development page now.
+You should be able to access the http://localhost:3000/ development page now.
 
 If you wish to start a new GitHub repository based on PageZero:
 
@@ -50,15 +50,15 @@ _Tooling:_
 
 Essential npm scripts:
 
-- `npm run setup` - performs npm install, setups basic env vars, database and playwright browser drivers
+- `npm run setup` - performs npm install, sets up basic env vars, database and playwright browser drivers
 - `npm run dev` - boots development server
 - `npm run build` - builds the app
 - `npm run preview` - runs built app; this is how your app will be run on production
 - `npm test` - executes unit tests
-- `npm run test:types` - typescript types check
+- `npm run test:types` - TypeScript types check
 - `npm run test:e2e:ui` - executes browser tests in UI mode, perfect for development
-- `npm run lint` - eslint check
-- `npm run format` - prettier check
+- `npm run lint` - ESLint check
+- `npm run format` - Prettier check
 - `npm run storybook` - boots Storybook
 - `npm run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
 
@@ -77,7 +77,7 @@ OK, now to make it all work, we must go through a few setup steps...
 ### Cloudflare configuration
 
 > [!IMPORTANT]
-> Steps below require [Cloudflare](https://www.cloudflare.com/) account.
+> Steps below require a [Cloudflare](https://www.cloudflare.com/) account.
 
 1. Login through `npx wrangler login`
 1. Create production and preview database:
@@ -96,9 +96,9 @@ OK, now to make it all work, we must go through a few setup steps...
 
 > [!IMPORTANT]
 > Steps below require [GitHub CLI](https://cli.github.com/).
-> For Mac, you can setup it with: `brew install gh`.
+> For Mac, you can set it up with: `brew install gh`.
 
-1.  Create Github repo for the project and commit all changes
+1.  Create a GitHub repo for the project and commit all changes
 
     ```sh
     gh repo create <project-name>
@@ -111,13 +111,13 @@ OK, now to make it all work, we must go through a few setup steps...
 
     > Cloudflare account ID can be obtained through the Cloudflare dashboard under "Compute (Workers) / Workers & Pages" in the right sidebar
 
-1.  Obtain Cloudflare D1 databases id's
+1.  Obtain Cloudflare D1 database IDs
 
     ```sh
     npx wrangler d1 list
     ```
 
-1.  Add following repository variables:
+1.  Add the following repository variables:
 
     ```sh
     gh variable set CLOUDFLARE_ACCOUNT_ID <your-cloudflare-account-id>
@@ -125,23 +125,23 @@ OK, now to make it all work, we must go through a few setup steps...
     gh variable set CLOUDFLARE_DATABASE_ID_PREVIEW <your-preview-database-id>
     ```
 
-    > You can browse variables by going to Github UI "Settings / Secrets and variables / Actions" for your repo
+    > You can browse variables by going to the GitHub UI "Settings / Secrets and variables / Actions" for your repo
     > or by executing `gh variable list`.
 
 1.  Obtain Cloudflare API token
 
     > Cloudflare API token can be obtained through the Cloudflare dashboard under "Manage account / Account API Tokens". You have to create the token there. The token will require the following permissions: D1:Edit, Workers Scripts:Edit.
 
-1.  Add following repository secret:
+1.  Add the following repository secret:
 
     ```sh
     gh secret set CLOUDFLARE_API_TOKEN <your-cloudflare-api-token>
     gh secret set CLOUDFLARE_API_TOKEN <your-cloudflare-api-token> --app dependabot
     ```
 
-    > Secret for Dependabot needs to be set seperately. Otherwise Dependabot PR's will not perform preview deploys.
+    > Secret for Dependabot needs to be set separately. Otherwise Dependabot PRs will not perform preview deploys.
 
-    > You can browse secrets by going to Github UI "Settings / Secrets and variables / Actions" for your repo
+    > You can browse secrets by going to the GitHub UI "Settings / Secrets and variables / Actions" for your repo
     > or by executing `gh secret list`.
 
 ### All done! 🎉
