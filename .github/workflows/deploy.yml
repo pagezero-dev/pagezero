@@ -207,7 +207,7 @@ jobs:
         run: npm ci
 
       - name: 🛠️ Build
-        run: npm run build
+        run: CLOUDFLARE_ENV=${{ env.APP_ENV }} npm run build
 
       - name: 🚀 Deploy
         id: deploy
@@ -215,7 +215,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: ${{ env.APP_ENV == 'production' && 'deploy --env production' || 'versions upload --env preview' }}
+          command: ${{ env.APP_ENV == 'production' && 'deploy' || 'versions upload' }}
 
   smoke-tests:
     name: 🚬 Smoke tests
