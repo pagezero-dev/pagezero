@@ -14,7 +14,7 @@ test("has content", async ({ page }) => {
       "CF-Access-Client-Secret": process.env.CLOUDFLARE_ACCESS_CLIENT_SECRET,
     })
   }
-  const response = await page.goto(process.env.TEST_PAGE_URL || "")
+  const response = await page.goto("/")
   expect(response?.ok).toBeTruthy()
   await expect(page.getByText("PageZERO")).toBeVisible()
 })

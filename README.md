@@ -18,15 +18,16 @@ In 4 steps:
 1. `npm run setup`
 1. `npm run dev`
 
-You should be able to access http://localhost:3000/ development page now.
+You should be able to access the http://localhost:3000/ development page now.
 
 If you wish to start a new GitHub repository based on PageZero:
 
-```
+```sh
 gh repo create <your-project-name> -c --template pagezero-dev/pagezero
 ```
 
-> ℹ️ Above command requires [GitHub CLI](https://cli.github.com/)
+> [!NOTE]
+> Above command requires [GitHub CLI](https://cli.github.com/)
 
 ## 🧑‍💻 The stack
 
@@ -35,7 +36,7 @@ Building on strong foundations:
 _Core:_
 
 - ⚡ [Vite](https://vite.dev/) + [React](https://react.dev/) + [React Router v7](https://reactrouter.com/)
-- ☁️ [Cloudflare Pages](https://pages.cloudflare.com/) (hosting) + [D1](https://www.cloudflare.com/en-au/developer-platform/products/d1/) (database)
+- ☁️ [Cloudflare Workers](https://workers.cloudflare.com/) (hosting) + [Cloudflare D1](https://www.cloudflare.com/en-au/developer-platform/products/d1/) (database)
 - 🏗️ [TypeScript](https://www.typescriptlang.org/) + [TailwindCSS](https://tailwindcss.com/) + [Drizzle ORM](https://orm.drizzle.team/)
 
 _Tooling:_
@@ -43,89 +44,110 @@ _Tooling:_
 - ✅ [GitHub Actions](https://github.com/features/actions) (CI/CD)
 - ✨ [Prettier](https://prettier.io/) + [ESLint](https://eslint.org/) (code quality)
 - 🧪 [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) (testing)
-- 📖 [Storybook](https://storybook.js.org/) + [MDX](https://mdxjs.com/) (docs & components)
+- 📖 [Shadcn](https://ui.shadcn.com/) + [Storybook](https://storybook.js.org/) (UI components)
 
 ## ✨ Scripts
 
 Essential npm scripts:
 
-- `npm run setup` - performs npm install, setups basic env vars, database and playwright browser drivers
+- `npm run setup` - performs npm install, sets up basic env vars, database and playwright browser drivers
 - `npm run dev` - boots development server
 - `npm run build` - builds the app
-- `npm start` - runs built app; this is how your app will be run on production
+- `npm run preview` - runs built app; this is how your app will be run on production
 - `npm test` - executes unit tests
-- `npm run test:types` - typescript types check
+- `npm run test:types` - TypeScript types check
 - `npm run test:e2e:ui` - executes browser tests in UI mode, perfect for development
-- `npm run lint` - eslint check
-- `npm run format` - prettier check
+- `npm run lint` - ESLint check
+- `npm run format` - Prettier check
 - `npm run storybook` - boots Storybook
 - `npm run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
 
 ## 🚀 Deployment
 
 Deployment in PageZERO happens through the GitHub Actions CI/CD pipeline. That means once the pipeline is set,
-every merge to the `main` branch will trigger deployment to Cloudflare Pages and database migration for Cloudflare D1.
+every merge to the `main` branch will automatically trigger deployment to Cloudflare Workers and database
+migration for Cloudflare D1.
 
-Additionally, every PR will trigger "preview deployment", so you can access the version of your app for every PR. More about preview deployments: https://developers.cloudflare.com/pages/configuration/preview-deployments/.
+Additionally, every PR will trigger "preview deployment", so you can access the version of your app for every PR. More about preview urls: https://developers.cloudflare.com/workers/configuration/previews/.
 
 The database for preview deployments is shared. If you wish to reset it, you can manually trigger the "Reset preview database" workflow in GitHub Actions.
 
-However, to make it all work, we must go through a few setup steps...
+OK, now to make it all work, we must go through a few setup steps...
 
-### Cloudflare services setup
+### Cloudflare configuration
 
-1. If you don't have [Cloudflare](https://www.cloudflare.com/) account yet, create one
-1. In the Cloudflare dashboard, go to "Storage & Databases / D1 SQL Database"
-1. Create 2 databases: `<project-name>_production` and `<project-name>_preview`
-1. In the Cloudflare dashboard, go to "Compute (Workers) / Workers & Pages"
-1. Create a new "Pages" project through "Create using direct upload" method; however, do not upload any assets
-1. Once the "Pages" project is created, open up the project from the "Workers & Pages" list
-1. In the "Settings" section, for the "production" environment, create:
-   - The following variables:
-     - `APP_ENV=production`
-   - Bindings:
-     - [D1 database] `DB=<project-name>_production`
-1. In the "Settings" section, for the "preview" environment, create:
-   - The following variables:
-     - `APP_ENV=preview`
-   - Bindings:
-     - [D1 database] `DB=<project-name>_preview`
+> [!IMPORTANT]
+> Steps below require a [Cloudflare](https://www.cloudflare.com/) account.
 
-### GitHub actions setup
+1. Login through `npx wrangler login`
+1. Create production and preview database:
+   ```sh
+   npx wrangler d1 create <project-name>-production
+   npx wrangler d1 create <project-name>-preview
+   ```
+1. Update `wrangler.json` with: project name, database names and returned `database_id`s
+1. Perform manual deployments to create Cloudflare Workers:
+   ```sh
+   npm run deploy:production
+   npm run deploy:preview
+   ```
 
-The only thing we need to do on the GitHub side is to set proper secrets and variables in your GitHub project "Settings". This will allow GitHub actions to perform deploys to Cloudflare Pages and migrations for your Cloudflare D1 database.
+### Github configuration
 
-In "Settings / Secrets and variables / Actions", set the following VARIABLES:
+> [!IMPORTANT]
+> Steps below require [GitHub CLI](https://cli.github.com/).
+> For Mac, you can set it up with: `brew install gh`.
 
-| Variable name                     | Value                                |
-| --------------------------------- | ------------------------------------ |
-| CLOUDFLARE_PROJECT_NAME           | Your Cloudflare Pages project name   |
-| CLOUDFLARE_DATABASE_ID_PRODUCTION | Cloudflare D1 production database ID |
-| CLOUDFLARE_DATABASE_ID_PREVIEW    | Cloudflare D1 preview database ID    |
-| CLOUDFLARE_ACCOUNT_ID             | Your Cloudflare account ID           |
+1.  Create a GitHub repo for the project and commit all changes
 
-> ℹ️ Database IDs can be obtained through the Cloudflare dashboard under "Storage & Databases / D1 SQL Database"
+    ```sh
+    gh repo create <project-name>
+    git add .
+    git commit -m "Init"
+    git push
+    ```
 
-> ℹ️ Cloudflare account ID can be obtained through the Cloudflare dashboard under "Compute (Workers) / Workers & Pages" in the right sidebar
+1.  Obtain Cloudflare Account ID
 
-In "Settings / Secrets and variables / Actions", set the following SECRETS:
+    ```sh
+    npx wrangler whoami
+    ```
 
-| Variable name        | Value                |
-| -------------------- | -------------------- |
-| CLOUDFLARE_API_TOKEN | Cloudflare API token |
+1.  Obtain Cloudflare D1 database IDs
 
-> ℹ️ Cloudflare API token can be obtained through the Cloudflare dashboard under "Manage account / Account API Tokens". You have to create the token there. The token will require the following permissions: D1:Edit, Cloudflare Pages:Edit.
+    ```sh
+    npx wrangler d1 list
+    ```
 
-In "Settings / Secrets and variables / Dependabot", set the following SECRETS:
+1.  Add the following repository variables:
 
-| Variable name        | Value                |
-| -------------------- | -------------------- |
-| CLOUDFLARE_API_TOKEN | Cloudflare API token |
+    ```sh
+    gh variable set CLOUDFLARE_ACCOUNT_ID --body "<your-cloudflare-account-id>"
+    gh variable set CLOUDFLARE_DATABASE_ID_PRODUCTION --body "<your-production-database-id>"
+    gh variable set CLOUDFLARE_DATABASE_ID_PREVIEW --body "<your-preview-database-id>"
+    ```
 
-> ℹ️ Dependabot has a separate set of secrets, so to make preview deployments work for Dependabot PRs, you will need to set the `CLOUDFLARE_API_TOKEN` secret for Dependabot.
+    > You can browse variables by going to the GitHub UI "Settings / Secrets and variables / Actions" for your repo
+    > or by executing `gh variable list`.
 
-### Test everything out
+1.  Obtain Cloudflare API token
 
-Now, you can test everything out. Create a PR in your project GitHub repository. You should notice an action in the "Actions" section being triggered. If the basic checks pass, the workflow will perform preview deployment to GitHub pages and database migration on your preview database. After deployment, the "View deployment" button should appear in your PR, with a link to your PR "preview" deployment.
+    > Cloudflare API token can be obtained through the Cloudflare dashboard under "Manage account / Account API Tokens". You have to create the token there. The token will require the following permissions: D1:Edit, Workers Scripts:Edit.
+
+1.  Add the following repository secret:
+
+    ```sh
+    gh secret set CLOUDFLARE_API_TOKEN
+    gh secret set CLOUDFLARE_API_TOKEN --app dependabot
+    ```
+
+    > Secret for Dependabot needs to be set separately. Otherwise Dependabot PRs will not perform preview deploys.
+
+    > You can browse secrets by going to the GitHub UI "Settings / Secrets and variables / Actions" for your repo
+    > or by executing `gh secret list`.
+
+### All done! 🎉
+
+Now, you can test everything out. Create a PR in your project GitHub repository. You should notice an action in the "Actions" section being triggered. If the basic checks pass, the workflow will perform preview deployment to Cloudflare workers and database migration on your preview database. After deployment, the "View deployment" button should appear in your PR, with a link to your PR "preview" deployment.
 
 When you merge PR to "main", production deployment will happen, and database migration will be performed on your production DB.

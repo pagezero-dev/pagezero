@@ -1,18 +1,51 @@
 {
-  "compatibility_date": "2024-12-12",
+  "name": "pagezero",
+  "compatibility_date": "2025-08-23",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "nodejs_compat_populate_process_env"
+  ],
+  "main": "workers/index.ts",
+  "assets": {
+    "directory": "./build/client",
+    "binding": "ASSETS"
+  },
+  "preview_urls": true,
+  "observability": {
+    "enabled": true
+  },
+  "upload_source_maps": true,
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "pagezero_db_dev",
+      "database_name": "pagezero-development",
       "database_id": "<DATABASE_ID>"
     }
   ],
   "env": {
+    "production": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "pagezero-production",
+          "database_id": "1e6b30f9-afaa-4368-8b76-06ed8d4fe737"
+        }
+      ]
+    },
+    "preview": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "pagezero-preview",
+          "database_id": "6eb90f35-05ce-4d9e-bd6d-a4b10ebe8c09"
+        }
+      ]
+    },
     "test": {
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "pagezero_db_dev",
+          "database_name": "pagezero-development",
           "database_id": "<DATABASE_ID>"
         }
       ]

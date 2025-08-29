@@ -20,6 +20,8 @@ env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
   # Node.js version to use throughout the workflow
   NODE_VERSION: 24.6.0
+  # This is used to determine the environment to deploy to
+  APP_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
 
 jobs:
   format:
@@ -75,6 +77,9 @@ jobs:
 
       - name: 📦 Install dependencies
         run: npm ci
+
+      - name: 📋 Copy environment variables
+        run: npm run setup:env
 
       - name: ʦ Types check
         run: npm run test:types
@@ -152,7 +157,7 @@ jobs:
     name: 🚚 Database migration
     runs-on: ubuntu-latest
     needs: [e2e-tests]
-    if: github.ref == 'refs/heads/main' || github.event.pull_request.draft == false
+    if: ${{ github.ref == 'refs/heads/main' || github.event.pull_request.draft == false }}
     concurrency:
       group: database-${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
     env:
@@ -180,11 +185,14 @@ jobs:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
     needs: [database]
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
+    outputs:
+      page_url: ${{ steps.deploy.outputs.deployment-url }}
     permissions:
       contents: read
       deployments: write
-    outputs:
-      page_url: ${{ steps.deploy.outputs.deployment-url }}
     steps:
       - name: 📥 Checkout repo
         uses: actions/checkout@v4
@@ -199,16 +207,15 @@ jobs:
         run: npm ci
 
       - name: 🛠️ Build
-        run: npm run build
+        run: CLOUDFLARE_ENV=${{ env.APP_ENV }} npm run build
 
       - name: 🚀 Deploy
-        uses: cloudflare/wrangler-action@v3
         id: deploy
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy build/client --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }} --branch=${{ env.BRANCH_NAME }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: ${{ env.APP_ENV == 'production' && 'deploy' || 'versions upload' }}
 
   smoke-tests:
     name: 🚬 Smoke tests
