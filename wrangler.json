@@ -15,21 +15,39 @@
     "enabled": true
   },
   "upload_source_maps": true,
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "pagezero_db_dev",
-      "database_id": "<DATABASE_ID>"
-    }
-  ],
   "env": {
-    "production": {},
-    "preview": {},
+    "production": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "pagezero-production",
+          "database_id": "<DATABASE_ID>"
+        }
+      ]
+    },
+    "preview": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "pagezero-preview",
+          "database_id": "<DATABASE_ID>"
+        }
+      ]
+    },
+    "development": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "pagezero-development",
+          "database_id": "<DATABASE_ID>"
+        }
+      ]
+    },
     "test": {
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "pagezero_db_dev",
+          "database_name": "pagezero-test",
           "database_id": "<DATABASE_ID>"
         }
       ]
