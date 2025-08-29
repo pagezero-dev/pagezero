@@ -1,10 +1,10 @@
 import { defineConfig, devices } from "@playwright/test"
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
+const baseURL = process.env.TEST_PAGE_URL
+  ? process.env.TEST_PAGE_URL
+  : process.env.CI
+    ? "http://localhost:3001"
+    : "http://localhost:3000"
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -28,7 +28,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
+    baseURL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
@@ -52,7 +52,7 @@ export default defineConfig({
   ...(!process.env.TEST_PAGE_URL && {
     webServer: {
       command: process.env.CI ? "npm run preview" : "npm run dev",
-      url: process.env.CI ? "http://localhost:3001" : "http://localhost:3000",
+      url: baseURL,
       reuseExistingServer: !process.env.CI,
       env: {
         CLOUDFLARE_ENV: "test",
