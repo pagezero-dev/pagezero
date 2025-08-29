@@ -75,7 +75,9 @@ OK, now to make it all work, we must go through a few setup steps...
 
 ### Cloudflare configuration
 
-1. If you don't have [Cloudflare](https://www.cloudflare.com/) account yet, create one
+> [!IMPORTANT]
+> Steps below require [Cloudflare](https://www.cloudflare.com/) account.
+
 1. Login through `npx wrangler login`
 1. Create production and preview database:
    ```
@@ -106,7 +108,6 @@ OK, now to make it all work, we must go through a few setup steps...
 
 1.  Obtain Cloudflare Account ID
 
-    > [!NOTE]
     > Cloudflare account ID can be obtained through the Cloudflare dashboard under "Compute (Workers) / Workers & Pages" in the right sidebar
 
 1.  Obtain Cloudflare D1 databases id's
@@ -123,13 +124,11 @@ OK, now to make it all work, we must go through a few setup steps...
     gh variable set CLOUDFLARE_DATABASE_ID_PREVIEW <your-preview-database-id>
     ```
 
-    > [!NOTE]
     > You can browse variables by going to Github UI "Settings / Secrets and variables / Actions" for your repo
     > or by executing `gh variable list`.
 
 1.  Obtain Cloudflare API token
 
-    > [!NOTE]
     > Cloudflare API token can be obtained through the Cloudflare dashboard under "Manage account / Account API Tokens". You have to create the token there. The token will require the following permissions: D1:Edit, Workers Scripts:Edit.
 
 1.  Add following repository secret:
@@ -139,12 +138,10 @@ OK, now to make it all work, we must go through a few setup steps...
     gh secret set CLOUDFLARE_API_TOKEN <your-cloudflare-api-token> --app dependabot
     ```
 
-    > [!NOTE]
+    > Secret for Dependabot needs to be set seperately. Otherwise Dependabot PR's will not perform preview deploys.
+
     > You can browse secrets by going to Github UI "Settings / Secrets and variables / Actions" for your repo
     > or by executing `gh secret list`.
-
-    > [!NOTE]
-    > Secret for Dependabot needs to be set seperately. Otherwise Dependabot PR's will not perform preview deploys.
 
 ### All done! 🎉
 
