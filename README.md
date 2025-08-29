@@ -26,7 +26,8 @@ If you wish to start a new GitHub repository based on PageZero:
 gh repo create <your-project-name> -c --template pagezero-dev/pagezero
 ```
 
-> ℹ️ Above command requires [GitHub CLI](https://cli.github.com/)
+> [!NOTE]
+> Above command requires [GitHub CLI](https://cli.github.com/)
 
 ## 🧑‍💻 The stack
 
@@ -145,6 +146,6 @@ OK, now to make it all work, we must go through a few setup steps...
 
 ### All done! 🎉
 
-Now, you can test everything out. Create a PR in your project GitHub repository. You should notice an action in the "Actions" section being triggered. If the basic checks pass, the workflow will perform preview deployment to GitHub pages and database migration on your preview database. After deployment, the "View deployment" button should appear in your PR, with a link to your PR "preview" deployment.
+Now, you can test everything out. Create a PR in your project GitHub repository. You should notice an action in the "Actions" section being triggered. If the basic checks pass, the workflow will perform preview deployment to Cloudflare workers and database migration on your preview database. After deployment, the "View deployment" button should appear in your PR, with a link to your PR "preview" deployment.
 
 When you merge PR to "main", production deployment will happen, and database migration will be performed on your production DB.
