@@ -120,9 +120,9 @@ OK, now to make it all work, we must go through a few setup steps...
 1.  Add the following repository variables:
 
     ```sh
-    gh variable set CLOUDFLARE_ACCOUNT_ID <your-cloudflare-account-id>
-    gh variable set CLOUDFLARE_DATABASE_ID_PRODUCTION <your-production-database-id>
-    gh variable set CLOUDFLARE_DATABASE_ID_PREVIEW <your-preview-database-id>
+    gh variable set CLOUDFLARE_ACCOUNT_ID --body "<your-cloudflare-account-id>"
+    gh variable set CLOUDFLARE_DATABASE_ID_PRODUCTION --body "<your-production-database-id>"
+    gh variable set CLOUDFLARE_DATABASE_ID_PREVIEW --body "<your-preview-database-id>"
     ```
 
     > You can browse variables by going to the GitHub UI "Settings / Secrets and variables / Actions" for your repo
