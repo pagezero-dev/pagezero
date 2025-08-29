@@ -109,7 +109,9 @@ OK, now to make it all work, we must go through a few setup steps...
 
 1.  Obtain Cloudflare Account ID
 
-    > Cloudflare account ID can be obtained through the Cloudflare dashboard under "Compute (Workers) / Workers & Pages" in the right sidebar
+    ```sh
+    npx wrangler whoami
+    ```
 
 1.  Obtain Cloudflare D1 database IDs
 
