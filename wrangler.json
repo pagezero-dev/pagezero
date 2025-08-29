@@ -28,7 +28,7 @@
         {
           "binding": "DB",
           "database_name": "pagezero-production",
-          "database_id": "<DATABASE_ID>"
+          "database_id": "1e6b30f9-afaa-4368-8b76-06ed8d4fe737"
         }
       ]
     },
@@ -37,7 +37,7 @@
         {
           "binding": "DB",
           "database_name": "pagezero-preview",
-          "database_id": "<DATABASE_ID>"
+          "database_id": "6eb90f35-05ce-4d9e-bd6d-a4b10ebe8c09"
         }
       ]
     },
