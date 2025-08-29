@@ -45,7 +45,7 @@
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "pagezero-test",
+          "database_name": "pagezero-development",
           "database_id": "<DATABASE_ID>"
         }
       ]
