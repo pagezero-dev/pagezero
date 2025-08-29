@@ -135,8 +135,8 @@ OK, now to make it all work, we must go through a few setup steps...
 1.  Add the following repository secret:
 
     ```sh
-    gh secret set CLOUDFLARE_API_TOKEN <your-cloudflare-api-token>
-    gh secret set CLOUDFLARE_API_TOKEN <your-cloudflare-api-token> --app dependabot
+    gh secret set CLOUDFLARE_API_TOKEN
+    gh secret set CLOUDFLARE_API_TOKEN --app dependabot
     ```
 
     > Secret for Dependabot needs to be set separately. Otherwise Dependabot PRs will not perform preview deploys.
