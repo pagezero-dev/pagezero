@@ -22,7 +22,7 @@ You should be able to access http://localhost:3000/ development page now.
 
 If you wish to start a new GitHub repository based on PageZero:
 
-```
+```sh
 gh repo create <your-project-name> -c --template pagezero-dev/pagezero
 ```
 
@@ -80,13 +80,13 @@ OK, now to make it all work, we must go through a few setup steps...
 
 1. Login through `npx wrangler login`
 1. Create production and preview database:
-   ```
+   ```sh
    npx wrangler d1 create <project-name>-production
    npx wrangler d1 create <project-name>-preview
    ```
 1. Update `wrangler.json` with: project name, database names and returned `database_id`s
 1. Perform manual deployments to create Cloudflare Workers:
-   ```
+   ```sh
    npm run deploy:production
    npm run deploy:preview
    ```
@@ -99,7 +99,7 @@ OK, now to make it all work, we must go through a few setup steps...
 
 1.  Create Github repo for the project and commit all changes
 
-    ```
+    ```sh
     gh repo create <project-name>
     git add .
     git commit -m "Init"
@@ -112,13 +112,13 @@ OK, now to make it all work, we must go through a few setup steps...
 
 1.  Obtain Cloudflare D1 databases id's
 
-    ```
+    ```sh
     npx wrangler d1 list
     ```
 
 1.  Add following repository variables:
 
-    ```
+    ```sh
     gh variable set CLOUDFLARE_ACCOUNT_ID <your-cloudflare-account-id>
     gh variable set CLOUDFLARE_DATABASE_ID_PRODUCTION <your-production-database-id>
     gh variable set CLOUDFLARE_DATABASE_ID_PREVIEW <your-preview-database-id>
@@ -133,7 +133,7 @@ OK, now to make it all work, we must go through a few setup steps...
 
 1.  Add following repository secret:
 
-    ```
+    ```sh
     gh secret set CLOUDFLARE_API_TOKEN <your-cloudflare-api-token>
     gh secret set CLOUDFLARE_API_TOKEN <your-cloudflare-api-token> --app dependabot
     ```
