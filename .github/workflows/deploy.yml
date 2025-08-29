@@ -157,12 +157,12 @@ jobs:
     name: 🚚 Database migration
     runs-on: ubuntu-latest
     needs: [e2e-tests]
-    if: ${{ env.APP_ENV == 'production' || github.event.pull_request.draft == false }}
+    if: ${{ github.ref == 'refs/heads/main' || github.event.pull_request.draft == false }}
     concurrency:
-      group: database-${{ env.APP_ENV }}
+      group: database-${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
     env:
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-      CLOUDFLARE_DATABASE_ID: ${{ env.APP_ENV == 'production' && vars.CLOUDFLARE_DATABASE_ID_PRODUCTION || vars.CLOUDFLARE_DATABASE_ID_PREVIEW }}
+      CLOUDFLARE_DATABASE_ID: ${{ github.ref == 'refs/heads/main' && vars.CLOUDFLARE_DATABASE_ID_PRODUCTION || vars.CLOUDFLARE_DATABASE_ID_PREVIEW }}
     steps:
       - name: 📥 Checkout repo
         uses: actions/checkout@v4
@@ -186,7 +186,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [database]
     environment:
-      name: ${{ env.APP_ENV }}
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
       url: ${{ steps.deploy.outputs.deployment-url }}
     outputs:
       page_url: ${{ steps.deploy.outputs.deployment-url }}
