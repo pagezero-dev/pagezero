@@ -9,10 +9,12 @@ type LoaderOrActionArgs = {
   context: AppLoadContext
 }
 
-type LoaderOrActionData<T extends LoaderOrAction> =
-  Exclude<Awaited<ReturnType<T>>, Response> extends { data: infer D }
-    ? D
-    : Exclude<Awaited<ReturnType<T>>, Response>
+type LoaderOrActionData<T extends LoaderOrAction> = Exclude<
+  Awaited<ReturnType<T>>,
+  Response
+> extends { data: infer D }
+  ? D
+  : Exclude<Awaited<ReturnType<T>>, Response>
 
 type Loader = LoaderOrAction
 type Action = LoaderOrAction
