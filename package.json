@@ -105,5 +105,8 @@
     "esbuild",
     "sharp",
     "workerd"
-  ]
+  ],
+  "bun-create": {
+    "postinstall": "bun run setup"
+  }
 }

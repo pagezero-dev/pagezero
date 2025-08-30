@@ -24,23 +24,20 @@ Before getting started, make sure you have the following installed:
 
 ## ⚡️ Quick start
 
-In 4 steps:
+In 3 steps:
 
 1. `bun create pagezero-dev/pagezero <your-project-name>`
 1. `cd <your-project-name>`
-1. `bun run setup`
 1. `bun run dev`
 
 You should be able to access the http://localhost:3000/ development page now.
 
-If you wish to start a new GitHub repository based on PageZero:
-
-```sh
-gh repo create <your-project-name> -c --template pagezero-dev/pagezero
-```
-
 > [!NOTE]
-> Above command requires [GitHub CLI](https://cli.github.com/)
+> `bun create` will:
+> - download the template
+> - execute `bun install`
+> - initialize a fresh Git repo
+> - execute `bun run setup`
 
 ## 🧑‍💻 The stack
 
