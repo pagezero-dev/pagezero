@@ -6,7 +6,7 @@ updates:
       interval: "monthly"
     open-pull-requests-limit: 1
 
-  - package-ecosystem: "npm"
+  - package-ecosystem: "bun"
     directory: "/"
     schedule:
       interval: "monthly"
