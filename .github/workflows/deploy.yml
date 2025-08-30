@@ -18,8 +18,6 @@ concurrency:
 env:
   # This reliably gets the branch name regardless of event type
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-  # Node.js version to use throughout the workflow
-  NODE_VERSION: 24.6.0
   # This is used to determine the environment to deploy to
   APP_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
 
@@ -34,14 +32,18 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          node-version-file: .tool-versions
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 💎 Quality check
-        run: npx biome ci
+        run: bunx biome ci
 
   types:
     name: ʦ Types check
@@ -53,17 +55,21 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          node-version-file: .tool-versions
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 📋 Copy environment variables
-        run: npm run setup:env
+        run: bun run setup:env
 
       - name: ʦ Types check
-        run: npm run check:types
+        run: bun run check:types
 
   unit-tests:
     name: ⚡️ Unit tests
@@ -75,20 +81,24 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          node-version-file: .tool-versions
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 📋 Copy environment variables
-        run: npm run setup:env
+        run: bun run setup:env
 
       - name: 🗄️ Database setup
-        run: npm run db:setup
+        run: bun run db:setup
 
       - name: ⚡️ Run Vitest
-        run: npm run test:coverage
+        run: bun run test:coverage
 
   e2e-tests:
     name: 🎭 E2E tests
@@ -102,17 +112,21 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          node-version-file: .tool-versions
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 📋 Copy environment variables
-        run: npm run setup:env
+        run: bun run setup:env
 
       - name: 🏷️ Store Playwright Version
-        run: echo "PLAYWRIGHT_VERSION=`npx playwright -V | cut -d ' ' -f2`" >> $GITHUB_ENV
+        run: echo "PLAYWRIGHT_VERSION=`bunx playwright -V | cut -d ' ' -f2`" >> $GITHUB_ENV
 
       - name: 📝 Cache Playwright Browsers
         id: cache-playwright-browsers
@@ -123,16 +137,16 @@ jobs:
 
       - name: 📦 Install Playwright Browsers
         if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
+        run: bunx playwright install --with-deps chromium
 
       - name: 🛠️ Build
-        run: CLOUDFLARE_ENV=test NODE_ENV=test npm run build
+        run: CLOUDFLARE_ENV=test NODE_ENV=test bun run build
 
       - name: 🗄️ Database setup
-        run: npm run db:setup
+        run: bun run db:setup
 
       - name: 🎭 Run Playwright tests
-        run: npm run test:e2e
+        run: bun run test:e2e
 
   database:
     name: 🚚 Database migration
@@ -151,14 +165,18 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          node-version-file: .tool-versions
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 🚚 Database migration
-        run: npx drizzle-kit migrate
+        run: bunx drizzle-kit migrate
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
@@ -181,14 +199,18 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          node-version-file: .tool-versions
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 🛠️ Build
-        run: CLOUDFLARE_ENV=${{ env.APP_ENV }} npm run build
+        run: CLOUDFLARE_ENV=${{ env.APP_ENV }} bun run build
 
       - name: 🚀 Deploy
         id: deploy
@@ -211,14 +233,18 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          node-version-file: .tool-versions
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 🏷️ Store Playwright Version
-        run: echo "PLAYWRIGHT_VERSION=`npx playwright -V | cut -d ' ' -f2`" >> $GITHUB_ENV
+        run: echo "PLAYWRIGHT_VERSION=`bunx playwright -V | cut -d ' ' -f2`" >> $GITHUB_ENV
 
       - name: 📝 Cache Playwright Browsers
         id: cache-playwright-browsers
@@ -229,10 +255,10 @@ jobs:
 
       - name: 📦 Install Playwright Browsers
         if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
+        run: bunx playwright install --with-deps chromium
 
       - name: 🚬 Run smoke tests
-        run: npm run test:smoke
+        run: bun run test:smoke
         env:
           TEST_PAGE_URL: ${{ needs.deploy.outputs.page_url }}
           CLOUDFLARE_ACCESS_CLIENT_ID: ${{ vars.CLOUDFLARE_ACCESS_CLIENT_ID }}

@@ -2,9 +2,6 @@ name: 🔄 Reset preview database
 
 on: workflow_dispatch
 
-env:
-  NODE_VERSION: 20
-
 jobs:
   reset:
     name: 🔄 Reset preview database
@@ -20,23 +17,27 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          node-version-file: .tool-versions
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 🧹 Cleanup preview database
-        run: npm run db:clean
+        run: bun run db:clean
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: 🚚 Database migration
-        run: npx drizzle-kit migrate
+        run: bunx drizzle-kit migrate
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: 🌱 Seed preview database
-        run: npm run db:seed
+        run: bun run db:seed
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

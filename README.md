@@ -1,33 +1,43 @@
 # PageZERO
 
-An open-source TypeScript starter for full-stack web development on Cloudflare.
+An open-source TypeScript starter for full-stack web applications built for Cloudflare.
 
 Guiding principles:
 
 - Easy to learn
 - Fast to build with
-- Pleasure to develop
+- Pleasure to work with
 - Cheap to maintain
+
+## 🔧 Prerequisites
+
+Before getting started, make sure you have the following installed:
+
+- [**Node.js**](https://nodejs.org/): Version 24.6.0
+- [**Bun**](https://bun.com/): Version 1.2.20
+
+> [!TIP]
+> [asdf](https://asdf-vm.com/) is the recommended runtime version manager.
+> Run `asdf install` within the root directory to automatically install the correct versions of Node.js and Bun. 
+> If you already have Node.js installed, alternatively, you can install Bun globally with `npm install -g bun`.
+
 
 ## ⚡️ Quick start
 
-In 4 steps:
+In 3 steps:
 
-1. `git clone --depth 1 https://github.com/pagezero-dev/pagezero.git <your-project-name>`
+1. `bun create pagezero-dev/pagezero <your-project-name>`
 1. `cd <your-project-name>`
-1. `npm run setup`
-1. `npm run dev`
+1. `bun run dev`
 
 You should be able to access the http://localhost:3000/ development page now.
 
-If you wish to start a new GitHub repository based on PageZero:
-
-```sh
-gh repo create <your-project-name> -c --template pagezero-dev/pagezero
-```
-
 > [!NOTE]
-> Above command requires [GitHub CLI](https://cli.github.com/)
+> `bun create` will:
+> - download the template
+> - execute `bun install`
+> - initialize a fresh Git repo
+> - execute `bun run setup`
 
 ## 🧑‍💻 The stack
 
@@ -35,31 +45,31 @@ Building on strong foundations:
 
 _Core:_
 
-- ⚡ [Vite](https://vite.dev/) + [React](https://react.dev/) + [React Router v7](https://reactrouter.com/)
+- 🚀 [Vite](https://vite.dev/) + [React](https://react.dev/) + [React Router v7](https://reactrouter.com/)
 - ☁️ [Cloudflare Workers](https://workers.cloudflare.com/) (hosting) + [Cloudflare D1](https://www.cloudflare.com/en-au/developer-platform/products/d1/) (database)
 - 🏗️ [TypeScript](https://www.typescriptlang.org/) + [TailwindCSS](https://tailwindcss.com/) + [Drizzle ORM](https://orm.drizzle.team/)
 
 _Tooling:_
 
-- ✅ [GitHub Actions](https://github.com/features/actions) (CI/CD)
+- ⚡ [Bun](https://bun.com/) (package manager)
 - ✨ [Biome](https://biomejs.dev/) (code quality)
+- ✅ [GitHub Actions](https://github.com/features/actions) (CI/CD)
 - 🧪 [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) (testing)
-- 📖 [Shadcn](https://ui.shadcn.com/) + [Storybook](https://storybook.js.org/) (UI components)
+- 📖 [Shadcn](https://ui.shadcn.com/) + [Storybook](https://storybook.js.org/) (UI)
 
 ## ✨ Scripts
 
 Essential npm scripts:
 
-- `npm run setup` - performs npm install, sets up basic env vars, database and playwright browser drivers
-- `npm run dev` - boots development server
-- `npm run build` - builds the app
-- `npm run preview` - runs built app; this is how your app will be run on production
-- `npm test` - executes unit tests
-- `npm run check:types` - TypeScript types check
-- `npm run test:e2e:ui` - executes browser tests in UI mode, perfect for development
-- `npm run check` - code quality check (linting and formatting)
-- `npm run storybook` - boots Storybook
-- `npm run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
+- `bun run setup` - performs bun install, sets up basic env vars, database and Playwright browser drivers
+- `bun run dev` - boots the development server
+- `bun run preview` - builds the app and boots the compiled version
+- `bun run test` - executes unit tests
+- `bun run test:e2e:ui` - executes browser tests in UI mode, perfect for development
+- `bun run check` - code quality check (linting and formatting)
+- `bun run check:types` - TypeScript types check
+- `bun run storybook` - boots Storybook
+- `bun run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
 
 ## 🚀 Deployment
 
@@ -79,12 +89,15 @@ OK, now to make it all work, we must go through a few setup steps...
 > Steps below require a [Cloudflare](https://www.cloudflare.com/) account.
 
 1. Login through `npx wrangler login`
+
 1. Create production and preview database:
    ```sh
    npx wrangler d1 create <project-name>-production
    npx wrangler d1 create <project-name>-preview
    ```
+
 1. Update `wrangler.json` with: project name, database names and returned `database_id`s
+
 1. Perform manual deployments to create Cloudflare Workers:
    ```sh
    npm run deploy:production

@@ -24,26 +24,26 @@
     "db:push": "drizzle-kit push",
     "db:remove": "rm -rf ./.wrangler/state/v3/d1",
     "db:seed": "tsx ./packages/db/scripts/seed.ts",
-    "db:setup": "npm run db:remove && npm run db:init && npm run db:generate && npm run db:migrate && npm run db:seed",
+    "db:setup": "bun run db:remove && bun run db:init && bun run db:generate && bun run db:migrate && bun run db:seed",
     "db:studio": "drizzle-kit studio",
-    "deploy:production": "CLOUDFLARE_ENV=production npm run build && wrangler deploy",
-    "deploy:preview": "CLOUDFLARE_ENV=preview npm run build && wrangler deploy",
+    "deploy:production": "CLOUDFLARE_ENV=production bun run build && wrangler deploy",
+    "deploy:preview": "CLOUDFLARE_ENV=preview bun run build && wrangler deploy",
     "dev": "NODE_OPTIONS=\"--inspect\" react-router dev",
-    "doctor": "npm run check && npm run check:types && npm test",
+    "doctor": "bun run check && bun run check:types && bun run test",
     "generate": "tsx ./packages/generate/generate.ts",
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
     "git:reset": "rm -rf .git && git init .",
-    "preview": "NODE_ENV=development npm run build && vite preview",
-    "setup": "npm install && npm run setup:env && react-router typegen && playwright install --with-deps chromium && npm run db:setup",
+    "preview": "NODE_ENV=development bun run build && vite preview",
+    "setup": "bun install && bun run setup:env && react-router typegen && playwright install --with-deps chromium && bun run db:setup",
     "setup:env": "echo '# Put your secrets here' > .env",
-    "setup:reset": "git clean -fdxq && npm run setup",
+    "setup:reset": "git clean -fdxq && bun run setup",
     "storybook": "storybook dev -p 6006 --no-open",
-    "test": "npm run db:export && vitest run",
-    "test:coverage": "npm run db:export && vitest run --coverage",
+    "test": "bun run db:export && vitest run",
+    "test:coverage": "bun run db:export && vitest run --coverage",
     "test:e2e": "playwright test --project=e2e",
     "test:e2e:ui": "playwright test --ui --project=e2e",
     "test:smoke": "playwright test --project=smoke",
-    "test:watch": "npm run db:export && vitest watch"
+    "test:watch": "bun run db:export && vitest watch"
   },
   "dependencies": {
     "@mdx-js/react": "3.1.0",
@@ -98,5 +98,15 @@
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.0.5",
     "wrangler": "4.31.0"
+  },
+  "trustedDependencies": [
+    "@tailwindcss/oxide",
+    "better-sqlite3",
+    "esbuild",
+    "sharp",
+    "workerd"
+  ],
+  "bun-create": {
+    "postinstall": "bun run setup"
   }
 }
