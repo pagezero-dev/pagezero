@@ -145,7 +145,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: 🛠️ Build
-        run: npm run build
+        run: CLOUDFLARE_ENV=test NODE_ENV=test npm run build
 
       - name: 🗄️ Database setup
         run: npm run db:setup

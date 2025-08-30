@@ -2,9 +2,7 @@ import { defineConfig, devices } from "@playwright/test"
 
 const baseURL = process.env.TEST_PAGE_URL
   ? process.env.TEST_PAGE_URL
-  : process.env.CI
-    ? "http://localhost:3001"
-    : "http://localhost:3000"
+  : "http://localhost:3000"
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -51,7 +49,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   ...(!process.env.TEST_PAGE_URL && {
     webServer: {
-      command: process.env.CI ? "npm run preview" : "npm run dev",
+      command: process.env.CI ? "vite preview" : "npm run dev",
       url: baseURL,
       reuseExistingServer: !process.env.CI,
       env: {
