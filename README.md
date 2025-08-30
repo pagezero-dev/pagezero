@@ -24,10 +24,11 @@ Before getting started, make sure you have the following installed:
 
 ## ⚡️ Quick start
 
-In 3 steps:
+In 4 steps:
 
 1. `bun create pagezero-dev/pagezero <your-project-name>`
 1. `cd <your-project-name>`
+1. `bun run setup`
 1. `bun run dev`
 
 You should be able to access the http://localhost:3000/ development page now.
@@ -37,7 +38,6 @@ You should be able to access the http://localhost:3000/ development page now.
 > - download the template
 > - execute `bun install`
 > - initialize a fresh Git repo
-> - execute `bun run setup`
 
 ## 🧑‍💻 The stack
 
