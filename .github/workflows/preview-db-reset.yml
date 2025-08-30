@@ -3,7 +3,10 @@ name: 🔄 Reset preview database
 on: workflow_dispatch
 
 env:
-  NODE_VERSION: 20
+  # Node.js version to use throughout the workflow
+  NODE_VERSION: 24.6.0
+  # Bun version to use throughout the workflow
+  BUN_VERSION: 1.2.20
 
 jobs:
   reset:
@@ -22,6 +25,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile

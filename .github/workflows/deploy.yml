@@ -20,6 +20,8 @@ env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
   # Node.js version to use throughout the workflow
   NODE_VERSION: 24.6.0
+  # Bun version to use throughout the workflow
+  BUN_VERSION: 1.2.20
   # This is used to determine the environment to deploy to
   APP_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
 
@@ -37,8 +39,13 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
       - name: 📦 Install dependencies
-        run: bun i
+        run: bun install --frozen-lockfile
 
       - name: 💎 Quality check
         run: bunx biome ci
@@ -55,6 +62,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
@@ -77,6 +89,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
@@ -104,6 +121,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
@@ -154,6 +176,11 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
 
@@ -184,6 +211,11 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
 
@@ -213,6 +245,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
+
+      - name: ⎔ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
