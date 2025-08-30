@@ -37,7 +37,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -61,7 +60,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -88,7 +86,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -120,7 +117,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -174,7 +170,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -209,7 +204,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -244,7 +238,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
