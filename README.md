@@ -9,14 +9,27 @@ Guiding principles:
 - Pleasure to develop
 - Cheap to maintain
 
+## 🔧 Prerequisites
+
+Before getting started, make sure you have the following installed:
+
+- [**Node.js**](https://nodejs.org/): Version 24.6.0
+- [**Bun**](https://bun.com/): Version 1.2.20
+
+> [!TIP]
+> We recommend using [asdf](https://asdf-vm.com/) as your runtime version manager. 
+> Run `asdf install` within the root directory to automatically install the correct versions of Node.js and Bun. 
+> If you already have Node.js installed, alternatively, you can install Bun globally with `npm install -g bun`.
+
+
 ## ⚡️ Quick start
 
 In 4 steps:
 
-1. `git clone --depth 1 https://github.com/pagezero-dev/pagezero.git <your-project-name>`
+1. `bun create pagezero-dev/pagezero <your-project-name>`
 1. `cd <your-project-name>`
-1. `npm run setup`
-1. `npm run dev`
+1. `bun run setup`
+1. `bun run dev`
 
 You should be able to access the http://localhost:3000/ development page now.
 
@@ -35,31 +48,32 @@ Building on strong foundations:
 
 _Core:_
 
-- ⚡ [Vite](https://vite.dev/) + [React](https://react.dev/) + [React Router v7](https://reactrouter.com/)
+- 🚀 [Vite](https://vite.dev/) + [React](https://react.dev/) + [React Router v7](https://reactrouter.com/)
 - ☁️ [Cloudflare Workers](https://workers.cloudflare.com/) (hosting) + [Cloudflare D1](https://www.cloudflare.com/en-au/developer-platform/products/d1/) (database)
 - 🏗️ [TypeScript](https://www.typescriptlang.org/) + [TailwindCSS](https://tailwindcss.com/) + [Drizzle ORM](https://orm.drizzle.team/)
 
 _Tooling:_
 
-- ✅ [GitHub Actions](https://github.com/features/actions) (CI/CD)
+- ⚡ [Bun](https://bun.com/) (package manager)
 - ✨ [Biome](https://biomejs.dev/) (code quality)
 - 🧪 [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) (testing)
-- 📖 [Shadcn](https://ui.shadcn.com/) + [Storybook](https://storybook.js.org/) (UI components)
+- 📖 [Shadcn](https://ui.shadcn.com/) + [Storybook](https://storybook.js.org/) (UI)
+- ✅ [GitHub Actions](https://github.com/features/actions) (CI/CD)
 
 ## ✨ Scripts
 
 Essential npm scripts:
 
-- `npm run setup` - performs npm install, sets up basic env vars, database and playwright browser drivers
-- `npm run dev` - boots development server
-- `npm run build` - builds the app
-- `npm run preview` - runs built app; this is how your app will be run on production
-- `npm test` - executes unit tests
-- `npm run check:types` - TypeScript types check
-- `npm run test:e2e:ui` - executes browser tests in UI mode, perfect for development
-- `npm run check` - code quality check (linting and formatting)
-- `npm run storybook` - boots Storybook
-- `npm run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
+- `bun run setup` - performs npm install, sets up basic env vars, database and playwright browser drivers
+- `bun run dev` - boots development server
+- `bun run build` - builds the app
+- `bun run preview` - runs built app; this is how your app will be run on production
+- `bun test` - executes unit tests
+- `bun run check:types` - TypeScript types check
+- `bun run test:e2e:ui` - executes browser tests in UI mode, perfect for development
+- `bun run check` - code quality check (linting and formatting)
+- `bun run storybook` - boots Storybook
+- `bun run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
 
 ## 🚀 Deployment
 
