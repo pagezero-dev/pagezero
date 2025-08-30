@@ -18,10 +18,6 @@ concurrency:
 env:
   # This reliably gets the branch name regardless of event type
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-  # Node.js version to use throughout the workflow
-  NODE_VERSION: 24.6.0
-  # Bun version to use throughout the workflow
-  BUN_VERSION: 1.2.20
   # This is used to determine the environment to deploy to
   APP_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
 
@@ -36,12 +32,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .tool-versions
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
@@ -59,12 +55,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .tool-versions
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
@@ -85,12 +81,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .tool-versions
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
@@ -116,12 +112,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .tool-versions
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
@@ -169,12 +165,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .tool-versions
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
@@ -203,12 +199,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .tool-versions
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
@@ -237,12 +233,12 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .tool-versions
 
       - name: ⎔ Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          bun-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
