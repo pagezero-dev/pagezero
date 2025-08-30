@@ -42,5 +42,17 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.stories.tsx", "**/*.test.tsx"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useUniqueElementIds": "off"
+          }
+        }
+      }
+    }
+  ]
 }
