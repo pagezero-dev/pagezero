@@ -25,7 +25,7 @@ env:
 
 jobs:
   check:
-    name: 👔 Code check
+    name: 💎 Quality check
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout repo
@@ -40,7 +40,7 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
-      - name: 👔 Code check
+      - name: 💎 Quality check
         run: npx biome ci
 
   types:
