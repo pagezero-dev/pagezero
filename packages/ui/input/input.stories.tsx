@@ -49,7 +49,7 @@ export const Password: Story = {
   },
 }
 
-export const Number: Story = {
+export const Numeric: Story = {
   args: {
     type: "number",
     placeholder: "Enter a number",

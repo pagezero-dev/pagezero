@@ -91,6 +91,6 @@ export const WithIcon: Story = {
 export const AsButton: Story = {
   args: {
     asChild: true,
-    children: <button>Link</button>,
+    children: <button type="button">Link</button>,
   },
 }
