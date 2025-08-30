@@ -1,9 +1,8 @@
-import { Links, Meta, Outlet, Scripts, useRouteError } from "react-router"
 import { type ReactNode } from "react"
-
-import styles from "./styles/index.css?url"
-import fonts from "./fonts/inter-normal-latin.woff2?url"
+import { Links, Meta, Outlet, Scripts, useRouteError } from "react-router"
 import { ErrorPage } from "@/core/components/error-page"
+import fonts from "./fonts/inter-normal-latin.woff2?url"
+import styles from "./styles/index.css?url"
 
 export function Layout({ children }: { children: ReactNode }) {
   return (

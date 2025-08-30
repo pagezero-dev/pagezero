@@ -1,5 +1,5 @@
-import { drizzle as drizzleProxy } from "drizzle-orm/sqlite-proxy"
 import type { DrizzleConfig } from "drizzle-orm"
+import { drizzle as drizzleProxy } from "drizzle-orm/sqlite-proxy"
 
 interface Options {
   accountId: string

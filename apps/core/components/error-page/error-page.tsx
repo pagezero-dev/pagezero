@@ -1,5 +1,5 @@
-import { isRouteErrorResponse } from "react-router"
 import { CircleAlert } from "lucide-react"
+import { isRouteErrorResponse } from "react-router"
 
 interface ErrorPageProps {
   title?: string

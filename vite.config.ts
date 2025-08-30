@@ -1,10 +1,10 @@
+import { cloudflare } from "@cloudflare/vite-plugin"
+import mdx from "@mdx-js/rollup"
 import { reactRouter } from "@react-router/dev/vite"
+import tailwindcss from "@tailwindcss/vite"
+import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
-import mdx from "@mdx-js/rollup"
-import { visualizer } from "rollup-plugin-visualizer"
-import tailwindcss from "@tailwindcss/vite"
-import { cloudflare } from "@cloudflare/vite-plugin"
 
 const isStorybook = process.argv[1]?.includes("storybook")
 

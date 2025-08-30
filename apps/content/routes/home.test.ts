@@ -1,12 +1,12 @@
-import { describe, it, expect, beforeAll, beforeEach } from "vitest"
-import { drizzle } from "drizzle-orm/better-sqlite3"
-import Database from "better-sqlite3"
-import * as schema from "@/db/schema"
-import { DrizzleD1Database } from "drizzle-orm/d1"
 import fs from "node:fs"
+import Database from "better-sqlite3"
+import { drizzle } from "drizzle-orm/better-sqlite3"
+import { DrizzleD1Database } from "drizzle-orm/d1"
+import { beforeAll, beforeEach, describe, expect, it } from "vitest"
+import * as schema from "@/db/schema"
 import { greetings } from "@/db/schema"
-import { loader } from "./home"
 import type { Route } from "@/types/route"
+import { loader } from "./home"
 
 describe("loader", () => {
   const sqlite = new Database(":memory:")

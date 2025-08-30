@@ -1,9 +1,9 @@
-import { writeFileSync, mkdirSync } from "node:fs"
+import { mkdirSync, writeFileSync } from "node:fs"
 import { Command } from "commander"
+import { componentIndexTemplate } from "./templates/component.index.template"
 import { componentStoryTemplate } from "./templates/component.story.template"
 import { componentTemplate } from "./templates/component.template"
 import { componentTestTemplate } from "./templates/component.test.template"
-import { componentIndexTemplate } from "./templates/component.index.template"
 
 const program = new Command()
 

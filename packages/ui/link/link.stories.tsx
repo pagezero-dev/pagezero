@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react-vite"
-import { fn } from "storybook/test"
 import { faker } from "@faker-js/faker"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ExternalLink } from "lucide-react"
+import { fn } from "storybook/test"
 import { Link } from "./link"
 
 const meta = {
