@@ -24,13 +24,6 @@ updates:
           - "react-router"
           - "@react-router/*"
 
-      eslint:
-        patterns:
-          - "eslint*"
-          - "@eslint/*"
-          - "typescript-eslint"
-          - "@vitest/eslint-plugin"
-
       testing-library:
         patterns:
           - "@testing-library/*"

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
 import type { AppLoadContext } from "react-router"
 
 // Internal types utils
