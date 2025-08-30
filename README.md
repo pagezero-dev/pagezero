@@ -1,12 +1,12 @@
 # PageZERO
 
-An open-source TypeScript starter for full-stack web development on Cloudflare.
+An open-source TypeScript starter for full-stack web applications built for Cloudflare.
 
 Guiding principles:
 
 - Easy to learn
 - Fast to build with
-- Pleasure to develop
+- Pleasure to work with
 - Cheap to maintain
 
 ## 🔧 Prerequisites
