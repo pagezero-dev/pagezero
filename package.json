@@ -34,7 +34,7 @@
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
     "git:reset": "rm -rf .git && git init .",
     "preview": "NODE_ENV=development bun run build && vite preview",
-    "setup": "npm install && bun run setup:env && react-router typegen && playwright install --with-deps chromium && bun run db:setup",
+    "setup": "bun install && bun run setup:env && react-router typegen && playwright install --with-deps chromium && bun run db:setup",
     "setup:env": "echo '# Put your secrets here' > .env",
     "setup:reset": "git clean -fdxq && bun run setup",
     "storybook": "storybook dev -p 6006 --no-open",
