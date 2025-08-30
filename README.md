@@ -17,7 +17,7 @@ Before getting started, make sure you have the following installed:
 - [**Bun**](https://bun.com/): Version 1.2.20
 
 > [!TIP]
-> We recommend using [asdf](https://asdf-vm.com/) as your runtime version manager. 
+> [asdf](https://asdf-vm.com/) is the recommended runtime version manager.
 > Run `asdf install` within the root directory to automatically install the correct versions of Node.js and Bun. 
 > If you already have Node.js installed, alternatively, you can install Bun globally with `npm install -g bun`.
 
@@ -56,22 +56,21 @@ _Tooling:_
 
 - ⚡ [Bun](https://bun.com/) (package manager)
 - ✨ [Biome](https://biomejs.dev/) (code quality)
+- ✅ [GitHub Actions](https://github.com/features/actions) (CI/CD)
 - 🧪 [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) (testing)
 - 📖 [Shadcn](https://ui.shadcn.com/) + [Storybook](https://storybook.js.org/) (UI)
-- ✅ [GitHub Actions](https://github.com/features/actions) (CI/CD)
 
 ## ✨ Scripts
 
 Essential npm scripts:
 
-- `bun run setup` - performs npm install, sets up basic env vars, database and playwright browser drivers
-- `bun run dev` - boots development server
-- `bun run build` - builds the app
-- `bun run preview` - runs built app; this is how your app will be run on production
-- `bun test` - executes unit tests
-- `bun run check:types` - TypeScript types check
+- `bun run setup` - performs bun install, sets up basic env vars, database and Playwright browser drivers
+- `bun run dev` - boots the development server
+- `bun run preview` - builds the app and boots the compiled version
+- `bun run test` - executes unit tests
 - `bun run test:e2e:ui` - executes browser tests in UI mode, perfect for development
 - `bun run check` - code quality check (linting and formatting)
+- `bun run check:types` - TypeScript types check
 - `bun run storybook` - boots Storybook
 - `bun run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
 
@@ -93,12 +92,15 @@ OK, now to make it all work, we must go through a few setup steps...
 > Steps below require a [Cloudflare](https://www.cloudflare.com/) account.
 
 1. Login through `npx wrangler login`
+
 1. Create production and preview database:
    ```sh
    npx wrangler d1 create <project-name>-production
    npx wrangler d1 create <project-name>-preview
    ```
+
 1. Update `wrangler.json` with: project name, database names and returned `database_id`s
+
 1. Perform manual deployments to create Cloudflare Workers:
    ```sh
    npm run deploy:production
