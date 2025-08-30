@@ -55,10 +55,9 @@ Essential npm scripts:
 - `npm run build` - builds the app
 - `npm run preview` - runs built app; this is how your app will be run on production
 - `npm test` - executes unit tests
-- `npm run test:types` - TypeScript types check
+- `npm run check:types` - TypeScript types check
 - `npm run test:e2e:ui` - executes browser tests in UI mode, perfect for development
-- `npm run lint` - ESLint check
-- `npm run format` - Prettier check
+- `npm run check` - code quality check (linting and formatting)
 - `npm run storybook` - boots Storybook
 - `npm run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
 
