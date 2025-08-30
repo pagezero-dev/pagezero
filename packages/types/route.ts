@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { AppLoadContext } from "react-router"
+import type { AppLoadContext } from "react-router"
 
 // Internal types utils
 type LoaderOrAction = (...args: never[]) => Promise<unknown>

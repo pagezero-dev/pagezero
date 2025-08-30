@@ -6,7 +6,7 @@ import { DrizzleD1Database } from "drizzle-orm/d1"
 import fs from "fs"
 import { greetings } from "@/db/schema"
 import { loader } from "./home"
-import { Route } from "@/types/route"
+import type { Route } from "@/types/route"
 
 describe("loader", () => {
   const sqlite = new Database(":memory:")
