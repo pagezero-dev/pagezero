@@ -100,6 +100,10 @@
     "wrangler": "4.31.0"
   },
   "trustedDependencies": [
-    "@tailwindcss/oxide"
+    "@tailwindcss/oxide",
+    "better-sqlite3",
+    "esbuild",
+    "sharp",
+    "workerd"
   ]
 }
