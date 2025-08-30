@@ -1,4 +1,4 @@
-import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1"
+import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1"
 import { createRequestHandler } from "react-router"
 import * as schema from "../packages/db/schema"
 

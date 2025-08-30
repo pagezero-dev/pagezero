@@ -1,7 +1,7 @@
-import glob from "fast-glob"
-import { drizzle as drizzleLocal } from "drizzle-orm/better-sqlite3"
-import Database from "better-sqlite3"
 import { config } from "@dotenvx/dotenvx"
+import Database from "better-sqlite3"
+import { drizzle as drizzleLocal } from "drizzle-orm/better-sqlite3"
+import glob from "fast-glob"
 import { drizzle as drizzleRemote } from "./drivers/d1-http"
 
 export function getLocalSqliteDbUrl() {

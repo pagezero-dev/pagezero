@@ -1,5 +1,5 @@
 import { greetings } from "@/db/schema"
-import { Route } from "@/types/route"
+import type { Route } from "@/types/route"
 
 export const loader = async ({ context: { db } }: Route.LoaderArgs) => {
   const results = await db.select().from(greetings).all()

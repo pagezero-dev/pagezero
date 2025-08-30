@@ -1,5 +1,5 @@
-import { drizzle as drizzleProxy } from "drizzle-orm/sqlite-proxy"
 import type { DrizzleConfig } from "drizzle-orm"
+import { drizzle as drizzleProxy } from "drizzle-orm/sqlite-proxy"
 
 interface Options {
   accountId: string
@@ -47,8 +47,7 @@ export function drizzle(
         `Error from sqlite proxy server: \n${JSON.stringify(data)}`,
       )
 
-    // https://orm.drizzle.team/docs/get-started-sqlite#http-proxy
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: https://orm.drizzle.team/docs/get-started-sqlite#http-proxy
     return { rows: result.results.map((r: any) => Object.values(r)) }
   }, config)
 }

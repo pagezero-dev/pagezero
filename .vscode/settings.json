@@ -1,13 +1,9 @@
 {
-  // Enable automatic formatting for Prettier & ESLint
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
+    "source.fixAll.biome": "explicit"
   },
-
-  // Plugins
-  "prettier.requireConfig": true,
   "tailwindCSS.classFunctions": ["cva", "cn", "clsx"],
   "files.associations": {
     "*.css": "tailwindcss"

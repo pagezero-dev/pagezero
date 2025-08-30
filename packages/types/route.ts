@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-import { AppLoadContext } from "react-router"
+import type { AppLoadContext } from "react-router"
 
 // Internal types utils
 type LoaderOrAction = (...args: never[]) => Promise<unknown>
@@ -9,10 +8,12 @@ type LoaderOrActionArgs = {
   context: AppLoadContext
 }
 
-type LoaderOrActionData<T extends LoaderOrAction> =
-  Exclude<Awaited<ReturnType<T>>, Response> extends { data: infer D }
-    ? D
-    : Exclude<Awaited<ReturnType<T>>, Response>
+type LoaderOrActionData<T extends LoaderOrAction> = Exclude<
+  Awaited<ReturnType<T>>,
+  Response
+> extends { data: infer D }
+  ? D
+  : Exclude<Awaited<ReturnType<T>>, Response>
 
 type Loader = LoaderOrAction
 type Action = LoaderOrAction
