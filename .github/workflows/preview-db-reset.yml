@@ -24,19 +24,19 @@ jobs:
           cache: npm
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 🧹 Cleanup preview database
-        run: npm run db:clean
+        run: bun run db:clean
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: 🚚 Database migration
-        run: npx drizzle-kit migrate
+        run: bunx drizzle-kit migrate
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: 🌱 Seed preview database
-        run: npm run db:seed
+        run: bun run db:seed
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
