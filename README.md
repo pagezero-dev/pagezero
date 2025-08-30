@@ -42,7 +42,7 @@ _Core:_
 _Tooling:_
 
 - ✅ [GitHub Actions](https://github.com/features/actions) (CI/CD)
-- ✨ [Prettier](https://prettier.io/) + [ESLint](https://eslint.org/) (code quality)
+- ✨ [Biome](https://biomejs.dev/) (code quality)
 - 🧪 [Vitest](https://vitest.dev/) + [Playwright](https://playwright.dev/) (testing)
 - 📖 [Shadcn](https://ui.shadcn.com/) + [Storybook](https://storybook.js.org/) (UI components)
 

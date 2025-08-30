@@ -3,7 +3,6 @@
   "recommendations": [
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
     "biomejs.biome",
     "yoavbls.pretty-ts-errors",
     "unifiedjs.vscode-mdx"
