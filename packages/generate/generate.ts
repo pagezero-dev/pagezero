@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync } from "fs"
+import { writeFileSync, mkdirSync } from "node:fs"
 import { Command } from "commander"
 import { componentStoryTemplate } from "./templates/component.story.template"
 import { componentTemplate } from "./templates/component.template"
