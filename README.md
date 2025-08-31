@@ -110,13 +110,11 @@ OK, now to make it all work, we must go through a few setup steps...
 > Steps below require [GitHub CLI](https://cli.github.com/).
 > For Mac, you can set it up with: `brew install gh`.
 
-1.  Create a GitHub repo for the project and commit all changes
+1.  Create a GitHub repo for the project and push all changes
 
     ```sh
-    gh repo create <project-name>
-    git add .
-    git commit -m "Init"
-    git push
+    cd <project-name>
+    gh repo create <project-name> --private --source=. --remote=origin --push
     ```
 
 1.  Obtain Cloudflare Account ID
