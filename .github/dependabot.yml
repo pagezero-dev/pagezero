@@ -12,33 +12,18 @@ updates:
       interval: "monthly"
     open-pull-requests-limit: 4
     groups:
-      react:
+      patch:
+        update-types: patch
+      core:
         patterns:
           - "react"
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
-
-      react-router:
-        patterns:
           - "react-router"
           - "@react-router/*"
-
-      testing-library:
-        patterns:
-          - "@testing-library/*"
 
       storybook:
         patterns:
           - "@storybook/*"
           - "storybook"
-
-      drizzle-orm:
-        patterns:
-          - "drizzle-orm"
-          - "drizzle-kit"
-
-      security-patches:
-        applies-to: "security-updates"
-        update-types:
-          - "patch"
