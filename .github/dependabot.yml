@@ -13,7 +13,8 @@ updates:
     open-pull-requests-limit: 4
     groups:
       patch:
-        update-types: patch
+        update-types: 
+          - "patch"
       core:
         patterns:
           - "react"
