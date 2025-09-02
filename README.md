@@ -20,7 +20,7 @@ Before getting started, make sure you have the following installed:
 > For PageZERO, [asdf](https://asdf-vm.com/) is the recommended runtime version manager.
 > After asdf setup, to automatically install proper asdf plugins and versions of Node.js and Bun, run in your project directory:
 > ```sh
-> cut -d' ' -f1 .tool-versions | xargs -I {}  asdf plugin add {} && asdf install
+> asdf plugin add nodejs && asdf plugin add bun && asdf install
 > ``` 
 > Alternatively, if you are in a rush and have Node.js already installed, you can quickly install Bun with `npm install -g bun`.
 
