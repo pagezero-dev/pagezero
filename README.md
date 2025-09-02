@@ -65,9 +65,11 @@ Essential bun scripts:
 - `bun run dev` - boots the development server
 - `bun run preview` - builds the app and boots the compiled version
 - `bun run test` - executes unit tests
+- `bun run test:watch` - run unit tests in watch mode
 - `bun run test:e2e:ui` - executes browser tests in UI mode, perfect for development
 - `bun run check` - code quality check (linting and formatting)
 - `bun run check:types` - TypeScript types check
+- `bun run check:fix` - fix linting and formatting issues
 - `bun run storybook` - boots Storybook
 - `bun run doctor` - runs all basic sanity checks: format, lint, types check and unit tests
 
