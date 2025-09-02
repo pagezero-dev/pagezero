@@ -7,7 +7,8 @@
   "author": "",
   "license": "MIT",
   "engines": {
-    "node": "=24.6.0"
+    "node": ">=24.6.0",
+    "bun": ">=1.2.20"
   },
   "scripts": {
     "asdf:install": "cut -d' ' -f1 .tool-versions | xargs -I {}  asdf plugin add {} && asdf install",
