@@ -1,5 +1,5 @@
 import { defineConfig } from "drizzle-kit"
-import { getLocalSqliteDbUrl } from "./packages/db/utils"
+import { getLocalSqliteDbUrl } from "@/db/utils"
 
 const hasCloudflareCredentials =
   process.env.CLOUDFLARE_ACCOUNT_ID &&

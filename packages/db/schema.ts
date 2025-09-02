@@ -1,1 +1,1 @@
-export * from "../../apps/content/db/schema"
+export * from "@/content/db/schema"
