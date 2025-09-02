@@ -59,7 +59,7 @@ _Tooling:_
 
 ## ✨ Scripts
 
-Essential npm scripts:
+Essential bun scripts:
 
 - `bun run setup` - performs bun install, sets up basic env vars, database and Playwright browser drivers
 - `bun run dev` - boots the development server
@@ -88,20 +88,20 @@ OK, now to make it all work, we must go through a few setup steps...
 > [!IMPORTANT]
 > Steps below require a [Cloudflare](https://www.cloudflare.com/) account.
 
-1. Login through `npx wrangler login`
+1. Login through `bunx wrangler login`
 
 1. Create production and preview database:
    ```sh
-   npx wrangler d1 create <project-name>-production
-   npx wrangler d1 create <project-name>-preview
+   bunx wrangler d1 create <project-name>-production
+   bunx wrangler d1 create <project-name>-preview
    ```
 
 1. Update `wrangler.json` with: project name, database names and returned `database_id`s
 
 1. Perform manual deployments to create Cloudflare Workers:
    ```sh
-   npm run deploy:production
-   npm run deploy:preview
+   bun run deploy:production
+   bun run deploy:preview
    ```
 
 ### Github configuration
@@ -109,6 +109,8 @@ OK, now to make it all work, we must go through a few setup steps...
 > [!IMPORTANT]
 > Steps below require [GitHub CLI](https://cli.github.com/).
 > For Mac, you can set it up with: `brew install gh`.
+
+1.  Login through `gh auth login`
 
 1.  Create a GitHub repo for the project and push all changes
 
@@ -120,13 +122,13 @@ OK, now to make it all work, we must go through a few setup steps...
 1.  Obtain Cloudflare Account ID
 
     ```sh
-    npx wrangler whoami
+    bunx wrangler whoami
     ```
 
 1.  Obtain Cloudflare D1 database IDs
 
     ```sh
-    npx wrangler d1 list
+    bunx wrangler d1 list
     ```
 
 1.  Add the following repository variables:
