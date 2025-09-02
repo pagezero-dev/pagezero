@@ -10,6 +10,7 @@
     "node": "=24.6.0"
   },
   "scripts": {
+    "asdf:install": "cut -d' ' -f1 .tool-versions | xargs -I {}  asdf plugin add {} && asdf install",
     "build": "react-router build",
     "check": "biome check",
     "check:fix": "biome check --write",

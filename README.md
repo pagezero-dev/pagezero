@@ -17,9 +17,9 @@ Before getting started, make sure you have the following installed:
 - [**Bun**](https://bun.com/): Version 1.2.20
 
 > [!TIP]
-> [asdf](https://asdf-vm.com/) is the recommended runtime version manager.
-> Run `asdf install` within the root directory to automatically install the correct versions of Node.js and Bun. 
-> If you already have Node.js installed, alternatively, you can install Bun globally with `npm install -g bun`.
+> For PageZERO, [asdf](https://asdf-vm.com/) is the recommended runtime version manager.
+> After asdf setup, run `bun run asdf:install` within the root directory to automatically install the correct versions of Node.js and Bun. 
+> Alternatively, if you already have Node.js installed, you can quickly install Bun globally with `npm install -g bun`.
 
 
 ## ⚡️ Quick start
