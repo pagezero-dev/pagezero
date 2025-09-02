@@ -29,7 +29,7 @@ describe("loader", () => {
 
   it("should return the greetings", async () => {
     const result = await loader({
-      context: { db, cloudflare: { env: {} } },
+      context: { db },
     } as Route.LoaderArgs)
 
     expect(result).toEqual({

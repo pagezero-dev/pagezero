@@ -4,11 +4,8 @@ import * as schema from "@/db/schema"
 
 declare module "react-router" {
   export interface AppLoadContext {
-    cloudflare: {
-      env: Env
-      ctx: ExecutionContext
-    }
     env: Env
+    ctx: ExecutionContext
     db: DrizzleD1Database<typeof schema>
   }
 }
@@ -24,8 +21,8 @@ export default {
     const db = drizzle(env.DB, { schema })
 
     return requestHandler(request, {
-      cloudflare: { env, ctx },
       env,
+      ctx,
       db,
     })
   },
