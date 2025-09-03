@@ -2,12 +2,7 @@
   "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": [
-      "node",
-      "./worker-configuration.d.ts",
-      "@react-router/cloudflare",
-      "vite/client"
-    ],
+    "types": ["node", "./worker-configuration.d.ts", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
