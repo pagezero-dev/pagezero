@@ -4,7 +4,6 @@
     "": {
       "name": "pagezero",
       "dependencies": {
-        "@mdx-js/react": "3.1.1",
         "class-variance-authority": "0.7.1",
         "clsx": "2.1.1",
         "drizzle-orm": "0.44.5",
@@ -14,7 +13,6 @@
         "react": "19.1.1",
         "react-dom": "19.1.1",
         "react-router": "7.8.2",
-        "swr": "2.3.6",
         "tailwind-merge": "3.3.1",
       },
       "devDependencies": {
@@ -22,6 +20,7 @@
         "@cloudflare/vite-plugin": "1.12.1",
         "@dotenvx/dotenvx": "1.49.0",
         "@faker-js/faker": "10.0.0",
+        "@mdx-js/react": "3.1.1",
         "@mdx-js/rollup": "3.1.1",
         "@playwright/test": "1.55.0",
         "@react-router/dev": "7.8.2",
@@ -1328,8 +1327,6 @@
     "supports-color": ["supports-color@7.2.0", "", { "dependencies": { "has-flag": "^4.0.0" } }, "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw=="],
 
     "supports-preserve-symlinks-flag": ["supports-preserve-symlinks-flag@1.0.0", "", {}, "sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w=="],
-
-    "swr": ["swr@2.3.6", "", { "dependencies": { "dequal": "^2.0.3", "use-sync-external-store": "^1.4.0" }, "peerDependencies": { "react": "^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-wfHRmHWk/isGNMwlLGlZX5Gzz/uTgo0o2IRuTMcf4CPuPFJZlq0rDaKUx+ozB5nBOReNV1kiOyzMfj+MBMikLw=="],
 
     "tailwind-merge": ["tailwind-merge@3.3.1", "", {}, "sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g=="],
 
