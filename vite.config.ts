@@ -46,7 +46,8 @@ export default defineConfig({
 
     coverage: {
       include: ["{apps,packages}/**/*.{ts,tsx}"],
-      reporter: ["text"],
+      exclude: ["**/*.stories.tsx"],
+      reporter: ["text", "text-summary"],
       reportsDirectory: "./.reports/tests-coverage",
       thresholds: {
         statements: 0,
