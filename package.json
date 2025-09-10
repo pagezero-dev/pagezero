@@ -21,6 +21,7 @@
     "db:export": "drizzle-kit export > ./packages/db/schema.sql",
     "db:generate": "bun run db:generate:imports && drizzle-kit generate",
     "db:generate:imports": "bun ./packages/db/scripts/schema-imports.ts",
+    "db:generate:reset": "rm -rf ./packages/db/migrations && bun run db:generate --name=init",
     "db:init": "tsx ./packages/db/scripts/init.ts",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
