@@ -15,12 +15,16 @@ updates:
       patch:
         update-types: 
           - "patch"
-      core:
+
+      react:
         patterns:
           - "react"
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
+
+      react-router:
+        patterns:
           - "react-router"
           - "@react-router/*"
 
