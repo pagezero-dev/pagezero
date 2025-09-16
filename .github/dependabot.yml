@@ -11,16 +11,25 @@ updates:
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 4
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/bun"
+        
     groups:
       patch:
         update-types: 
           - "patch"
-      core:
+
+      react:
         patterns:
           - "react"
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
+
+      react-router:
+        patterns:
           - "react-router"
           - "@react-router/*"
 
