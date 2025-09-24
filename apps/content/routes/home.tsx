@@ -1,3 +1,4 @@
+import { CircleCheck, CircleOff } from "lucide-react"
 import { greetings } from "@/db/schema"
 import type { Route } from "@/types/route"
 
@@ -11,16 +12,20 @@ export default function Home({
 }: Route.ComponentProps<typeof loader>) {
   return (
     <main className="flex h-screen items-center justify-center">
-      <div className="flex flex-col items-center justify-center gap-6">
-        <h1 className="text-7xl font-extrabold animate-in blur-in-2xl duration-1000">
-          PageZERO
-        </h1>
-        <h2 className="text-lg animate-in slide-in-from-bottom fade-in duration-1000 text-gray-600 tracking-wide">
-          Full-stack web application starter for Cloudflare
-        </h2>
-        {greetings.map((greeting) => (
-          <p key={greeting.id}>{greeting.greeting}</p>
-        ))}
+      <div className="flex flex-col justify-center p-4">
+        <div className="flex flex-col items-center justify-center gap-6 animate-in blur-in-2xl duration-700">
+          <CircleOff className="size-44" />
+          <h1 className="text-6xl font-extrabold ">PageZERO</h1>
+        </div>
+
+        <div className="text-center bg-gray-100 rounded-lg p-4 max-w-md mt-20 animate-in slide-in-from-bottom-4 fade-in duration-1000">
+          {greetings.map((greeting) => (
+            <p key={greeting.id}>
+              <CircleCheck className="size-6 text-green-500 align-middle inline-block mr-2" />
+              {greeting.greeting}
+            </p>
+          ))}
+        </div>
       </div>
     </main>
   )
