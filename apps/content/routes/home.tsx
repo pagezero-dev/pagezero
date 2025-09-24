@@ -13,8 +13,8 @@ export default function Home({
   return (
     <main className="flex h-screen items-center justify-center">
       <div className="flex flex-col justify-center p-4">
-        <div className="flex flex-col items-center justify-center gap-6 animate-in blur-in-2xl duration-700">
-          <CircleOff className="size-44" />
+        <div className="flex flex-col items-center justify-center gap-8 animate-in blur-in-2xl duration-700">
+          <CircleOff className="size-36" />
           <h1 className="text-6xl font-extrabold ">PageZERO</h1>
         </div>
 
