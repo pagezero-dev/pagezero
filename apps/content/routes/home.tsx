@@ -21,7 +21,7 @@ export default function Home({
         <div className="text-center bg-gray-100 rounded-lg p-4 max-w-md mt-20 animate-in slide-in-from-bottom-4 fade-in duration-1000">
           {greetings.map((greeting) => (
             <p key={greeting.id}>
-              <CircleCheck className="size-6 text-green-500 align-middle inline-block mr-2" />
+              <CircleCheck className="size-6 text-green-500 align-top inline-block mr-2" />
               {greeting.greeting}
             </p>
           ))}
