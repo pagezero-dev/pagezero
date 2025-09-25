@@ -18,7 +18,7 @@ export default function Home({
           <h1 className="font-extrabold text-6xl">PageZERO</h1>
         </div>
 
-        <div className="slide-in-from-bottom-4 fade-in mt-20 max-w-md animate-in rounded-lg bg-gray-100 p-4 text-center duration-1000">
+        <div className="slide-in-from-bottom-4 fade-in mt-20 max-w-md animate-in rounded-lg bg-muted p-4 text-center duration-1000">
           {greetings.map((greeting) => (
             <p key={greeting.id}>
               <CircleCheck className="mr-2 inline-block size-6 align-top text-green-500" />
