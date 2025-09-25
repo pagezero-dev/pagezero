@@ -33,7 +33,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <link rel="stylesheet" href={styles} crossOrigin="anonymous"></link>
         <Links />
       </head>
-      <body>
+      <body className="dark">
         {children}
         <Scripts />
       </body>
