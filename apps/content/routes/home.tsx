@@ -13,15 +13,15 @@ export default function Home({
   return (
     <main className="flex h-screen items-center justify-center">
       <div className="flex flex-col p-4">
-        <div className="flex flex-col items-center gap-8 animate-in blur-in-2xl duration-700">
+        <div className="flex animate-in flex-col items-center gap-8 blur-in-2xl duration-700">
           <CircleOff className="size-36" />
-          <h1 className="text-6xl font-extrabold ">PageZERO</h1>
+          <h1 className="font-extrabold text-6xl">PageZERO</h1>
         </div>
 
-        <div className="text-center bg-gray-100 rounded-lg p-4 max-w-md mt-20 animate-in slide-in-from-bottom-4 fade-in duration-1000">
+        <div className="slide-in-from-bottom-4 fade-in mt-20 max-w-md animate-in rounded-lg bg-gray-100 p-4 text-center duration-1000">
           {greetings.map((greeting) => (
             <p key={greeting.id}>
-              <CircleCheck className="size-6 text-green-500 align-top inline-block mr-2" />
+              <CircleCheck className="mr-2 inline-block size-6 align-top text-green-500" />
               {greeting.greeting}
             </p>
           ))}
