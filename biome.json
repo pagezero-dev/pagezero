@@ -26,6 +26,14 @@
       },
       "style": {
         "useImportType": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "options": {
+            "functions": ["clsx", "cn", "cva"]
+          }
+        }
       }
     }
   },
