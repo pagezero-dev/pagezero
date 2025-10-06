@@ -23,6 +23,8 @@ export default defineConfig({
   maxFailures: process.env.CI ? 5 : undefined,
   /* The output directory for files created during test execution. */
   outputDir: "./.reports/e2e-tests-results",
+  /* Timeout for each test */
+  timeout: 10000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
