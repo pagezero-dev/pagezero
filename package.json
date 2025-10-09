@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.5",
-    "@cloudflare/vite-plugin": "1.13.9",
+    "@cloudflare/vite-plugin": "1.13.11",
     "@dotenvx/dotenvx": "1.51.0",
     "@faker-js/faker": "10.0.0",
     "@mdx-js/react": "3.1.1",
