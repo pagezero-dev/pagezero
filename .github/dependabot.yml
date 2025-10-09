@@ -17,14 +17,17 @@ updates:
       - dependency-name: "@types/bun"
         
     groups:
+      patch:
+        update-types:
+          - "patch"
+        exclude-patterns:
+          - "@cloudflare/*"
+          - "wrangler"
+
       cloudflare:
         patterns:
           - "@cloudflare/*"
           - "wrangler"
-
-      patch:
-        update-types:
-          - "patch"
 
       react:
         patterns:
