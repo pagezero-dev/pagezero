@@ -17,6 +17,11 @@ updates:
       - dependency-name: "@types/bun"
         
     groups:
+      security:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
+      
       patch:
         update-types:
           - "patch"
