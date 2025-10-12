@@ -86,7 +86,6 @@
     "commander": "14.0.1",
     "drizzle-kit": "0.31.5",
     "fast-glob": "3.3.3",
-    "globals": "16.3.0",
     "happy-dom": "19.0.2",
     "rollup-plugin-visualizer": "6.0.4",
     "storybook": "9.1.10",
