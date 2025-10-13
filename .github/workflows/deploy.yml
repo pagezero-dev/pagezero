@@ -34,7 +34,7 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: ⎔ Setup Bun
+      - name: 🥟 Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .tool-versions
@@ -57,7 +57,7 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: ⎔ Setup Bun
+      - name: 🥟 Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .tool-versions
@@ -83,7 +83,7 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: ⎔ Setup Bun
+      - name: 🥟 Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .tool-versions
@@ -114,7 +114,7 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: ⎔ Setup Bun
+      - name: 🥟 Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .tool-versions
@@ -167,7 +167,7 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: ⎔ Setup Bun
+      - name: 🥟 Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .tool-versions
@@ -201,7 +201,7 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: ⎔ Setup Bun
+      - name: 🥟 Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .tool-versions
@@ -235,7 +235,7 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: ⎔ Setup Bun
+      - name: 🥟 Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .tool-versions

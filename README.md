@@ -13,8 +13,8 @@ Guiding principles:
 
 Before getting started, make sure you have the following installed:
 
-- [**Node.js**](https://nodejs.org/): Version >= 24.6.0
-- [**Bun**](https://bun.com/): Version >= 1.2.20
+- [**Node.js**](https://nodejs.org/): Version >= 24
+- [**Bun**](https://bun.com/): Version >= 1.3
 
 > [!TIP]
 > For PageZERO, [asdf](https://asdf-vm.com/) is the recommended runtime version manager.
