@@ -1,5 +1,4 @@
 import { cloudflare } from "@cloudflare/vite-plugin"
-import mdx from "@mdx-js/rollup"
 import { reactRouter } from "@react-router/dev/vite"
 import tailwindcss from "@tailwindcss/vite"
 import { visualizer } from "rollup-plugin-visualizer"
@@ -22,13 +21,7 @@ export default defineConfig({
     tsconfigPaths(),
     tailwindcss(),
     ...(!process.env.VITEST && !isStorybook
-      ? [
-          mdx({
-            providerImportSource: "@mdx-js/react",
-          }),
-          cloudflare({ viteEnvironment: { name: "ssr" } }),
-          reactRouter(),
-        ]
+      ? [cloudflare({ viteEnvironment: { name: "ssr" } }), reactRouter()]
       : []),
     ...(!process.env.CI
       ? [
