@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.5",
-    "@cloudflare/vite-plugin": "1.13.12",
+    "@cloudflare/vite-plugin": "1.13.18",
     "@dotenvx/dotenvx": "1.51.0",
     "@faker-js/faker": "10.0.0",
     "@playwright/test": "1.56.0",
@@ -94,7 +94,7 @@
     "vite": "7.1.9",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.4",
-    "wrangler": "4.42.2"
+    "wrangler": "4.45.3"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",
