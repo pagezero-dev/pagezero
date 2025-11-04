@@ -21,7 +21,7 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    backgrounds: { disable: true },
+    backgrounds: { disabled: true },
     viewport: {
       options: {
         xs: {
