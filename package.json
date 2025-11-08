@@ -79,7 +79,7 @@
     "@types/node": "24.10.0",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
-    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/coverage-v8": "4.0.8",
     "better-sqlite3": "12.4.1",
     "commander": "14.0.2",
     "drizzle-kit": "0.31.6",
@@ -93,7 +93,7 @@
     "typescript": "5.9.3",
     "vite": "7.1.12",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.2.4",
+    "vitest": "4.0.8",
     "wrangler": "4.45.3"
   },
   "trustedDependencies": [

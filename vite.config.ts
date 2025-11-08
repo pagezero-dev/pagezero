@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { cloudflare } from "@cloudflare/vite-plugin"
 import { reactRouter } from "@react-router/dev/vite"
 import tailwindcss from "@tailwindcss/vite"
@@ -33,9 +34,11 @@ export default defineConfig({
       : []),
   ],
   test: {
-    // Will call .mockRestore() on all spies before each test. This will
-    // clear mock history and reset its implementation to the original one.
+    // Restores all original implementations on spies created manually
     restoreMocks: true,
+
+    // Clears mocks history
+    clearMocks: true,
 
     coverage: {
       include: ["{apps,packages}/**/*.{ts,tsx}"],
