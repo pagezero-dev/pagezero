@@ -65,7 +65,7 @@
     "@cloudflare/vite-plugin": "1.14.1",
     "@dotenvx/dotenvx": "1.51.0",
     "@faker-js/faker": "10.1.0",
-    "@playwright/test": "1.56.1",
+    "@playwright/test": "1.57.0",
     "@react-router/dev": "7.9.5",
     "@storybook/addon-docs": "10.0.3",
     "@storybook/addon-themes": "10.0.3",
