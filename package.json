@@ -67,7 +67,7 @@
     "@faker-js/faker": "10.1.0",
     "@playwright/test": "1.57.0",
     "@react-router/dev": "7.9.6",
-    "@storybook/addon-docs": "10.0.3",
+    "@storybook/addon-docs": "10.1.2",
     "@storybook/addon-themes": "10.0.3",
     "@storybook/react-vite": "10.1.2",
     "@tailwindcss/vite": "4.1.17",
