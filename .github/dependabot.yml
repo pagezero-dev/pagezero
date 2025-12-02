@@ -10,7 +10,7 @@ updates:
     directory: "/"
     schedule:
       interval: "quarterly"
-    open-pull-requests-limit: 4
+    open-pull-requests-limit: 10
     commit-message:
       prefix: "chore"
     ignore:
