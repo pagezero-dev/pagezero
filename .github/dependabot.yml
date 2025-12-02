@@ -11,6 +11,8 @@ updates:
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 4
+    commit-message:
+      prefix: "chore"
     ignore:
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
