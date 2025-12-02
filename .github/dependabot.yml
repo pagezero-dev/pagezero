@@ -3,13 +3,13 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
-    open-pull-requests-limit: 1
+      interval: "quarterly"
+    open-pull-requests-limit: 2
 
   - package-ecosystem: "bun"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "quarterly"
     open-pull-requests-limit: 4
     commit-message:
       prefix: "chore"
@@ -18,12 +18,7 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "@types/bun"
         
-    groups:
-      security:
-        applies-to: "security-updates"
-        patterns:
-          - "*"
-      
+    groups:      
       patch:
         update-types:
           - "patch"
