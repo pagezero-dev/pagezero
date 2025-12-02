@@ -29,7 +29,7 @@ export function Layout({ children }: { children: ReactNode }) {
             ></link>
           </>
         )}
-        <link rel="icon" href="data:image/x-icon;base64,AA" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
         <link rel="stylesheet" href={styles} crossOrigin="anonymous"></link>
         <Links />
       </head>
