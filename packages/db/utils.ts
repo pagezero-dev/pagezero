@@ -68,6 +68,8 @@ export function getDbCredentials() {
 
   const databaseId = getDatabaseId(process.env.CLOUDFLARE_ENV)
 
+  console.log("🔗 Database ID:", databaseId)
+
   if (isRemote) {
     return {
       driver: "d1-http",
