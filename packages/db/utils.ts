@@ -66,13 +66,15 @@ export function getDbCredentials() {
     isValidCloudflareEnv(process.env.CLOUDFLARE_ENV) &&
     ["production", "preview"].includes(process.env.CLOUDFLARE_ENV)
 
+  const databaseId = getDatabaseId(process.env.CLOUDFLARE_ENV)
+
   if (isRemote) {
     return {
       driver: "d1-http",
       dbCredentials: {
         accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
         token: process.env.CLOUDFLARE_API_TOKEN,
-        databaseId: getDatabaseId(process.env.CLOUDFLARE_ENV),
+        databaseId,
       },
     }
   }
