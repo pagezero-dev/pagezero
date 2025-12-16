@@ -124,25 +124,13 @@ OK, now to make it all work, we must go through a few setup steps...
     gh repo create <project-name> --private --source=. --remote=origin --push
     ```
 
-1.  Obtain Cloudflare Account ID
-
-    ```sh
-    bunx wrangler whoami
-    ```
-
-1.  Obtain Cloudflare D1 database IDs
-
-    ```sh
-    bunx wrangler d1 list
-    ```
-
-1.  Add the following repository variables:
+1.  Add the following repository variable:
 
     ```sh
     gh variable set CLOUDFLARE_ACCOUNT_ID --body "<your-cloudflare-account-id>"
-    gh variable set CLOUDFLARE_DATABASE_ID_PRODUCTION --body "<your-production-database-id>"
-    gh variable set CLOUDFLARE_DATABASE_ID_PREVIEW --body "<your-preview-database-id>"
     ```
+
+    > Cloudflare account ID can be obtained through `bunx wrangler whoami` command.
 
     > You can browse variables by going to the GitHub UI "Settings / Secrets and variables / Actions" for your repo
     > or by executing `gh variable list`.
