@@ -60,15 +60,13 @@ function getDatabaseId(cloudflareEnv?: string) {
 }
 
 export function getDbCredentials() {
-  config({ path: ".env" })
+  config({ path: ".env", quiet: true })
 
   const isRemote =
     isValidCloudflareEnv(process.env.CLOUDFLARE_ENV) &&
     ["production", "preview"].includes(process.env.CLOUDFLARE_ENV)
 
   const databaseId = getDatabaseId(process.env.CLOUDFLARE_ENV)
-
-  console.log("🔗 Database ID:", databaseId)
 
   if (isRemote) {
     return {
