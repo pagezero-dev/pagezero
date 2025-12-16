@@ -40,3 +40,27 @@ export function getLocalOrRemoteDb() {
     return drizzleLocal(new Database(getLocalSqliteDbUrl()), { logger: true })
   }
 }
+
+export function getDbCredentials() {
+  const hasCloudflareCredentials =
+    process.env.CLOUDFLARE_ACCOUNT_ID &&
+    process.env.CLOUDFLARE_DATABASE_ID &&
+    process.env.CLOUDFLARE_API_TOKEN
+
+  if (hasCloudflareCredentials) {
+    return {
+      driver: "d1-http",
+      dbCredentials: {
+        accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+        databaseId: process.env.CLOUDFLARE_DATABASE_ID,
+        token: process.env.CLOUDFLARE_API_TOKEN,
+      },
+    }
+  }
+
+  return {
+    dbCredentials: {
+      url: getLocalSqliteDbUrl(),
+    },
+  }
+}
