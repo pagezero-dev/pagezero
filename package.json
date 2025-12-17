@@ -24,6 +24,8 @@
     "db:generate:reset": "rm -rf ./packages/db/migrations && bun run db:generate --name=init",
     "db:init": "tsx ./packages/db/scripts/init.ts",
     "db:migrate": "drizzle-kit migrate",
+    "db:migrate:production": "CLOUDFLARE_ENV=production drizzle-kit migrate",
+    "db:migrate:preview": "CLOUDFLARE_ENV=preview drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:remove": "rm -rf ./.wrangler/state/v3/d1",
     "db:seed": "tsx ./packages/db/scripts/seed.ts",
