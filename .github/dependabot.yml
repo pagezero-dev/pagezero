@@ -40,8 +40,8 @@ updates:
 
       react-router:
         patterns:
-          - "react-router"
           - "@react-router/*"
+          - "react-router"
 
       storybook:
         patterns:
