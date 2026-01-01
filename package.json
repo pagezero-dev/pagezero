@@ -53,7 +53,7 @@
   "dependencies": {
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
-    "drizzle-orm": "0.44.7",
+    "drizzle-orm": "0.45.1",
     "isbot": "5.1.32",
     "lucide-react": "0.562.0",
     "radix-ui": "1.4.3",
