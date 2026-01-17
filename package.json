@@ -59,7 +59,7 @@
     "radix-ui": "1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-router": "7.11.0",
+    "react-router": "7.12.0",
     "tailwind-merge": "3.4.0"
   },
   "devDependencies": {
@@ -68,7 +68,7 @@
     "@dotenvx/dotenvx": "1.51.4",
     "@faker-js/faker": "10.1.0",
     "@playwright/test": "1.57.0",
-    "@react-router/dev": "7.11.0",
+    "@react-router/dev": "7.12.0",
     "@storybook/addon-docs": "10.1.11",
     "@storybook/addon-themes": "10.1.11",
     "@storybook/react-vite": "10.1.11",
