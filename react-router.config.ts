@@ -5,5 +5,5 @@ export default {
   future: {
     v8_viteEnvironmentApi: true,
   },
-  appDirectory: "apps/core",
+  appDirectory: "apps",
 } satisfies Config

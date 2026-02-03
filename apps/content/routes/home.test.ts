@@ -5,7 +5,7 @@ import { DrizzleD1Database } from "drizzle-orm/d1"
 import { beforeAll, beforeEach, describe, expect, it } from "vitest"
 import * as schema from "@/db/schema"
 import { greetings } from "@/db/schema"
-import type { Route } from "@/types/route"
+import type { Route } from "./+types/home"
 import { loader } from "./home"
 
 describe("loader", () => {

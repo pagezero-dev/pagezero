@@ -1,6 +1,6 @@
 import { CircleCheck, CircleOff } from "lucide-react"
 import { greetings } from "@/db/schema"
-import type { Route } from "@/types/route"
+import type { Route } from "./+types/home"
 
 export const loader = async ({ context: { db } }: Route.LoaderArgs) => {
   const results = await db.select().from(greetings).all()
@@ -9,7 +9,7 @@ export const loader = async ({ context: { db } }: Route.LoaderArgs) => {
 
 export default function Home({
   loaderData: { greetings },
-}: Route.ComponentProps<typeof loader>) {
+}: Route.ComponentProps) {
   return (
     <main className="flex h-screen items-center justify-center">
       <div className="flex flex-col p-4">
