@@ -2,10 +2,11 @@ import fs from "node:fs"
 import Database from "better-sqlite3"
 import { drizzle } from "drizzle-orm/better-sqlite3"
 import { DrizzleD1Database } from "drizzle-orm/d1"
+import { RouterContextProvider } from "react-router"
 import { beforeAll, beforeEach, describe, expect, it } from "vitest"
+import { dbContext } from "@/db/context"
 import * as schema from "@/db/schema"
 import { greetings } from "@/db/schema"
-import type { Route } from "./+types/home"
 import { loader } from "./home"
 
 describe("loader", () => {
@@ -28,9 +29,14 @@ describe("loader", () => {
   })
 
   it("should return the greetings", async () => {
+    const context = new RouterContextProvider()
+    context.set(dbContext, db)
     const result = await loader({
-      context: { db },
-    } as Route.LoaderArgs)
+      request: new Request("http://localhost/"),
+      params: {},
+      unstable_pattern: "",
+      context,
+    })
 
     expect(result).toEqual({
       greetings: [{ id: 1, greeting: "Hello, world!" }],

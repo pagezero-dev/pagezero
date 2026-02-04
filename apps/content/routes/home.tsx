@@ -1,8 +1,10 @@
 import { CircleCheck, CircleOff } from "lucide-react"
+import { dbContext } from "@/db/context"
 import { greetings } from "@/db/schema"
 import type { Route } from "./+types/home"
 
-export const loader = async ({ context: { db } }: Route.LoaderArgs) => {
+export const loader = async ({ context }: Route.LoaderArgs) => {
+  const db = context.get(dbContext)
   const results = await db.select().from(greetings).all()
   return { greetings: results }
 }
