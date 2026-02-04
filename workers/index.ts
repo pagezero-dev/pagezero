@@ -1,29 +1,22 @@
-import { type DrizzleD1Database, drizzle } from "drizzle-orm/d1"
-import { createRequestHandler } from "react-router"
+import { drizzle } from "drizzle-orm/d1"
+import { createRequestHandler, RouterContextProvider } from "react-router"
+import { envContext } from "@/core/context"
+import { dbContext } from "@/db/context"
 import * as schema from "@/db/schema"
 
-declare module "react-router" {
-  export interface AppLoadContext {
-    env: Env
-    ctx: ExecutionContext
-    db: DrizzleD1Database<typeof schema>
-  }
-}
-
 const requestHandler = createRequestHandler(
-  // @ts-expect-error - virtual module handled by React Router at build time
   () => import("virtual:react-router/server-build"),
   import.meta.env.MODE,
 )
 
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     const db = drizzle(env.DB, { schema })
 
-    return requestHandler(request, {
-      env,
-      ctx,
-      db,
-    })
+    const context = new RouterContextProvider()
+    context.set(dbContext, db)
+    context.set(envContext, env)
+
+    return requestHandler(request, context)
   },
 } satisfies ExportedHandler<Env>
