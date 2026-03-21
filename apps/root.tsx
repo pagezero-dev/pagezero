@@ -37,6 +37,7 @@ export function Layout({ children }: { children: ReactNode }) {
             ></link>
           </>
         )}
+        <link rel="icon" href="/favicon.ico" sizes="any"></link>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
         <link rel="canonical" href={config.core.websiteUrl} />
         <link rel="stylesheet" href={styles} crossOrigin="anonymous"></link>
