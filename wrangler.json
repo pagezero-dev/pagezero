@@ -12,6 +12,9 @@
     "enabled": true
   },
   "upload_source_maps": true,
+  "vars": {
+    "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "1x00000000000000000000BB"
+  },
   "d1_databases": [
     {
       "binding": "DB",
@@ -21,6 +24,9 @@
   ],
   "env": {
     "production": {
+      "vars": {
+        "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "0x4AAAAAABd1vnMC0VAcAlf3"
+      },
       "d1_databases": [
         {
           "binding": "DB",
@@ -30,6 +36,9 @@
       ]
     },
     "preview": {
+      "vars": {
+        "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "0x4AAAAAABd1vnMC0VAcAlf3"
+      },
       "d1_databases": [
         {
           "binding": "DB",
@@ -39,6 +48,9 @@
       ]
     },
     "test": {
+      "vars": {
+        "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": ""
+      },
       "d1_databases": [
         {
           "binding": "DB",
