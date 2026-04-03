@@ -1,2 +1,17 @@
 @import "./tailwind.css";
 @import "./fonts.css";
+
+/*
+ * Development Workaround
+ * ---------------------
+ * This helps the development version of PageZERO Powerup work correctly.
+ * 
+ * Problem: Tailwind CSS doesn't scan any files that are listed in .gitignore
+ * Solution: We need to manually list the community edition files we want Tailwind to scan
+ *
+ * You can remove these lines if they're not needed for your setup.
+*/
+@source "../../../apps/core/components/error-page/*";
+@source "../../../packages/ui/button/*";
+@source "../../../packages/ui/input/*";
+@source "../../../packages/ui/link/*";

@@ -16,5 +16,5 @@ test("has content", async ({ page }) => {
   }
   const response = await page.goto("/")
   expect(response?.ok).toBeTruthy()
-  await expect(page.getByText("PageZERO")).toBeVisible()
+  await expect(page.getByText("Your Product Tagline Here")).toBeVisible()
 })
