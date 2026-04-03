@@ -1,11 +1,57 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "04a0f774-d4f1-487b-84b0-dac3cfe65a75",
+  "id": "2eee343a-ea56-4d00-8303-1f24595a788f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "greetings": {
-      "name": "greetings",
+    "user_roles": {
+      "name": "user_roles",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "role_name": {
+          "name": "role_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_roles_user_id_users_id_fk": {
+          "name": "user_roles_user_id_users_id_fk",
+          "tableFrom": "user_roles",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "user_roles_user_id_role_name_pk": {
+          "columns": [
+            "user_id",
+            "role_name"
+          ],
+          "name": "user_roles_user_id_role_name_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "users": {
+      "name": "users",
       "columns": {
         "id": {
           "name": "id",
@@ -14,8 +60,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "greeting": {
-          "name": "greeting",
+        "email": {
+          "name": "email",
           "type": "text",
           "primaryKey": false,
           "notNull": true,

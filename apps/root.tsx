@@ -1,13 +1,17 @@
 import { type ReactNode } from "react"
 import { Links, Meta, Outlet, Scripts, useRouteError } from "react-router"
+import { authMiddleware } from "@/auth/middleware.server"
 import config from "@/config"
 import { ErrorPage } from "@/core/components/error-page"
 import fonts from "@/core/fonts/inter-normal-latin.woff2?url"
 import styles from "@/core/styles/index.css?url"
+import type { Route } from "./+types/root"
+
+export const middleware: Route.MiddlewareFunction[] = [authMiddleware]
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,10 +41,10 @@ export function Layout({ children }: { children: ReactNode }) {
             ></link>
           </>
         )}
-        <link rel="icon" href="/favicon.ico" sizes="any"></link>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="canonical" href={config.core.websiteUrl} />
-        <link rel="stylesheet" href={styles} crossOrigin="anonymous"></link>
+        <link rel="stylesheet" href={styles} crossOrigin="anonymous" />
         <Links />
       </head>
       <body className={config.core.darkMode ? "dark" : ""}>

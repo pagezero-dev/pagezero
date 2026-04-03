@@ -1,11 +1,11 @@
-import { greetings } from "../schema"
+import { users } from "../schema"
 import { getLocalOrRemoteDb } from "../utils"
 
 async function main() {
   const db = getLocalOrRemoteDb()
   console.log("🌱 Seeding database...")
 
-  await db.insert(greetings).values({ greeting: "Database says hello!" })
+  await db.insert(users).values({ email: "marcin@test.com" })
 
   console.log("✅ Seeding complete!")
 }
