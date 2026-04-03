@@ -61,7 +61,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-router": "7.12.0",
-    "tailwind-merge": "3.4.0",
+    "tailwind-merge": "3.5.0",
     "swr": "2.3.6",
     "resend": "6.4.2",
     "@polar-sh/sdk": "0.41.1",
