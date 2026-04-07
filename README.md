@@ -2,13 +2,17 @@
 
 Launch fast. Scale with confidence.
 
-A Cloudflare-based web stack designed for AI-assisted app development.
+Open source, Cloudflare-based web app foundation for the AI era.
 
 ## Quick start
 
 ```sh
 bunx pagezero@latest init
 ```
+
+## Website
+
+**[pagezero.dev](https://pagezero.dev)**
 
 ## Documentation
 
