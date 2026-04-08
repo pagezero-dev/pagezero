@@ -6,7 +6,9 @@ import wranglerConfig from "../../wrangler.json"
 import { drizzle as drizzleRemote } from "./drivers/d1-http"
 
 function getLocalSqliteDbUrl() {
-  const dbUrls = glob.sync("./.wrangler/state/v3/d1/**/*.sqlite")
+  const dbUrls = glob.sync("./.wrangler/state/v3/d1/**/*.sqlite", {
+    ignore: ["./.wrangler/state/v3/d1/**/metadata.sqlite"],
+  })
 
   if (dbUrls.length > 1) {
     throw new Error("Multiple SQLite databases found")
