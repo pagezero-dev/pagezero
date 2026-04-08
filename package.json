@@ -72,7 +72,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.10",
-    "@cloudflare/vite-plugin": "1.31.0",
+    "@cloudflare/vite-plugin": "1.31.1",
     "@dotenvx/dotenvx": "1.51.4",
     "@faker-js/faker": "10.1.0",
     "@playwright/test": "1.59.1",
@@ -104,7 +104,7 @@
     "vite": "7.3.2",
     "vite-tsconfig-paths": "6.0.5",
     "vitest": "4.0.16",
-    "wrangler": "4.80.0",
+    "wrangler": "4.81.0",
     "react-email": "5.0.1",
     "@react-email/preview-server": "5.0.1"
   },
