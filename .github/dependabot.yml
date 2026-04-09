@@ -3,14 +3,18 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "quarterly"
-    open-pull-requests-limit: 0 # To enable dependabot PRs, set this to > 0
+      interval: "monthly"
+    open-pull-requests-limit: 1
 
   - package-ecosystem: "bun"
     directory: "/"
     schedule:
-      interval: "quarterly"
-    open-pull-requests-limit: 0 # To enable dependabot PRs, set this to > 0
+      interval: "monthly"
+    open-pull-requests-limit: 2
+    cooldown:
+      semver-patch-days: 28
+      semver-minor-days: 90
+      semver-major-days: 180
     commit-message:
       prefix: "chore"
     ignore:
@@ -47,3 +51,8 @@ updates:
         patterns:
           - "@storybook/*"
           - "storybook"
+
+      react-email:
+        patterns:
+          - "react-email"
+          - "@react-email/*"
