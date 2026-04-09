@@ -14,7 +14,7 @@ updates:
     cooldown:
       semver-patch-days: 28
       semver-minor-days: 90
-      semver-major-days: 180
+      semver-major-days: 90
     commit-message:
       prefix: "chore"
     ignore:
