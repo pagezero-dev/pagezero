@@ -16,7 +16,7 @@ updates:
       semver-minor-days: 90
       semver-major-days: 90
     commit-message:
-      prefix: "chore"
+      prefix: "chore(deps)"
     ignore:
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
