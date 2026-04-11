@@ -105,7 +105,7 @@
     "vite-tsconfig-paths": "6.0.5",
     "vitest": "4.0.18",
     "wrangler": "4.59.3",
-    "react-email": "5.0.1",
+    "react-email": "5.2.1",
     "@react-email/preview-server": "5.0.1"
   },
   "trustedDependencies": [
