@@ -40,8 +40,8 @@ updates:
 
       react-router:
         patterns:
-          - "react-router"
           - "@react-router/*"
+          - "react-router"
 
       storybook:
         patterns:
@@ -50,5 +50,5 @@ updates:
 
       react-email:
         patterns:
-          - "react-email"
           - "@react-email/*"
+          - "react-email"
