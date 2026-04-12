@@ -63,10 +63,10 @@
     "react-router": "7.14.0",
     "tailwind-merge": "3.5.0",
     "swr": "2.3.8",
-    "resend": "6.4.2",
+    "resend": "6.10.0",
     "@polar-sh/sdk": "0.41.1",
-    "@react-email/components": "1.0.11",
-    "@react-email/render": "2.0.5",
+    "@react-email/components": "1.0.12",
+    "@react-email/render": "2.0.6",
     "motion": "12.23.22",
     "zod": "4.1.12"
   },
@@ -105,8 +105,8 @@
     "vite-tsconfig-paths": "6.0.5",
     "vitest": "4.0.18",
     "wrangler": "4.59.1",
-    "react-email": "5.0.1",
-    "@react-email/preview-server": "5.0.1"
+    "react-email": "5.2.10",
+    "@react-email/preview-server": "5.2.10"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",
