@@ -95,7 +95,7 @@
     "drizzle-kit": "0.31.10",
     "fast-glob": "3.3.3",
     "happy-dom": "20.8.9",
-    "rollup-plugin-visualizer": "6.0.11",
+    "rollup-plugin-visualizer": "7.0.1",
     "storybook": "10.3.5",
     "tailwindcss": "4.1.18",
     "tsx": "4.21.0",
