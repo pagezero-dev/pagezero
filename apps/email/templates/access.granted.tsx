@@ -1,5 +1,5 @@
-import { Button, Heading, Section, Text } from "@react-email/components"
 import { CircleCheck } from "lucide-react"
+import { Button, Heading, Section, Text } from "react-email"
 import config from "@/config"
 import Layout from "./layout"
 
