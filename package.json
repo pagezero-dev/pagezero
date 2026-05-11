@@ -52,22 +52,21 @@
     "dev:email": "email dev -d ./apps/email/templates -p 3001"
   },
   "dependencies": {
+    "@polar-sh/sdk": "0.41.1",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "drizzle-orm": "0.45.2",
     "isbot": "5.1.37",
     "lucide-react": "1.8.0",
+    "motion": "12.23.22",
     "radix-ui": "1.4.3",
     "react": "19.2.5",
     "react-dom": "19.2.5",
+    "react-email": "6.1.1",
     "react-router": "7.14.0",
-    "tailwind-merge": "3.5.0",
-    "swr": "2.3.8",
     "resend": "6.10.0",
-    "@polar-sh/sdk": "0.41.1",
-    "@react-email/components": "1.0.12",
-    "@react-email/render": "2.0.6",
-    "motion": "12.23.22",
+    "swr": "2.3.8",
+    "tailwind-merge": "3.5.0",
     "zod": "4.1.12"
   },
   "devDependencies": {
@@ -76,6 +75,7 @@
     "@dotenvx/dotenvx": "1.51.4",
     "@faker-js/faker": "10.1.0",
     "@playwright/test": "1.59.1",
+    "@react-email/ui": "6.1.1",
     "@react-router/dev": "7.14.0",
     "@storybook/addon-docs": "10.3.5",
     "@storybook/addon-themes": "10.3.5",
@@ -104,9 +104,7 @@
     "vite": "7.3.2",
     "vite-tsconfig-paths": "6.0.5",
     "vitest": "4.0.18",
-    "wrangler": "4.59.1",
-    "react-email": "5.2.10",
-    "@react-email/preview-server": "5.2.10"
+    "wrangler": "4.59.1"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",

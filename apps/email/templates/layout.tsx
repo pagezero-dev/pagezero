@@ -1,13 +1,5 @@
-import {
-  Container,
-  Font,
-  Head,
-  Html,
-  Link,
-  Tailwind,
-  Text,
-} from "@react-email/components"
 import type { ReactNode } from "react"
+import { Container, Font, Head, Html, Link, Tailwind, Text } from "react-email"
 import config from "@/config"
 
 export default function Layout({ children }: { children: ReactNode }) {
