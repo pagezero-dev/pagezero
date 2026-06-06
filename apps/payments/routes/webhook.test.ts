@@ -111,8 +111,8 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
         params: {},
         context,
-        unstable_pattern: "",
-        unstable_url: new URL("http://localhost"),
+        pattern: "",
+        url: new URL("http://localhost"),
       }),
     ).rejects.toThrow("The Polar webhook secret is not set")
   })
@@ -127,8 +127,8 @@ describe("Webhook", () => {
       request: new Request("http://localhost"),
       params: {},
       context,
-      unstable_pattern: "",
-      unstable_url: new URL("http://localhost"),
+      pattern: "",
+      url: new URL("http://localhost"),
     })
     expect(response.status).toBe(403)
     expect(await response.text()).toBe("Webhook verification failed")
@@ -145,8 +145,8 @@ describe("Webhook", () => {
       request: new Request("http://localhost"),
       params: {},
       context,
-      unstable_pattern: "",
-      unstable_url: new URL("http://localhost"),
+      pattern: "",
+      url: new URL("http://localhost"),
     })
     expect(response.status).toBe(202)
     expect(await response.text()).toBe("Event not handled")
@@ -173,8 +173,8 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
         params: {},
         context,
-        unstable_pattern: "",
-        unstable_url: new URL("http://localhost"),
+        pattern: "",
+        url: new URL("http://localhost"),
       })
       const user = await getUserByEmail(db, "new@example.com")
       if (!user) {
@@ -211,8 +211,8 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
         params: {},
         context,
-        unstable_pattern: "",
-        unstable_url: new URL("http://localhost"),
+        pattern: "",
+        url: new URL("http://localhost"),
       })
       expect(
         await hasUserRole(db, existingUserId, "pro" as unknown as Role),
@@ -244,8 +244,8 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
         params: {},
         context,
-        unstable_pattern: "",
-        unstable_url: new URL("http://localhost"),
+        pattern: "",
+        url: new URL("http://localhost"),
       })
 
       expect(response.status).toBe(200)
@@ -270,8 +270,8 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
         params: {},
         context,
-        unstable_pattern: "",
-        unstable_url: new URL("http://localhost"),
+        pattern: "",
+        url: new URL("http://localhost"),
       })
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("Product not found")
@@ -304,8 +304,8 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
         params: {},
         context,
-        unstable_pattern: "",
-        unstable_url: new URL("http://localhost"),
+        pattern: "",
+        url: new URL("http://localhost"),
       })
       expect(response.status).toBe(201)
       expect(
@@ -335,8 +335,8 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
         params: {},
         context,
-        unstable_pattern: "",
-        unstable_url: new URL("http://localhost"),
+        pattern: "",
+        url: new URL("http://localhost"),
       })
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("User not found")
@@ -360,8 +360,8 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
         params: {},
         context,
-        unstable_pattern: "",
-        unstable_url: new URL("http://localhost"),
+        pattern: "",
+        url: new URL("http://localhost"),
       })
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("Product not found")
