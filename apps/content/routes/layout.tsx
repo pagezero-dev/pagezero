@@ -59,7 +59,7 @@ function ContentLayout() {
           </Dropdown>
         ) : (
           <Button variant="default" asChild>
-            <Link to="/login" search={{ redirectTo: "/" }}>
+            <Link to="/login">
               Log in
             </Link>
           </Button>

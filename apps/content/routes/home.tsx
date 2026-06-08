@@ -35,7 +35,7 @@ function Index() {
         cta={
           <>
             <Button asChild size="lg">
-              <Link to="/login" search={{ redirectTo: "/" }}>
+              <Link to="/login">
                 Get Started
               </Link>
             </Button>
@@ -209,7 +209,7 @@ function Index() {
             ]}
             cta={
               <Button className="w-full" variant="outline" size="lg" asChild>
-                <Link to="/login" search={{ redirectTo: "/" }}>
+                <Link to="/login">
                   Start Free
                 </Link>
               </Button>
