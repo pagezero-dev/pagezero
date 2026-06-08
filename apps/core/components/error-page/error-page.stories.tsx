@@ -38,3 +38,10 @@ export const HTTPError: Story = {
     error: { status: 404, statusText: "Not Found", internal: true, data: null },
   },
 }
+
+export const NotFound: Story = {
+  args: {
+    variant: "not-found",
+    action: <a href="/">Go home</a>,
+  },
+}

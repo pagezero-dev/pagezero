@@ -1,12 +1,14 @@
 import {
   createRootRoute,
   HeadContent,
+  Link,
   Outlet,
   Scripts,
 } from "@tanstack/react-router"
 import { type ReactNode } from "react"
 import config from "@/config"
 import { ErrorPage } from "@/core/components/error-page"
+import { Button } from "@/ui/button"
 import fonts from "@/core/fonts/inter-normal-latin.woff2?url"
 import styles from "@/core/styles/index.css?url"
 
@@ -52,6 +54,7 @@ export const Route = createRootRoute({
   }),
   component: RootComponent,
   errorComponent: RootErrorComponent,
+  notFoundComponent: RootNotFoundComponent,
 })
 
 function RootComponent() {
@@ -66,6 +69,21 @@ function RootErrorComponent({ error }: { error: unknown }) {
   return (
     <RootDocument>
       <ErrorPage error={error} />
+    </RootDocument>
+  )
+}
+
+function RootNotFoundComponent() {
+  return (
+    <RootDocument>
+      <ErrorPage
+        variant="not-found"
+        action={
+          <Button asChild variant="outline">
+            <Link to="/">Go home</Link>
+          </Button>
+        }
+      />
     </RootDocument>
   )
 }
