@@ -1,12 +1,12 @@
+import { env } from "cloudflare:workers"
 import { useSession } from "@tanstack/react-start/server"
-import { getEnv } from "@/core/db.server"
 
 export type SessionData = {
   userId?: string
 }
 
 function getSessionConfig() {
-  const sessionCookieSecret = getEnv().SESSION_COOKIE_SECRET
+  const sessionCookieSecret = env.SESSION_COOKIE_SECRET
   if (!sessionCookieSecret) {
     throw new Error("SESSION_COOKIE_SECRET is not set")
   }

@@ -6,7 +6,7 @@ export type UserData = {
 
 export const getUser = createServerFn({ method: "GET" }).handler(async () => {
   const { useAppSession } = await import("@/auth/session.server")
-  const { getDb } = await import("@/core/db.server")
+  const { getDb } = await import("@/db")
   const { getUserById, getUserId } = await import("./user.server")
 
   const session = await useAppSession()

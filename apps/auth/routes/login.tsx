@@ -46,7 +46,7 @@ const loginInputSchema = z.object({
 
 const ensureGuest = createServerFn({ method: "GET" }).handler(async () => {
   const { useAppSession } = await import("@/auth/session.server")
-  const { getDb } = await import("@/core/db.server")
+  const { getDb } = await import("@/db")
   const session = await useAppSession()
   const db = getDb()
   const userId = await getUserId(session)
@@ -59,8 +59,7 @@ const ensureGuest = createServerFn({ method: "GET" }).handler(async () => {
 const getLoginPageData = createServerFn({ method: "GET" })
   .validator((data: { redirectTo: string }) => data)
   .handler(async ({ data }) => {
-    const { getEnv } = await import("@/core/db.server")
-    const env = getEnv()
+    const { env } = await import("cloudflare:workers")
     return {
       cloudflareTurnstilePublicKey: env.CLOUDFLARE_TURNSTILE_PUBLIC_KEY,
       redirectTo: getRedirectUrl(data.redirectTo),
@@ -71,8 +70,10 @@ const loginAction = createServerFn({ method: "POST" })
   .validator(loginInputSchema)
   .handler(async ({ data }): Promise<LoginActionData | never> => {
     const { updateAppSession } = await import("@/auth/session.server")
-    const { getDb, getEnv } = await import("@/core/db.server")
-    const env = getEnv()
+    const [{ getDb }, { env }] = await Promise.all([
+      import("@/db"),
+      import("cloudflare:workers"),
+    ])
     const db = getDb()
 
     if (!env.OTP_SECRET) {

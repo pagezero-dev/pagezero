@@ -1,6 +1,7 @@
+import { env } from "cloudflare:workers"
 import { validateEvent, WebhookVerificationError } from "@polar-sh/sdk/webhooks"
 import { createFileRoute } from "@tanstack/react-router"
-import { getDb, getEnv } from "@/core/db.server"
+import { getDb } from "@/db"
 import { onPaymentRevoked, onPaymentSuccess } from "../handlers.server"
 import type { WebhookEvents } from "../types"
 
@@ -15,7 +16,6 @@ export const Route = createFileRoute("/payments/webhook")({
       },
       POST: async ({ request }) => {
         try {
-          const env = getEnv()
           if (!env.POLAR_WEBHOOK_SECRET) {
             throw new Error("The Polar webhook secret is not set")
           }
