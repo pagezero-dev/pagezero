@@ -20,13 +20,6 @@ const getRolePermissions = (roleName: Role, config: PermissionsConfig) => {
     .map(([key]) => key)
 }
 
-function throwPermissionError(message: string, status: number): never {
-  throw new Response(JSON.stringify({ error: message }), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  })
-}
-
 export async function requireUserPermissions(
   db: DrizzleD1Database<typeof schema>,
   userId: number,
@@ -40,7 +33,7 @@ export async function requireUserPermissions(
   })
 
   if (!user) {
-    throwPermissionError("User not found", 401)
+    throw Response.json({ error: "User not found" }, { status: 401 })
   }
 
   const userPermissions = user.roles.flatMap((role) =>
@@ -50,7 +43,10 @@ export async function requireUserPermissions(
   if (
     !permissions.every((permission) => userPermissions.includes(permission))
   ) {
-    throwPermissionError("User does not have the required permissions", 403)
+    throw Response.json(
+      { error: "User does not have the required permissions" },
+      { status: 403 },
+    )
   }
 
   return user.id
@@ -69,7 +65,7 @@ export async function hasUserRole(
   })
 
   if (!user) {
-    throwPermissionError("User not found", 401)
+    throw Response.json({ error: "User not found" }, { status: 401 })
   }
 
   if (user.roles.some((role) => role.roleName === roleName)) {
@@ -85,7 +81,10 @@ export async function requireUserRole(
   roleName: Role,
 ) {
   if (!(await hasUserRole(db, userId, roleName))) {
-    throwPermissionError("User does not have the required role", 403)
+    throw Response.json(
+      { error: "User does not have the required role" },
+      { status: 403 },
+    )
   }
 }
 
