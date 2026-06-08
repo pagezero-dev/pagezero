@@ -1,8 +1,9 @@
 # Node
 node_modules
 
-# React router
+# Build output
 /build
+/dist
 /.react-router/
 
 # Reports

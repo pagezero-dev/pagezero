@@ -1,3 +1,4 @@
+import { createFileRoute, Link } from "@tanstack/react-router"
 import {
   Briefcase,
   Globe,
@@ -9,7 +10,6 @@ import {
   Target,
   Zap,
 } from "lucide-react"
-import { Link } from "react-router"
 import { CheckoutButton } from "@/payments/components/checkout-button"
 import { Pricing } from "@/payments/components/pricing"
 import { Button } from "@/ui/button"
@@ -22,7 +22,11 @@ import { AnimatedCyberpunkGrid } from "../components/hero/animated-backgrounds"
 import { Section } from "../components/section"
 import { Testimonials } from "../components/testimonials"
 
-export default function Index() {
+export const Route = createFileRoute("/_content-layout/")({
+  component: Index,
+})
+
+function Index() {
   return (
     <>
       <Hero
@@ -31,7 +35,9 @@ export default function Index() {
         cta={
           <>
             <Button asChild size="lg">
-              <Link to="/login">Get Started</Link>
+              <Link to="/login" search={{ redirectTo: "/" }}>
+                Get Started
+              </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <a href="#features">Learn More →</a>
@@ -51,7 +57,7 @@ export default function Index() {
           <Features.Item
             title="Feature One"
             icon={<Rocket />}
-            cta={<Link to="/features">Learn more →</Link>}
+            cta={<a href="/features">Learn more →</a>}
           >
             Describe the first key feature of your product. Explain how it
             benefits users and solves their problems. Include specific details
@@ -62,7 +68,7 @@ export default function Index() {
           <Features.Item
             title="Feature Two"
             icon={<Shield />}
-            cta={<Link to="/features">Learn more →</Link>}
+            cta={<a href="/features">Learn more →</a>}
           >
             Describe the second key feature. Focus on the value proposition and
             what makes it unique. Explain how this feature compares to
@@ -73,7 +79,7 @@ export default function Index() {
           <Features.Item
             title="Feature Three"
             icon={<Lightbulb />}
-            cta={<Link to="/features">Learn more →</Link>}
+            cta={<a href="/features">Learn more →</a>}
           >
             Describe the third key feature. Use clear, concise language that
             resonates with your target audience. Highlight the time or cost
@@ -84,7 +90,7 @@ export default function Index() {
           <Features.Item
             title="Feature Four"
             icon={<Briefcase />}
-            cta={<Link to="/features">Learn more →</Link>}
+            cta={<a href="/features">Learn more →</a>}
           >
             Describe the fourth key feature. Highlight specific use cases or
             scenarios where this feature shines. Mention any customization
@@ -95,7 +101,7 @@ export default function Index() {
           <Features.Item
             title="Feature Five"
             icon={<HeartHandshake />}
-            cta={<Link to="/features">Learn more →</Link>}
+            cta={<a href="/features">Learn more →</a>}
           >
             Describe the fifth key feature. Consider mentioning integrations,
             ease of use, or time savings. Explain how it works seamlessly with
@@ -106,7 +112,7 @@ export default function Index() {
           <Features.Item
             title="Feature Six"
             icon={<Star />}
-            cta={<Link to="/features">Learn more →</Link>}
+            cta={<a href="/features">Learn more →</a>}
           >
             Describe the sixth key feature. Consider mentioning customer success
             stories or proven results. Share data points or testimonials that
@@ -117,7 +123,7 @@ export default function Index() {
           <Features.Item
             title="Feature Seven"
             icon={<Zap />}
-            cta={<Link to="/features">Learn more →</Link>}
+            cta={<a href="/features">Learn more →</a>}
           >
             Describe the seventh key feature. Highlight performance, speed, or
             efficiency gains your product offers. Include specific numbers or
@@ -128,7 +134,7 @@ export default function Index() {
           <Features.Item
             title="Feature Eight"
             icon={<Globe />}
-            cta={<Link to="/features">Learn more →</Link>}
+            cta={<a href="/features">Learn more →</a>}
           >
             Describe the eighth key feature. Mention global availability,
             scalability, or multi-platform support. Explain how your product
@@ -139,7 +145,7 @@ export default function Index() {
           <Features.Item
             title="Feature Nine"
             icon={<Target />}
-            cta={<Link to="/features">Learn more →</Link>}
+            cta={<a href="/features">Learn more →</a>}
           >
             Describe the ninth key feature. End with your strongest or most
             differentiating capability. Focus on what truly sets you apart from
@@ -203,7 +209,9 @@ export default function Index() {
             ]}
             cta={
               <Button className="w-full" variant="outline" size="lg" asChild>
-                <Link to="/login">Start Free</Link>
+                <Link to="/login" search={{ redirectTo: "/" }}>
+                  Start Free
+                </Link>
               </Button>
             }
           />
@@ -244,7 +252,7 @@ export default function Index() {
             ]}
             cta={
               <Button className="w-full" variant="outline" size="lg" asChild>
-                <Link to="/contact">Contact Sales</Link>
+                <a href="/contact">Contact Sales</a>
               </Button>
             }
           />

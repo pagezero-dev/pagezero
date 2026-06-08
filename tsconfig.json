@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", ".react-router/types/**/*"],
+  "include": ["**/*.ts", "**/*.tsx", "apps/routeTree.gen.ts"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["node", "./worker-configuration.d.ts", "vite/client"],
@@ -15,7 +15,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true,
-    "rootDirs": [".", "./.react-router/types"],
     "paths": {
       "@/*": ["./packages/*", "./apps/*"]
     },

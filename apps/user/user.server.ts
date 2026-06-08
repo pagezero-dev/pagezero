@@ -1,7 +1,6 @@
 import { eq } from "drizzle-orm"
 import { DrizzleD1Database } from "drizzle-orm/d1"
-import type { Session } from "react-router"
-import type { SessionData } from "@/auth/session.server"
+import type { useAppSession } from "@/auth/session.server"
 import * as schema from "@/db/schema"
 
 export async function getUserById(
@@ -39,8 +38,11 @@ export async function getOrCreateUserByEmail(
   return user
 }
 
-export async function getUserId(session: Session<SessionData>) {
-  return Number(session.get("userId"))
+export async function getUserId(
+  session: Awaited<ReturnType<typeof useAppSession>>,
+) {
+  const userId = session.data.userId
+  return userId ? Number(userId) : 0
 }
 
 export async function isValidUserId(

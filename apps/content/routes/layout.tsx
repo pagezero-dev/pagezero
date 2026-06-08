@@ -1,5 +1,5 @@
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router"
 import { ChevronDown } from "lucide-react"
-import { Link, Outlet } from "react-router"
 import config from "@/config"
 import { Footer } from "@/content/components/footer"
 import { Header } from "@/content/components/header"
@@ -8,7 +8,11 @@ import { Button } from "@/ui/button"
 import { Dropdown } from "@/ui-lite/dropdown"
 import { useUser } from "@/user/use-user"
 
-export default function ContentLayout() {
+export const Route = createFileRoute("/_content-layout")({
+  component: ContentLayout,
+})
+
+function ContentLayout() {
   const { data: userData } = useUser()
   const user = userData?.user
   return (
@@ -29,7 +33,7 @@ export default function ContentLayout() {
           <a href="/#about">About</a>
         </Button>
         <Button variant="ghost" asChild>
-          <Link to="/docs">Docs</Link>
+          <a href="/docs">Docs</a>
         </Button>
         {user ? (
           <Dropdown
@@ -55,7 +59,9 @@ export default function ContentLayout() {
           </Dropdown>
         ) : (
           <Button variant="default" asChild>
-            <Link to="/login">Log in</Link>
+            <Link to="/login" search={{ redirectTo: "/" }}>
+              Log in
+            </Link>
           </Button>
         )}
       </Header>

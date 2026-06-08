@@ -1,69 +1,66 @@
-import { describe, expect, it } from "vitest"
+import { redirect } from "@tanstack/react-router"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 import { getRedirectUrl, requireUserId } from "./auth.server"
-import { createSessionStorage } from "./session.server"
+
+vi.mock("@/auth/session.server", () => ({
+  useAppSession: vi.fn(),
+}))
+
+vi.mock("@tanstack/react-start/server", () => ({
+  getRequestUrl: vi.fn(),
+}))
+
+vi.mock("@/user", () => ({
+  getUserId: vi.fn(),
+}))
+
+import { useAppSession } from "@/auth/session.server"
+import { getRequestUrl } from "@tanstack/react-start/server"
+import { getUserId } from "@/user"
 
 describe("requireUserId", () => {
-  const mockSessionCookieSecret = "test-secret"
-  const mockUserId = 123
-  const { getSession, commitSession } = createSessionStorage(
-    mockSessionCookieSecret,
-  )
-
-  describe("when user is authenticated", () => {
-    it("should return userId when user is authenticated", async () => {
-      const session = await getSession()
-      session.set("userId", mockUserId.toString())
-      const cookieHeader = await commitSession(session)
-
-      const request = new Request("http://test.com", {
-        headers: {
-          Cookie: cookieHeader,
-        },
-      })
-
-      const result = await requireUserId(request, session)
-      expect(result).toBe(mockUserId)
-    })
+  beforeEach(() => {
+    vi.clearAllMocks()
   })
 
-  describe("when user is not authenticated", () => {
-    it("should redirect to login with redirectTo to current path", async () => {
-      const request = new Request("http://test.com/test-path?query=123")
-      const session = await getSession()
-      await expect(requireUserId(request, session)).rejects.toThrow()
-      const error = await requireUserId(request, session).catch((e) => e)
-      expect(error.headers.get("location")).toBe(
-        "/login?redirectTo=/test-path?query=123",
-      )
-      expect(error.status).toBe(302)
-    })
+  it("returns userId when user is authenticated", async () => {
+    vi.mocked(useAppSession).mockResolvedValue({
+      data: { userId: "123" },
+    } as Awaited<ReturnType<typeof useAppSession>>)
+    vi.mocked(getUserId).mockResolvedValue(123)
 
-    it("should redirect to login with provided redirectTo", async () => {
-      const request = new Request("http://test.com/test-path")
-      const customRedirectTo = "/custom-path"
-      const session = await getSession()
-      await expect(
-        requireUserId(request, session, {
-          redirectTo: customRedirectTo,
-        }),
-      ).rejects.toThrow()
-      const error = await requireUserId(request, session, {
-        redirectTo: customRedirectTo,
-      }).catch((e) => e)
-      expect(error.headers.get("location")).toBe(
-        "/login?redirectTo=/custom-path",
-      )
-      expect(error.status).toBe(302)
-    })
+    await expect(requireUserId()).resolves.toBe(123)
+  })
 
-    it("should redirect to login with redirectTo to main page if no current path is available", async () => {
-      const request = new Request("http://test.com")
-      const session = await getSession()
-      await expect(requireUserId(request, session)).rejects.toThrow()
-      const error = await requireUserId(request, session).catch((e) => e)
-      expect(error.headers.get("location")).toBe("/login?redirectTo=/")
-      expect(error.status).toBe(302)
-    })
+  it("redirects to login with redirectTo to current path", async () => {
+    vi.mocked(useAppSession).mockResolvedValue({
+      data: {},
+    } as Awaited<ReturnType<typeof useAppSession>>)
+    vi.mocked(getUserId).mockResolvedValue(0)
+    vi.mocked(getRequestUrl).mockReturnValue(
+      new URL("http://test.com/test-path?query=123"),
+    )
+
+    await expect(requireUserId()).rejects.toEqual(
+      redirect({
+        href: "/login?redirectTo=/test-path?query=123",
+      }),
+    )
+  })
+
+  it("redirects to login with provided redirectTo", async () => {
+    vi.mocked(useAppSession).mockResolvedValue({
+      data: {},
+    } as Awaited<ReturnType<typeof useAppSession>>)
+    vi.mocked(getUserId).mockResolvedValue(0)
+
+    await expect(
+      requireUserId({ redirectTo: "/custom-path" }),
+    ).rejects.toEqual(
+      redirect({
+        href: "/login?redirectTo=/custom-path",
+      }),
+    )
   })
 })
 

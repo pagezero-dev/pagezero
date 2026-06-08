@@ -1,5 +1,4 @@
 import { CircleAlert } from "lucide-react"
-import { isRouteErrorResponse } from "react-router"
 
 interface ErrorPageProps {
   title?: string
@@ -7,13 +6,22 @@ interface ErrorPageProps {
   error?: unknown
 }
 
+function isHttpError(
+  error: unknown,
+): error is { status: number; statusText?: string } {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "status" in error &&
+    typeof (error as { status: unknown }).status === "number"
+  )
+}
+
 export const ErrorPage = ({ title, description, error }: ErrorPageProps) => {
-  const defaultTitle = isRouteErrorResponse(error)
+  const defaultTitle = isHttpError(error)
     ? `${error.status} error`
     : "Application Error"
-  const defaultDescription = isRouteErrorResponse(error)
-    ? error.statusText
-    : null
+  const defaultDescription = isHttpError(error) ? error.statusText : null
   return (
     <main className="container mx-auto flex h-screen flex-col justify-center gap-5">
       <CircleAlert className="mx-auto h-16 w-16 text-destructive" />

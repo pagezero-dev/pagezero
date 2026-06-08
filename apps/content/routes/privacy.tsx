@@ -1,8 +1,13 @@
+import { createFileRoute } from "@tanstack/react-router"
 import config from "@/config"
 import { Heading, List, Muted, P } from "@/ui/typography"
 import { Section } from "../components/section"
 
-export default function Privacy() {
+export const Route = createFileRoute("/_content-layout/privacy")({
+  component: Privacy,
+})
+
+function Privacy() {
   const projectName = config.core.projectName
   const supportEmail = config.core.supportEmail
   const websiteUrl = config.core.websiteUrl

@@ -1,10 +1,12 @@
 /// <reference types="vitest/config" />
 import { cloudflare } from "@cloudflare/vite-plugin"
-import { reactRouter } from "@react-router/dev/vite"
 import tailwindcss from "@tailwindcss/vite"
+import { tanstackStart } from "@tanstack/react-start/plugin/vite"
+import react from "@vitejs/plugin-react"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
+import { routes } from "./apps/routes"
 
 const isStorybook = process.argv[1]?.includes("storybook")
 
@@ -36,7 +38,18 @@ export default defineConfig({
     tsconfigPaths(),
     tailwindcss(),
     ...(!process.env.VITEST && !isStorybook
-      ? [cloudflare({ viteEnvironment: { name: "ssr" } }), reactRouter()]
+      ? [
+          cloudflare({ viteEnvironment: { name: "ssr" } }),
+          tanstackStart({
+            srcDirectory: "apps",
+            router: {
+              routesDirectory: ".",
+              virtualRouteConfig: routes,
+              generatedRouteTree: "routeTree.gen.ts",
+            },
+          }),
+          react(),
+        ]
       : []),
     ...(!process.env.CI
       ? [

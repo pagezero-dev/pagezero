@@ -1,6 +1,5 @@
 import { and, eq } from "drizzle-orm"
 import { DrizzleD1Database } from "drizzle-orm/d1"
-import { data } from "react-router"
 import config, { userRoles } from "@/config"
 import * as schema from "@/db/schema"
 import type { UnionKeys } from "@/types/utils"
@@ -21,6 +20,13 @@ const getRolePermissions = (roleName: Role, config: PermissionsConfig) => {
     .map(([key]) => key)
 }
 
+function throwPermissionError(message: string, status: number): never {
+  throw new Response(JSON.stringify({ error: message }), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  })
+}
+
 export async function requireUserPermissions(
   db: DrizzleD1Database<typeof schema>,
   userId: number,
@@ -34,7 +40,7 @@ export async function requireUserPermissions(
   })
 
   if (!user) {
-    throw data({ error: "User not found" }, { status: 401 })
+    throwPermissionError("User not found", 401)
   }
 
   const userPermissions = user.roles.flatMap((role) =>
@@ -44,10 +50,7 @@ export async function requireUserPermissions(
   if (
     !permissions.every((permission) => userPermissions.includes(permission))
   ) {
-    throw data(
-      { error: "User does not have the required permissions" },
-      { status: 403 },
-    )
+    throwPermissionError("User does not have the required permissions", 403)
   }
 
   return user.id
@@ -66,7 +69,7 @@ export async function hasUserRole(
   })
 
   if (!user) {
-    throw data({ error: "User not found" }, { status: 401 })
+    throwPermissionError("User not found", 401)
   }
 
   if (user.roles.some((role) => role.roleName === roleName)) {
@@ -82,10 +85,7 @@ export async function requireUserRole(
   roleName: Role,
 ) {
   if (!(await hasUserRole(db, userId, roleName))) {
-    throw data(
-      { error: "User does not have the required role" },
-      { status: 403 },
-    )
+    throwPermissionError("User does not have the required role", 403)
   }
 }
 

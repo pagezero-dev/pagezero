@@ -1,8 +1,8 @@
-import type { Session } from "react-router"
-import { redirect } from "react-router"
+import { redirect } from "@tanstack/react-router"
+import { getRequestUrl } from "@tanstack/react-start/server"
 import { sign, verify } from "@/crypto"
 import { getUserId } from "@/user"
-import type { SessionData } from "./session.server"
+import { useAppSession } from "./session.server"
 
 const LOGIN_ROUTE = "/login"
 
@@ -12,26 +12,21 @@ type OTPPayload = {
   expiresAt: number
 }
 
-export async function requireUserId(
-  request: Request,
-  session: Session<SessionData>,
-  {
-    redirectTo,
-    redirectHeaders,
-  }: { redirectTo?: string; redirectHeaders?: Record<string, string> } = {},
-) {
+export async function requireUserId({
+  redirectTo,
+}: {
+  redirectTo?: string
+} = {}) {
+  const session = await useAppSession()
   const userID = await getUserId(session)
   if (!userID) {
-    const requestURLObject = new URL(request.url)
+    const requestURLObject = getRequestUrl()
     const redirectToURL =
       redirectTo ?? `${requestURLObject.pathname}${requestURLObject.search}`
     const redirectURL = redirectToURL
       ? `${LOGIN_ROUTE}?redirectTo=${redirectToURL}`
       : LOGIN_ROUTE
-    throw redirect(redirectURL, {
-      status: 302,
-      headers: redirectHeaders,
-    })
+    throw redirect({ href: redirectURL })
   }
   return userID
 }
@@ -61,13 +56,9 @@ export async function verifyOtp(
 }
 
 export function generateOTP() {
-  // creates a typed array that can hold a single 32-bit unsigned integer
   const array = new Uint32Array(1)
-  // fills this array with cryptographically strong random values using the Web Crypto API
   crypto.getRandomValues(array)
-  // apply modulo to generate a number between 0-999999 (6 digits at most)
   const otp = array[0] % 1000000
-  // convert to string and ensure it's exactly 6 digits by padding with leading zeros if needed
   return otp.toString().padStart(6, "0")
 }
 

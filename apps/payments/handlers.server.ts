@@ -1,7 +1,6 @@
-import type { RouterContextProvider } from "react-router"
+import type { DrizzleD1Database } from "drizzle-orm/d1"
 import config from "@/config"
-import { envContext } from "@/core/context"
-import { dbContext } from "@/db/context"
+import * as schema from "@/db/schema"
 import {
   sendAccessFailureEmail,
   sendAccessGrantedEmail,
@@ -18,11 +17,9 @@ import type {
 
 export async function onPaymentSuccess(
   event: WebhookOrderPaidPayload | WebhookSubscriptionActivePayload,
-  context: Readonly<RouterContextProvider>,
+  db: DrizzleD1Database<typeof schema>,
+  env: Env,
 ) {
-  const db = context.get(dbContext)
-  const env = context.get(envContext)
-
   try {
     const productId = event.data.productId
     const productConfig = Object.values(config.payments.products).find(
@@ -48,7 +45,6 @@ export async function onPaymentSuccess(
     return new Response("Payment success", { status: 201 })
   } catch (error) {
     if (error instanceof Error) {
-      // Expected errors, prevent retrying the webhook by returning HTTP 200
       if (error.message === "User already has access") {
         return new Response(error.message, { status: 200 })
       }
@@ -66,11 +62,9 @@ export async function onPaymentSuccess(
 
 export async function onPaymentRevoked(
   event: WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload,
-  context: Readonly<RouterContextProvider>,
+  db: DrizzleD1Database<typeof schema>,
+  env: Env,
 ) {
-  const db = context.get(dbContext)
-  const env = context.get(envContext)
-
   try {
     const productId = event.data.productId
     const productConfig = Object.values(config.payments.products).find(
@@ -96,7 +90,6 @@ export async function onPaymentRevoked(
     return new Response("Payment revoked", { status: 201 })
   } catch (error) {
     if (error instanceof Error) {
-      // Expected errors, prevent retrying the webhook by returning HTTP 200
       if (["User not found", "Product not found"].includes(error.message)) {
         return new Response(error.message, { status: 200 })
       }

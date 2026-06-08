@@ -1,12 +1,16 @@
+import { createFileRoute, Link } from "@tanstack/react-router"
 import { BadgeCheck } from "lucide-react"
 import { motion } from "motion/react"
 import { useState } from "react"
-import { Link } from "react-router"
 import { Badge } from "@/ui/badge"
 import { Button } from "@/ui/button"
 import { Heading, P } from "@/ui/typography"
 
-export default function PaymentSuccess() {
+export const Route = createFileRoute("/payments/success")({
+  component: PaymentSuccess,
+})
+
+function PaymentSuccess() {
   const [whatsNext, setWhatsNext] = useState(false)
   return (
     <main className="flex h-screen flex-col items-center justify-center">
@@ -66,7 +70,9 @@ export default function PaymentSuccess() {
 
           {whatsNext && (
             <Button variant="outline" asChild>
-              <Link to="/login">Sign in</Link>
+              <Link to="/login" search={{ redirectTo: "/" }}>
+                Sign in
+              </Link>
             </Button>
           )}
         </motion.div>

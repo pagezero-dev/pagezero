@@ -82,9 +82,7 @@ describe("Permissions", () => {
       await expect(
         requireUserPermissions(db, 999, ["read"] as unknown as Permission[]),
       ).rejects.toMatchObject({
-        type: "DataWithResponseInit",
-        data: { error: "User not found" },
-        init: { status: 401 },
+        status: 401,
       })
     })
 
@@ -94,9 +92,7 @@ describe("Permissions", () => {
           "write",
         ] as unknown as Permission[]),
       ).rejects.toMatchObject({
-        type: "DataWithResponseInit",
-        data: { error: "User does not have the required permissions" },
-        init: { status: 403 },
+        status: 403,
       })
     })
   })
@@ -132,9 +128,7 @@ describe("Permissions", () => {
       await expect(
         requireUserRole(db, defaultUserId, "admin" as unknown as Role),
       ).rejects.toMatchObject({
-        type: "DataWithResponseInit",
-        data: { error: "User does not have the required role" },
-        init: { status: 403 },
+        status: 403,
       })
     })
   })
