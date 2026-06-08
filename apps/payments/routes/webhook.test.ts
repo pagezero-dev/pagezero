@@ -12,6 +12,7 @@ import {
   it,
   vi,
 } from "vitest"
+import { getDb } from "@/db"
 import * as schema from "@/db/schema"
 import { userRoles, users } from "@/db/schema"
 import {
@@ -35,6 +36,19 @@ import type {
   WebhookSubscriptionActivePayload,
   WebhookSubscriptionRevokedPayload,
 } from "../types"
+import { Route } from "./webhook"
+
+const { mockEnv } = vi.hoisted(() => ({
+  mockEnv: {} as Env,
+}))
+
+vi.mock("cloudflare:workers", () => ({
+  env: mockEnv,
+}))
+
+vi.mock("@/db", () => ({
+  getDb: vi.fn(),
+}))
 
 vi.mock("@polar-sh/sdk/webhooks")
 vi.mock("@/email/templates.server")
@@ -69,43 +83,6 @@ vi.mock("@/config", () => ({
   } satisfies PaymentsConfig & PermissionsConfig,
 }))
 
-async function handleWebhook(request: Request, env: Env) {
-  try {
-    if (!env.POLAR_WEBHOOK_SECRET) {
-      throw new Error("The Polar webhook secret is not set")
-    }
-
-    const payload = await request.text()
-    const headers = Object.fromEntries(request.headers.entries())
-    const db = drizzle(new Database(":memory:"), {
-      schema,
-    }) as unknown as DrizzleD1Database<typeof schema>
-
-    const event: WebhookEvents = validateEvent(
-      payload,
-      headers,
-      env.POLAR_WEBHOOK_SECRET,
-    )
-
-    switch (event.type) {
-      case "order.paid":
-      case "subscription.active":
-        return onPaymentSuccess(event, db, env)
-      case "order.refunded":
-      case "subscription.revoked":
-        return onPaymentRevoked(event, db, env)
-      default:
-        return new Response("Event not handled", { status: 202 })
-    }
-  } catch (error) {
-    if (error instanceof WebhookVerificationError) {
-      return new Response("Webhook verification failed", { status: 403 })
-    }
-
-    throw error
-  }
-}
-
 describe("Webhook", () => {
   const sqlite = new Database(":memory:")
   const db = drizzle(sqlite, { schema }) as unknown as DrizzleD1Database<
@@ -123,6 +100,10 @@ describe("Webhook", () => {
   })
 
   beforeEach(async () => {
+    for (const key of Reflect.ownKeys(mockEnv)) {
+      Reflect.deleteProperty(mockEnv, key)
+    }
+
     sqlite.exec("PRAGMA foreign_keys = OFF")
     await db.delete(users)
     await db.delete(userRoles)
@@ -134,7 +115,12 @@ describe("Webhook", () => {
   })
 
   async function postWebhook(env: Env) {
-    return handleWebhook(new Request("http://localhost"), env)
+    Object.assign(mockEnv, env)
+    vi.mocked(getDb).mockReturnValue(db)
+
+    return Route.options.server.handlers.POST({
+      request: new Request("http://localhost"),
+    })
   }
 
   it("throws an error when POLAR_WEBHOOK_SECRET is not set", async () => {
