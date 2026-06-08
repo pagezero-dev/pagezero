@@ -214,7 +214,7 @@ function Login() {
     } catch (error) {
       if (isRedirect(error)) {
         await queryClient.invalidateQueries({ queryKey: ["user"] })
-        await router.navigate(error)
+        await router.navigate(error.options)
         return
       }
     } finally {
