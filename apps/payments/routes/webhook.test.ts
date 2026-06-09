@@ -103,6 +103,8 @@ describe("Webhook", () => {
       Reflect.deleteProperty(mockEnv, key)
     }
 
+    vi.mocked(getDb).mockReturnValue(db)
+
     sqlite.exec("PRAGMA foreign_keys = OFF")
     await db.delete(users)
     await db.delete(userRoles)
@@ -113,28 +115,29 @@ describe("Webhook", () => {
       .values([{ id: existingUserId, email: "existing@example.com" }])
   })
 
-  async function postWebhook(env: Env) {
+  function setEnv(env: Partial<Env>) {
     Object.assign(mockEnv, env)
-    vi.mocked(getDb).mockReturnValue(db)
-
-    return Route.options.server.handlers.POST({
-      request: new Request("http://localhost"),
-    })
   }
 
   it("throws an error when POLAR_WEBHOOK_SECRET is not set", async () => {
-    await expect(postWebhook({} as Env)).rejects.toThrow(
-      "The Polar webhook secret is not set",
-    )
+    setEnv({})
+    await expect(
+      Route.options.server.handlers.POST({
+        request: new Request("http://localhost"),
+      }),
+    ).rejects.toThrow("The Polar webhook secret is not set")
   })
 
   it("returns HTTP 403 when webhook verification fails", async () => {
     vi.mocked(validateEvent).mockImplementation(() => {
       throw new WebhookVerificationError("test")
     })
-    const response = await postWebhook({
+    setEnv({
       POLAR_WEBHOOK_SECRET: "test",
-    } as Env)
+    })
+    const response = await Route.options.server.handlers.POST({
+      request: new Request("http://localhost"),
+    })
     expect(response.status).toBe(403)
     expect(await response.text()).toBe("Webhook verification failed")
   })
@@ -144,9 +147,12 @@ describe("Webhook", () => {
       type: "order.created",
       data: {},
     } as WebhookEvents)
-    const response = await postWebhook({
+    setEnv({
       POLAR_WEBHOOK_SECRET: "test",
-    } as Env)
+    })
+    const response = await Route.options.server.handlers.POST({
+      request: new Request("http://localhost"),
+    })
     expect(response.status).toBe(202)
     expect(await response.text()).toBe("Event not handled")
   })
@@ -165,9 +171,12 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      const response = await postWebhook({
+      setEnv({
         POLAR_WEBHOOK_SECRET: "test",
-      } as Env)
+      })
+      const response = await Route.options.server.handlers.POST({
+        request: new Request("http://localhost"),
+      })
 
       const user = await getUserByEmail(db, "new@example.com")
       if (!user) {
@@ -197,9 +206,12 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      const response = await postWebhook({
+      setEnv({
         POLAR_WEBHOOK_SECRET: "test",
-      } as Env)
+      })
+      const response = await Route.options.server.handlers.POST({
+        request: new Request("http://localhost"),
+      })
       expect(
         await hasUserRole(db, existingUserId, "pro" as unknown as Role),
       ).toBe(true)
@@ -223,9 +235,12 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      const response = await postWebhook({
+      setEnv({
         POLAR_WEBHOOK_SECRET: "test",
-      } as Env)
+      })
+      const response = await Route.options.server.handlers.POST({
+        request: new Request("http://localhost"),
+      })
 
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("User already has access")
@@ -242,9 +257,12 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      const response = await postWebhook({
+      setEnv({
         POLAR_WEBHOOK_SECRET: "test",
-      } as Env)
+      })
+      const response = await Route.options.server.handlers.POST({
+        request: new Request("http://localhost"),
+      })
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("Product not found")
       expect(sendAccessFailureEmail).toHaveBeenCalledWith({
@@ -269,9 +287,12 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
-      const response = await postWebhook({
+      setEnv({
         POLAR_WEBHOOK_SECRET: "test",
-      } as Env)
+      })
+      const response = await Route.options.server.handlers.POST({
+        request: new Request("http://localhost"),
+      })
       expect(response.status).toBe(201)
       expect(
         await hasUserRole(db, existingUserId, "pro" as unknown as Role),
@@ -293,9 +314,12 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
-      const response = await postWebhook({
+      setEnv({
         POLAR_WEBHOOK_SECRET: "test",
-      } as Env)
+      })
+      const response = await Route.options.server.handlers.POST({
+        request: new Request("http://localhost"),
+      })
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("User not found")
       expect(sendAccessRevokedEmail).not.toHaveBeenCalled()
@@ -311,9 +335,12 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
-      const response = await postWebhook({
+      setEnv({
         POLAR_WEBHOOK_SECRET: "test",
-      } as Env)
+      })
+      const response = await Route.options.server.handlers.POST({
+        request: new Request("http://localhost"),
+      })
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("Product not found")
       expect(sendAccessRevokedEmail).not.toHaveBeenCalled()
