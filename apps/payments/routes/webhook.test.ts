@@ -88,6 +88,14 @@ describe("Webhook", () => {
     typeof schema
   >
   const existingUserId = 1
+  const postHandler = (() => {
+    const handlers = Route.options.server?.handlers
+    if (!handlers || typeof handlers === "function" || !handlers.POST) {
+      throw new Error("Webhook POST handler not found")
+    }
+
+    return handlers.POST as (ctx: { request: Request }) => Promise<Response>
+  })()
 
   beforeAll(async () => {
     const migrationSql = fs.readFileSync("./packages/db/schema.sql", "utf-8")
@@ -103,7 +111,7 @@ describe("Webhook", () => {
       Reflect.deleteProperty(mockEnv, key)
     }
 
-    vi.mocked(getDb).mockReturnValue(db)
+    vi.mocked(getDb).mockReturnValue(db as ReturnType<typeof getDb>)
 
     sqlite.exec("PRAGMA foreign_keys = OFF")
     await db.delete(users)
@@ -122,7 +130,7 @@ describe("Webhook", () => {
   it("throws an error when POLAR_WEBHOOK_SECRET is not set", async () => {
     setEnv({})
     await expect(
-      Route.options.server.handlers.POST({
+      postHandler({
         request: new Request("http://localhost"),
       }),
     ).rejects.toThrow("The Polar webhook secret is not set")
@@ -135,7 +143,7 @@ describe("Webhook", () => {
     setEnv({
       POLAR_WEBHOOK_SECRET: "test",
     })
-    const response = await Route.options.server.handlers.POST({
+    const response = await postHandler({
       request: new Request("http://localhost"),
     })
     expect(response.status).toBe(403)
@@ -150,7 +158,7 @@ describe("Webhook", () => {
     setEnv({
       POLAR_WEBHOOK_SECRET: "test",
     })
-    const response = await Route.options.server.handlers.POST({
+    const response = await postHandler({
       request: new Request("http://localhost"),
     })
     expect(response.status).toBe(202)
@@ -174,7 +182,7 @@ describe("Webhook", () => {
       setEnv({
         POLAR_WEBHOOK_SECRET: "test",
       })
-      const response = await Route.options.server.handlers.POST({
+      const response = await postHandler({
         request: new Request("http://localhost"),
       })
 
@@ -209,7 +217,7 @@ describe("Webhook", () => {
       setEnv({
         POLAR_WEBHOOK_SECRET: "test",
       })
-      const response = await Route.options.server.handlers.POST({
+      const response = await postHandler({
         request: new Request("http://localhost"),
       })
       expect(
@@ -238,7 +246,7 @@ describe("Webhook", () => {
       setEnv({
         POLAR_WEBHOOK_SECRET: "test",
       })
-      const response = await Route.options.server.handlers.POST({
+      const response = await postHandler({
         request: new Request("http://localhost"),
       })
 
@@ -260,7 +268,7 @@ describe("Webhook", () => {
       setEnv({
         POLAR_WEBHOOK_SECRET: "test",
       })
-      const response = await Route.options.server.handlers.POST({
+      const response = await postHandler({
         request: new Request("http://localhost"),
       })
       expect(response.status).toBe(200)
@@ -290,7 +298,7 @@ describe("Webhook", () => {
       setEnv({
         POLAR_WEBHOOK_SECRET: "test",
       })
-      const response = await Route.options.server.handlers.POST({
+      const response = await postHandler({
         request: new Request("http://localhost"),
       })
       expect(response.status).toBe(201)
@@ -317,7 +325,7 @@ describe("Webhook", () => {
       setEnv({
         POLAR_WEBHOOK_SECRET: "test",
       })
-      const response = await Route.options.server.handlers.POST({
+      const response = await postHandler({
         request: new Request("http://localhost"),
       })
       expect(response.status).toBe(200)
@@ -338,7 +346,7 @@ describe("Webhook", () => {
       setEnv({
         POLAR_WEBHOOK_SECRET: "test",
       })
-      const response = await Route.options.server.handlers.POST({
+      const response = await postHandler({
         request: new Request("http://localhost"),
       })
       expect(response.status).toBe(200)
