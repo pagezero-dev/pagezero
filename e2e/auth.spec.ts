@@ -5,7 +5,7 @@ test("basic authentication flow", async ({ page }) => {
   // Check initial state
   await page.goto("/")
   await page.getByRole("link", { name: "Log in" }).click()
-  await page.waitForURL("**/login**")
+  await page.waitForURL("/login")
   await page.waitForLoadState("networkidle")
 
   await expect(page.getByText("test@test.com")).not.toBeVisible()
@@ -41,7 +41,7 @@ test("basic authentication flow", async ({ page }) => {
   // biome-ignore lint/style/noNonNullAssertion: otpCodeFromEmail is not null at this point
   await page.getByPlaceholder("Verification code").fill(otpCodeFromEmail!)
   await page.getByRole("button", { name: "Verify" }).click()
-  await page.waitForURL("/", { timeout: 15000 })
+  await page.waitForURL("/")
   await page.reload()
 
   // Check logged in state
