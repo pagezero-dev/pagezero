@@ -23,10 +23,11 @@ export async function requireUserId({
     const requestURLObject = getRequestUrl()
     const redirectToURL =
       redirectTo ?? `${requestURLObject.pathname}${requestURLObject.search}`
-    const redirectURL = redirectToURL
-      ? `${LOGIN_ROUTE}?redirectTo=${redirectToURL}`
-      : LOGIN_ROUTE
-    throw redirect({ href: redirectURL })
+    throw redirect(
+      redirectToURL
+        ? { to: LOGIN_ROUTE, search: { redirectTo: redirectToURL } }
+        : { to: LOGIN_ROUTE },
+    )
   }
   return userID
 }

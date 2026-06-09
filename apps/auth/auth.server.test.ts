@@ -43,7 +43,8 @@ describe("requireUserId", () => {
 
     await expect(requireUserId()).rejects.toEqual(
       redirect({
-        href: "/login?redirectTo=/test-path?query=123",
+        to: "/login",
+        search: { redirectTo: "/test-path?query=123" },
       }),
     )
   })
@@ -58,7 +59,8 @@ describe("requireUserId", () => {
       requireUserId({ redirectTo: "/custom-path" }),
     ).rejects.toEqual(
       redirect({
-        href: "/login?redirectTo=/custom-path",
+        to: "/login",
+        search: { redirectTo: "/custom-path" },
       }),
     )
   })

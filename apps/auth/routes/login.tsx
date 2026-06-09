@@ -158,7 +158,7 @@ const loginAction = createServerFn({ method: "POST" })
     const user = await getOrCreateUserByEmail(db, email)
     await updateAppSession({ userId: `${user.id}` })
 
-    throw redirect({ href: getRedirectUrl(redirectTo) })
+    throw redirect({ to: getRedirectUrl(redirectTo) })
   })
 
 const loginSearchSchema = z.object({
