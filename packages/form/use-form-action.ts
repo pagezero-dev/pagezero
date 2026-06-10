@@ -3,12 +3,11 @@ import {
   type UseMutationResult,
   useMutation,
 } from "@tanstack/react-query"
-import { useServerFn } from "@tanstack/react-start"
+import { type RequiredFetcher, useServerFn } from "@tanstack/react-start"
 import { useCallback } from "react"
-import type { ZodType } from "zod"
 
-// biome-ignore lint/suspicious/noExplicitAny: matches TanStack useServerFn typing
-type AnyServerFn = (...args: Array<any>) => Promise<any>
+// biome-ignore lint/suspicious/noExplicitAny: TanStack Fetcher generics
+type FormActionServerFn = RequiredFetcher<any, any, any>
 
 type UseFormActionResult<
   TData,
@@ -19,13 +18,11 @@ type UseFormActionResult<
 }
 
 export function useFormAction<
-  TServerFn extends AnyServerFn,
-  TSchema extends ZodType,
+  TServerFn extends FormActionServerFn,
   TError = Error,
   TOnMutateResult = unknown,
 >(
   serverFn: TServerFn,
-  schema: TSchema,
   options?: Omit<
     UseMutationOptions<
       Awaited<ReturnType<TServerFn>>,
@@ -40,16 +37,13 @@ export function useFormAction<
   TError,
   TOnMutateResult
 > {
-  const runServerFn = useServerFn(serverFn) as unknown as (
-    input: Parameters<TServerFn>[0],
-  ) => ReturnType<TServerFn>
+  const runServerFn = useServerFn(serverFn) as unknown as (input: {
+    data: FormData
+  }) => Promise<Awaited<ReturnType<TServerFn>>>
 
   const mutation = useMutation({
     ...options,
-    mutationFn: (formData: FormData) =>
-      runServerFn({
-        data: schema.parse(Object.fromEntries(formData.entries())),
-      }),
+    mutationFn: (formData: FormData) => runServerFn({ data: formData }),
   })
 
   const onSubmit = useCallback(

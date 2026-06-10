@@ -13,7 +13,7 @@ import {
 } from "@/auth"
 import { SignIn } from "@/auth/components/sign-in"
 import { VerifyHuman } from "@/auth/components/verify-human"
-import { useFormAction } from "@/form"
+import { fromFormData, useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
 import { getOrCreateUserByEmail, getUserId, isValidUserId } from "@/user"
 
@@ -61,7 +61,7 @@ const getLoginPageData = createServerFn({ method: "GET" })
   })
 
 const loginAction = createServerFn({ method: "POST" })
-  .validator(loginInputSchema)
+  .validator((data) => loginInputSchema.parse(fromFormData(data)))
   .handler(async ({ data }): Promise<LoginActionData | never> => {
     const { updateAppSession } = await import("@/auth/session.server")
     const [{ getDb }, { env }] = await Promise.all([
@@ -180,15 +180,11 @@ export const Route = createFileRoute("/login")({
 function Login() {
   const { cloudflareTurnstilePublicKey, redirectTo } = Route.useLoaderData()
   const queryClient = useQueryClient()
-  const { data, error, isPending, onSubmit } = useFormAction(
-    loginAction,
-    loginInputSchema,
-    {
-      onSuccess: () => {
-        void queryClient.invalidateQueries({ queryKey: ["user"] })
-      },
+  const { data, error, isPending, onSubmit } = useFormAction(loginAction, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["user"] })
     },
-  )
+  })
   const {
     email,
     success,
