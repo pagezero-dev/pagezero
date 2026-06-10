@@ -1,13 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query"
-import {
-  createFileRoute,
-  isRedirect,
-  Link,
-  redirect,
-  useRouter,
-} from "@tanstack/react-router"
+import { createFileRoute, Link, redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
-import { useState } from "react"
 import { z } from "zod"
 import {
   generateOTP,
@@ -20,6 +13,7 @@ import {
 } from "@/auth"
 import { SignIn } from "@/auth/components/sign-in"
 import { VerifyHuman } from "@/auth/components/verify-human"
+import { useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
 import { getOrCreateUserByEmail, getUserId, isValidUserId } from "@/user"
 
@@ -35,14 +29,26 @@ const UserEmailSchema = z.object({
   email: z.email(),
 })
 
-const loginInputSchema = z.object({
-  email: z.string(),
-  otp: z.string().optional(),
-  redirectTo: z.string().optional(),
-  signature: z.string().optional(),
-  expiresAt: z.number().optional(),
-  turnstileToken: z.string().optional(),
-})
+const loginInputSchema = z
+  .object({
+    email: z.string(),
+    otp: z.string().optional(),
+    redirectTo: z.string().optional(),
+    signature: z.string().optional(),
+    expiresAt: z.coerce.number().optional(),
+    turnstileToken: z.string().optional(),
+    "cf-turnstile-response": z.string().optional(),
+  })
+  .transform(
+    ({
+      "cf-turnstile-response": turnstileResponse,
+      turnstileToken,
+      ...rest
+    }) => ({
+      ...rest,
+      turnstileToken: turnstileToken ?? turnstileResponse,
+    }),
+  )
 
 const ensureGuest = createServerFn({ method: "GET" }).handler(async () => {
   const { useAppSession } = await import("@/auth/session.server")
@@ -180,52 +186,27 @@ export const Route = createFileRoute("/login")({
 function Login() {
   const { cloudflareTurnstilePublicKey, redirectTo } = Route.useLoaderData()
   const queryClient = useQueryClient()
-  const router = useRouter()
-  const [actionData, setActionData] = useState<LoginActionData>()
-  const [isPending, setIsPending] = useState(false)
-  const { email, error, success, signature, expiresAt } = actionData || {}
+  const { data, error, isPending, onSubmit } = useFormAction(
+    loginAction,
+    loginInputSchema,
+    {
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: ["user"] })
+      },
+    },
+  )
+  const {
+    email,
+    success,
+    signature,
+    expiresAt,
+    error: actionError,
+  } = data ?? {}
   const turnstileSubjectKey = isPending ? "pending" : "idle"
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsPending(true)
-
-    const formData = new FormData(event.currentTarget)
-    const emailValue = formData.get("email")?.toString() ?? ""
-    const turnstileToken = formData.get("cf-turnstile-response")?.toString()
-
-    if (!emailValue && !formData.get("otp")?.toString()) {
-      setActionData({ error: "Email is required" })
-      setIsPending(false)
-      return
-    }
-
-    try {
-      const result = await loginAction({
-        data: {
-          email: emailValue,
-          otp: formData.get("otp")?.toString(),
-          redirectTo: formData.get("redirectTo")?.toString(),
-          signature: formData.get("signature")?.toString(),
-          expiresAt: Number(formData.get("expiresAt")?.toString()) || undefined,
-          turnstileToken,
-        },
-      })
-      setActionData(result)
-    } catch (error) {
-      if (isRedirect(error)) {
-        await queryClient.invalidateQueries({ queryKey: ["user"] })
-        await router.navigate(error.options)
-        return
-      }
-    } finally {
-      setIsPending(false)
-    }
-  }
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       noValidate
       className="container mx-auto mt-4 space-y-4"
     >
@@ -233,7 +214,7 @@ function Login() {
         <input type="hidden" name="redirectTo" value={redirectTo} />
         <SignIn
           email={email}
-          error={error}
+          error={actionError ?? error?.message}
           success={success}
           signature={signature}
           expiresAt={expiresAt}
