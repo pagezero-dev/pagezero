@@ -35,9 +35,7 @@ function Index() {
         cta={
           <>
             <Button asChild size="lg">
-              <Link to="/login">
-                Get Started
-              </Link>
+              <Link to="/login">Get Started</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <a href="#features">Learn More →</a>
@@ -209,9 +207,7 @@ function Index() {
             ]}
             cta={
               <Button className="w-full" variant="outline" size="lg" asChild>
-                <Link to="/login">
-                  Start Free
-                </Link>
+                <Link to="/login">Start Free</Link>
               </Button>
             }
           />

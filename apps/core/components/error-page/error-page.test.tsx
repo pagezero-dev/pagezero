@@ -11,9 +11,7 @@ describe("<ErrorPage />", async () => {
   })
 
   it("renders not found variant", async () => {
-    render(
-      <ErrorPage variant="not-found" action={<a href="/">Go home</a>} />,
-    )
+    render(<ErrorPage variant="not-found" action={<a href="/">Go home</a>} />)
     expect(screen.getByText("Page not found")).toBeInTheDocument()
     expect(
       screen.getByText(

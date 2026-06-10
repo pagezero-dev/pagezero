@@ -14,8 +14,8 @@ vi.mock("@/user", () => ({
   getUserId: vi.fn(),
 }))
 
-import { useAppSession } from "@/auth/session.server"
 import { getRequestUrl } from "@tanstack/react-start/server"
+import { useAppSession } from "@/auth/session.server"
 import { getUserId } from "@/user"
 
 describe("requireUserId", () => {
@@ -55,9 +55,7 @@ describe("requireUserId", () => {
     } as Awaited<ReturnType<typeof useAppSession>>)
     vi.mocked(getUserId).mockResolvedValue(0)
 
-    await expect(
-      requireUserId({ redirectTo: "/custom-path" }),
-    ).rejects.toEqual(
+    await expect(requireUserId({ redirectTo: "/custom-path" })).rejects.toEqual(
       redirect({
         to: "/login",
         search: { redirectTo: "/custom-path" },

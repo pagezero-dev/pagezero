@@ -59,9 +59,7 @@ function ContentLayout() {
           </Dropdown>
         ) : (
           <Button variant="default" asChild>
-            <Link to="/login">
-              Log in
-            </Link>
+            <Link to="/login">Log in</Link>
           </Button>
         )}
       </Header>

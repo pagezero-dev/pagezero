@@ -70,9 +70,7 @@ function PaymentSuccess() {
 
           {whatsNext && (
             <Button variant="outline" asChild>
-              <Link to="/login">
-                Sign in
-              </Link>
+              <Link to="/login">Sign in</Link>
             </Button>
           )}
         </motion.div>
