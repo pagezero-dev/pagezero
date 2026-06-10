@@ -53,7 +53,7 @@ const getLoginPageData = createServerFn({ method: "GET" })
   })
 
 const loginAction = createServerFn({ method: "POST" })
-  .validator((data) => loginInputSchema.parse(fromFormData(data)))
+  .validator((data: FormData) => loginInputSchema.parse(fromFormData(data)))
   .handler(async ({ data }) => {
     const { updateAppSession } = await import("@/auth/session.server")
     const [{ getDb }, { env }] = await Promise.all([

@@ -3,10 +3,12 @@ import {
   type UseMutationResult,
   useMutation,
 } from "@tanstack/react-query"
-import { type RequiredFetcher, useServerFn } from "@tanstack/react-start"
+import { useServerFn } from "@tanstack/react-start"
 import { useCallback } from "react"
 
-type FormActionServerFn = RequiredFetcher<unknown, unknown, unknown>
+type FormActionServerFn<TResponse> = (opts: {
+  data: FormData
+}) => Promise<TResponse>
 
 type UseFormActionResult<
   TData,
@@ -17,28 +19,17 @@ type UseFormActionResult<
 }
 
 export function useFormAction<
-  TServerFn extends FormActionServerFn,
+  TResponse,
   TError = Error,
   TOnMutateResult = unknown,
 >(
-  serverFn: TServerFn,
+  serverFn: FormActionServerFn<TResponse>,
   options?: Omit<
-    UseMutationOptions<
-      Awaited<ReturnType<TServerFn>>,
-      TError,
-      FormData,
-      TOnMutateResult
-    >,
+    UseMutationOptions<TResponse, TError, FormData, TOnMutateResult>,
     "mutationFn"
   >,
-): UseFormActionResult<
-  Awaited<ReturnType<TServerFn>>,
-  TError,
-  TOnMutateResult
-> {
-  const runServerFn = useServerFn(serverFn) as unknown as (input: {
-    data: FormData
-  }) => Promise<Awaited<ReturnType<TServerFn>>>
+): UseFormActionResult<TResponse, TError, TOnMutateResult> {
+  const runServerFn = useServerFn(serverFn)
 
   const mutation = useMutation({
     ...options,
