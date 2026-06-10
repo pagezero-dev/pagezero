@@ -6,7 +6,6 @@ import {
 import { useServerFn } from "@tanstack/react-start"
 import { useCallback } from "react"
 import type { ZodType } from "zod"
-import { parseFormDataWithSchema } from "./parse-form-data"
 
 // biome-ignore lint/suspicious/noExplicitAny: matches TanStack useServerFn typing
 type AnyServerFn = (...args: Array<any>) => Promise<any>
@@ -48,7 +47,9 @@ export function useFormAction<
   const mutation = useMutation({
     ...options,
     mutationFn: (formData: FormData) =>
-      runServerFn(parseFormDataWithSchema(formData, schema)),
+      runServerFn({
+        data: schema.parse(Object.fromEntries(formData.entries())),
+      }),
   })
 
   const onSubmit = useCallback(
