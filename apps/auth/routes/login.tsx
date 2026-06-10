@@ -29,26 +29,14 @@ const UserEmailSchema = z.object({
   email: z.email(),
 })
 
-const loginInputSchema = z
-  .object({
-    email: z.string(),
-    otp: z.string().optional(),
-    redirectTo: z.string().optional(),
-    signature: z.string().optional(),
-    expiresAt: z.coerce.number().optional(),
-    turnstileToken: z.string().optional(),
-    "cf-turnstile-response": z.string().optional(),
-  })
-  .transform(
-    ({
-      "cf-turnstile-response": turnstileResponse,
-      turnstileToken,
-      ...rest
-    }) => ({
-      ...rest,
-      turnstileToken: turnstileToken ?? turnstileResponse,
-    }),
-  )
+const loginInputSchema = z.object({
+  email: z.string(),
+  otp: z.string().optional(),
+  redirectTo: z.string().optional(),
+  signature: z.string().optional(),
+  expiresAt: z.coerce.number().optional(),
+  "cf-turnstile-response": z.string().optional(),
+})
 
 const ensureGuest = createServerFn({ method: "GET" }).handler(async () => {
   const { useAppSession } = await import("@/auth/session.server")
@@ -86,8 +74,14 @@ const loginAction = createServerFn({ method: "POST" })
       throw new Error("OTP_SECRET is not set")
     }
 
-    const { email, otp, redirectTo, signature, expiresAt, turnstileToken } =
-      data
+    const {
+      email,
+      otp,
+      redirectTo,
+      signature,
+      expiresAt,
+      "cf-turnstile-response": turnstileResponse,
+    } = data
 
     if (!email) {
       return { error: "Email is required" }
@@ -106,7 +100,7 @@ const loginAction = createServerFn({ method: "POST" })
       const ip = getRequestHeader("CF-Connecting-IP")
       const isHuman = await verifyHuman({
         secret: cloudflareTurnstileSecretKey,
-        token: turnstileToken,
+        token: turnstileResponse,
         ip,
       })
 
