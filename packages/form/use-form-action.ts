@@ -6,15 +6,14 @@ import {
 import { type RequiredFetcher, useServerFn } from "@tanstack/react-start"
 import { useCallback } from "react"
 
-// biome-ignore lint/suspicious/noExplicitAny: TanStack Fetcher generics
-type FormActionServerFn = RequiredFetcher<any, any, any>
+type FormActionServerFn = RequiredFetcher<unknown, unknown, unknown>
 
 type UseFormActionResult<
   TData,
   TError,
   TOnMutateResult = unknown,
 > = UseMutationResult<TData, TError, FormData, TOnMutateResult> & {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
 }
 
 export function useFormAction<
@@ -47,7 +46,7 @@ export function useFormAction<
   })
 
   const onSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
+    (event: React.SubmitEvent<HTMLFormElement>) => {
       event.preventDefault()
       mutation.mutate(new FormData(event.currentTarget))
     },
