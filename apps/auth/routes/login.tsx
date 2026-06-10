@@ -17,14 +17,6 @@ import { fromFormData, useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
 import { getOrCreateUserByEmail, getUserId, isValidUserId } from "@/user"
 
-type LoginActionData = {
-  email?: string
-  signature?: string
-  expiresAt?: number
-  error?: string
-  success?: string
-}
-
 const UserEmailSchema = z.object({
   email: z.email(),
 })
@@ -62,7 +54,7 @@ const getLoginPageData = createServerFn({ method: "GET" })
 
 const loginAction = createServerFn({ method: "POST" })
   .validator((data) => loginInputSchema.parse(fromFormData(data)))
-  .handler(async ({ data }): Promise<LoginActionData | never> => {
+  .handler(async ({ data }) => {
     const { updateAppSession } = await import("@/auth/session.server")
     const [{ getDb }, { env }] = await Promise.all([
       import("@/db"),
