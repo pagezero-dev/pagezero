@@ -1,8 +1,12 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import {
+  type UseMutationOptions,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query"
 import { act, renderHook, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { z } from "zod"
-import { useFormAction } from "./use-form-action"
+import { type FormError, useFormAction } from "./use-form-action"
 
 vi.mock("@tanstack/react-start", () => ({
   useServerFn: <T,>(fn: T) => fn,
@@ -13,9 +17,15 @@ const testSchema = z.object({
   name: z.string(),
 })
 
-type Options = Parameters<typeof useFormAction>[2]
+type TestError = Error | FormError<typeof testSchema>
 
-function renderFormAction(serverFn: () => Promise<unknown>, options?: Options) {
+function renderFormAction<TResponse = unknown>(
+  serverFn: (opts: { data: FormData }) => Promise<TResponse>,
+  options?: Omit<
+    UseMutationOptions<TResponse, TestError, FormData>,
+    "mutationFn"
+  >,
+) {
   const queryClient = new QueryClient({
     defaultOptions: { mutations: { retry: false } },
   })
