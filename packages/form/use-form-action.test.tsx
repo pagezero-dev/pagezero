@@ -22,9 +22,7 @@ function renderFormAction(serverFn: () => Promise<unknown>, options?: Options) {
 
   return renderHook(() => useFormAction(serverFn, testSchema, options), {
     wrapper: ({ children }) => (
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     ),
   })
 }
