@@ -1,11 +1,5 @@
 import type { z } from "zod"
-
-export interface FormError<TSchema extends z.ZodType> {
-  message: string
-  fields: {
-    [K in keyof z.infer<TSchema>]?: string[]
-  }
-}
+import type { FormError } from "./use-form-action"
 
 export function parseFormData<TSchema extends z.ZodType>(
   data: FormData,
@@ -17,7 +11,7 @@ export function parseFormData<TSchema extends z.ZodType>(
 
   const result = schema.safeParse(Object.fromEntries(data.entries()))
   if (!result.success) {
-    throw { 
+    throw {
       message: result.error.issues[0]?.message ?? "Validation failed",
       fields: result.error?.flatten().fieldErrors ?? {},
     } satisfies FormError<TSchema>

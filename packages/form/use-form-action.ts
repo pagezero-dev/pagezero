@@ -6,7 +6,13 @@ import {
 import { useServerFn } from "@tanstack/react-start"
 import { useCallback, useMemo } from "react"
 import type { z } from "zod"
-import type { FormError } from "./parse-form-data"
+
+export interface FormError<TSchema extends z.ZodType> {
+  message: string
+  fields: {
+    [K in keyof z.infer<TSchema>]?: string[]
+  }
+}
 
 type FormActionServerFn<TResponse> = (opts: {
   data: FormData
