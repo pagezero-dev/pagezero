@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { act, renderHook, waitFor } from "@testing-library/react"
-import type { ReactNode } from "react"
 import { describe, expect, it, vi } from "vitest"
 import { z } from "zod"
 import { useFormAction } from "./use-form-action"
@@ -14,26 +13,27 @@ const testSchema = z.object({
   name: z.string(),
 })
 
-function createWrapper() {
+type Options = Parameters<typeof useFormAction>[2]
+
+function renderFormAction(serverFn: () => Promise<unknown>, options?: Options) {
   const queryClient = new QueryClient({
-    defaultOptions: {
-      mutations: { retry: false },
-    },
+    defaultOptions: { mutations: { retry: false } },
   })
 
-  return ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  )
+  return renderHook(() => useFormAction(serverFn, testSchema, options), {
+    wrapper: ({ children }) => (
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    ),
+  })
 }
 
 describe("useFormAction", () => {
   it("exposes field metadata from the schema with empty errors", () => {
     const serverFn = vi.fn().mockResolvedValue({ ok: true })
 
-    const { result } = renderHook(
-      () => useFormAction(serverFn, testSchema),
-      { wrapper: createWrapper() },
-    )
+    const { result } = renderFormAction(serverFn)
 
     expect(result.current.fields).toEqual({
       email: { name: "email", errors: [] },
@@ -44,10 +44,7 @@ describe("useFormAction", () => {
   it("submits FormData when onSubmit is called", async () => {
     const serverFn = vi.fn().mockResolvedValue({ ok: true })
 
-    const { result } = renderHook(
-      () => useFormAction(serverFn, testSchema),
-      { wrapper: createWrapper() },
-    )
+    const { result } = renderFormAction(serverFn)
 
     const form = document.createElement("form")
     const emailInput = document.createElement("input")
@@ -92,10 +89,7 @@ describe("useFormAction", () => {
     }
     const serverFn = vi.fn().mockRejectedValue(formError)
 
-    const { result } = renderHook(
-      () => useFormAction(serverFn, testSchema),
-      { wrapper: createWrapper() },
-    )
+    const { result } = renderFormAction(serverFn)
 
     act(() => {
       result.current.mutate(new FormData())
@@ -113,10 +107,7 @@ describe("useFormAction", () => {
   it("leaves field errors empty for non-FormError failures", async () => {
     const serverFn = vi.fn().mockRejectedValue(new Error("Server error"))
 
-    const { result } = renderHook(
-      () => useFormAction(serverFn, testSchema),
-      { wrapper: createWrapper() },
-    )
+    const { result } = renderFormAction(serverFn)
 
     act(() => {
       result.current.mutate(new FormData())
@@ -135,10 +126,7 @@ describe("useFormAction", () => {
     const onSuccess = vi.fn()
     const serverFn = vi.fn().mockResolvedValue({ ok: true })
 
-    const { result } = renderHook(
-      () => useFormAction(serverFn, testSchema, { onSuccess }),
-      { wrapper: createWrapper() },
-    )
+    const { result } = renderFormAction(serverFn, { onSuccess })
 
     act(() => {
       result.current.mutate(new FormData())
