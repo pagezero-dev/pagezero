@@ -33,7 +33,7 @@ export async function requireUserPermissions(
   })
 
   if (!user) {
-    throw Response.json({ error: "User not found" }, { status: 401 })
+    throw new Error("User not found")
   }
 
   const userPermissions = user.roles.flatMap((role) =>
@@ -43,10 +43,7 @@ export async function requireUserPermissions(
   if (
     !permissions.every((permission) => userPermissions.includes(permission))
   ) {
-    throw Response.json(
-      { error: "User does not have the required permissions" },
-      { status: 403 },
-    )
+    throw new Error("User does not have the required permissions")
   }
 
   return user.id
@@ -65,7 +62,7 @@ export async function hasUserRole(
   })
 
   if (!user) {
-    throw Response.json({ error: "User not found" }, { status: 401 })
+    throw new Error("User not found")
   }
 
   if (user.roles.some((role) => role.roleName === roleName)) {
@@ -81,10 +78,7 @@ export async function requireUserRole(
   roleName: Role,
 ) {
   if (!(await hasUserRole(db, userId, roleName))) {
-    throw Response.json(
-      { error: "User does not have the required role" },
-      { status: 403 },
-    )
+    throw new Error("User does not have the required role")
   }
 }
 

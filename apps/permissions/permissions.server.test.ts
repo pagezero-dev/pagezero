@@ -78,22 +78,18 @@ describe("Permissions", () => {
       expect(result).toBe(adminUserId)
     })
 
-    it("should throw 401 if user not found", async () => {
+    it("throws if user not found", async () => {
       await expect(
         requireUserPermissions(db, 999, ["read"] as unknown as Permission[]),
-      ).rejects.toMatchObject({
-        status: 401,
-      })
+      ).rejects.toThrow("User not found")
     })
 
-    it("should throw 403 if user lacks required permissions", async () => {
+    it("throws if user lacks required permissions", async () => {
       await expect(
         requireUserPermissions(db, defaultUserId, [
           "write",
         ] as unknown as Permission[]),
-      ).rejects.toMatchObject({
-        status: 403,
-      })
+      ).rejects.toThrow("User does not have the required permissions")
     })
   })
 
@@ -124,12 +120,10 @@ describe("Permissions", () => {
       ).resolves.not.toThrow()
     })
 
-    it("should throw 403 if user does not have required role", async () => {
+    it("throws if user does not have required role", async () => {
       await expect(
         requireUserRole(db, defaultUserId, "admin" as unknown as Role),
-      ).rejects.toMatchObject({
-        status: 403,
-      })
+      ).rejects.toThrow("User does not have the required role")
     })
   })
 
