@@ -26,9 +26,15 @@ describe("parseFormData", () => {
     ).toThrow("Expected FormData")
   })
 
-  it("throws when schema validation fails", () => {
+  it("throws the first validation error", () => {
     const formData = new FormData()
+    const schema = z.object({
+      email: z.string(),
+      name: z.string(),
+    })
 
-    expect(() => parseFormData(formData, testSchema)).toThrow()
+    expect(() => parseFormData(formData, schema)).toThrow(
+      "Invalid input: expected string, received undefined",
+    )
   })
 })

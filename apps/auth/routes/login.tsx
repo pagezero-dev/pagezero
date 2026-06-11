@@ -17,12 +17,8 @@ import { parseFormData, useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
 import { getOrCreateUserByEmail, getUserId, isValidUserId } from "@/user"
 
-const UserEmailSchema = z.object({
-  email: z.email(),
-})
-
 const loginInputSchema = z.object({
-  email: z.string(),
+  email: z.email(),
   otp: z.string().optional(),
   redirectTo: z.string().optional(),
   signature: z.string().optional(),
@@ -74,17 +70,6 @@ const loginAction = createServerFn({ method: "POST" })
       expiresAt,
       "cf-turnstile-response": turnstileResponse,
     } = data
-
-    if (!email) {
-      return { error: "Email is required" }
-    }
-
-    const emailParseResult = UserEmailSchema.safeParse({ email })
-    if (emailParseResult.error) {
-      return {
-        error: z.flattenError(emailParseResult.error).fieldErrors.email?.[0],
-      }
-    }
 
     const cloudflareTurnstileSecretKey = env.CLOUDFLARE_TURNSTILE_SECRET_KEY
     if (cloudflareTurnstileSecretKey) {

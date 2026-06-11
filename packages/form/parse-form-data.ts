@@ -8,5 +8,12 @@ export function parseFormData<TSchema extends z.ZodType>(
     throw new TypeError("Expected FormData")
   }
 
-  return schema.parse(Object.fromEntries(data.entries()))
+  const result = schema.safeParse(Object.fromEntries(data.entries()))
+  if (!result.success) {
+    throw new Error(
+      result.error.issues[0]?.message ?? "Validation failed",
+    )
+  }
+
+  return result.data
 }
