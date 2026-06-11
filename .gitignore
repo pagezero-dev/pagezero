@@ -2,9 +2,7 @@
 node_modules
 
 # Build output
-/build
 /dist
-/.react-router/
 
 # Reports
 /.reports
