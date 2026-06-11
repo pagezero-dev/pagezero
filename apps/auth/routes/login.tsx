@@ -17,7 +17,7 @@ import { parseFormData, useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
 import { getOrCreateUserByEmail, getUserId, isValidUserId } from "@/user"
 
-const loginInputSchema = z.object({
+const loginFormSchema = z.object({
   email: z.email(),
   otp: z.string().optional(),
   redirectTo: z.string().optional(),
@@ -48,8 +48,8 @@ const getLoginPageData = createServerFn({ method: "GET" })
     }
   })
 
-const loginAction = createServerFn({ method: "POST" })
-  .validator((data: FormData) => parseFormData(data, loginInputSchema))
+const loginFormAction = createServerFn({ method: "POST" })
+  .validator((data: FormData) => parseFormData(data, loginFormSchema))
   .handler(async ({ data }) => {
     const { updateAppSession } = await import("@/auth/session.server")
     const [{ getDb }, { env }] = await Promise.all([
@@ -157,7 +157,7 @@ export const Route = createFileRoute("/login")({
 function Login() {
   const { cloudflareTurnstilePublicKey, redirectTo } = Route.useLoaderData()
   const queryClient = useQueryClient()
-  const { data, error, isPending, onSubmit } = useFormAction(loginAction, {
+  const { data, error, isPending, onSubmit } = useFormAction(loginFormAction, {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["user"] })
     },
