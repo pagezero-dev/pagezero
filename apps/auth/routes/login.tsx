@@ -129,7 +129,7 @@ const loginAction = createServerFn({ method: "POST" })
     }
 
     if (isOTPExpired(expiresAt ?? 0)) {
-      return { error: "Verification code expired" }
+      throw new Error("Verification code expired")
     }
 
     const user = await getOrCreateUserByEmail(db, email)
