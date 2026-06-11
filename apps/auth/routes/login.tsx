@@ -82,7 +82,7 @@ const loginAction = createServerFn({ method: "POST" })
       })
 
       if (!isHuman) {
-        return { error: "Human verification failed" }
+        throw new Error("Human verification failed")
       }
     }
 
@@ -98,7 +98,7 @@ const loginAction = createServerFn({ method: "POST" })
         const { sendAuthOtpEmail } = await import("@/email/templates.server")
         await sendAuthOtpEmail({ to: email, otp: generatedOtp, env })
       } catch {
-        return { error: "Failed to send an email" }
+        throw new Error("Failed to send an email")
       }
 
       return {

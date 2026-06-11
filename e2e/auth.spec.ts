@@ -14,7 +14,11 @@ test("basic authentication flow", async ({ page }) => {
   // Check incorrect email
   await page.getByPlaceholder("Enter your email").click()
   await page.getByRole("button", { name: "Login" }).click()
-  await expect(page.getByText("Email is required")).toBeVisible()
+  await expect(page.getByText("Invalid email address")).toBeVisible()
+  await page.getByPlaceholder("Enter your email").click()
+  await page.getByPlaceholder("Enter your email").fill("test")
+  await page.getByRole("button", { name: "Login" }).click()
+  await expect(page.getByText("Invalid email address")).toBeVisible()
 
   // Login
   await page.getByPlaceholder("Enter your email").click()

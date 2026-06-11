@@ -10,9 +10,7 @@ export function parseFormData<TSchema extends z.ZodType>(
 
   const result = schema.safeParse(Object.fromEntries(data.entries()))
   if (!result.success) {
-    throw new Error(
-      result.error.issues[0]?.message ?? "Validation failed",
-    )
+    throw new Error(result.error.issues[0]?.message ?? "Validation failed")
   }
 
   return result.data
