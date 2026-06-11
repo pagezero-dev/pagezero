@@ -13,7 +13,7 @@ import {
 } from "@/auth"
 import { SignIn } from "@/auth/components/sign-in"
 import { VerifyHuman } from "@/auth/components/verify-human"
-import { fromFormData, useFormAction } from "@/form"
+import { parseFormData, useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
 import { getOrCreateUserByEmail, getUserId, isValidUserId } from "@/user"
 
@@ -53,7 +53,7 @@ const getLoginPageData = createServerFn({ method: "GET" })
   })
 
 const loginAction = createServerFn({ method: "POST" })
-  .validator((data: FormData) => loginInputSchema.parse(fromFormData(data)))
+  .validator((data: FormData) => parseFormData(data, loginInputSchema))
   .handler(async ({ data }) => {
     const { updateAppSession } = await import("@/auth/session.server")
     const [{ getDb }, { env }] = await Promise.all([
