@@ -157,7 +157,7 @@ export const Route = createFileRoute("/login")({
 function Login() {
   const { cloudflareTurnstilePublicKey, redirectTo } = Route.useLoaderData()
   const queryClient = useQueryClient()
-  const { data, error, isPending, onSubmit } = useFormAction(loginFormAction, {
+  const { data, error, isPending, onSubmit } = useFormAction(loginFormAction, loginFormSchema, {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["user"] })
     },

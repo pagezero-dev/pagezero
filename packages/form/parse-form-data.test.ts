@@ -26,15 +26,44 @@ describe("parseFormData", () => {
     ).toThrow("Expected FormData")
   })
 
-  it("throws the first validation error", () => {
+  it("throws a FormError with the first issue message and field errors", () => {
     const formData = new FormData()
     const schema = z.object({
       email: z.string(),
       name: z.string(),
     })
 
-    expect(() => parseFormData(formData, schema)).toThrow(
-      "Invalid input: expected string, received undefined",
-    )
+    try {
+      parseFormData(formData, schema)
+      expect.unreachable("Expected parseFormData to throw")
+    } catch (error) {
+      expect(error).toEqual({
+        message: "Invalid input: expected string, received undefined",
+        fields: {
+          email: ["Invalid input: expected string, received undefined"],
+          name: ["Invalid input: expected string, received undefined"],
+        },
+      })
+    }
+  })
+
+  it("includes per-field errors in FormError.fields", () => {
+    const formData = new FormData()
+    formData.set("email", "not-an-email")
+    const schema = z.object({
+      email: z.email(),
+    })
+
+    try {
+      parseFormData(formData, schema)
+      expect.unreachable("Expected parseFormData to throw")
+    } catch (error) {
+      expect(error).toMatchObject({
+        message: expect.any(String),
+        fields: {
+          email: [expect.any(String)],
+        },
+      })
+    }
   })
 })

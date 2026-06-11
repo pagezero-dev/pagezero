@@ -5,6 +5,8 @@ import {
 } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/react-start"
 import { useCallback } from "react"
+import type { z } from "zod"
+import type { FormError } from "./parse-form-data"
 
 type FormActionServerFn<TResponse> = (opts: {
   data: FormData
@@ -20,10 +22,12 @@ type UseFormActionResult<
 
 export function useFormAction<
   TResponse,
-  TError = Error,
+  TSchema extends z.ZodType,
+  TError = Error | FormError<TSchema>,
   TOnMutateResult = unknown,
 >(
   serverFn: FormActionServerFn<TResponse>,
+  schema: TSchema,
   options?: Omit<
     UseMutationOptions<TResponse, TError, FormData, TOnMutateResult>,
     "mutationFn"
