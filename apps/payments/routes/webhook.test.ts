@@ -186,7 +186,7 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
       })
 
-      const user = await getUserByEmail(db, "new@example.com")
+      const user = await getUserByEmail("new@example.com")
       if (!user) {
         throw new Error("User not found")
       }

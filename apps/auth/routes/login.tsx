@@ -16,7 +16,6 @@ import {
 import { SignIn } from "@/auth/components/sign-in"
 import { VerifyHuman } from "@/auth/components/verify-human"
 import { updateAppSession, useAppSession } from "@/auth/session.server"
-import { getDb } from "@/db"
 import { sendAuthOtpEmail } from "@/email/templates.server"
 import { parseFormData, useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
@@ -33,10 +32,9 @@ const loginFormSchema = z.object({
 
 const ensureGuest = createServerFn({ method: "GET" }).handler(async () => {
   const session = await useAppSession()
-  const db = getDb()
   const userId = await getUserId(session)
 
-  if (userId && (await isValidUserId(db, userId))) {
+  if (userId && (await isValidUserId(userId))) {
     throw redirect({ to: "/" })
   }
 })
@@ -53,8 +51,6 @@ const getLoginPageData = createServerFn({ method: "GET" })
 const loginFormAction = createServerFn({ method: "POST" })
   .validator((data: FormData) => parseFormData(data, loginFormSchema))
   .handler(async ({ data }) => {
-    const db = getDb()
-
     if (!env.OTP_SECRET) {
       throw new Error("OTP_SECRET is not set")
     }
@@ -127,7 +123,7 @@ const loginFormAction = createServerFn({ method: "POST" })
       throw new Error("Verification code expired")
     }
 
-    const user = await getOrCreateUserByEmail(db, email)
+    const user = await getOrCreateUserByEmail(email)
     await updateAppSession({ userId: `${user.id}` })
 
     throw redirect({ to: getRedirectUrl(redirectTo) })

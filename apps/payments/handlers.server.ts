@@ -1,6 +1,4 @@
-import type { DrizzleD1Database } from "drizzle-orm/d1"
 import config from "@/config"
-import * as schema from "@/db/schema"
 import {
   sendAccessFailureEmail,
   sendAccessGrantedEmail,
@@ -17,7 +15,6 @@ import type {
 
 export async function onPaymentSuccess(
   event: WebhookOrderPaidPayload | WebhookSubscriptionActivePayload,
-  db: DrizzleD1Database<typeof schema>,
   env: Env,
 ) {
   try {
@@ -31,7 +28,7 @@ export async function onPaymentSuccess(
     if (!productConfig) {
       throw new Error("Product not found")
     }
-    const user = await getOrCreateUserByEmail(db, event.data.customer.email)
+    const user = await getOrCreateUserByEmail(event.data.customer.email)
     const userRoleToGrant = productConfig.userRoleToGrant
     if (await hasUserRole(user.id, userRoleToGrant)) {
       throw new Error("User already has access")
@@ -62,7 +59,6 @@ export async function onPaymentSuccess(
 
 export async function onPaymentRevoked(
   event: WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload,
-  db: DrizzleD1Database<typeof schema>,
   env: Env,
 ) {
   try {
@@ -76,7 +72,7 @@ export async function onPaymentRevoked(
     if (!productConfig) {
       throw new Error("Product not found")
     }
-    const user = await getUserByEmail(db, event.data.customer.email)
+    const user = await getUserByEmail(event.data.customer.email)
     if (!user) {
       throw new Error("User not found")
     }

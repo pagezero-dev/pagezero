@@ -1,7 +1,6 @@
 import { env } from "cloudflare:workers"
 import { validateEvent, WebhookVerificationError } from "@polar-sh/sdk/webhooks"
 import { createFileRoute } from "@tanstack/react-router"
-import { getDb } from "@/db"
 import { onPaymentRevoked, onPaymentSuccess } from "../handlers.server"
 import type { WebhookEvents } from "../types"
 
@@ -22,8 +21,6 @@ export const Route = createFileRoute("/payments/webhook")({
 
           const payload = await request.text()
           const headers = Object.fromEntries(request.headers.entries())
-          const db = getDb()
-
           const event: WebhookEvents = validateEvent(
             payload,
             headers,
@@ -33,10 +30,10 @@ export const Route = createFileRoute("/payments/webhook")({
           switch (event.type) {
             case "order.paid":
             case "subscription.active":
-              return onPaymentSuccess(event, db, env)
+              return onPaymentSuccess(event, env)
             case "order.refunded":
             case "subscription.revoked":
-              return onPaymentRevoked(event, db, env)
+              return onPaymentRevoked(event, env)
             default:
               return new Response("Event not handled", { status: 202 })
           }

@@ -1,12 +1,10 @@
 import { eq } from "drizzle-orm"
-import { DrizzleD1Database } from "drizzle-orm/d1"
 import type { useAppSession } from "@/auth/session.server"
+import { getDb } from "@/db"
 import * as schema from "@/db/schema"
 
-export async function getUserById(
-  db: DrizzleD1Database<typeof schema>,
-  userId: number,
-) {
+export async function getUserById(userId: number) {
+  const db = getDb()
   const user = await db.query.users.findFirst({
     where: eq(schema.users.id, userId),
   })
@@ -14,23 +12,19 @@ export async function getUserById(
   return user
 }
 
-export async function getUserByEmail(
-  db: DrizzleD1Database<typeof schema>,
-  email: string,
-) {
+export async function getUserByEmail(email: string) {
+  const db = getDb()
   const user = await db.query.users.findFirst({
     where: eq(schema.users.email, email),
   })
   return user
 }
 
-export async function getOrCreateUserByEmail(
-  db: DrizzleD1Database<typeof schema>,
-  email: string,
-) {
-  const user = await getUserByEmail(db, email)
+export async function getOrCreateUserByEmail(email: string) {
+  const user = await getUserByEmail(email)
 
   if (!user) {
+    const db = getDb()
     const results = await db.insert(schema.users).values({ email }).returning()
     return results[0]
   }
@@ -45,10 +39,8 @@ export async function getUserId(
   return userId ? Number(userId) : 0
 }
 
-export async function isValidUserId(
-  db: DrizzleD1Database<typeof schema>,
-  userId: number,
-) {
+export async function isValidUserId(userId: number) {
+  const db = getDb()
   const user = await db.query.users.findFirst({
     columns: { id: true },
     where: eq(schema.users.id, userId),
