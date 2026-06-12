@@ -1,6 +1,8 @@
+import { env } from "cloudflare:workers"
 import { useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, Link, redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
+import { getRequestHeader } from "@tanstack/react-start/server"
 import { z } from "zod"
 import {
   generateOTP,
@@ -13,6 +15,9 @@ import {
 } from "@/auth"
 import { SignIn } from "@/auth/components/sign-in"
 import { VerifyHuman } from "@/auth/components/verify-human"
+import { updateAppSession, useAppSession } from "@/auth/session.server"
+import { getDb } from "@/db"
+import { sendAuthOtpEmail } from "@/email/templates.server"
 import { parseFormData, useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
 import { getOrCreateUserByEmail, getUserId, isValidUserId } from "@/user"
@@ -27,8 +32,6 @@ const loginFormSchema = z.object({
 })
 
 const ensureGuest = createServerFn({ method: "GET" }).handler(async () => {
-  const { useAppSession } = await import("@/auth/session.server")
-  const { getDb } = await import("@/db")
   const session = await useAppSession()
   const db = getDb()
   const userId = await getUserId(session)
@@ -41,7 +44,6 @@ const ensureGuest = createServerFn({ method: "GET" }).handler(async () => {
 const getLoginPageData = createServerFn({ method: "GET" })
   .validator((data: { redirectTo: string }) => data)
   .handler(async ({ data }) => {
-    const { env } = await import("cloudflare:workers")
     return {
       cloudflareTurnstilePublicKey: env.CLOUDFLARE_TURNSTILE_PUBLIC_KEY,
       redirectTo: getRedirectUrl(data.redirectTo),
@@ -51,11 +53,6 @@ const getLoginPageData = createServerFn({ method: "GET" })
 const loginFormAction = createServerFn({ method: "POST" })
   .validator((data: FormData) => parseFormData(data, loginFormSchema))
   .handler(async ({ data }) => {
-    const { updateAppSession } = await import("@/auth/session.server")
-    const [{ getDb }, { env }] = await Promise.all([
-      import("@/db"),
-      import("cloudflare:workers"),
-    ])
     const db = getDb()
 
     if (!env.OTP_SECRET) {
@@ -73,7 +70,6 @@ const loginFormAction = createServerFn({ method: "POST" })
 
     const cloudflareTurnstileSecretKey = env.CLOUDFLARE_TURNSTILE_SECRET_KEY
     if (cloudflareTurnstileSecretKey) {
-      const { getRequestHeader } = await import("@tanstack/react-start/server")
       const ip = getRequestHeader("CF-Connecting-IP")
       const isHuman = await verifyHuman({
         secret: cloudflareTurnstileSecretKey,
@@ -95,7 +91,6 @@ const loginFormAction = createServerFn({ method: "POST" })
         expiresAt: generatedExpiresAt,
       })
       try {
-        const { sendAuthOtpEmail } = await import("@/email/templates.server")
         await sendAuthOtpEmail({ to: email, otp: generatedOtp, env })
       } catch {
         throw new Error("Failed to send an email")
