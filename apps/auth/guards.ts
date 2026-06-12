@@ -1,7 +1,7 @@
 import { redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { getRequestUrl } from "@tanstack/react-start/server"
-import { getUserId } from "@/user"
+import { getUserId, isValidUserId } from "@/user"
 import { useAppSession } from "./session.server"
 
 const LOGIN_ROUTE = "/login"
@@ -24,3 +24,14 @@ export const requireUserId = createServerFn({ method: "GET" })
     }
     return userID
   })
+
+export const requireGuestUser = createServerFn({ method: "GET" }).handler(
+  async () => {
+    const session = await useAppSession()
+    const userId = await getUserId(session)
+
+    if (userId && (await isValidUserId(userId))) {
+      throw redirect({ to: "/" })
+    }
+  },
+)

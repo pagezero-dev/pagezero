@@ -15,11 +15,12 @@ import {
 } from "@/auth"
 import { SignIn } from "@/auth/components/sign-in"
 import { VerifyHuman } from "@/auth/components/verify-human"
-import { updateAppSession, useAppSession } from "@/auth/session.server"
+import { requireGuestUser } from "@/auth/guards"
+import { updateAppSession } from "@/auth/session.server"
 import { sendAuthOtpEmail } from "@/email/templates.server"
 import { parseFormData, useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
-import { getOrCreateUserByEmail, getUserId, isValidUserId } from "@/user"
+import { getOrCreateUserByEmail } from "@/user"
 
 const loginFormSchema = z.object({
   email: z.email(),
@@ -28,15 +29,6 @@ const loginFormSchema = z.object({
   signature: z.string().optional(),
   expiresAt: z.coerce.number().optional(),
   "cf-turnstile-response": z.string().optional(),
-})
-
-const ensureGuest = createServerFn({ method: "GET" }).handler(async () => {
-  const session = await useAppSession()
-  const userId = await getUserId(session)
-
-  if (userId && (await isValidUserId(userId))) {
-    throw redirect({ to: "/" })
-  }
 })
 
 const getLoginPageData = createServerFn({ method: "GET" })
@@ -136,7 +128,7 @@ const loginSearchSchema = z.object({
 export const Route = createFileRoute("/login")({
   validateSearch: (search) => loginSearchSchema.parse(search),
   beforeLoad: async () => {
-    await ensureGuest()
+    await requireGuestUser()
   },
   loaderDeps: ({ search }) => ({ redirectTo: search.redirectTo ?? "/" }),
   loader: async ({ deps }) => {
