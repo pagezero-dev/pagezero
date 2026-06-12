@@ -10,8 +10,9 @@ describe("<ErrorPage />", async () => {
 
     render(<ErrorPage error={error} />)
 
-    expect(screen.getByRole("heading", { name: "Application Error" }))
-      .toBeInTheDocument()
+    expect(
+      screen.getByRole("heading", { name: "Application Error" }),
+    ).toBeInTheDocument()
     expect(screen.getByText("Something went wrong")).toBeInTheDocument()
   })
 
@@ -29,8 +30,9 @@ describe("<ErrorPage />", async () => {
       />,
     )
 
-    expect(screen.getByRole("heading", { name: "Server Error" }))
-      .toBeInTheDocument()
+    expect(
+      screen.getByRole("heading", { name: "Server Error" }),
+    ).toBeInTheDocument()
     expect(screen.getByText("Internal server error")).toBeInTheDocument()
   })
 
