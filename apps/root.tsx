@@ -27,7 +27,6 @@ export const Route = createRootRoute({
     links: [
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "canonical", href: config.core.websiteUrl },
       {
         rel: "stylesheet",
         href: styles,
