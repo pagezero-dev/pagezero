@@ -7,7 +7,6 @@ export const routes = rootRoute("root.tsx", [
     route("/terms-and-conditions", "content/routes/terms-and-conditions.tsx"),
   ]),
   route("/login", "auth/routes/login.tsx"),
-  route("/logout", "auth/routes/logout.tsx"),
   route("/payments/success", "payments/routes/success.tsx"),
   route("/payments/webhook", "payments/routes/webhook.ts"),
   route("/emails/sent", "email/routes/sent.ts"),

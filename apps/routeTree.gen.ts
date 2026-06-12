@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './root'
-import { Route as authRoutesLogoutRouteImport } from './auth/routes/logout'
 import { Route as authRoutesLoginRouteImport } from './auth/routes/login'
 import { Route as contentRoutesLayoutRouteImport } from './content/routes/layout'
 import { Route as paymentsRoutesWebhookRouteImport } from './payments/routes/webhook'
@@ -19,11 +18,6 @@ import { Route as contentRoutesTermsAndConditionsRouteImport } from './content/r
 import { Route as contentRoutesPrivacyRouteImport } from './content/routes/privacy'
 import { Route as contentRoutesHomeRouteImport } from './content/routes/home'
 
-const authRoutesLogoutRoute = authRoutesLogoutRouteImport.update({
-  id: '/logout',
-  path: '/logout',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const authRoutesLoginRoute = authRoutesLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -68,7 +62,6 @@ const contentRoutesHomeRoute = contentRoutesHomeRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof contentRoutesHomeRoute
   '/login': typeof authRoutesLoginRoute
-  '/logout': typeof authRoutesLogoutRoute
   '/privacy': typeof contentRoutesPrivacyRoute
   '/terms-and-conditions': typeof contentRoutesTermsAndConditionsRoute
   '/emails/sent': typeof emailRoutesSentRoute
@@ -77,7 +70,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/login': typeof authRoutesLoginRoute
-  '/logout': typeof authRoutesLogoutRoute
   '/': typeof contentRoutesHomeRoute
   '/privacy': typeof contentRoutesPrivacyRoute
   '/terms-and-conditions': typeof contentRoutesTermsAndConditionsRoute
@@ -89,7 +81,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_content-layout': typeof contentRoutesLayoutRouteWithChildren
   '/login': typeof authRoutesLoginRoute
-  '/logout': typeof authRoutesLogoutRoute
   '/_content-layout/': typeof contentRoutesHomeRoute
   '/_content-layout/privacy': typeof contentRoutesPrivacyRoute
   '/_content-layout/terms-and-conditions': typeof contentRoutesTermsAndConditionsRoute
@@ -102,7 +93,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
-    | '/logout'
     | '/privacy'
     | '/terms-and-conditions'
     | '/emails/sent'
@@ -111,7 +101,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
-    | '/logout'
     | '/'
     | '/privacy'
     | '/terms-and-conditions'
@@ -122,7 +111,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_content-layout'
     | '/login'
-    | '/logout'
     | '/_content-layout/'
     | '/_content-layout/privacy'
     | '/_content-layout/terms-and-conditions'
@@ -134,7 +122,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   contentRoutesLayoutRoute: typeof contentRoutesLayoutRouteWithChildren
   authRoutesLoginRoute: typeof authRoutesLoginRoute
-  authRoutesLogoutRoute: typeof authRoutesLogoutRoute
   emailRoutesSentRoute: typeof emailRoutesSentRoute
   paymentsRoutesSuccessRoute: typeof paymentsRoutesSuccessRoute
   paymentsRoutesWebhookRoute: typeof paymentsRoutesWebhookRoute
@@ -142,13 +129,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/logout': {
-      id: '/logout'
-      path: '/logout'
-      fullPath: '/logout'
-      preLoaderRoute: typeof authRoutesLogoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -226,7 +206,6 @@ const contentRoutesLayoutRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   contentRoutesLayoutRoute: contentRoutesLayoutRouteWithChildren,
   authRoutesLoginRoute: authRoutesLoginRoute,
-  authRoutesLogoutRoute: authRoutesLogoutRoute,
   emailRoutesSentRoute: emailRoutesSentRoute,
   paymentsRoutesSuccessRoute: paymentsRoutesSuccessRoute,
   paymentsRoutesWebhookRoute: paymentsRoutesWebhookRoute,

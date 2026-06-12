@@ -6,6 +6,7 @@ import { Header } from "@/content/components/header"
 import { Logo } from "@/content/components/logo"
 import { Button } from "@/ui/button"
 import { Dropdown } from "@/ui-lite/dropdown"
+import { useLogout } from "@/user/use-logout"
 import { useUser } from "@/user/use-user"
 
 export const Route = createFileRoute("/_content-layout")({
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/_content-layout")({
 })
 
 function ContentLayout() {
+  const logout = useLogout()
   const { data: userData } = useUser()
   const user = userData?.user
   return (
@@ -46,9 +48,9 @@ function ContentLayout() {
                   <button type="button">Profile</button>
                 </Dropdown.MenuItem>
                 <Dropdown.MenuItem>
-                  <form action="/logout" method="post">
-                    <button type="submit">Logout</button>
-                  </form>
+                  <button type="button" onClick={() => void logout()}>
+                    Logout
+                  </button>
                 </Dropdown.MenuItem>
               </Dropdown.Menu>
             }
