@@ -191,9 +191,7 @@ describe("Webhook", () => {
         throw new Error("User not found")
       }
       expect(response.status).toBe(201)
-      expect(await hasUserRole(db, user.id, "pro" as unknown as Role)).toBe(
-        true,
-      )
+      expect(await hasUserRole(user.id, "pro" as unknown as Role)).toBe(true)
       expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
         to: "new@example.com",
         env: { POLAR_WEBHOOK_SECRET: "test" },
@@ -202,9 +200,9 @@ describe("Webhook", () => {
     })
 
     it("grants access to an existing user and returns HTTP 201", async () => {
-      expect(
-        await hasUserRole(db, existingUserId, "pro" as unknown as Role),
-      ).toBe(false)
+      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
+        false,
+      )
       vi.mocked(validateEvent).mockReturnValue({
         type: eventType,
         data: {
@@ -220,9 +218,9 @@ describe("Webhook", () => {
       const response = await postHandler({
         request: new Request("http://localhost"),
       })
-      expect(
-        await hasUserRole(db, existingUserId, "pro" as unknown as Role),
-      ).toBe(true)
+      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
+        true,
+      )
       expect(response.status).toBe(201)
       expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
         to: "existing@example.com",
@@ -232,7 +230,7 @@ describe("Webhook", () => {
     })
 
     it("returns HTTP 200 when user already has access", async () => {
-      await grantUserRole(db, existingUserId, "pro" as unknown as Role)
+      await grantUserRole(existingUserId, "pro" as unknown as Role)
 
       vi.mocked(validateEvent).mockReturnValue({
         type: eventType,
@@ -285,7 +283,7 @@ describe("Webhook", () => {
     "subscription.revoked",
   ])("on '%s' event", async (eventType) => {
     it("revokes user access and returns HTTP 201", async () => {
-      await grantUserRole(db, existingUserId, "pro" as unknown as Role)
+      await grantUserRole(existingUserId, "pro" as unknown as Role)
       vi.mocked(validateEvent).mockReturnValue({
         type: eventType,
         data: {
@@ -302,9 +300,9 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
       })
       expect(response.status).toBe(201)
-      expect(
-        await hasUserRole(db, existingUserId, "pro" as unknown as Role),
-      ).toBe(false)
+      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
+        false,
+      )
       expect(sendAccessRevokedEmail).toHaveBeenCalledWith({
         to: "existing@example.com",
         env: { POLAR_WEBHOOK_SECRET: "test" },

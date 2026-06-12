@@ -33,10 +33,10 @@ export async function onPaymentSuccess(
     }
     const user = await getOrCreateUserByEmail(db, event.data.customer.email)
     const userRoleToGrant = productConfig.userRoleToGrant
-    if (await hasUserRole(db, user.id, userRoleToGrant)) {
+    if (await hasUserRole(user.id, userRoleToGrant)) {
       throw new Error("User already has access")
     }
-    await grantUserRole(db, user.id, userRoleToGrant)
+    await grantUserRole(user.id, userRoleToGrant)
     await sendAccessGrantedEmail({
       to: user.email,
       env,
@@ -81,7 +81,7 @@ export async function onPaymentRevoked(
       throw new Error("User not found")
     }
     const userRoleToRevoke = productConfig.userRoleToGrant
-    await revokeUserRole(db, user.id, userRoleToRevoke)
+    await revokeUserRole(user.id, userRoleToRevoke)
     await sendAccessRevokedEmail({
       to: user.email,
       env,

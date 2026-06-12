@@ -11,19 +11,21 @@ import {
   it,
   vi,
 } from "vitest"
+import { getDb } from "@/db"
 import * as schema from "@/db/schema"
 import { users } from "@/user/db/schema"
 import { userRoles } from "./db/schema"
 import {
   grantUserRole,
   hasUserRole,
-  type Permission,
   type PermissionsConfig,
   type Role,
-  requireUserPermissions,
-  requireUserRole,
   revokeUserRole,
 } from "./permissions.server"
+
+vi.mock("@/db", () => ({
+  getDb: vi.fn(),
+}))
 
 vi.mock("@/config", () => ({
   default: {
@@ -50,6 +52,8 @@ describe("Permissions", () => {
   })
 
   beforeEach(async () => {
+    vi.mocked(getDb).mockReturnValue(db as ReturnType<typeof getDb>)
+
     // Clear tables
     sqlite.exec("PRAGMA foreign_keys = OFF")
     await db.delete(users)
@@ -68,44 +72,14 @@ describe("Permissions", () => {
       .values([{ userId: adminUserId, roleName: "admin" as Role }])
   })
 
-  describe("requireUserPermissions", () => {
-    it("should return user id if user has all required permissions", async () => {
-      const result = await requireUserPermissions(db, adminUserId, [
-        "read",
-        "write",
-        "delete",
-      ] as unknown as Permission[])
-      expect(result).toBe(adminUserId)
-    })
-
-    it("throws if user not found", async () => {
-      await expect(
-        requireUserPermissions(db, 999, ["read"] as unknown as Permission[]),
-      ).rejects.toThrow("User not found")
-    })
-
-    it("throws if user lacks required permissions", async () => {
-      await expect(
-        requireUserPermissions(db, defaultUserId, [
-          "write",
-        ] as unknown as Permission[]),
-      ).rejects.toThrow("User does not have the required permissions")
-    })
-  })
-
   describe("hasUserRole", () => {
     it("should return true if user has required role", async () => {
-      const result = await hasUserRole(
-        db,
-        adminUserId,
-        "admin" as unknown as Role,
-      )
+      const result = await hasUserRole(adminUserId, "admin" as unknown as Role)
       expect(result).toBe(true)
     })
 
     it("should return false if user does not have required role", async () => {
       const result = await hasUserRole(
-        db,
         defaultUserId,
         "admin" as unknown as Role,
       )
@@ -113,44 +87,30 @@ describe("Permissions", () => {
     })
   })
 
-  describe("requireUserRole", () => {
-    it("should not throw error if user has required role", async () => {
-      await expect(
-        requireUserRole(db, adminUserId, "admin" as unknown as Role),
-      ).resolves.not.toThrow()
-    })
-
-    it("throws if user does not have required role", async () => {
-      await expect(
-        requireUserRole(db, defaultUserId, "admin" as unknown as Role),
-      ).rejects.toThrow("User does not have the required role")
-    })
-  })
-
   describe("grantUserRole", () => {
     it("should update user role", async () => {
-      expect(
-        await hasUserRole(db, defaultUserId, "admin" as unknown as Role),
-      ).toBe(false)
+      expect(await hasUserRole(defaultUserId, "admin" as unknown as Role)).toBe(
+        false,
+      )
 
-      await grantUserRole(db, defaultUserId, "admin" as unknown as Role)
+      await grantUserRole(defaultUserId, "admin" as unknown as Role)
 
-      expect(
-        await hasUserRole(db, defaultUserId, "admin" as unknown as Role),
-      ).toBe(true)
+      expect(await hasUserRole(defaultUserId, "admin" as unknown as Role)).toBe(
+        true,
+      )
     })
   })
 
   describe("revokeUserRole", () => {
     it("should revoke user role", async () => {
-      expect(
-        await hasUserRole(db, adminUserId, "admin" as unknown as Role),
-      ).toBe(true)
+      expect(await hasUserRole(adminUserId, "admin" as unknown as Role)).toBe(
+        true,
+      )
 
-      await revokeUserRole(db, adminUserId, "admin" as unknown as Role)
-      expect(
-        await hasUserRole(db, adminUserId, "admin" as unknown as Role),
-      ).toBe(false)
+      await revokeUserRole(adminUserId, "admin" as unknown as Role)
+      expect(await hasUserRole(adminUserId, "admin" as unknown as Role)).toBe(
+        false,
+      )
     })
   })
 
