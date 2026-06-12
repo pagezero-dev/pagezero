@@ -17,7 +17,9 @@ import { users } from "@/user/db/schema"
 import { userRoles } from "./db/schema"
 import {
   grantUserRole,
+  hasUserPermissions,
   hasUserRole,
+  type Permission,
   type PermissionsConfig,
   type Role,
   revokeUserRole,
@@ -84,6 +86,30 @@ describe("Permissions", () => {
         "admin" as unknown as Role,
       )
       expect(result).toBe(false)
+    })
+  })
+
+  describe("hasUserPermissions", () => {
+    it("should return true if user has all required permissions", async () => {
+      const result = await hasUserPermissions(adminUserId, [
+        "read",
+        "write",
+        "delete",
+      ] as unknown as Permission[])
+      expect(result).toBe(true)
+    })
+
+    it("should return false if user does not have all required permissions", async () => {
+      const result = await hasUserPermissions(defaultUserId, [
+        "write",
+      ] as unknown as Permission[])
+      expect(result).toBe(false)
+    })
+
+    it("throws if user not found", async () => {
+      await expect(
+        hasUserPermissions(999, ["read"] as unknown as Permission[]),
+      ).rejects.toThrow("User not found")
     })
   })
 

@@ -1,42 +1,19 @@
 import { createServerFn } from "@tanstack/react-start"
-import { eq } from "drizzle-orm"
-import config from "@/config"
-import { getDb } from "@/db"
-import * as schema from "@/db/schema"
-import { hasUserRole, type Permission, type Role } from "./permissions.server"
-
-const getRolePermissions = (roleName: Role) => {
-  return Object.entries(config.permissions.roleToPermissions[roleName] ?? {})
-    .filter(([_, value]) => value)
-    .map(([key]) => key)
-}
+import {
+  hasUserPermissions,
+  hasUserRole,
+  type Permission,
+  type Role,
+} from "./permissions.server"
 
 export const requireUserPermissions = createServerFn({ method: "GET" })
   .validator((data: { userId: number; permissions: Permission[] }) => data)
   .handler(async ({ data: { userId, permissions } }) => {
-    const db = getDb()
-    const user = await db.query.users.findFirst({
-      where: eq(schema.users.id, userId),
-      with: {
-        roles: true,
-      },
-    })
-
-    if (!user) {
-      throw new Error("User not found")
-    }
-
-    const userPermissions = user.roles.flatMap((role) =>
-      getRolePermissions(role.roleName),
-    )
-
-    if (
-      !permissions.every((permission) => userPermissions.includes(permission))
-    ) {
+    if (!(await hasUserPermissions(userId, permissions))) {
       throw new Error("User does not have the required permissions")
     }
 
-    return user.id
+    return userId
   })
 
 export const requireUserRole = createServerFn({ method: "GET" })

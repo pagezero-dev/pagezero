@@ -14,6 +14,12 @@ export type Permission = UnionKeys<
   (typeof config)["permissions"]["roleToPermissions"][Role]
 >
 
+const getRolePermissions = (roleName: Role) => {
+  return Object.entries(config.permissions.roleToPermissions[roleName] ?? {})
+    .filter(([_, value]) => value)
+    .map(([key]) => key)
+}
+
 export async function hasUserRole(userId: number, roleName: Role) {
   const db = getDb()
   const user = await db.query.users.findFirst({
@@ -28,6 +34,29 @@ export async function hasUserRole(userId: number, roleName: Role) {
   }
 
   return user.roles.some((role) => role.roleName === roleName)
+}
+
+export async function hasUserPermissions(
+  userId: number,
+  permissions: Permission[],
+) {
+  const db = getDb()
+  const user = await db.query.users.findFirst({
+    where: eq(schema.users.id, userId),
+    with: {
+      roles: true,
+    },
+  })
+
+  if (!user) {
+    throw new Error("User not found")
+  }
+
+  const userPermissions = user.roles.flatMap((role) =>
+    getRolePermissions(role.roleName),
+  )
+
+  return permissions.every((permission) => userPermissions.includes(permission))
 }
 
 export async function grantUserRole(userId: number, roleName: Role) {
