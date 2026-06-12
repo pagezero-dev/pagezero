@@ -73,15 +73,14 @@ function RootErrorComponent({ error }: { error: unknown }) {
 }
 
 function RootNotFoundComponent() {
-  const error = new Error(
-    "The page you're looking for doesn't exist or has been moved.",
-  )
-  error.name = "Page not found"
-
   return (
     <RootDocument>
       <ErrorPage
-        error={error}
+        error={{
+          name: "Page not found",
+          message:
+            "The page you're looking for doesn't exist or has been moved.",
+        }}
         action={
           <Button asChild variant="outline">
             <a href="/">Go home</a>
