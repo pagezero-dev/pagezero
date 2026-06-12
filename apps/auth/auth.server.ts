@@ -1,35 +1,9 @@
-import { redirect } from "@tanstack/react-router"
-import { getRequestUrl } from "@tanstack/react-start/server"
 import { sign, verify } from "@/crypto"
-import { getUserId } from "@/user"
-import { useAppSession } from "./session.server"
-
-const LOGIN_ROUTE = "/login"
 
 type OTPPayload = {
   email: string
   otp: string
   expiresAt: number
-}
-
-export async function requireUserId({
-  redirectTo,
-}: {
-  redirectTo?: string
-} = {}) {
-  const session = await useAppSession()
-  const userID = await getUserId(session)
-  if (!userID) {
-    const requestURLObject = getRequestUrl()
-    const redirectToURL =
-      redirectTo ?? `${requestURLObject.pathname}${requestURLObject.search}`
-    throw redirect(
-      redirectToURL
-        ? { to: LOGIN_ROUTE, search: { redirectTo: redirectToURL } }
-        : { to: LOGIN_ROUTE },
-    )
-  }
-  return userID
 }
 
 export function getRedirectUrl(redirectTo: string = "/") {
