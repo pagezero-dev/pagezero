@@ -14,9 +14,9 @@ import {
 import { getDb } from "@/db"
 import * as schema from "@/db/schema"
 import { users } from "@/user/db/schema"
-import { userRoles } from "./db/schema"
+import { userRoles } from "../db/schema"
+import type { Permission, PermissionsConfig, Role } from "../permissions.server"
 import { requireUserPermissions, requireUserRole } from "./guards"
-import type { Permission, PermissionsConfig, Role } from "./permissions.server"
 
 vi.mock("@tanstack/react-start", async (importOriginal) => {
   const { mockServerFn } = await import("@/test/mock-server-fn")

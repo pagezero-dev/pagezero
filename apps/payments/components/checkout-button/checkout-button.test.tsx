@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import type { PaymentsConfig } from "@/payments/types"
-import type { UserData } from "@/user/get-user"
-import { useUser } from "@/user/use-user"
+import { useUser } from "@/user/hooks"
+import type { UserData } from "@/user/rpc/get-user"
 import { CheckoutButton } from "./checkout-button"
 
-vi.mock("@/user/use-user", () => ({ useUser: vi.fn() }))
+vi.mock("@/user/hooks", () => ({ useUser: vi.fn() }))
 
 vi.mock("@/config", () => ({
   default: {

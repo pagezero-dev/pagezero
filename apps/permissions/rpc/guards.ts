@@ -4,7 +4,7 @@ import {
   hasUserRole,
   type Permission,
   type Role,
-} from "./permissions.server"
+} from "../permissions.server"
 
 export const requireUserPermissions = createServerFn({ method: "GET" })
   .validator((data: { userId: number; permissions: Permission[] }) => data)

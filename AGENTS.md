@@ -66,7 +66,8 @@ import { getUserId } from "@/user"
 - Components: `kebab-case.tsx` (e.g., `checkout-button.tsx`)
 - Tests: `*.test.ts` for node tests, `*.test.tsx` for DOM tests
 - Stories: `*.stories.tsx`
-- Server-only code: `*.server.ts` (e.g., `auth.server.ts`)
+- Server-only code: `*.server.ts` (e.g., `auth.server.ts`) — internal helpers, not callable from the client
+- RPC endpoints: `rpc/` directory (e.g., `auth/rpc/get-user.ts`) — `createServerFn` exports
 - Index files: `index.ts` for public exports
 
 ### Component Structure
@@ -103,26 +104,32 @@ export { Button, type ButtonProps }
 
 ### Route Files
 
-Routes use TanStack Router conventions with `createFileRoute`. Server-side logic is handled via `createServerFn` from TanStack Start:
+Routes use TanStack Router conventions with `createFileRoute`. Callable server logic lives in the feature module's `rpc/` directory as `createServerFn` exports:
 
 ```typescript
-import { createFileRoute } from "@tanstack/react-router"
+// apps/user/rpc/get-user.ts
 import { createServerFn } from "@tanstack/react-start"
 import { getDb } from "@/db"
 
-const getData = createServerFn({ method: "GET" }).handler(async () => {
+export const getUser = createServerFn({ method: "GET" }).handler(async () => {
   const db = getDb()
   // query db...
-  return { data }
+  return { user }
 })
+```
 
-export const Route = createFileRoute("/my-path")({
-  loader: () => getData(),
+```typescript
+// apps/user/routes/profile.tsx
+import { createFileRoute } from "@tanstack/react-router"
+import { getUser } from "@/user/rpc"
+
+export const Route = createFileRoute("/profile")({
+  loader: () => getUser(),
   component: PageComponent,
 })
 
 function PageComponent() {
-  const { data } = Route.useLoaderData()
+  const { user } = Route.useLoaderData()
   // render...
 }
 ```
@@ -171,12 +178,12 @@ Use TanStack Query for client-side data fetching. Server functions (`createServe
 
 ```typescript
 import { useQuery } from "@tanstack/react-query"
-import { myServerFn } from "./my-server-fn"
+import { getUser } from "@/user/rpc"
 
 function MyComponent() {
   const { data } = useQuery({
     queryKey: ["my-data"],
-    queryFn: () => myServerFn(),
+    queryFn: () => getUser(),
   })
 }
 ```

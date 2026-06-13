@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/react-start"
-import { logout as logoutAction } from "@/auth/logout"
+import { logout as logoutAction } from "@/auth/rpc/logout"
 
 export function useLogout() {
   const queryClient = useQueryClient()
