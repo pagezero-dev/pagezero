@@ -5,7 +5,6 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import react from "@vitejs/plugin-react"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
-import tsconfigPaths from "vite-tsconfig-paths"
 import { routes } from "./apps/routes"
 
 const isStorybook = process.argv[1]?.includes("storybook")
@@ -16,6 +15,9 @@ export default defineConfig({
   },
   preview: {
     port: 3000,
+  },
+  resolve: {
+    tsconfigPaths: true,
   },
   build: {
     sourcemap: true,
@@ -35,7 +37,6 @@ export default defineConfig({
     },
   },
   plugins: [
-    tsconfigPaths(),
     tailwindcss(),
     ...(!process.env.VITEST && !isStorybook
       ? [
