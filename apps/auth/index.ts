@@ -1,2 +1,2 @@
 export * from "./auth.server"
-export * from "./guards"
+export * from "./rpc"

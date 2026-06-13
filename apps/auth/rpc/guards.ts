@@ -2,7 +2,7 @@ import { redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { getRequestUrl } from "@tanstack/react-start/server"
 import { getUserId, isValidUserId } from "@/user"
-import { useAppSession } from "./session.server"
+import { useAppSession } from "../session.server"
 
 const LOGIN_ROUTE = "/login"
 

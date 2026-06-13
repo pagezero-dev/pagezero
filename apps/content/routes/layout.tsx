@@ -6,8 +6,7 @@ import { Header } from "@/content/components/header"
 import { Logo } from "@/content/components/logo"
 import { Button } from "@/ui/button"
 import { Dropdown } from "@/ui-lite/dropdown"
-import { useLogout } from "@/user/use-logout"
-import { useUser } from "@/user/use-user"
+import { useLogout, useUser } from "@/user/hooks"
 
 export const Route = createFileRoute("/_content-layout")({
   component: ContentLayout,

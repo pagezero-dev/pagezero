@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start"
 import { useAppSession } from "@/auth/session.server"
-import { getUserById, getUserId } from "./user.server"
+import { getUserById, getUserId } from "../user.server"
 
 export type UserData = {
   user: { id: number; email: string } | null
