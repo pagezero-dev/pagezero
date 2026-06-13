@@ -1,10 +1,10 @@
-import { render, screen } from "@testing-library/react"
 import {
   createMemoryHistory,
   createRootRoute,
   createRouter,
   RouterProvider,
 } from "@tanstack/react-router"
+import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 import type { BlogPostSummary } from "@/blog/utils"
 import { PostList } from "./post-list"

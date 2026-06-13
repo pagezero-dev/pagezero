@@ -1,4 +1,8 @@
-import { createFileRoute, Link as RouterLink, notFound } from "@tanstack/react-router"
+import {
+  createFileRoute,
+  notFound,
+  Link as RouterLink,
+} from "@tanstack/react-router"
 import { ArrowLeft } from "lucide-react"
 import { PostHeader } from "@/blog/components/post-header"
 import { postModules } from "@/blog/post-modules"
