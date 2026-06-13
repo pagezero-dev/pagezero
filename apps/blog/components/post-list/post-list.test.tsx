@@ -1,4 +1,10 @@
 import { render, screen } from "@testing-library/react"
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+  RouterProvider,
+} from "@tanstack/react-router"
 import { describe, expect, it } from "vitest"
 import type { BlogPostSummary } from "@/blog/utils"
 import { PostList } from "./post-list"
@@ -22,17 +28,30 @@ const samplePosts: BlogPostSummary[] = [
   },
 ]
 
+async function renderPostList(posts: BlogPostSummary[]) {
+  const rootRoute = createRootRoute({
+    component: () => <PostList posts={posts} />,
+  })
+  const router = createRouter({
+    routeTree: rootRoute,
+    history: createMemoryHistory(),
+  })
+  await router.load()
+
+  return render(<RouterProvider router={router} />)
+}
+
 describe("<PostList />", () => {
-  it("renders post titles and descriptions", () => {
-    render(<PostList posts={samplePosts} />)
+  it("renders post titles and descriptions", async () => {
+    await renderPostList(samplePosts)
     expect(screen.getByText("First post")).toBeInTheDocument()
     expect(screen.getByText("First description")).toBeInTheDocument()
     expect(screen.getByText("Second post")).toBeInTheDocument()
     expect(screen.getByText("Second description")).toBeInTheDocument()
   })
 
-  it("links to each post slug", () => {
-    render(<PostList posts={samplePosts} />)
+  it("links to each post slug", async () => {
+    await renderPostList(samplePosts)
     const links = screen.getAllByRole("link")
     expect(links).toHaveLength(2)
     expect(links[0]).toHaveAttribute("href", "/blog/first-post")

@@ -1,6 +1,6 @@
+import { Link } from "@tanstack/react-router"
 import { PostSummary } from "@/blog/components/post-summary"
 import type { BlogPostSummary } from "@/blog/utils"
-import { Link } from "@/ui/link"
 
 interface PostListProps {
   posts: BlogPostSummary[]
@@ -12,9 +12,8 @@ export function PostList({ posts }: PostListProps) {
       {posts.map((post) => (
         <li key={post.slug}>
           <Link
-            href={post.slug}
-            underline="none"
-            className="block rounded-xl outline-offset-4 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+            to={post.slug}
+            className="block rounded-xl no-underline outline-offset-4 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
           >
             <PostSummary
               title={post.title}
