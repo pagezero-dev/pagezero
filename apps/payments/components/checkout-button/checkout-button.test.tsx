@@ -5,7 +5,7 @@ import type { UserData } from "@/user/get-user"
 import { useUser } from "@/user/use-user"
 import { CheckoutButton } from "./checkout-button"
 
-vi.mock("@/user/use-user")
+vi.mock("@/user/use-user", () => ({ useUser: vi.fn() }))
 
 vi.mock("@/config", () => ({
   default: {
