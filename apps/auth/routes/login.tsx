@@ -1,10 +1,8 @@
-import {
-  data,
-  Form,
-  Link as RouterLink,
-  redirect,
-  useNavigation,
-} from "react-router"
+import { env } from "cloudflare:workers"
+import { useQueryClient } from "@tanstack/react-query"
+import { createFileRoute, Link, redirect } from "@tanstack/react-router"
+import { createServerFn } from "@tanstack/react-start"
+import { getRequestHeader } from "@tanstack/react-start/server"
 import { z } from "zod"
 import {
   generateOTP,
@@ -17,177 +15,160 @@ import {
 } from "@/auth"
 import { SignIn } from "@/auth/components/sign-in"
 import { VerifyHuman } from "@/auth/components/verify-human"
-import { envContext } from "@/core/context"
-import { dbContext } from "@/db/context"
+import { requireGuestUser } from "@/auth/guards"
+import { updateAppSession } from "@/auth/session.server"
 import { sendAuthOtpEmail } from "@/email/templates.server"
-import { Link } from "@/ui/link"
-import { getOrCreateUserByEmail, getUserId, isValidUserId } from "@/user"
-import { authContext } from "../context"
-import type { Route } from "./+types/login"
+import { parseFormData, useFormAction } from "@/form"
+import { Link as UiLink } from "@/ui/link"
+import { getOrCreateUserByEmail } from "@/user"
 
-export async function loader({ request, context }: Route.LoaderArgs) {
-  const env = context.get(envContext)
-  const db = context.get(dbContext)
-  const { session } = context.get(authContext)
-  const userId = await getUserId(session)
-  const url = new URL(request.url)
-
-  if (userId && (await isValidUserId(db, userId))) {
-    return redirect("/")
-  }
-
-  return {
-    cloudflareTurnstilePublicKey: env.CLOUDFLARE_TURNSTILE_PUBLIC_KEY,
-    redirectTo: getRedirectUrl(url.searchParams.get("redirectTo") || "/"),
-  }
-}
-
-type ActionData = {
-  email?: string
-  signature?: string
-  expiresAt?: number
-  error?: string
-  success?: string
-}
-
-const UserEmailSchema = z.object({
+const loginFormSchema = z.object({
   email: z.email(),
+  otp: z.string().optional(),
+  redirectTo: z.string().optional(),
+  signature: z.string().optional(),
+  expiresAt: z.coerce.number().optional(),
+  "cf-turnstile-response": z.string().optional(),
 })
 
-export async function action({ request, context }: Route.ActionArgs) {
-  const env = context.get(envContext)
-  const db = context.get(dbContext)
-  const { session, commitSession } = context.get(authContext)
-  if (!env.OTP_SECRET) {
-    throw new Error("OTP_SECRET is not set")
-  }
-
-  const form = await request.formData()
-  const email = form.get("email")?.toString()
-  const otp = form.get("otp")?.toString()
-  const redirectTo = form.get("redirectTo")?.toString()
-
-  // Step 1: Verify that the user has provided an email address
-  if (!email) {
-    return data<ActionData>({ error: "Email is required" }, { status: 401 })
-  }
-
-  const emailParseResult = UserEmailSchema.safeParse({ email })
-  if (emailParseResult.error) {
-    return data<ActionData>(
-      { error: z.flattenError(emailParseResult.error).fieldErrors.email?.[0] },
-      { status: 401 },
-    )
-  }
-
-  // Step 2: Verify that the user is human (optional)
-  const cloudflareTurnstileToken = form.get("cf-turnstile-response")?.toString()
-  const ip = request.headers.get("CF-Connecting-IP")
-  const cloudflareTurnstileSecretKey = env.CLOUDFLARE_TURNSTILE_SECRET_KEY
-
-  if (cloudflareTurnstileSecretKey) {
-    const isHuman = await verifyHuman({
-      secret: cloudflareTurnstileSecretKey,
-      token: cloudflareTurnstileToken,
-      ip,
-    })
-
-    if (!isHuman) {
-      return Response.json(
-        { error: "Human verification failed" } satisfies ActionData,
-        { status: 403 },
-      )
+const getLoginPageData = createServerFn({ method: "GET" })
+  .validator((data: { redirectTo: string }) => data)
+  .handler(async ({ data }) => {
+    return {
+      cloudflareTurnstilePublicKey: env.CLOUDFLARE_TURNSTILE_PUBLIC_KEY,
+      redirectTo: getRedirectUrl(data.redirectTo),
     }
-  }
+  })
 
-  // Step 3: If no OTP is provided, generate a new one and send it to the user's email
-  if (!otp) {
-    const otp = generateOTP()
-    const expiresAt = generateOTPExpiration()
-    const signature = await signOtp(env.OTP_SECRET, {
+const loginFormAction = createServerFn({ method: "POST" })
+  .validator((data: FormData) => parseFormData(data, loginFormSchema))
+  .handler(async ({ data }) => {
+    if (!env.OTP_SECRET) {
+      throw new Error("OTP_SECRET is not set")
+    }
+
+    const {
       email,
       otp,
-      expiresAt,
-    })
-    try {
-      await sendAuthOtpEmail({ to: email, otp, env })
-    } catch {
-      return data<ActionData>(
-        {
-          error: "Failed to send an email",
-        },
-        { status: 500 },
-      )
-    }
-
-    return data<ActionData>({
-      email,
+      redirectTo,
       signature,
       expiresAt,
-      success: "Check your email for temporary password",
-    })
-  }
+      "cf-turnstile-response": turnstileResponse,
+    } = data
 
-  // Step 4: Verify the OTP
-  const signature = form.get("signature")?.toString() || ""
-  const expiresAt = Number(form.get("expiresAt")?.toString()) || 0
+    const cloudflareTurnstileSecretKey = env.CLOUDFLARE_TURNSTILE_SECRET_KEY
+    if (cloudflareTurnstileSecretKey) {
+      const ip = getRequestHeader("CF-Connecting-IP")
+      const isHuman = await verifyHuman({
+        secret: cloudflareTurnstileSecretKey,
+        token: turnstileResponse,
+        ip,
+      })
 
-  const isValid = await verifyOtp(
-    env.OTP_SECRET,
-    {
-      email,
-      otp,
-      expiresAt,
-    },
-    signature,
-  )
+      if (!isHuman) {
+        throw new Error("Human verification failed")
+      }
+    }
 
-  if (!isValid) {
-    return data<ActionData>(
+    if (!otp) {
+      const generatedOtp = generateOTP()
+      const generatedExpiresAt = generateOTPExpiration()
+      const generatedSignature = await signOtp(env.OTP_SECRET, {
+        email,
+        otp: generatedOtp,
+        expiresAt: generatedExpiresAt,
+      })
+      try {
+        await sendAuthOtpEmail({ to: email, otp: generatedOtp, env })
+      } catch {
+        throw new Error("Failed to send an email")
+      }
+
+      return {
+        email,
+        signature: generatedSignature,
+        expiresAt: generatedExpiresAt,
+        success: "Check your email for temporary password",
+      }
+    }
+
+    const isValid = await verifyOtp(
+      env.OTP_SECRET,
       {
+        email,
+        otp,
+        expiresAt: expiresAt ?? 0,
+      },
+      signature ?? "",
+    )
+
+    if (!isValid) {
+      return {
         error: "Invalid verification code",
         email,
         signature,
         expiresAt,
-      },
-      { status: 401 },
-    )
-  }
+      }
+    }
 
-  if (isOTPExpired(expiresAt)) {
-    return data<ActionData>(
-      { error: "Verification code expired" },
-      { status: 401 },
-    )
-  }
+    if (isOTPExpired(expiresAt ?? 0)) {
+      throw new Error("Verification code expired")
+    }
 
-  // Step 5: If the OTP is valid, set the user's session and redirect to the home page
-  const user = await getOrCreateUserByEmail(db, email)
+    const user = await getOrCreateUserByEmail(email)
+    await updateAppSession({ userId: `${user.id}` })
 
-  session.set("userId", `${user.id}`)
-
-  return redirect(getRedirectUrl(redirectTo), {
-    headers: {
-      "Set-Cookie": await commitSession(session),
-    },
+    throw redirect({ to: getRedirectUrl(redirectTo) })
   })
-}
 
-export default function Login({
-  loaderData: { cloudflareTurnstilePublicKey, redirectTo },
-  actionData,
-}: Route.ComponentProps) {
-  const { email, error, success, signature, expiresAt } = actionData || {}
-  const navigation = useNavigation()
-  const turnstileSubjectKey = navigation.state === "idle" ? "idle" : "pending"
+const loginSearchSchema = z.object({
+  redirectTo: z.string().optional().catch("/"),
+})
+
+export const Route = createFileRoute("/login")({
+  validateSearch: (search) => loginSearchSchema.parse(search),
+  beforeLoad: async () => {
+    await requireGuestUser()
+  },
+  loaderDeps: ({ search }) => ({ redirectTo: search.redirectTo ?? "/" }),
+  loader: async ({ deps }) => {
+    return getLoginPageData({ data: { redirectTo: deps.redirectTo } })
+  },
+  component: Login,
+})
+
+function Login() {
+  const { cloudflareTurnstilePublicKey, redirectTo } = Route.useLoaderData()
+  const queryClient = useQueryClient()
+  const { data, error, isPending, onSubmit } = useFormAction(
+    loginFormAction,
+    loginFormSchema,
+    {
+      onSuccess: () => {
+        void queryClient.invalidateQueries({ queryKey: ["user"] })
+      },
+    },
+  )
+  const {
+    email,
+    success,
+    signature,
+    expiresAt,
+    error: actionError,
+  } = data ?? {}
+  const turnstileSubjectKey = isPending ? "pending" : "idle"
 
   return (
-    <Form method="post" className="container mx-auto mt-4 space-y-4">
+    <form
+      onSubmit={onSubmit}
+      noValidate
+      className="container mx-auto mt-4 space-y-4"
+    >
       <main className="flex h-screen flex-col items-center justify-center gap-4">
         <input type="hidden" name="redirectTo" value={redirectTo} />
         <SignIn
           email={email}
-          error={error}
+          error={actionError ?? error?.message}
           success={success}
           signature={signature}
           expiresAt={expiresAt}
@@ -199,11 +180,11 @@ export default function Login({
           />
         )}
         <p>
-          <Link size="sm" asChild className="text-muted-foreground">
-            <RouterLink to="/">Go back</RouterLink>
-          </Link>
+          <UiLink size="sm" asChild className="text-muted-foreground">
+            <Link to="/">Go back</Link>
+          </UiLink>
         </p>
       </main>
-    </Form>
+    </form>
   )
 }

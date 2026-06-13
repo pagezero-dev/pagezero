@@ -1,7 +1,6 @@
 import { and, eq } from "drizzle-orm"
-import { DrizzleD1Database } from "drizzle-orm/d1"
-import { data } from "react-router"
 import config, { userRoles } from "@/config"
+import { getDb } from "@/db"
 import * as schema from "@/db/schema"
 import type { UnionKeys } from "@/types/utils"
 
@@ -15,17 +14,33 @@ export type Permission = UnionKeys<
   (typeof config)["permissions"]["roleToPermissions"][Role]
 >
 
-const getRolePermissions = (roleName: Role, config: PermissionsConfig) => {
+const getRolePermissions = (roleName: Role) => {
   return Object.entries(config.permissions.roleToPermissions[roleName] ?? {})
     .filter(([_, value]) => value)
     .map(([key]) => key)
 }
 
-export async function requireUserPermissions(
-  db: DrizzleD1Database<typeof schema>,
+export async function hasUserRole(userId: number, roleName: Role) {
+  const db = getDb()
+  const user = await db.query.users.findFirst({
+    where: eq(schema.users.id, userId),
+    with: {
+      roles: true,
+    },
+  })
+
+  if (!user) {
+    throw new Error("User not found")
+  }
+
+  return user.roles.some((role) => role.roleName === roleName)
+}
+
+export async function hasUserPermissions(
   userId: number,
   permissions: Permission[],
 ) {
+  const db = getDb()
   const user = await db.query.users.findFirst({
     where: eq(schema.users.id, userId),
     with: {
@@ -34,74 +49,23 @@ export async function requireUserPermissions(
   })
 
   if (!user) {
-    throw data({ error: "User not found" }, { status: 401 })
+    throw new Error("User not found")
   }
 
   const userPermissions = user.roles.flatMap((role) =>
-    getRolePermissions(role.roleName, config),
+    getRolePermissions(role.roleName),
   )
 
-  if (
-    !permissions.every((permission) => userPermissions.includes(permission))
-  ) {
-    throw data(
-      { error: "User does not have the required permissions" },
-      { status: 403 },
-    )
-  }
-
-  return user.id
+  return permissions.every((permission) => userPermissions.includes(permission))
 }
 
-export async function hasUserRole(
-  db: DrizzleD1Database<typeof schema>,
-  userId: number,
-  roleName: Role,
-) {
-  const user = await db.query.users.findFirst({
-    where: eq(schema.users.id, userId),
-    with: {
-      roles: true,
-    },
-  })
-
-  if (!user) {
-    throw data({ error: "User not found" }, { status: 401 })
-  }
-
-  if (user.roles.some((role) => role.roleName === roleName)) {
-    return true
-  }
-
-  return false
-}
-
-export async function requireUserRole(
-  db: DrizzleD1Database<typeof schema>,
-  userId: number,
-  roleName: Role,
-) {
-  if (!(await hasUserRole(db, userId, roleName))) {
-    throw data(
-      { error: "User does not have the required role" },
-      { status: 403 },
-    )
-  }
-}
-
-export async function grantUserRole(
-  db: DrizzleD1Database<typeof schema>,
-  userId: number,
-  roleName: Role,
-) {
+export async function grantUserRole(userId: number, roleName: Role) {
+  const db = getDb()
   await db.insert(schema.userRoles).values({ userId, roleName })
 }
 
-export async function revokeUserRole(
-  db: DrizzleD1Database<typeof schema>,
-  userId: number,
-  roleName: Role,
-) {
+export async function revokeUserRole(userId: number, roleName: Role) {
+  const db = getDb()
   await db
     .delete(schema.userRoles)
     .where(

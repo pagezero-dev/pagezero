@@ -1,9 +1,9 @@
-import useSWR from "swr"
-import type { UserData } from "@/user/routes/user"
+import { useQuery } from "@tanstack/react-query"
+import { getUser } from "./get-user"
 
 export function useUser() {
-  const fetcher = (url: string) =>
-    fetch(url).then((res) => res.json() as Promise<UserData>)
-
-  return useSWR<UserData>("/user", fetcher)
+  return useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUser(),
+  })
 }

@@ -9,7 +9,9 @@
     "includes": [
       "**",
       "!packages/db/migrations/meta/*",
-      "!worker-configuration.d.ts"
+      "!worker-configuration.d.ts",
+      "!apps/routeTree.gen.ts",
+      "!dist"
     ],
     "ignoreUnknown": false
   },

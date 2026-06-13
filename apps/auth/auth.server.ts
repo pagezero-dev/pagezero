@@ -1,39 +1,9 @@
-import type { Session } from "react-router"
-import { redirect } from "react-router"
 import { sign, verify } from "@/crypto"
-import { getUserId } from "@/user"
-import type { SessionData } from "./session.server"
-
-const LOGIN_ROUTE = "/login"
 
 type OTPPayload = {
   email: string
   otp: string
   expiresAt: number
-}
-
-export async function requireUserId(
-  request: Request,
-  session: Session<SessionData>,
-  {
-    redirectTo,
-    redirectHeaders,
-  }: { redirectTo?: string; redirectHeaders?: Record<string, string> } = {},
-) {
-  const userID = await getUserId(session)
-  if (!userID) {
-    const requestURLObject = new URL(request.url)
-    const redirectToURL =
-      redirectTo ?? `${requestURLObject.pathname}${requestURLObject.search}`
-    const redirectURL = redirectToURL
-      ? `${LOGIN_ROUTE}?redirectTo=${redirectToURL}`
-      : LOGIN_ROUTE
-    throw redirect(redirectURL, {
-      status: 302,
-      headers: redirectHeaders,
-    })
-  }
-  return userID
 }
 
 export function getRedirectUrl(redirectTo: string = "/") {

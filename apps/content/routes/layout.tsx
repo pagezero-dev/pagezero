@@ -1,14 +1,20 @@
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router"
 import { ChevronDown } from "lucide-react"
-import { Link, Outlet } from "react-router"
 import config from "@/config"
 import { Footer } from "@/content/components/footer"
 import { Header } from "@/content/components/header"
 import { Logo } from "@/content/components/logo"
 import { Button } from "@/ui/button"
 import { Dropdown } from "@/ui-lite/dropdown"
+import { useLogout } from "@/user/use-logout"
 import { useUser } from "@/user/use-user"
 
-export default function ContentLayout() {
+export const Route = createFileRoute("/_content-layout")({
+  component: ContentLayout,
+})
+
+function ContentLayout() {
+  const logout = useLogout()
   const { data: userData } = useUser()
   const user = userData?.user
   return (
@@ -29,7 +35,7 @@ export default function ContentLayout() {
           <a href="/#about">About</a>
         </Button>
         <Button variant="ghost" asChild>
-          <Link to="/docs">Docs</Link>
+          <a href="/docs">Docs</a>
         </Button>
         {user ? (
           <Dropdown
@@ -42,9 +48,9 @@ export default function ContentLayout() {
                   <button type="button">Profile</button>
                 </Dropdown.MenuItem>
                 <Dropdown.MenuItem>
-                  <form action="/logout" method="post">
-                    <button type="submit">Logout</button>
-                  </form>
+                  <button type="button" onClick={() => void logout()}>
+                    Logout
+                  </button>
                 </Dropdown.MenuItem>
               </Dropdown.Menu>
             }

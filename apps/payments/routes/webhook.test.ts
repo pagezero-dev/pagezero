@@ -3,7 +3,6 @@ import { validateEvent, WebhookVerificationError } from "@polar-sh/sdk/webhooks"
 import Database from "better-sqlite3"
 import { drizzle } from "drizzle-orm/better-sqlite3"
 import type { DrizzleD1Database } from "drizzle-orm/d1"
-import { RouterContextProvider } from "react-router"
 import {
   afterAll,
   beforeAll,
@@ -13,8 +12,7 @@ import {
   it,
   vi,
 } from "vitest"
-import { envContext } from "@/core/context"
-import { dbContext } from "@/db/context"
+import { getDb } from "@/db"
 import * as schema from "@/db/schema"
 import { userRoles, users } from "@/db/schema"
 import {
@@ -29,7 +27,6 @@ import {
   type Role,
 } from "@/permissions"
 import { getUserByEmail } from "@/user/user.server"
-import { action } from "../routes/webhook"
 import type {
   PaymentsConfig,
   WebhookEvents,
@@ -38,6 +35,19 @@ import type {
   WebhookSubscriptionActivePayload,
   WebhookSubscriptionRevokedPayload,
 } from "../types"
+import { Route } from "./webhook"
+
+const { mockEnv } = vi.hoisted(() => ({
+  mockEnv: {} as Env,
+}))
+
+vi.mock("cloudflare:workers", () => ({
+  env: mockEnv,
+}))
+
+vi.mock("@/db", () => ({
+  getDb: vi.fn(),
+}))
 
 vi.mock("@polar-sh/sdk/webhooks")
 vi.mock("@/email/templates.server")
@@ -78,41 +88,50 @@ describe("Webhook", () => {
     typeof schema
   >
   const existingUserId = 1
+  const postHandler = (() => {
+    const handlers = Route.options.server?.handlers
+    if (!handlers || typeof handlers === "function" || !handlers.POST) {
+      throw new Error("Webhook POST handler not found")
+    }
+
+    return handlers.POST as (ctx: { request: Request }) => Promise<Response>
+  })()
 
   beforeAll(async () => {
-    // Create schema
     const migrationSql = fs.readFileSync("./packages/db/schema.sql", "utf-8")
     sqlite.exec(migrationSql)
   })
 
   afterAll(() => {
-    // Close the database connection
     sqlite.close()
   })
 
   beforeEach(async () => {
-    // Clear tables
+    for (const key of Reflect.ownKeys(mockEnv)) {
+      Reflect.deleteProperty(mockEnv, key)
+    }
+
+    vi.mocked(getDb).mockReturnValue(db as ReturnType<typeof getDb>)
+
     sqlite.exec("PRAGMA foreign_keys = OFF")
     await db.delete(users)
     await db.delete(userRoles)
     sqlite.exec("PRAGMA foreign_keys = ON")
 
-    // Insert test users
-    await db.insert(users).values([
-      { id: existingUserId, email: "existing@example.com" }, // existing user
-    ])
+    await db
+      .insert(users)
+      .values([{ id: existingUserId, email: "existing@example.com" }])
   })
 
+  function setEnv(env: Partial<Env>) {
+    Object.assign(mockEnv, env)
+  }
+
   it("throws an error when POLAR_WEBHOOK_SECRET is not set", async () => {
-    const context = new RouterContextProvider()
-    context.set(envContext, {} as Env)
+    setEnv({})
     await expect(
-      action({
+      postHandler({
         request: new Request("http://localhost"),
-        params: {},
-        context,
-        pattern: "",
-        url: new URL("http://localhost"),
       }),
     ).rejects.toThrow("The Polar webhook secret is not set")
   })
@@ -121,14 +140,11 @@ describe("Webhook", () => {
     vi.mocked(validateEvent).mockImplementation(() => {
       throw new WebhookVerificationError("test")
     })
-    const context = new RouterContextProvider()
-    context.set(envContext, { POLAR_WEBHOOK_SECRET: "test" } as Env)
-    const response = await action({
+    setEnv({
+      POLAR_WEBHOOK_SECRET: "test",
+    })
+    const response = await postHandler({
       request: new Request("http://localhost"),
-      params: {},
-      context,
-      pattern: "",
-      url: new URL("http://localhost"),
     })
     expect(response.status).toBe(403)
     expect(await response.text()).toBe("Webhook verification failed")
@@ -139,14 +155,11 @@ describe("Webhook", () => {
       type: "order.created",
       data: {},
     } as WebhookEvents)
-    const context = new RouterContextProvider()
-    context.set(envContext, { POLAR_WEBHOOK_SECRET: "test" } as Env)
-    const response = await action({
+    setEnv({
+      POLAR_WEBHOOK_SECRET: "test",
+    })
+    const response = await postHandler({
       request: new Request("http://localhost"),
-      params: {},
-      context,
-      pattern: "",
-      url: new URL("http://localhost"),
     })
     expect(response.status).toBe(202)
     expect(await response.text()).toBe("Event not handled")
@@ -166,24 +179,19 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      const context = new RouterContextProvider()
-      context.set(dbContext, db)
-      context.set(envContext, { POLAR_WEBHOOK_SECRET: "test" } as Env)
-      const response = await action({
-        request: new Request("http://localhost"),
-        params: {},
-        context,
-        pattern: "",
-        url: new URL("http://localhost"),
+      setEnv({
+        POLAR_WEBHOOK_SECRET: "test",
       })
-      const user = await getUserByEmail(db, "new@example.com")
+      const response = await postHandler({
+        request: new Request("http://localhost"),
+      })
+
+      const user = await getUserByEmail("new@example.com")
       if (!user) {
         throw new Error("User not found")
       }
       expect(response.status).toBe(201)
-      expect(await hasUserRole(db, user.id, "pro" as unknown as Role)).toBe(
-        true,
-      )
+      expect(await hasUserRole(user.id, "pro" as unknown as Role)).toBe(true)
       expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
         to: "new@example.com",
         env: { POLAR_WEBHOOK_SECRET: "test" },
@@ -192,6 +200,9 @@ describe("Webhook", () => {
     })
 
     it("grants access to an existing user and returns HTTP 201", async () => {
+      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
+        false,
+      )
       vi.mocked(validateEvent).mockReturnValue({
         type: eventType,
         data: {
@@ -201,22 +212,15 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      expect(
-        await hasUserRole(db, existingUserId, "pro" as unknown as Role),
-      ).toBe(false)
-      const context = new RouterContextProvider()
-      context.set(dbContext, db)
-      context.set(envContext, { POLAR_WEBHOOK_SECRET: "test" } as Env)
-      const response = await action({
-        request: new Request("http://localhost"),
-        params: {},
-        context,
-        pattern: "",
-        url: new URL("http://localhost"),
+      setEnv({
+        POLAR_WEBHOOK_SECRET: "test",
       })
-      expect(
-        await hasUserRole(db, existingUserId, "pro" as unknown as Role),
-      ).toBe(true)
+      const response = await postHandler({
+        request: new Request("http://localhost"),
+      })
+      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
+        true,
+      )
       expect(response.status).toBe(201)
       expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
         to: "existing@example.com",
@@ -226,6 +230,8 @@ describe("Webhook", () => {
     })
 
     it("returns HTTP 200 when user already has access", async () => {
+      await grantUserRole(existingUserId, "pro" as unknown as Role)
+
       vi.mocked(validateEvent).mockReturnValue({
         type: eventType,
         data: {
@@ -235,17 +241,11 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      await grantUserRole(db, existingUserId, "pro" as unknown as Role)
-
-      const context = new RouterContextProvider()
-      context.set(dbContext, db)
-      context.set(envContext, { POLAR_WEBHOOK_SECRET: "test" } as Env)
-      const response = await action({
+      setEnv({
+        POLAR_WEBHOOK_SECRET: "test",
+      })
+      const response = await postHandler({
         request: new Request("http://localhost"),
-        params: {},
-        context,
-        pattern: "",
-        url: new URL("http://localhost"),
       })
 
       expect(response.status).toBe(200)
@@ -263,15 +263,11 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      const context = new RouterContextProvider()
-      context.set(dbContext, db)
-      context.set(envContext, { POLAR_WEBHOOK_SECRET: "test" } as Env)
-      const response = await action({
+      setEnv({
+        POLAR_WEBHOOK_SECRET: "test",
+      })
+      const response = await postHandler({
         request: new Request("http://localhost"),
-        params: {},
-        context,
-        pattern: "",
-        url: new URL("http://localhost"),
       })
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("Product not found")
@@ -287,6 +283,7 @@ describe("Webhook", () => {
     "subscription.revoked",
   ])("on '%s' event", async (eventType) => {
     it("revokes user access and returns HTTP 201", async () => {
+      await grantUserRole(existingUserId, "pro" as unknown as Role)
       vi.mocked(validateEvent).mockReturnValue({
         type: eventType,
         data: {
@@ -296,21 +293,16 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
-      await grantUserRole(db, existingUserId, "pro" as unknown as Role)
-      const context = new RouterContextProvider()
-      context.set(dbContext, db)
-      context.set(envContext, { POLAR_WEBHOOK_SECRET: "test" } as Env)
-      const response = await action({
+      setEnv({
+        POLAR_WEBHOOK_SECRET: "test",
+      })
+      const response = await postHandler({
         request: new Request("http://localhost"),
-        params: {},
-        context,
-        pattern: "",
-        url: new URL("http://localhost"),
       })
       expect(response.status).toBe(201)
-      expect(
-        await hasUserRole(db, existingUserId, "pro" as unknown as Role),
-      ).toBe(false)
+      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
+        false,
+      )
       expect(sendAccessRevokedEmail).toHaveBeenCalledWith({
         to: "existing@example.com",
         env: { POLAR_WEBHOOK_SECRET: "test" },
@@ -328,15 +320,11 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
-      const context = new RouterContextProvider()
-      context.set(dbContext, db)
-      context.set(envContext, { POLAR_WEBHOOK_SECRET: "test" } as Env)
-      const response = await action({
+      setEnv({
+        POLAR_WEBHOOK_SECRET: "test",
+      })
+      const response = await postHandler({
         request: new Request("http://localhost"),
-        params: {},
-        context,
-        pattern: "",
-        url: new URL("http://localhost"),
       })
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("User not found")
@@ -353,15 +341,11 @@ describe("Webhook", () => {
           },
         },
       } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
-      const context = new RouterContextProvider()
-      context.set(dbContext, db)
-      context.set(envContext, { POLAR_WEBHOOK_SECRET: "test" } as Env)
-      const response = await action({
+      setEnv({
+        POLAR_WEBHOOK_SECRET: "test",
+      })
+      const response = await postHandler({
         request: new Request("http://localhost"),
-        params: {},
-        context,
-        pattern: "",
-        url: new URL("http://localhost"),
       })
       expect(response.status).toBe(200)
       expect(await response.text()).toBe("Product not found")

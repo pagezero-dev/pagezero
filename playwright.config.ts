@@ -51,7 +51,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   ...(!process.env.TEST_PAGE_URL && {
     webServer: {
-      command: process.env.CI ? "vite preview" : "npm run dev",
+      command: process.env.CI ? "vite preview" : "bun run dev",
       url: baseURL,
       reuseExistingServer: !process.env.CI,
       env: {

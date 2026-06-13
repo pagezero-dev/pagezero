@@ -4,11 +4,11 @@
 
 ## Project Overview
 
-PageZERO is a full-stack TypeScript web application starter built for Cloudflare. It uses React Router v7, Cloudflare Workers (hosting), and Cloudflare D1 (database).
+PageZERO is a full-stack TypeScript web application starter built for Cloudflare. It uses TanStack Start, Cloudflare Workers (hosting), and Cloudflare D1 (database).
 
 ### Tech Stack
 
-- **Frontend**: React 19, React Router v7, TailwindCSS 4, Radix UI
+- **Frontend**: React 19, TanStack Router, TanStack Start, TanStack Query, TailwindCSS 4, Radix UI
 - **Backend**: Cloudflare Workers, Drizzle ORM, D1 SQLite
 - **Tooling**: Bun (package manager), Biome (linting/formatting), Vitest (unit tests), Playwright (e2e tests), Storybook (UI development)
 - **Email**: React Email, Resend
@@ -20,11 +20,15 @@ PageZERO is a full-stack TypeScript web application starter built for Cloudflare
 ├── apps/                    # Feature modules (domain-specific code)
 │   ├── auth/               # Authentication (login, logout, session management)
 │   ├── content/            # Marketing pages and content components
-│   ├── core/               # App shell (entry points, root, routes, styles)
+│   ├── core/               # App shell (root, routes, styles)
 │   ├── email/              # Email templates and sending logic
 │   ├── payments/           # Payment integration (Polar.sh)
 │   ├── permissions/        # Role-based permissions system
 │   └── user/               # User management
+│   ├── root.tsx            # App root route (createRootRoute)
+│   ├── router.tsx          # Router factory (createRouter + QueryClient)
+│   ├── routes.ts           # Virtual route config (rootRoute, layout, route)
+│   └── routeTree.gen.ts    # Auto-generated route tree (do not edit manually)
 │
 ├── packages/               # Shared, reusable code
 │   ├── config/            # Application configuration
@@ -36,7 +40,6 @@ PageZERO is a full-stack TypeScript web application starter built for Cloudflare
 │   └── ui-lite/           # Lightweight UI components (no external deps)
 │
 ├── e2e/                    # Playwright end-to-end tests
-├── workers/                # Cloudflare Workers entry point
 └── public/                 # Static assets
 ```
 
@@ -100,27 +103,83 @@ export { Button, type ButtonProps }
 
 ### Route Files
 
-Routes use React Router v7 conventions with typed loaders:
+Routes use TanStack Router conventions with `createFileRoute`. Server-side logic is handled via `createServerFn` from TanStack Start:
 
 ```typescript
-import type { Route } from "./+types/module"
+import { createFileRoute } from "@tanstack/react-router"
+import { createServerFn } from "@tanstack/react-start"
+import { getDb } from "@/db"
 
-export async function loader({ context: { db, session } }: Route.LoaderArgs) {
-  // Access db (Drizzle), session from context
-  return Response.json({ data })
-}
+const getData = createServerFn({ method: "GET" }).handler(async () => {
+  const db = getDb()
+  // query db...
+  return { data }
+})
 
-export default function PageComponent() {
-  // Component implementation
+export const Route = createFileRoute("/my-path")({
+  loader: () => getData(),
+  component: PageComponent,
+})
+
+function PageComponent() {
+  const { data } = Route.useLoaderData()
+  // render...
 }
+```
+
+- Use `beforeLoad` for auth guards (call a `createServerFn` that throws `redirect` if not authenticated)
+- Use `validateSearch` for typed search params
+- Access environment variables via `import { env } from "cloudflare:workers"` inside server functions
+
+### Route Registration
+
+Routes are declared in `apps/routes.ts` using `@tanstack/virtual-file-routes` and referenced in `vite.config.ts`. After adding or removing routes, TanStack Router auto-regenerates `apps/routeTree.gen.ts` — do **not** edit that file manually.
+
+```typescript
+// apps/routes.ts
+import { index, layout, rootRoute, route } from "@tanstack/virtual-file-routes"
+
+export const routes = rootRoute("root.tsx", [
+  layout("content-layout", "content/routes/layout.tsx", [
+    index("content/routes/home.tsx"),
+    route("/privacy", "content/routes/privacy.tsx"),
+  ]),
+  route("/login", "auth/routes/login.tsx"),
+])
 ```
 
 ### Database
 
 - Schema defined in `packages/db/schema.ts` (auto-generated imports)
 - Feature schemas in `apps/*/db/schema.ts`
-- Use Drizzle ORM patterns for queries
+- Access the database via `getDb()` from `@/db` inside server functions:
+
+```typescript
+import { getDb } from "@/db"
+
+const getData = createServerFn({ method: "GET" }).handler(async () => {
+  const db = getDb()
+  // use Drizzle ORM...
+})
+```
+
 - Run `bun run db:generate` after schema changes
+
+### Data Fetching (Client)
+
+Use TanStack Query for client-side data fetching. Server functions (`createServerFn`) are used as query functions:
+
+```typescript
+import { useQuery } from "@tanstack/react-query"
+import { myServerFn } from "./my-server-fn"
+
+function MyComponent() {
+  const { data } = useQuery({
+    queryKey: ["my-data"],
+    queryFn: () => myServerFn(),
+  })
+}
+```
 
 ### Tests
 
@@ -215,10 +274,10 @@ bun run generate     # Generate new component scaffold
 
 1. Create folder in `apps/feature-name/`
 2. Add `index.ts` for public exports
-3. Add routes in `routes/` subfolder
+3. Add routes in `routes/` subfolder using `createFileRoute`
 4. Add components in `components/` subfolder
 5. If database tables needed, add `db/schema.ts`
-6. Register routes in `apps/core/routes.ts`
+6. Register routes in `apps/routes.ts`
 
 ### New Database Table
 
@@ -251,11 +310,15 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`):
 
 | File | Purpose |
 |------|---------|
-| `apps/core/routes.ts` | Route definitions |
-| `apps/core/root.tsx` | App shell/layout |
+| `apps/routes.ts` | Virtual route config (add new routes here) |
+| `apps/routeTree.gen.ts` | Auto-generated route tree (do not edit) |
+| `apps/root.tsx` | App root route and document shell |
+| `apps/router.tsx` | Router factory with QueryClient setup |
 | `packages/db/schema.ts` | Database schema exports |
+| `packages/db/index.ts` | `getDb()` helper for database access |
 | `packages/config/index.ts` | App configuration |
-| `vite.config.ts` | Vite + Vitest configuration |
+| `apps/auth/session.server.ts` | Session helpers (`useAppSession`, `updateAppSession`, `clearAppSession`) |
+| `vite.config.ts` | Vite + TanStack Start + Vitest configuration |
 | `biome.json` | Linting/formatting rules |
 | `drizzle.config.ts` | Database configuration |
 | `wrangler.json` | Cloudflare Workers config |

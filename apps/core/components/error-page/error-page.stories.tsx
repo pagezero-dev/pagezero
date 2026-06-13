@@ -13,28 +13,33 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const applicationError = new Error("Something went wrong")
+applicationError.name = "Application Error"
+
+const notFoundError = new Error(
+  "The page you're looking for doesn't exist or has been moved.",
+)
+notFoundError.name = "Page not found"
+
+const serverError = new Error("Failed to load data")
+serverError.name = "Server Error"
+
 export const Default: Story = {
   args: {
-    title: "Application error",
-    error: new Error("Test error"),
+    error: applicationError,
   },
 }
 
-export const OnlyTitle: Story = {
+export const NotFound: Story = {
   args: {
-    title: "Application error",
+    error: notFoundError,
+    action: <a href="/">Go home</a>,
   },
 }
 
-export const WithDescription: Story = {
+export const WithDetails: Story = {
   args: {
-    title: "Application error",
-    description: "Description of the error",
-  },
-}
-
-export const HTTPError: Story = {
-  args: {
-    error: { status: 404, statusText: "Not Found", internal: true, data: null },
+    error: serverError,
+    details: serverError.stack,
   },
 }

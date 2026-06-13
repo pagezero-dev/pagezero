@@ -5,6 +5,8 @@ test("basic authentication flow", async ({ page }) => {
   // Check initial state
   await page.goto("/")
   await page.getByRole("link", { name: "Log in" }).click()
+  await page.waitForURL("/login")
+  await page.waitForLoadState("networkidle")
 
   await expect(page.getByText("test@test.com")).not.toBeVisible()
   await expect(page.getByRole("link", { name: "Logout" })).not.toBeVisible()
@@ -12,7 +14,11 @@ test("basic authentication flow", async ({ page }) => {
   // Check incorrect email
   await page.getByPlaceholder("Enter your email").click()
   await page.getByRole("button", { name: "Login" }).click()
-  await expect(page.getByText("Email is required")).toBeVisible()
+  await expect(page.getByText("Invalid email address")).toBeVisible()
+  await page.getByPlaceholder("Enter your email").click()
+  await page.getByPlaceholder("Enter your email").fill("test")
+  await page.getByRole("button", { name: "Login" }).click()
+  await expect(page.getByText("Invalid email address")).toBeVisible()
 
   // Login
   await page.getByPlaceholder("Enter your email").click()
