@@ -68,6 +68,9 @@ jobs:
       - name: 📋 Copy environment variables
         run: bun run setup:env
 
+      - name: 📦 Generate types
+        run: bun run generate:types
+
       - name: ʦ Types check
         run: bun run check:types
 
