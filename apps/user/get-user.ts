@@ -1,13 +1,12 @@
 import { createServerFn } from "@tanstack/react-start"
+import { useAppSession } from "@/auth/session.server"
+import { getUserById, getUserId } from "./user.server"
 
 export type UserData = {
   user: { id: number; email: string } | null
 }
 
 export const getUser = createServerFn({ method: "GET" }).handler(async () => {
-  const { useAppSession } = await import("@/auth/session.server")
-  const { getUserById, getUserId } = await import("./user.server")
-
   const session = await useAppSession()
   const userId = await getUserId(session)
 
