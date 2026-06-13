@@ -1,0 +1,70 @@
+export const frontmatter = {
+  title: "Welcome to the blog",
+  description:
+    "An example blog post showing how to author content with MDX in this template.",
+  keywords: ["mdx", "blog", "template", "example"],
+  date: "2026-06-01",
+  author: {
+    name: "PageZERO",
+    role: "Template author",
+  },
+}
+
+This is an example blog post for the PageZERO web app template. Posts live as `.mdx` files in `apps/blog/routes/posts/` — drop in a new file and it appears on the blog index automatically.
+
+## What you get out of the box
+
+- **MDX authoring** — write posts in Markdown with embedded JSX
+- **Styled typography** — headings, paragraphs, lists, and tables map to the design system
+- **Syntax highlighting** — fenced code blocks are highlighted via `rehype-highlight`
+- **Frontmatter** — export metadata (title, date, author) from each post file
+- **Dynamic routing** — one TanStack route serves every post by slug
+
+## Markdown features
+
+Regular Markdown works as expected. You can use **bold**, _italic_, and `inline code`.
+
+> Blockquotes are styled too. Use them for callouts or pull quotes.
+
+### Lists
+
+Unordered lists:
+
+- TanStack Start for routing and SSR
+- Cloudflare Workers for hosting
+- Drizzle ORM with D1 for the database
+
+Ordered lists:
+
+1. Copy the template
+2. Customize config and theme
+3. Ship your app
+
+### Tables
+
+| Layer    | Technology        |
+| -------- | ----------------- |
+| Frontend | React 19          |
+| Router   | TanStack Router   |
+| Hosting  | Cloudflare Workers|
+| Database | D1 + Drizzle      |
+
+### Code blocks
+
+```typescript
+// apps/blog/routes/posts/welcome.mdx
+export const frontmatter = {
+  title: "My new post",
+  description: "A short summary for the blog index.",
+  date: "2026-06-01",
+  author: { name: "You" },
+}
+```
+
+### Links
+
+Read the [project docs](https://github.com/pagezero/pagezero) or explore the rest of the template to see auth, payments, and email in action.
+
+---
+
+To add another post, create `apps/blog/routes/posts/your-slug.mdx` with a `frontmatter` export. It will be available at `/blog/your-slug` with no extra route registration.

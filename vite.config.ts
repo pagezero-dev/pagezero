@@ -1,8 +1,11 @@
 /// <reference types="vitest/config" />
 import { cloudflare } from "@cloudflare/vite-plugin"
+import mdx from "@mdx-js/rollup"
 import tailwindcss from "@tailwindcss/vite"
 import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import react from "@vitejs/plugin-react"
+import rehypeHighlight from "rehype-highlight"
+import remarkGfm from "remark-gfm"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 import { routes } from "./apps/routes"
@@ -38,6 +41,11 @@ export default defineConfig({
   },
   plugins: [
     tailwindcss(),
+    mdx({
+      providerImportSource: "@mdx-js/react",
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [rehypeHighlight],
+    }),
     ...(!process.env.VITEST && !isStorybook
       ? [
           cloudflare({ viteEnvironment: { name: "ssr" } }),

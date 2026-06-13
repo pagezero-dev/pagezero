@@ -1,0 +1,41 @@
+import { render, screen } from "@testing-library/react"
+import { describe, expect, it } from "vitest"
+import type { BlogPostSummary } from "@/blog/utils"
+import { PostList } from "./post-list"
+
+const samplePosts: BlogPostSummary[] = [
+  {
+    slug: "/blog/first-post",
+    title: "First post",
+    description: "First description",
+    date: new Date("2024-01-15").toISOString(),
+    imgSrc: "https://example.com/1.jpg",
+    author: { name: "Jane Doe" },
+  },
+  {
+    slug: "/blog/second-post",
+    title: "Second post",
+    description: "Second description",
+    date: new Date("2024-02-20").toISOString(),
+    imgSrc: "https://example.com/2.jpg",
+    author: { name: "John Doe", role: "Editor" },
+  },
+]
+
+describe("<PostList />", () => {
+  it("renders post titles and descriptions", () => {
+    render(<PostList posts={samplePosts} />)
+    expect(screen.getByText("First post")).toBeInTheDocument()
+    expect(screen.getByText("First description")).toBeInTheDocument()
+    expect(screen.getByText("Second post")).toBeInTheDocument()
+    expect(screen.getByText("Second description")).toBeInTheDocument()
+  })
+
+  it("links to each post slug", () => {
+    render(<PostList posts={samplePosts} />)
+    const links = screen.getAllByRole("link")
+    expect(links).toHaveLength(2)
+    expect(links[0]).toHaveAttribute("href", "/blog/first-post")
+    expect(links[1]).toHaveAttribute("href", "/blog/second-post")
+  })
+})

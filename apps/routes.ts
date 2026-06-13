@@ -5,6 +5,8 @@ export const routes = rootRoute("root.tsx", [
     index("content/routes/home.tsx"),
     route("/privacy", "content/routes/privacy.tsx"),
     route("/terms-and-conditions", "content/routes/terms-and-conditions.tsx"),
+    route("/blog", "blog/routes/index.tsx"),
+    route("/blog/$slug", "blog/routes/post.tsx"),
   ]),
   route("/login", "auth/routes/login.tsx"),
   route("/payments/success", "payments/routes/success.tsx"),
