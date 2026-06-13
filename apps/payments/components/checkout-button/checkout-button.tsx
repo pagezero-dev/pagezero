@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
+import { useUser } from "@/auth/hooks"
 import config from "@/config"
 import { Button, type ButtonProps } from "@/ui/button"
-import { useUser } from "@/user/hooks"
 import type { Product } from "../../types"
 
 type CheckoutButtonProps = {

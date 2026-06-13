@@ -12,6 +12,7 @@ import {
   it,
   vi,
 } from "vitest"
+import { getUserByEmail } from "@/auth/user.server"
 import { getDb } from "@/db"
 import * as schema from "@/db/schema"
 import { userRoles, users } from "@/db/schema"
@@ -26,7 +27,6 @@ import {
   type PermissionsConfig,
   type Role,
 } from "@/permissions"
-import { getUserByEmail } from "@/user/user.server"
 import type {
   PaymentsConfig,
   WebhookEvents,

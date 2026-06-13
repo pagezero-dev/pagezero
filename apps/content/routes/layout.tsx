@@ -1,12 +1,12 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router"
 import { ChevronDown } from "lucide-react"
+import { useLogout, useUser } from "@/auth/hooks"
 import config from "@/config"
 import { Footer } from "@/content/components/footer"
 import { Header } from "@/content/components/header"
 import { Logo } from "@/content/components/logo"
 import { Button } from "@/ui/button"
 import { Dropdown } from "@/ui-lite/dropdown"
-import { useLogout, useUser } from "@/user/hooks"
 
 export const Route = createFileRoute("/_content-layout")({
   component: ContentLayout,

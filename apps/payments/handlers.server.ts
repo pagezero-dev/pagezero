@@ -1,3 +1,4 @@
+import { getOrCreateUserByEmail, getUserByEmail } from "@/auth"
 import config from "@/config"
 import {
   sendAccessFailureEmail,
@@ -5,7 +6,6 @@ import {
   sendAccessRevokedEmail,
 } from "@/email/templates.server"
 import { grantUserRole, hasUserRole, revokeUserRole } from "@/permissions"
-import { getOrCreateUserByEmail, getUserByEmail } from "@/user"
 import type {
   WebhookOrderPaidPayload,
   WebhookOrderRefundedPayload,
