@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router"
+import { createFileRoute, Link as RouterLink, notFound } from "@tanstack/react-router"
 import { ArrowLeft } from "lucide-react"
 import { PostHeader } from "@/blog/components/post-header"
 import { postModules } from "@/blog/post-modules"
@@ -43,13 +43,15 @@ function BlogPost() {
     <div className="mx-auto max-w-prose px-5 py-32 text-muted-foreground">
       <nav className="mb-12">
         <Link
-          href="/blog"
           size="sm"
           underline="hover"
+          asChild
           className="text-muted-foreground"
         >
-          <ArrowLeft aria-hidden />
-          All posts
+          <RouterLink to="/blog">
+            <ArrowLeft aria-hidden />
+            All posts
+          </RouterLink>
         </Link>
       </nav>
       <PostHeader
