@@ -11,9 +11,9 @@ import {
   it,
   vi,
 } from "vitest"
+import { users } from "@/auth/db/schema"
 import { getDb } from "@/db"
 import * as schema from "@/db/schema"
-import { users } from "@/user/db/schema"
 import { userRoles } from "./db/schema"
 import {
   grantUserRole,

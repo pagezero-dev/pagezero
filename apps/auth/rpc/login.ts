@@ -5,7 +5,6 @@ import { getRequestHeader } from "@tanstack/react-start/server"
 import { z } from "zod"
 import { sendAuthOtpEmail } from "@/email/templates.server"
 import { parseFormData } from "@/form"
-import { getOrCreateUserByEmail } from "@/user"
 import {
   generateOTP,
   generateOTPExpiration,
@@ -16,6 +15,7 @@ import {
   verifyOtp,
 } from "../auth.server"
 import { updateAppSession } from "../session.server"
+import { getOrCreateUserByEmail } from "../user.server"
 
 export const loginFormSchema = z.object({
   email: z.email(),

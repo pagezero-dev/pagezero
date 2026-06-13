@@ -17,13 +17,13 @@ vi.mock("@tanstack/react-start/server", () => ({
   getRequestUrl: vi.fn(),
 }))
 
-vi.mock("@/user", () => ({
+vi.mock("../user.server", () => ({
   getUserId: vi.fn(),
 }))
 
 import { getRequestUrl } from "@tanstack/react-start/server"
 import { useAppSession } from "@/auth/session.server"
-import { getUserId } from "@/user"
+import { getUserId } from "../user.server"
 import { requireUserId } from "./guards"
 
 describe("requireUserId", () => {
