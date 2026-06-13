@@ -108,9 +108,9 @@ Routes use TanStack Router conventions with `createFileRoute`. Server-side logic
 ```typescript
 import { createFileRoute } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
+import { getDb } from "@/db"
 
 const getData = createServerFn({ method: "GET" }).handler(async () => {
-  const { getDb } = await import("@/db")
   const db = getDb()
   // query db...
   return { data }
