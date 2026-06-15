@@ -14,16 +14,36 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+const author = {
+  name: faker.person.fullName(),
+  role: faker.person.jobTitle(),
+  imageSrc: faker.image.avatar(),
+}
+
+export const Summary: Story = {
   args: {
+    size: "sm",
     title: faker.lorem.words(),
     description: faker.lorem.paragraph(),
     date: faker.date.recent(),
     imgSrc: faker.image.url(),
-    author: {
-      name: faker.person.firstName(),
-      imageSrc: faker.image.avatar(),
-      role: faker.lorem.word(),
-    },
+    author,
   },
+}
+
+export const Detail: Story = {
+  args: {
+    size: "lg",
+    title: faker.lorem.words(4),
+    date: faker.date.recent(),
+    imgSrc: faker.image.url(),
+    author,
+  },
+  decorators: [
+    (Story) => (
+      <div className="max-w-prose px-5">
+        <Story />
+      </div>
+    ),
+  ],
 }

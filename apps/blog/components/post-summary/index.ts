@@ -1,1 +1,1 @@
-export { PostSummary } from "./post-summary"
+export { PostSummary, type PostSummaryProps } from "./post-summary"
