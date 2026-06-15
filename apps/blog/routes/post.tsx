@@ -59,7 +59,7 @@ function BlogPost() {
         </Link>
       </nav>
       <BlogPostSummary
-        size="lg"
+        variant="header"
         title={post.title}
         date={new Date(post.date)}
         imgSrc={post.imgSrc}

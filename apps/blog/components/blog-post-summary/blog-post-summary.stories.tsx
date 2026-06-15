@@ -22,7 +22,7 @@ const author = {
 
 export const Summary: Story = {
   args: {
-    size: "sm",
+    variant: "summary",
     title: faker.lorem.words(),
     description: faker.lorem.paragraph(),
     date: faker.date.recent(),
@@ -31,9 +31,9 @@ export const Summary: Story = {
   },
 }
 
-export const Detail: Story = {
+export const Header: Story = {
   args: {
-    size: "lg",
+    variant: "header",
     title: faker.lorem.words(4),
     date: faker.date.recent(),
     imgSrc: faker.image.url(),

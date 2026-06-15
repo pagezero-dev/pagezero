@@ -17,6 +17,7 @@ export function BlogPostsList({ posts }: BlogPostsListProps) {
             className="block rounded-xl no-underline outline-offset-4 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
           >
             <BlogPostSummary
+              variant="summary"
               title={post.title}
               description={post.description}
               date={new Date(post.date)}

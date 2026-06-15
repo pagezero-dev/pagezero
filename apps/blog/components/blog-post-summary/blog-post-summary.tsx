@@ -22,8 +22,8 @@ interface BlogPostSummaryBaseProps {
 }
 
 type BlogPostSummaryProps =
-  | (BlogPostSummaryBaseProps & { size?: "sm"; description: string })
-  | (BlogPostSummaryBaseProps & { size: "lg"; description?: never })
+  | (BlogPostSummaryBaseProps & { variant: "summary"; description: string })
+  | (BlogPostSummaryBaseProps & { variant: "header"; description?: never })
 
 function PostAuthor({
   author,
@@ -78,41 +78,43 @@ export const BlogPostSummary = ({
   date,
   imgSrc,
   author,
+  variant,
   ...props
 }: BlogPostSummaryProps) => {
-  const size = props.size ?? "sm"
-  const description = size === "sm" ? props.description : undefined
-  const isLarge = size === "lg"
+  const description = variant === "summary" ? props.description : undefined
+  const isHeader = variant === "header"
 
-  const Wrapper = isLarge ? "header" : "article"
+  const Wrapper = isHeader ? "header" : "article"
 
   return (
-    <Wrapper className={cn(isLarge ? "mb-12" : "flex max-w-sm flex-col gap-5")}>
+    <Wrapper
+      className={cn(isHeader ? "mb-12" : "flex max-w-sm flex-col gap-5")}
+    >
       <img
         src={imgSrc}
         alt={title}
         className={cn(
           "aspect-video w-full rounded-xl border bg-muted object-cover",
-          isLarge ? "mb-8" : "mb-4",
+          isHeader ? "mb-8" : "mb-4",
         )}
       />
       <time
         dateTime={date.toISOString()}
         className={cn(
           "text-muted-foreground text-sm",
-          isLarge ? "mb-4 block" : "-mb-2",
+          isHeader ? "mb-4 block" : "-mb-2",
         )}
       >
         {formatBlogDate(date)}
       </time>
       <Heading
-        level={isLarge ? 1 : 3}
-        className={cn(isLarge ? "mt-0 mb-6 text-foreground" : "my-0 text-xl")}
+        level={isHeader ? 1 : 3}
+        className={cn(isHeader ? "mt-0 mb-6 text-foreground" : "my-0 text-xl")}
       >
         {title}
       </Heading>
       {description && <Muted className="leading-relaxed">{description}</Muted>}
-      <PostAuthor author={author} linkName={isLarge} />
+      <PostAuthor author={author} linkName={isHeader} />
     </Wrapper>
   )
 }

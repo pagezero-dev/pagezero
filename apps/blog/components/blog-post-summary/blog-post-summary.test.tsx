@@ -12,10 +12,16 @@ const baseProps = {
 } as const
 
 describe("<BlogPostSummary />", () => {
-  describe("size sm", () => {
+  describe("variant summary", () => {
     it("renders description", async () => {
       const user = userEvent.setup()
-      render(<BlogPostSummary {...baseProps} description="Post description" />)
+      render(
+        <BlogPostSummary
+          {...baseProps}
+          variant="summary"
+          description="Post description"
+        />,
+      )
       const element = screen.getByText("Post description")
       await user.click(element)
       expect(element).toBeInTheDocument()
@@ -25,6 +31,7 @@ describe("<BlogPostSummary />", () => {
       render(
         <BlogPostSummary
           {...baseProps}
+          variant="summary"
           description="Post description"
           author={{
             name: "Jane Doe",
@@ -40,9 +47,9 @@ describe("<BlogPostSummary />", () => {
     })
   })
 
-  describe("size lg", () => {
+  describe("variant header", () => {
     it("renders title, date, and author", () => {
-      render(<BlogPostSummary {...baseProps} size="lg" />)
+      render(<BlogPostSummary {...baseProps} variant="header" />)
 
       expect(
         screen.getByRole("heading", { level: 1, name: "Test post" }),
@@ -55,7 +62,7 @@ describe("<BlogPostSummary />", () => {
       render(
         <BlogPostSummary
           {...baseProps}
-          size="lg"
+          variant="header"
           author={{
             name: "Jane Doe",
             url: "https://x.com/janedoe",
