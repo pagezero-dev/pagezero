@@ -1,12 +1,9 @@
 import { describe, expect, it } from "vitest"
-import type {
-  BlogPostFrontmatter,
-  BlogPostMdxModule,
-} from "./types"
+import type { BlogPostFrontmatter, BlogPostMdxModule } from "./types"
 import {
-  getPostModuleBySlug,
-  getPostSummaries,
-  getPostSummary,
+  getBlogPostModuleBySlug,
+  getBlogPostSummaries,
+  getBlogPostSummary,
   POST_PLACEHOLDER_IMG,
   resolveBlogImageSrc,
 } from "./utils"
@@ -43,7 +40,7 @@ describe("resolveBlogImageSrc", () => {
   })
 })
 
-describe("getPostSummary", () => {
+describe("getBlogPostSummary", () => {
   it("returns the post summary for a matching slug", () => {
     const modules = Object.fromEntries([
       mdx("./content/test.mdx", {
@@ -55,7 +52,7 @@ describe("getPostSummary", () => {
       }),
     ])
 
-    expect(getPostSummary(modules, "test")).toEqual({
+    expect(getBlogPostSummary(modules, "test")).toEqual({
       slug: "test",
       title: "Test post",
       description: "Desc",
@@ -75,11 +72,11 @@ describe("getPostSummary", () => {
       }),
     ])
 
-    expect(getPostSummary(modules, "unknown")).toBeNull()
+    expect(getBlogPostSummary(modules, "unknown")).toBeNull()
   })
 })
 
-describe("getPostModuleBySlug", () => {
+describe("getBlogPostModuleBySlug", () => {
   it("returns the MDX module for a matching slug", () => {
     const mod = {
       frontmatter: {
@@ -92,7 +89,7 @@ describe("getPostModuleBySlug", () => {
     }
     const modules = { "./content/test.mdx": mod }
 
-    expect(getPostModuleBySlug(modules, "test")).toBe(mod)
+    expect(getBlogPostModuleBySlug(modules, "test")).toBe(mod)
   })
 
   it("returns null when slug does not match any post", () => {
@@ -105,13 +102,13 @@ describe("getPostModuleBySlug", () => {
       }),
     ])
 
-    expect(getPostModuleBySlug(modules, "unknown")).toBeNull()
+    expect(getBlogPostModuleBySlug(modules, "unknown")).toBeNull()
   })
 })
 
-describe("getPostSummaries", () => {
+describe("getBlogPostSummaries", () => {
   it("includes keywords when provided in frontmatter", () => {
-    const posts = getPostSummaries({
+    const posts = getBlogPostSummaries({
       ...Object.fromEntries([
         mdx("./content/tagged.mdx", {
           title: "Tagged post",
@@ -124,7 +121,7 @@ describe("getPostSummaries", () => {
   })
 
   it("maps frontmatter to summaries with slug from path", () => {
-    const posts = getPostSummaries({
+    const posts = getBlogPostSummaries({
       ...Object.fromEntries([
         mdx("./content/hello-world.mdx", {
           title: "Hello world",
@@ -149,7 +146,7 @@ describe("getPostSummaries", () => {
   })
 
   it("extracts slug from Windows-style paths", () => {
-    const posts = getPostSummaries({
+    const posts = getBlogPostSummaries({
       ...Object.fromEntries([
         mdx("apps\\blog\\content\\win-post.mdx", {
           title: "Windows path",
@@ -165,7 +162,7 @@ describe("getPostSummaries", () => {
   })
 
   it("skips modules without a parsable slug", () => {
-    const posts = getPostSummaries({
+    const posts = getBlogPostSummaries({
       "invalid-path": {
         frontmatter: {
           title: "Orphan",
@@ -182,7 +179,7 @@ describe("getPostSummaries", () => {
   })
 
   it("skips posts without a title", () => {
-    const posts = getPostSummaries({
+    const posts = getBlogPostSummaries({
       ...Object.fromEntries([mdx("./content/no-title.mdx", { title: "" })]),
       "./content/missing-title.mdx": { default: () => null },
     })
@@ -191,7 +188,7 @@ describe("getPostSummaries", () => {
   })
 
   it("applies defaults for missing optional frontmatter fields", () => {
-    const posts = getPostSummaries({
+    const posts = getBlogPostSummaries({
       ...Object.fromEntries([
         mdx("./content/minimal.mdx", { title: "Minimal" }),
       ]),
@@ -210,7 +207,7 @@ describe("getPostSummaries", () => {
   })
 
   it("uses imgSrc from MDX frontmatter as-is", () => {
-    const posts = getPostSummaries({
+    const posts = getBlogPostSummaries({
       ...Object.fromEntries([
         mdx("./content/local-cover.mdx", {
           title: "Local cover",
@@ -223,7 +220,7 @@ describe("getPostSummaries", () => {
   })
 
   it("falls back to epoch when date is invalid", () => {
-    const posts = getPostSummaries({
+    const posts = getBlogPostSummaries({
       ...Object.fromEntries([
         mdx("./content/bad-date.mdx", {
           title: "Bad date",
@@ -239,7 +236,7 @@ describe("getPostSummaries", () => {
   })
 
   it("sorts posts by date descending", () => {
-    const posts = getPostSummaries({
+    const posts = getBlogPostSummaries({
       ...Object.fromEntries([
         mdx("./content/older.mdx", {
           title: "Older",

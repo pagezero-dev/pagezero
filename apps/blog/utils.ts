@@ -41,7 +41,7 @@ function toPostSummary(
   }
 }
 
-export function getPostSummaries(
+export function getBlogPostSummaries(
   modules: Record<string, BlogPostMdxModule>,
 ): BlogPostSummary[] {
   return Object.entries(modules)
@@ -50,7 +50,7 @@ export function getPostSummaries(
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
-export function getPostSummary(
+export function getBlogPostSummary(
   modules: Record<string, BlogPostMdxModule>,
   slug: string,
 ): BlogPostSummary | null {
@@ -61,7 +61,7 @@ export function getPostSummary(
   return toPostSummary(entry[0], entry[1])
 }
 
-export function getPostModuleBySlug(
+export function getBlogPostModuleBySlug(
   modules: Record<string, BlogPostMdxModule>,
   slug: string,
 ): BlogPostMdxModule | null {
