@@ -1,4 +1,8 @@
-import type { BlogPostMdxModule, BlogPostSummary } from "./types"
+import {
+  type BlogPostMdxModule,
+  type BlogPostSummary,
+  blogPostFrontmatterSchema,
+} from "./types"
 
 export const POST_PLACEHOLDER_IMG =
   "https://placehold.co/800x450/e2e8f0/64748b?text=Post"
@@ -19,11 +23,9 @@ export function toPostSummary(
   const slug = slugFromPostPath(path)
   if (!slug) return null
 
-  const m = mod.frontmatter
-  if (!m?.title) return null
+  const m = blogPostFrontmatterSchema.parse(mod.frontmatter)
 
   const dateIso = (() => {
-    if (!m.date) return new Date(0).toISOString()
     const parsed = new Date(m.date)
     return Number.isNaN(parsed.getTime())
       ? new Date(0).toISOString()
@@ -33,11 +35,11 @@ export function toPostSummary(
   return {
     slug,
     title: m.title,
-    description: m.description ?? "Read the full post.",
+    description: m.description,
     ...(m.keywords?.length ? { keywords: m.keywords } : {}),
     date: dateIso,
     imgSrc: resolveBlogImageSrc(m.imgSrc),
-    author: m.author ?? { name: "PageZERO" },
+    author: m.author,
   }
 }
 

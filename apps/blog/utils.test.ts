@@ -5,17 +5,29 @@ import {
   getBlogPostSummary,
   POST_PLACEHOLDER_IMG,
   resolveBlogImageSrc,
+  toPostSummary,
 } from "./utils"
+
+function validFrontmatter(
+  overrides: Partial<BlogPostFrontmatter> = {},
+): BlogPostFrontmatter {
+  return {
+    title: "Post title",
+    description: "Post description",
+    date: "2026-01-01",
+    author: { name: "Author" },
+    ...overrides,
+  }
+}
 
 function mdx(
   path: string,
-  frontmatter: Partial<BlogPostFrontmatter> &
-    Pick<BlogPostFrontmatter, "title">,
+  frontmatter: BlogPostFrontmatter,
 ): [string, BlogPostMdxModule] {
   return [
     path,
     {
-      frontmatter: frontmatter as BlogPostFrontmatter,
+      frontmatter,
       default: () => null,
     },
   ]
@@ -39,16 +51,27 @@ describe("resolveBlogImageSrc", () => {
   })
 })
 
+describe("toPostSummary", () => {
+  it("throws when frontmatter is missing required fields", () => {
+    expect(() =>
+      toPostSummary("./content/invalid.mdx", { default: () => null }),
+    ).toThrow()
+  })
+})
+
 describe("getBlogPostSummary", () => {
   it("returns the post summary for a matching slug", () => {
     const modules = Object.fromEntries([
-      mdx("./content/test.mdx", {
-        title: "Test post",
-        description: "Desc",
-        date: "2026-05-18",
-        imgSrc: "/assets/test-cover.png",
-        author: { name: "PageZERO" },
-      }),
+      mdx(
+        "./content/test.mdx",
+        validFrontmatter({
+          title: "Test post",
+          description: "Desc",
+          date: "2026-05-18",
+          imgSrc: "/assets/test-cover.png",
+          author: { name: "PageZERO" },
+        }),
+      ),
     ])
 
     expect(getBlogPostSummary(modules, "test")).toEqual({

@@ -17,21 +17,31 @@ vi.mock("../post-modules", () => ({
 }))
 
 import type { BlogPostFrontmatter, BlogPostMdxModule } from "../types"
-import { POST_PLACEHOLDER_IMG } from "../utils"
 import { getBlogPostSummaries } from "./get-blog-post-summaries"
 
 function mdx(
   path: string,
-  frontmatter: Partial<BlogPostFrontmatter> &
-    Pick<BlogPostFrontmatter, "title">,
+  frontmatter: BlogPostFrontmatter,
 ): [string, BlogPostMdxModule] {
   return [
     path,
     {
-      frontmatter: frontmatter as BlogPostFrontmatter,
+      frontmatter,
       default: () => null,
     },
   ]
+}
+
+function validFrontmatter(
+  overrides: Partial<BlogPostFrontmatter> = {},
+): BlogPostFrontmatter {
+  return {
+    title: "Post title",
+    description: "Post description",
+    date: "2026-01-01",
+    author: { name: "Author" },
+    ...overrides,
+  }
 }
 
 function setPostModules(modules: Record<string, BlogPostMdxModule>) {
@@ -49,10 +59,13 @@ describe("getBlogPostSummaries", () => {
   it("includes keywords when provided in frontmatter", async () => {
     setPostModules(
       Object.fromEntries([
-        mdx("./content/tagged.mdx", {
-          title: "Tagged post",
-          keywords: ["react", "cloudflare"],
-        }),
+        mdx(
+          "./content/tagged.mdx",
+          validFrontmatter({
+            title: "Tagged post",
+            keywords: ["react", "cloudflare"],
+          }),
+        ),
       ]),
     )
 
@@ -63,13 +76,16 @@ describe("getBlogPostSummaries", () => {
   it("maps frontmatter to summaries with slug from path", async () => {
     setPostModules(
       Object.fromEntries([
-        mdx("./content/hello-world.mdx", {
-          title: "Hello world",
-          description: "A short intro",
-          date: "2026-05-18",
-          imgSrc: "https://example.com/cover.jpg",
-          author: { name: "Jane Doe", role: "Editor" },
-        }),
+        mdx(
+          "./content/hello-world.mdx",
+          validFrontmatter({
+            title: "Hello world",
+            description: "A short intro",
+            date: "2026-05-18",
+            imgSrc: "https://example.com/cover.jpg",
+            author: { name: "Jane Doe", role: "Editor" },
+          }),
+        ),
       ]),
     )
 
@@ -88,13 +104,15 @@ describe("getBlogPostSummaries", () => {
   it("extracts slug from Windows-style paths", async () => {
     setPostModules(
       Object.fromEntries([
-        mdx("apps\\blog\\content\\win-post.mdx", {
-          title: "Windows path",
-          description: "Desc",
-          date: "2026-01-01",
-          imgSrc: "https://example.com/a.jpg",
-          author: { name: "Author" },
-        }),
+        mdx(
+          "apps\\blog\\content\\win-post.mdx",
+          validFrontmatter({
+            title: "Windows path",
+            description: "Desc",
+            date: "2026-01-01",
+            imgSrc: "https://example.com/a.jpg",
+          }),
+        ),
       ]),
     )
 
@@ -105,13 +123,7 @@ describe("getBlogPostSummaries", () => {
   it("skips modules without a parsable slug", async () => {
     setPostModules({
       "invalid-path": {
-        frontmatter: {
-          title: "Orphan",
-          description: "Desc",
-          date: "2026-01-01",
-          imgSrc: "https://example.com/a.jpg",
-          author: { name: "Author" },
-        },
+        frontmatter: validFrontmatter({ title: "Orphan" }),
         default: () => null,
       },
     })
@@ -119,39 +131,44 @@ describe("getBlogPostSummaries", () => {
     await expect(getBlogPostSummaries()).resolves.toEqual([])
   })
 
-  it("skips posts without a title", async () => {
+  it("throws when frontmatter is missing required fields", async () => {
     setPostModules({
-      ...Object.fromEntries([mdx("./content/no-title.mdx", { title: "" })]),
+      ...Object.fromEntries([
+        mdx("./content/no-title.mdx", {
+          title: "",
+          description: "Desc",
+          date: "2026-01-01",
+          author: { name: "Author" },
+        }),
+      ]),
       "./content/missing-title.mdx": { default: () => null },
     })
 
-    await expect(getBlogPostSummaries()).resolves.toEqual([])
+    await expect(getBlogPostSummaries()).rejects.toThrow()
   })
 
-  it("applies defaults for missing optional frontmatter fields", async () => {
+  it("throws when required frontmatter fields are missing", async () => {
     setPostModules(
-      Object.fromEntries([mdx("./content/minimal.mdx", { title: "Minimal" })]),
+      Object.fromEntries([
+        mdx("./content/minimal.mdx", {
+          title: "Minimal",
+        } as BlogPostFrontmatter),
+      ]),
     )
 
-    await expect(getBlogPostSummaries()).resolves.toEqual([
-      {
-        slug: "minimal",
-        title: "Minimal",
-        description: "Read the full post.",
-        date: new Date(0).toISOString(),
-        imgSrc: POST_PLACEHOLDER_IMG,
-        author: { name: "PageZERO" },
-      },
-    ])
+    await expect(getBlogPostSummaries()).rejects.toThrow()
   })
 
   it("uses imgSrc from MDX frontmatter as-is", async () => {
     setPostModules(
       Object.fromEntries([
-        mdx("./content/local-cover.mdx", {
-          title: "Local cover",
-          imgSrc: "/assets/test-cover.png",
-        }),
+        mdx(
+          "./content/local-cover.mdx",
+          validFrontmatter({
+            title: "Local cover",
+            imgSrc: "/assets/test-cover.png",
+          }),
+        ),
       ]),
     )
 
@@ -162,13 +179,14 @@ describe("getBlogPostSummaries", () => {
   it("falls back to epoch when date is invalid", async () => {
     setPostModules(
       Object.fromEntries([
-        mdx("./content/bad-date.mdx", {
-          title: "Bad date",
-          description: "Desc",
-          date: "not-a-date",
-          imgSrc: "https://example.com/a.jpg",
-          author: { name: "Author" },
-        }),
+        mdx(
+          "./content/bad-date.mdx",
+          validFrontmatter({
+            title: "Bad date",
+            date: "not-a-date",
+            imgSrc: "https://example.com/a.jpg",
+          }),
+        ),
       ]),
     )
 
@@ -179,20 +197,22 @@ describe("getBlogPostSummaries", () => {
   it("sorts posts by date descending", async () => {
     setPostModules(
       Object.fromEntries([
-        mdx("./content/older.mdx", {
-          title: "Older",
-          description: "Desc",
-          date: "2024-01-01",
-          imgSrc: "https://example.com/a.jpg",
-          author: { name: "Author" },
-        }),
-        mdx("./content/newer.mdx", {
-          title: "Newer",
-          description: "Desc",
-          date: "2026-06-01",
-          imgSrc: "https://example.com/b.jpg",
-          author: { name: "Author" },
-        }),
+        mdx(
+          "./content/older.mdx",
+          validFrontmatter({
+            title: "Older",
+            date: "2024-01-01",
+            imgSrc: "https://example.com/a.jpg",
+          }),
+        ),
+        mdx(
+          "./content/newer.mdx",
+          validFrontmatter({
+            title: "Newer",
+            date: "2026-06-01",
+            imgSrc: "https://example.com/b.jpg",
+          }),
+        ),
       ]),
     )
 
