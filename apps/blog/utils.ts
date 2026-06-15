@@ -19,13 +19,9 @@ export function toPostSummary(
   const m = blogPostFrontmatterSchema.parse(mod.frontmatter)
 
   return {
+    ...m,
     slug,
-    title: m.title,
-    description: m.description,
-    ...(m.keywords?.length ? { keywords: m.keywords } : {}),
     date: new Date(m.date).toISOString(),
-    imgSrc: m.imgSrc,
-    author: m.author,
   }
 }
 
