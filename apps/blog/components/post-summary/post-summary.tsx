@@ -1,6 +1,6 @@
 import { User } from "lucide-react"
 import { PostCover } from "@/blog/components/post-cover"
-import type { BlogPostAuthor } from "@/blog/utils"
+import type { BlogPostAuthor } from "@/blog/types"
 import { Heading, Muted, Small } from "@/ui/typography"
 
 /** Stable across SSR and client; date-only frontmatter parses as UTC midnight */

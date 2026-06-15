@@ -1,32 +1,4 @@
-import type { ComponentType } from "react"
-
-export type BlogPostAuthor = {
-  name: string
-  role?: string
-  imageSrc?: string
-  url?: string
-}
-
-export type BlogPostFrontmatter = {
-  title: string
-  description: string
-  keywords?: string[]
-  /** ISO 8601 date string */
-  date: string
-  imgSrc?: string
-  author: BlogPostAuthor
-}
-
-export type BlogPostMdxModule = {
-  frontmatter?: BlogPostFrontmatter
-  default: ComponentType
-}
-
-/** Frontmatter resolved to ISO dates + derived slug, safe for loader serialization */
-export type BlogPostSummary = Omit<BlogPostFrontmatter, "imgSrc"> & {
-  slug: string
-  imgSrc: string
-}
+import type { BlogPostMdxModule, BlogPostSummary } from "./types"
 
 export const POST_PLACEHOLDER_IMG =
   "https://placehold.co/800x450/e2e8f0/64748b?text=Post"

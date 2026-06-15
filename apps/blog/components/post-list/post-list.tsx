@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { PostSummary } from "@/blog/components/post-summary"
-import type { BlogPostSummary } from "@/blog/utils"
+import type { BlogPostSummary } from "@/blog/types"
 
 interface PostListProps {
   posts: BlogPostSummary[]

@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest"
+import type {
+  BlogPostFrontmatter,
+  BlogPostMdxModule,
+} from "./types"
 import {
-  type BlogPostFrontmatter,
-  type BlogPostMdxModule,
   getPostModuleBySlug,
   getPostSummaries,
   getPostSummary,

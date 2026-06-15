@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import type { BlogPostSummary } from "@/blog/utils"
+import type { BlogPostSummary } from "@/blog/types"
 import { PostList } from "./post-list"
 
 function createPost(): BlogPostSummary {

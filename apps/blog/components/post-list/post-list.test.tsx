@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-router"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
-import type { BlogPostSummary } from "@/blog/utils"
+import type { BlogPostSummary } from "@/blog/types"
 import { PostList } from "./post-list"
 
 const samplePosts: BlogPostSummary[] = [
