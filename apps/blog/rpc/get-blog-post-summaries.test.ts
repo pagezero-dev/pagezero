@@ -176,22 +176,20 @@ describe("getBlogPostSummaries", () => {
     expect(posts[0]?.imgSrc).toBe("/assets/test-cover.png")
   })
 
-  it("falls back to epoch when date is invalid", async () => {
-    setPostModules(
-      Object.fromEntries([
-        mdx(
-          "./content/bad-date.mdx",
-          validFrontmatter({
-            title: "Bad date",
-            date: "not-a-date",
-            imgSrc: "https://example.com/a.jpg",
-          }),
-        ),
-      ]),
-    )
+  it("throws when date is not a valid ISO date", async () => {
+    setPostModules({
+      "./content/bad-date.mdx": {
+        frontmatter: {
+          title: "Bad date",
+          description: "Desc",
+          date: "not-a-date",
+          author: { name: "Author" },
+        } as BlogPostFrontmatter,
+        default: () => null,
+      },
+    })
 
-    const posts = await getBlogPostSummaries()
-    expect(posts[0]?.date).toBe(new Date(0).toISOString())
+    await expect(getBlogPostSummaries()).rejects.toThrow()
   })
 
   it("sorts posts by date descending", async () => {

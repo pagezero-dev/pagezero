@@ -14,8 +14,7 @@ export const blogPostFrontmatterSchema = z.object({
   title: z.string(),
   description: z.string(),
   keywords: z.array(z.string()).optional(),
-  /** ISO 8601 date string */
-  date: z.string(),
+  date: z.iso.date(),
   imgSrc: z.string().optional(),
   author: blogPostAuthorSchema,
 })

@@ -25,12 +25,7 @@ export function toPostSummary(
 
   const m = blogPostFrontmatterSchema.parse(mod.frontmatter)
 
-  const dateIso = (() => {
-    const parsed = new Date(m.date)
-    return Number.isNaN(parsed.getTime())
-      ? new Date(0).toISOString()
-      : parsed.toISOString()
-  })()
+  const dateIso = new Date(m.date).toISOString()
 
   return {
     slug,
