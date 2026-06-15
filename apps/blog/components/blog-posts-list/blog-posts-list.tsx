@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router"
 import { BlogPostSummary } from "@/blog/components/blog-post-summary"
-import type { BlogPostSummary as BlogPostSummaryData } from "@/blog/types"
+import type { BlogPostFrontmatterWithSlug } from "@/blog/types"
 
 interface BlogPostsListProps {
-  posts: BlogPostSummaryData[]
+  posts: BlogPostFrontmatterWithSlug[]
 }
 
 export function BlogPostsList({ posts }: BlogPostsListProps) {

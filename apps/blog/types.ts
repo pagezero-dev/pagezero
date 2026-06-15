@@ -26,6 +26,6 @@ export type BlogPostMdxModule = {
   default: ComponentType
 }
 
-export type BlogPostSummary = BlogPostFrontmatter & {
+export type BlogPostFrontmatterWithSlug = BlogPostFrontmatter & {
   slug: string
 }

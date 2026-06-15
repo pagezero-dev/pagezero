@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import type { BlogPostSummary } from "@/blog/types"
+import type { BlogPostFrontmatterWithSlug } from "@/blog/types"
 import { withRouter } from "@/test/storybook"
 import { BlogPostsList } from "./blog-posts-list"
 
-function createPost(): BlogPostSummary {
+function createPost(): BlogPostFrontmatterWithSlug {
   return {
     slug: faker.lorem.slug(),
     title: faker.lorem.words(4),

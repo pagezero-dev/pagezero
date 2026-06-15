@@ -3,7 +3,7 @@ import type { BlogPostFrontmatter, BlogPostMdxModule } from "./types"
 import {
   getBlogPostFrontmatter,
   getBlogPostModuleBySlug,
-  getBlogPostSummaries,
+  getBlogPostFrontmatters,
   toBlogPostFrontmatter,
 } from "./utils"
 
@@ -120,7 +120,7 @@ describe("getBlogPostModuleBySlug", () => {
   })
 })
 
-describe("getBlogPostSummaries", () => {
+describe("getBlogPostFrontmatters", () => {
   it("includes keywords when provided in frontmatter", () => {
     const modules = Object.fromEntries([
       mdx(
@@ -132,7 +132,7 @@ describe("getBlogPostSummaries", () => {
       ),
     ])
 
-    const posts = getBlogPostSummaries(modules)
+    const posts = getBlogPostFrontmatters(modules)
     expect(posts[0]?.keywords).toEqual(["react", "cloudflare"])
   })
 
@@ -150,7 +150,7 @@ describe("getBlogPostSummaries", () => {
       ),
     ])
 
-    expect(getBlogPostSummaries(modules)).toEqual([
+    expect(getBlogPostFrontmatters(modules)).toEqual([
       {
         slug: "hello-world",
         title: "Hello world",
@@ -175,7 +175,7 @@ describe("getBlogPostSummaries", () => {
       ),
     ])
 
-    expect(getBlogPostSummaries(modules)[0]?.slug).toBe("win-post")
+    expect(getBlogPostFrontmatters(modules)[0]?.slug).toBe("win-post")
   })
 
   it("skips modules without a parsable slug", () => {
@@ -186,7 +186,7 @@ describe("getBlogPostSummaries", () => {
       },
     }
 
-    expect(getBlogPostSummaries(modules)).toEqual([])
+    expect(getBlogPostFrontmatters(modules)).toEqual([])
   })
 
   it("throws when frontmatter is missing required fields", () => {
@@ -205,7 +205,7 @@ describe("getBlogPostSummaries", () => {
       "./content/missing-title.mdx": { default: () => null },
     }
 
-    expect(() => getBlogPostSummaries(modules)).toThrow()
+    expect(() => getBlogPostFrontmatters(modules)).toThrow()
   })
 
   it("throws when required frontmatter fields are missing", () => {
@@ -215,7 +215,7 @@ describe("getBlogPostSummaries", () => {
       } as BlogPostFrontmatter),
     ])
 
-    expect(() => getBlogPostSummaries(modules)).toThrow()
+    expect(() => getBlogPostFrontmatters(modules)).toThrow()
   })
 
   it("uses imgSrc from MDX frontmatter as-is", () => {
@@ -229,7 +229,7 @@ describe("getBlogPostSummaries", () => {
       ),
     ])
 
-    expect(getBlogPostSummaries(modules)[0]?.imgSrc).toBe(
+    expect(getBlogPostFrontmatters(modules)[0]?.imgSrc).toBe(
       "/assets/test-cover.png",
     )
   })
@@ -248,7 +248,7 @@ describe("getBlogPostSummaries", () => {
       },
     }
 
-    expect(() => getBlogPostSummaries(modules)).toThrow()
+    expect(() => getBlogPostFrontmatters(modules)).toThrow()
   })
 
   it("sorts posts by date descending", () => {
@@ -271,7 +271,7 @@ describe("getBlogPostSummaries", () => {
       ),
     ])
 
-    expect(getBlogPostSummaries(modules).map((post) => post.slug)).toEqual([
+    expect(getBlogPostFrontmatters(modules).map((post) => post.slug)).toEqual([
       "newer",
       "older",
     ])

@@ -1,7 +1,7 @@
 import {
   type BlogPostFrontmatter,
   type BlogPostMdxModule,
-  type BlogPostSummary,
+  type BlogPostFrontmatterWithSlug,
   blogPostFrontmatterSchema,
 } from "./types"
 
@@ -40,9 +40,9 @@ export function getBlogPostModuleBySlug(
   return entry?.[1] ?? null
 }
 
-export function getBlogPostSummaries(
+export function getBlogPostFrontmatters(
   modules: Record<string, BlogPostMdxModule>,
-): BlogPostSummary[] {
+): BlogPostFrontmatterWithSlug[] {
   return Object.entries(modules)
     .map(([path, mod]) => {
       const frontmatter = toBlogPostFrontmatter(path, mod)
@@ -50,6 +50,6 @@ export function getBlogPostSummaries(
       if (!frontmatter || !slug) return null
       return { ...frontmatter, slug }
     })
-    .filter((post): post is BlogPostSummary => post !== null)
+    .filter((post): post is BlogPostFrontmatterWithSlug => post !== null)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }

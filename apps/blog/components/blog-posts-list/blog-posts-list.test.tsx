@@ -6,10 +6,10 @@ import {
 } from "@tanstack/react-router"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
-import type { BlogPostSummary } from "@/blog/types"
+import type { BlogPostFrontmatterWithSlug } from "@/blog/types"
 import { BlogPostsList } from "./blog-posts-list"
 
-const samplePosts: BlogPostSummary[] = [
+const samplePosts: BlogPostFrontmatterWithSlug[] = [
   {
     slug: "first-post",
     title: "First post",
@@ -28,7 +28,7 @@ const samplePosts: BlogPostSummary[] = [
   },
 ]
 
-async function renderBlogPostsList(posts: BlogPostSummary[]) {
+async function renderBlogPostsList(posts: BlogPostFrontmatterWithSlug[]) {
   const rootRoute = createRootRoute({
     component: () => <BlogPostsList posts={posts} />,
   })
