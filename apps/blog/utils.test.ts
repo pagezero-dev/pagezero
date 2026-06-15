@@ -3,7 +3,7 @@ import type { BlogPostFrontmatter, BlogPostMdxModule } from "./types"
 import {
   getBlogPostModuleBySlug,
   getBlogPostSummary,
-  toPostSummary,
+  toBlogPostSummary,
 } from "./utils"
 
 function validFrontmatter(
@@ -32,27 +32,24 @@ function mdx(
   ]
 }
 
-describe("toPostSummary", () => {
+describe("toBlogPostSummary", () => {
   it("throws when frontmatter is missing required fields", () => {
     expect(() =>
-      toPostSummary("./content/invalid.mdx", { default: () => null }),
+      toBlogPostSummary("./content/invalid.mdx", { default: () => null }),
     ).toThrow()
   })
 
   it("throws when imgSrc is missing", () => {
     expect(() =>
-      toPostSummary(
-        "./content/missing-cover.mdx",
-        {
-          frontmatter: {
-            title: "Post",
-            description: "Desc",
-            date: "2026-01-01",
-            author: { name: "Author" },
-          } as BlogPostFrontmatter,
-          default: () => null,
-        },
-      ),
+      toBlogPostSummary("./content/missing-cover.mdx", {
+        frontmatter: {
+          title: "Post",
+          description: "Desc",
+          date: "2026-01-01",
+          author: { name: "Author" },
+        } as BlogPostFrontmatter,
+        default: () => null,
+      }),
     ).toThrow()
   })
 })
@@ -94,7 +91,10 @@ describe("getBlogPostSummary", () => {
 describe("getBlogPostModuleBySlug", () => {
   it("returns the MDX module for a matching slug", () => {
     const mod = {
-      frontmatter: validFrontmatter({ title: "Test post", description: "Desc" }),
+      frontmatter: validFrontmatter({
+        title: "Test post",
+        description: "Desc",
+      }),
       default: () => null,
     }
     const modules = { "./content/test.mdx": mod }

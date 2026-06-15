@@ -9,7 +9,7 @@ function slugFromPostPath(path: string): string | undefined {
   return match?.[1]
 }
 
-export function toPostSummary(
+export function toBlogPostSummary(
   path: string,
   mod: BlogPostMdxModule,
 ): BlogPostSummary | null {
@@ -33,7 +33,7 @@ export function getBlogPostSummary(
     ([path]) => slugFromPostPath(path) === slug,
   )
   if (!entry) return null
-  return toPostSummary(entry[0], entry[1])
+  return toBlogPostSummary(entry[0], entry[1])
 }
 
 export function getBlogPostModuleBySlug(
