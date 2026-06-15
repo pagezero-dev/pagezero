@@ -14,16 +14,16 @@ function formatBlogDate(date: Date): string {
   }).format(date)
 }
 
-interface PostSummaryBaseProps {
+interface BlogPostSummaryBaseProps {
   title: string
   date: Date
   imgSrc: string
   author: BlogPostAuthor
 }
 
-type PostSummaryProps =
-  | (PostSummaryBaseProps & { size?: "sm"; description: string })
-  | (PostSummaryBaseProps & { size: "lg"; description?: never })
+type BlogPostSummaryProps =
+  | (BlogPostSummaryBaseProps & { size?: "sm"; description: string })
+  | (BlogPostSummaryBaseProps & { size: "lg"; description?: never })
 
 function PostAuthor({
   author,
@@ -73,13 +73,13 @@ function PostAuthor({
   )
 }
 
-export const PostSummary = ({
+export const BlogPostSummary = ({
   title,
   date,
   imgSrc,
   author,
   ...props
-}: PostSummaryProps) => {
+}: BlogPostSummaryProps) => {
   const size = props.size ?? "sm"
   const description = size === "sm" ? props.description : undefined
   const isLarge = size === "lg"
@@ -117,4 +117,4 @@ export const PostSummary = ({
   )
 }
 
-export type { PostSummaryProps }
+export type { BlogPostSummaryProps }

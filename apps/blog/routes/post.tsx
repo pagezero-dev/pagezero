@@ -4,7 +4,7 @@ import {
   Link as RouterLink,
 } from "@tanstack/react-router"
 import { ArrowLeft } from "lucide-react"
-import { PostSummary } from "@/blog/components/post-summary"
+import { BlogPostSummary } from "@/blog/components/blog-post-summary"
 import { postModules } from "@/blog/post-modules"
 import { getBlogPostFrontmatter, getBlogPostModuleBySlug } from "@/blog/utils"
 import config from "@/config"
@@ -58,7 +58,7 @@ function BlogPost() {
           </RouterLink>
         </Link>
       </nav>
-      <PostSummary
+      <BlogPostSummary
         size="lg"
         title={post.title}
         date={new Date(post.date)}

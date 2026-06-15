@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { PostList } from "@/blog/components/post-list"
+import { BlogPostsList } from "@/blog/components/blog-posts-list"
 import { getBlogPostSummaries } from "@/blog/rpc"
 import { Section } from "@/content/components/section"
 
@@ -14,7 +14,7 @@ function BlogIndex() {
   return (
     <Section id="blog" title="Blog">
       <div className="mx-auto max-w-6xl">
-        <PostList posts={posts} />
+        <BlogPostsList posts={posts} />
       </div>
     </Section>
   )

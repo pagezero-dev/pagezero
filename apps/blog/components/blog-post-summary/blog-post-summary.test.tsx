@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react"
 import { userEvent } from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
 
-import { PostSummary } from "./post-summary"
+import { BlogPostSummary } from "./blog-post-summary"
 
 const baseProps = {
   title: "Test post",
@@ -11,11 +11,11 @@ const baseProps = {
   author: { name: "PageZERO" },
 } as const
 
-describe("<PostSummary />", () => {
+describe("<BlogPostSummary />", () => {
   describe("size sm", () => {
     it("renders description", async () => {
       const user = userEvent.setup()
-      render(<PostSummary {...baseProps} description="Post description" />)
+      render(<BlogPostSummary {...baseProps} description="Post description" />)
       const element = screen.getByText("Post description")
       await user.click(element)
       expect(element).toBeInTheDocument()
@@ -23,7 +23,7 @@ describe("<PostSummary />", () => {
 
     it("renders author name as plain text when url is provided", () => {
       render(
-        <PostSummary
+        <BlogPostSummary
           {...baseProps}
           description="Post description"
           author={{
@@ -42,7 +42,7 @@ describe("<PostSummary />", () => {
 
   describe("size lg", () => {
     it("renders title, date, and author", () => {
-      render(<PostSummary {...baseProps} size="lg" />)
+      render(<BlogPostSummary {...baseProps} size="lg" />)
 
       expect(
         screen.getByRole("heading", { level: 1, name: "Test post" }),
@@ -53,7 +53,7 @@ describe("<PostSummary />", () => {
 
     it("links author name when url is provided", () => {
       render(
-        <PostSummary
+        <BlogPostSummary
           {...baseProps}
           size="lg"
           author={{

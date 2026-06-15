@@ -7,7 +7,7 @@ import {
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 import type { BlogPostSummary } from "@/blog/types"
-import { PostList } from "./post-list"
+import { BlogPostsList } from "./blog-posts-list"
 
 const samplePosts: BlogPostSummary[] = [
   {
@@ -28,9 +28,9 @@ const samplePosts: BlogPostSummary[] = [
   },
 ]
 
-async function renderPostList(posts: BlogPostSummary[]) {
+async function renderBlogPostsList(posts: BlogPostSummary[]) {
   const rootRoute = createRootRoute({
-    component: () => <PostList posts={posts} />,
+    component: () => <BlogPostsList posts={posts} />,
   })
   const router = createRouter({
     routeTree: rootRoute,
@@ -41,9 +41,9 @@ async function renderPostList(posts: BlogPostSummary[]) {
   return render(<RouterProvider router={router} />)
 }
 
-describe("<PostList />", () => {
+describe("<BlogPostsList />", () => {
   it("renders post titles and descriptions", async () => {
-    await renderPostList(samplePosts)
+    await renderBlogPostsList(samplePosts)
     expect(screen.getByText("First post")).toBeInTheDocument()
     expect(screen.getByText("First description")).toBeInTheDocument()
     expect(screen.getByText("Second post")).toBeInTheDocument()
@@ -51,7 +51,7 @@ describe("<PostList />", () => {
   })
 
   it("links to each post slug", async () => {
-    await renderPostList(samplePosts)
+    await renderBlogPostsList(samplePosts)
     const links = screen.getAllByRole("link")
     expect(links).toHaveLength(2)
     expect(links[0]).toHaveAttribute("href", "/blog/first-post")

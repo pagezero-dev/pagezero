@@ -1,15 +1,15 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { PostSummary } from "./post-summary"
+import { BlogPostSummary } from "./blog-post-summary"
 
 const meta = {
-  title: "Apps/Blog/PostSummary",
-  component: PostSummary,
+  title: "Apps/Blog/BlogPostSummary",
+  component: BlogPostSummary,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof PostSummary>
+} satisfies Meta<typeof BlogPostSummary>
 
 export default meta
 type Story = StoryObj<typeof meta>

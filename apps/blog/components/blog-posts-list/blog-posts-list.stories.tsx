@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import type { BlogPostSummary } from "@/blog/types"
-import { PostList } from "./post-list"
+import { BlogPostsList } from "./blog-posts-list"
 
 function createPost(): BlogPostSummary {
   return {
@@ -19,8 +19,8 @@ function createPost(): BlogPostSummary {
 }
 
 const meta = {
-  title: "Apps/Blog/PostList",
-  component: PostList,
+  title: "Apps/Blog/BlogPostsList",
+  component: BlogPostsList,
   parameters: {
     layout: "padded",
   },
@@ -32,7 +32,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof PostList>
+} satisfies Meta<typeof BlogPostsList>
 
 export default meta
 type Story = StoryObj<typeof meta>
