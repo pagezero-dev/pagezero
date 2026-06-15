@@ -10,7 +10,7 @@ export const frontmatter = {
   },
 }
 
-This is an example blog post for the PageZERO web app template. Posts live as `.mdx` files in `apps/blog/routes/posts/` — drop in a new file and it appears on the blog index automatically.
+This is an example blog post for the PageZERO web app template. Posts live as `.mdx` files in `apps/blog/content/` — drop in a new file and it appears on the blog index automatically.
 
 ## What you get out of the box
 
@@ -52,7 +52,7 @@ Ordered lists:
 ### Code blocks
 
 ```typescript
-// apps/blog/routes/posts/welcome.mdx
+// apps/blog/content/welcome.mdx
 export const frontmatter = {
   title: "My new post",
   description: "A short summary for the blog index.",
@@ -67,4 +67,4 @@ Read the [project docs](https://github.com/pagezero/pagezero) or explore the res
 
 ---
 
-To add another post, create `apps/blog/routes/posts/your-slug.mdx` with a `frontmatter` export. It will be available at `/blog/your-slug` with no extra route registration.
+To add another post, create `apps/blog/content/your-slug.mdx` with a `frontmatter` export. It will be available at `/blog/your-slug` with no extra route registration.
