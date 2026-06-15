@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import type { BlogPostSummary } from "@/blog/types"
+import { withRouter } from "@/test/storybook"
 import { BlogPostsList } from "./blog-posts-list"
 
 function createPost(): BlogPostSummary {
@@ -31,6 +32,7 @@ const meta = {
         <Story />
       </div>
     ),
+    withRouter,
   ],
 } satisfies Meta<typeof BlogPostsList>
 
