@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest"
 import {
   type BlogPostFrontmatter,
-  buildPostSummaries,
-  getPostSummaryByPathname,
-  type MdxPostModule,
+  type BlogPostMdxModule,
+  getPostModuleBySlug,
+  getPostSummaries,
+  getPostSummary,
   POST_PLACEHOLDER_IMG,
   resolveBlogImageSrc,
 } from "./utils"
@@ -12,7 +13,7 @@ function mdx(
   path: string,
   frontmatter: Partial<BlogPostFrontmatter> &
     Pick<BlogPostFrontmatter, "title">,
-): [string, MdxPostModule] {
+): [string, BlogPostMdxModule] {
   return [
     path,
     {
@@ -40,10 +41,10 @@ describe("resolveBlogImageSrc", () => {
   })
 })
 
-describe("getPostSummaryByPathname", () => {
-  it("returns the post summary for a matching pathname", () => {
+describe("getPostSummary", () => {
+  it("returns the post summary for a matching slug", () => {
     const modules = Object.fromEntries([
-      mdx("./routes/posts/test.mdx", {
+      mdx("./content/test.mdx", {
         title: "Test post",
         description: "Desc",
         date: "2026-05-18",
@@ -52,8 +53,8 @@ describe("getPostSummaryByPathname", () => {
       }),
     ])
 
-    expect(getPostSummaryByPathname(modules, "/blog/test")).toEqual({
-      slug: "/blog/test",
+    expect(getPostSummary(modules, "test")).toEqual({
+      slug: "test",
       title: "Test post",
       description: "Desc",
       date: new Date("2026-05-18").toISOString(),
@@ -62,9 +63,9 @@ describe("getPostSummaryByPathname", () => {
     })
   })
 
-  it("returns null when pathname does not match any post", () => {
+  it("returns null when slug does not match any post", () => {
     const modules = Object.fromEntries([
-      mdx("./routes/posts/test.mdx", {
+      mdx("./content/test.mdx", {
         title: "Test post",
         description: "Desc",
         date: "2026-05-18",
@@ -72,15 +73,45 @@ describe("getPostSummaryByPathname", () => {
       }),
     ])
 
-    expect(getPostSummaryByPathname(modules, "/blog/unknown")).toBeNull()
+    expect(getPostSummary(modules, "unknown")).toBeNull()
   })
 })
 
-describe("buildPostSummaries", () => {
+describe("getPostModuleBySlug", () => {
+  it("returns the MDX module for a matching slug", () => {
+    const mod = {
+      frontmatter: {
+        title: "Test post",
+        description: "Desc",
+        date: "2026-05-18",
+        author: { name: "PageZERO" },
+      },
+      default: () => null,
+    }
+    const modules = { "./content/test.mdx": mod }
+
+    expect(getPostModuleBySlug(modules, "test")).toBe(mod)
+  })
+
+  it("returns null when slug does not match any post", () => {
+    const modules = Object.fromEntries([
+      mdx("./content/test.mdx", {
+        title: "Test post",
+        description: "Desc",
+        date: "2026-05-18",
+        author: { name: "PageZERO" },
+      }),
+    ])
+
+    expect(getPostModuleBySlug(modules, "unknown")).toBeNull()
+  })
+})
+
+describe("getPostSummaries", () => {
   it("includes keywords when provided in frontmatter", () => {
-    const posts = buildPostSummaries({
+    const posts = getPostSummaries({
       ...Object.fromEntries([
-        mdx("./routes/posts/tagged.mdx", {
+        mdx("./content/tagged.mdx", {
           title: "Tagged post",
           keywords: ["react", "cloudflare"],
         }),
@@ -91,9 +122,9 @@ describe("buildPostSummaries", () => {
   })
 
   it("maps frontmatter to summaries with slug from path", () => {
-    const posts = buildPostSummaries({
+    const posts = getPostSummaries({
       ...Object.fromEntries([
-        mdx("./routes/posts/hello-world.mdx", {
+        mdx("./content/hello-world.mdx", {
           title: "Hello world",
           description: "A short intro",
           date: "2026-05-18",
@@ -105,7 +136,7 @@ describe("buildPostSummaries", () => {
 
     expect(posts).toEqual([
       {
-        slug: "/blog/hello-world",
+        slug: "hello-world",
         title: "Hello world",
         description: "A short intro",
         date: new Date("2026-05-18").toISOString(),
@@ -116,9 +147,9 @@ describe("buildPostSummaries", () => {
   })
 
   it("extracts slug from Windows-style paths", () => {
-    const posts = buildPostSummaries({
+    const posts = getPostSummaries({
       ...Object.fromEntries([
-        mdx("apps\\blog\\routes\\posts\\win-post.mdx", {
+        mdx("apps\\blog\\content\\win-post.mdx", {
           title: "Windows path",
           description: "Desc",
           date: "2026-01-01",
@@ -128,11 +159,11 @@ describe("buildPostSummaries", () => {
       ]),
     })
 
-    expect(posts[0]?.slug).toBe("/blog/win-post")
+    expect(posts[0]?.slug).toBe("win-post")
   })
 
   it("skips modules without a parsable slug", () => {
-    const posts = buildPostSummaries({
+    const posts = getPostSummaries({
       "invalid-path": {
         frontmatter: {
           title: "Orphan",
@@ -149,26 +180,24 @@ describe("buildPostSummaries", () => {
   })
 
   it("skips posts without a title", () => {
-    const posts = buildPostSummaries({
-      ...Object.fromEntries([
-        mdx("./routes/posts/no-title.mdx", { title: "" }),
-      ]),
-      "./routes/posts/missing-title.mdx": { default: () => null },
+    const posts = getPostSummaries({
+      ...Object.fromEntries([mdx("./content/no-title.mdx", { title: "" })]),
+      "./content/missing-title.mdx": { default: () => null },
     })
 
     expect(posts).toEqual([])
   })
 
   it("applies defaults for missing optional frontmatter fields", () => {
-    const posts = buildPostSummaries({
+    const posts = getPostSummaries({
       ...Object.fromEntries([
-        mdx("./routes/posts/minimal.mdx", { title: "Minimal" }),
+        mdx("./content/minimal.mdx", { title: "Minimal" }),
       ]),
     })
 
     expect(posts).toEqual([
       {
-        slug: "/blog/minimal",
+        slug: "minimal",
         title: "Minimal",
         description: "Read the full post.",
         date: new Date(0).toISOString(),
@@ -179,9 +208,9 @@ describe("buildPostSummaries", () => {
   })
 
   it("uses imgSrc from MDX frontmatter as-is", () => {
-    const posts = buildPostSummaries({
+    const posts = getPostSummaries({
       ...Object.fromEntries([
-        mdx("./routes/posts/local-cover.mdx", {
+        mdx("./content/local-cover.mdx", {
           title: "Local cover",
           imgSrc: "/assets/test-cover.png",
         }),
@@ -192,9 +221,9 @@ describe("buildPostSummaries", () => {
   })
 
   it("falls back to epoch when date is invalid", () => {
-    const posts = buildPostSummaries({
+    const posts = getPostSummaries({
       ...Object.fromEntries([
-        mdx("./routes/posts/bad-date.mdx", {
+        mdx("./content/bad-date.mdx", {
           title: "Bad date",
           description: "Desc",
           date: "not-a-date",
@@ -208,16 +237,16 @@ describe("buildPostSummaries", () => {
   })
 
   it("sorts posts by date descending", () => {
-    const posts = buildPostSummaries({
+    const posts = getPostSummaries({
       ...Object.fromEntries([
-        mdx("./routes/posts/older.mdx", {
+        mdx("./content/older.mdx", {
           title: "Older",
           description: "Desc",
           date: "2024-01-01",
           imgSrc: "https://example.com/a.jpg",
           author: { name: "Author" },
         }),
-        mdx("./routes/posts/newer.mdx", {
+        mdx("./content/newer.mdx", {
           title: "Newer",
           description: "Desc",
           date: "2026-06-01",
@@ -227,9 +256,6 @@ describe("buildPostSummaries", () => {
       ]),
     })
 
-    expect(posts.map((post) => post.slug)).toEqual([
-      "/blog/newer",
-      "/blog/older",
-    ])
+    expect(posts.map((post) => post.slug)).toEqual(["newer", "older"])
   })
 })

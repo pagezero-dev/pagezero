@@ -6,15 +6,14 @@ import {
 import { ArrowLeft } from "lucide-react"
 import { PostHeader } from "@/blog/components/post-header"
 import { postModules } from "@/blog/post-modules"
-import { getPostModuleBySlug, getPostSummaryByPathname } from "@/blog/utils"
+import { getPostModuleBySlug, getPostSummary } from "@/blog/utils"
 import config from "@/config"
 import { MDXProvider } from "@/mdx"
 import { Link } from "@/ui/link"
 
 export const Route = createFileRoute("/_content-layout/blog/$slug")({
   loader: ({ params }) => {
-    const slug = `/blog/${params.slug}`
-    const post = getPostSummaryByPathname(postModules, slug)
+    const post = getPostSummary(postModules, params.slug)
     if (!post) throw notFound()
     return { post }
   },

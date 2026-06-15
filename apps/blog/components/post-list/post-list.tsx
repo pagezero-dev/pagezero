@@ -12,7 +12,8 @@ export function PostList({ posts }: PostListProps) {
       {posts.map((post) => (
         <li key={post.slug}>
           <Link
-            to={post.slug}
+            to="/blog/$slug"
+            params={{ slug: post.slug }}
             className="block rounded-xl no-underline outline-offset-4 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
           >
             <PostSummary

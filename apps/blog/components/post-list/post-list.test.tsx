@@ -11,7 +11,7 @@ import { PostList } from "./post-list"
 
 const samplePosts: BlogPostSummary[] = [
   {
-    slug: "/blog/first-post",
+    slug: "first-post",
     title: "First post",
     description: "First description",
     date: new Date("2024-01-15").toISOString(),
@@ -19,7 +19,7 @@ const samplePosts: BlogPostSummary[] = [
     author: { name: "Jane Doe" },
   },
   {
-    slug: "/blog/second-post",
+    slug: "second-post",
     title: "Second post",
     description: "Second description",
     date: new Date("2024-02-20").toISOString(),
