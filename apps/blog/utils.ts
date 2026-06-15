@@ -12,7 +12,7 @@ function slugFromPostPath(path: string): string | undefined {
   return match?.[1]
 }
 
-function toPostSummary(
+export function toPostSummary(
   path: string,
   mod: BlogPostMdxModule,
 ): BlogPostSummary | null {
@@ -39,15 +39,6 @@ function toPostSummary(
     imgSrc: resolveBlogImageSrc(m.imgSrc),
     author: m.author ?? { name: "PageZERO" },
   }
-}
-
-export function getBlogPostSummaries(
-  modules: Record<string, BlogPostMdxModule>,
-): BlogPostSummary[] {
-  return Object.entries(modules)
-    .map(([path, mod]) => toPostSummary(path, mod))
-    .filter((post): post is BlogPostSummary => post !== null)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
 export function getBlogPostSummary(
