@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" fill="none" role="img" aria-label="PageZERO blog cover">
+  <defs>
+    <linearGradient id="cover-gradient" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#000000" />
+      <stop offset="0.5" stop-color="#141414" />
+      <stop offset="1" stop-color="#2a2a2a" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#cover-gradient)" />
+  <g transform="translate(300 125) scale(0.5)">
+    <rect width="400" height="400" fill="#fff" rx="100" />
+    <path
+      stroke="#000"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="30"
+      d="m95.833 95.833 208.334 208.334M161.979 103.021a104.168 104.168 0 0 1 134.896 135"
+    />
+    <path
+      stroke="#000"
+      stroke-linecap="square"
+      stroke-linejoin="round"
+      stroke-width="30"
+      d="M273.75 273.75A104.292 104.292 0 0 1 200 304.298a104.304 104.304 0 0 1-73.75-30.548A104.292 104.292 0 0 1 95.702 200a104.295 104.295 0 0 1 30.548-73.75"
+    />
+  </g>
+</svg>

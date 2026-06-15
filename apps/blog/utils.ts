@@ -4,13 +4,6 @@ import {
   blogPostFrontmatterSchema,
 } from "./types"
 
-export const POST_PLACEHOLDER_IMG =
-  "https://placehold.co/800x450/e2e8f0/64748b?text=Post"
-
-export function resolveBlogImageSrc(imgSrc?: string): string {
-  return imgSrc ?? POST_PLACEHOLDER_IMG
-}
-
 function slugFromPostPath(path: string): string | undefined {
   const match = /[/\\]([^/\\]+)\.mdx$/.exec(path)
   return match?.[1]
@@ -25,15 +18,13 @@ export function toPostSummary(
 
   const m = blogPostFrontmatterSchema.parse(mod.frontmatter)
 
-  const dateIso = new Date(m.date).toISOString()
-
   return {
     slug,
     title: m.title,
     description: m.description,
     ...(m.keywords?.length ? { keywords: m.keywords } : {}),
-    date: dateIso,
-    imgSrc: resolveBlogImageSrc(m.imgSrc),
+    date: new Date(m.date).toISOString(),
+    imgSrc: m.imgSrc,
     author: m.author,
   }
 }

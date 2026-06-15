@@ -3,8 +3,6 @@ import type { BlogPostFrontmatter, BlogPostMdxModule } from "./types"
 import {
   getBlogPostModuleBySlug,
   getBlogPostSummary,
-  POST_PLACEHOLDER_IMG,
-  resolveBlogImageSrc,
   toPostSummary,
 } from "./utils"
 
@@ -15,6 +13,7 @@ function validFrontmatter(
     title: "Post title",
     description: "Post description",
     date: "2026-01-01",
+    imgSrc: "/assets/test-cover.png",
     author: { name: "Author" },
     ...overrides,
   }
@@ -33,28 +32,27 @@ function mdx(
   ]
 }
 
-describe("resolveBlogImageSrc", () => {
-  it("returns placeholder when imgSrc is undefined", () => {
-    expect(resolveBlogImageSrc()).toBe(POST_PLACEHOLDER_IMG)
-  })
-
-  it("passes through resolved image URLs from MDX imports", () => {
-    expect(resolveBlogImageSrc("/assets/test-cover.png")).toBe(
-      "/assets/test-cover.png",
-    )
-  })
-
-  it("passes through external URLs", () => {
-    expect(resolveBlogImageSrc("https://example.com/cover.jpg")).toBe(
-      "https://example.com/cover.jpg",
-    )
-  })
-})
-
 describe("toPostSummary", () => {
   it("throws when frontmatter is missing required fields", () => {
     expect(() =>
       toPostSummary("./content/invalid.mdx", { default: () => null }),
+    ).toThrow()
+  })
+
+  it("throws when imgSrc is missing", () => {
+    expect(() =>
+      toPostSummary(
+        "./content/missing-cover.mdx",
+        {
+          frontmatter: {
+            title: "Post",
+            description: "Desc",
+            date: "2026-01-01",
+            author: { name: "Author" },
+          } as BlogPostFrontmatter,
+          default: () => null,
+        },
+      ),
     ).toThrow()
   })
 })
@@ -86,12 +84,7 @@ describe("getBlogPostSummary", () => {
 
   it("returns null when slug does not match any post", () => {
     const modules = Object.fromEntries([
-      mdx("./content/test.mdx", {
-        title: "Test post",
-        description: "Desc",
-        date: "2026-05-18",
-        author: { name: "PageZERO" },
-      }),
+      mdx("./content/test.mdx", validFrontmatter({ title: "Test post" })),
     ])
 
     expect(getBlogPostSummary(modules, "unknown")).toBeNull()
@@ -101,12 +94,7 @@ describe("getBlogPostSummary", () => {
 describe("getBlogPostModuleBySlug", () => {
   it("returns the MDX module for a matching slug", () => {
     const mod = {
-      frontmatter: {
-        title: "Test post",
-        description: "Desc",
-        date: "2026-05-18",
-        author: { name: "PageZERO" },
-      },
+      frontmatter: validFrontmatter({ title: "Test post", description: "Desc" }),
       default: () => null,
     }
     const modules = { "./content/test.mdx": mod }
@@ -116,12 +104,7 @@ describe("getBlogPostModuleBySlug", () => {
 
   it("returns null when slug does not match any post", () => {
     const modules = Object.fromEntries([
-      mdx("./content/test.mdx", {
-        title: "Test post",
-        description: "Desc",
-        date: "2026-05-18",
-        author: { name: "PageZERO" },
-      }),
+      mdx("./content/test.mdx", validFrontmatter({ title: "Test post" })),
     ])
 
     expect(getBlogPostModuleBySlug(modules, "unknown")).toBeNull()

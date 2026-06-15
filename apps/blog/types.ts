@@ -15,7 +15,7 @@ export const blogPostFrontmatterSchema = z.object({
   description: z.string(),
   keywords: z.array(z.string()).optional(),
   date: z.iso.date(),
-  imgSrc: z.string().optional(),
+  imgSrc: z.string(),
   author: blogPostAuthorSchema,
 })
 
@@ -27,7 +27,7 @@ export type BlogPostMdxModule = {
 }
 
 /** Frontmatter resolved to ISO dates + derived slug, safe for loader serialization */
-export type BlogPostSummary = Omit<BlogPostFrontmatter, "imgSrc"> & {
+export type BlogPostSummary = Omit<BlogPostFrontmatter, "date"> & {
   slug: string
-  imgSrc: string
+  date: string
 }

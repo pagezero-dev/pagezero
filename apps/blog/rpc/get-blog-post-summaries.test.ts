@@ -39,6 +39,7 @@ function validFrontmatter(
     title: "Post title",
     description: "Post description",
     date: "2026-01-01",
+    imgSrc: "/assets/test-cover.png",
     author: { name: "Author" },
     ...overrides,
   }
@@ -134,12 +135,15 @@ describe("getBlogPostSummaries", () => {
   it("throws when frontmatter is missing required fields", async () => {
     setPostModules({
       ...Object.fromEntries([
-        mdx("./content/no-title.mdx", {
-          title: "",
-          description: "Desc",
-          date: "2026-01-01",
-          author: { name: "Author" },
-        }),
+        mdx(
+          "./content/no-title.mdx",
+          validFrontmatter({
+            title: "",
+            description: "Desc",
+            date: "2026-01-01",
+            author: { name: "Author" },
+          }),
+        ),
       ]),
       "./content/missing-title.mdx": { default: () => null },
     })
@@ -183,6 +187,7 @@ describe("getBlogPostSummaries", () => {
           title: "Bad date",
           description: "Desc",
           date: "not-a-date",
+          imgSrc: "/assets/test-cover.png",
           author: { name: "Author" },
         } as BlogPostFrontmatter,
         default: () => null,
