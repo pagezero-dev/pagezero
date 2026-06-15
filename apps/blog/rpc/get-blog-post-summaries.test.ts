@@ -95,7 +95,7 @@ describe("getBlogPostSummaries", () => {
         slug: "hello-world",
         title: "Hello world",
         description: "A short intro",
-        date: new Date("2026-05-18").toISOString(),
+        date: "2026-05-18",
         imgSrc: "https://example.com/cover.jpg",
         author: { name: "Jane Doe", role: "Editor" },
       },

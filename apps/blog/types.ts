@@ -26,8 +26,6 @@ export type BlogPostMdxModule = {
   default: ComponentType
 }
 
-/** Frontmatter resolved to ISO dates + derived slug, safe for loader serialization */
-export type BlogPostSummary = Omit<BlogPostFrontmatter, "date"> & {
+export type BlogPostSummary = BlogPostFrontmatter & {
   slug: string
-  date: string
 }

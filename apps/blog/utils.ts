@@ -1,39 +1,32 @@
 import {
+  type BlogPostFrontmatter,
   type BlogPostMdxModule,
-  type BlogPostSummary,
   blogPostFrontmatterSchema,
 } from "./types"
 
-function slugFromPostPath(path: string): string | undefined {
+export function slugFromPostPath(path: string): string | undefined {
   const match = /[/\\]([^/\\]+)\.mdx$/.exec(path)
   return match?.[1]
 }
 
-export function toBlogPostSummary(
+export function toBlogPostFrontmatter(
   path: string,
   mod: BlogPostMdxModule,
-): BlogPostSummary | null {
-  const slug = slugFromPostPath(path)
-  if (!slug) return null
+): BlogPostFrontmatter | null {
+  if (!slugFromPostPath(path)) return null
 
-  const m = blogPostFrontmatterSchema.parse(mod.frontmatter)
-
-  return {
-    ...m,
-    slug,
-    date: new Date(m.date).toISOString(),
-  }
+  return blogPostFrontmatterSchema.parse(mod.frontmatter)
 }
 
-export function getBlogPostSummary(
+export function getBlogPostFrontmatter(
   modules: Record<string, BlogPostMdxModule>,
   slug: string,
-): BlogPostSummary | null {
+): BlogPostFrontmatter | null {
   const entry = Object.entries(modules).find(
     ([path]) => slugFromPostPath(path) === slug,
   )
   if (!entry) return null
-  return toBlogPostSummary(entry[0], entry[1])
+  return toBlogPostFrontmatter(entry[0], entry[1])
 }
 
 export function getBlogPostModuleBySlug(

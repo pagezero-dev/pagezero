@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 import type { BlogPostFrontmatter, BlogPostMdxModule } from "./types"
 import {
+  getBlogPostFrontmatter,
   getBlogPostModuleBySlug,
-  getBlogPostSummary,
-  toBlogPostSummary,
+  toBlogPostFrontmatter,
 } from "./utils"
 
 function validFrontmatter(
@@ -32,16 +32,16 @@ function mdx(
   ]
 }
 
-describe("toBlogPostSummary", () => {
+describe("toBlogPostFrontmatter", () => {
   it("throws when frontmatter is missing required fields", () => {
     expect(() =>
-      toBlogPostSummary("./content/invalid.mdx", { default: () => null }),
+      toBlogPostFrontmatter("./content/invalid.mdx", { default: () => null }),
     ).toThrow()
   })
 
   it("throws when imgSrc is missing", () => {
     expect(() =>
-      toBlogPostSummary("./content/missing-cover.mdx", {
+      toBlogPostFrontmatter("./content/missing-cover.mdx", {
         frontmatter: {
           title: "Post",
           description: "Desc",
@@ -52,10 +52,19 @@ describe("toBlogPostSummary", () => {
       }),
     ).toThrow()
   })
+
+  it("returns null when path has no parsable slug", () => {
+    expect(
+      toBlogPostFrontmatter("invalid-path", {
+        frontmatter: validFrontmatter(),
+        default: () => null,
+      }),
+    ).toBeNull()
+  })
 })
 
-describe("getBlogPostSummary", () => {
-  it("returns the post summary for a matching slug", () => {
+describe("getBlogPostFrontmatter", () => {
+  it("returns frontmatter for a matching slug", () => {
     const modules = Object.fromEntries([
       mdx(
         "./content/test.mdx",
@@ -69,11 +78,10 @@ describe("getBlogPostSummary", () => {
       ),
     ])
 
-    expect(getBlogPostSummary(modules, "test")).toEqual({
-      slug: "test",
+    expect(getBlogPostFrontmatter(modules, "test")).toEqual({
       title: "Test post",
       description: "Desc",
-      date: new Date("2026-05-18").toISOString(),
+      date: "2026-05-18",
       imgSrc: "/assets/test-cover.png",
       author: { name: "PageZERO" },
     })
@@ -84,7 +92,7 @@ describe("getBlogPostSummary", () => {
       mdx("./content/test.mdx", validFrontmatter({ title: "Test post" })),
     ])
 
-    expect(getBlogPostSummary(modules, "unknown")).toBeNull()
+    expect(getBlogPostFrontmatter(modules, "unknown")).toBeNull()
   })
 })
 

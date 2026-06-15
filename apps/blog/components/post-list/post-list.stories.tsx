@@ -8,7 +8,7 @@ function createPost(): BlogPostSummary {
     slug: faker.lorem.slug(),
     title: faker.lorem.words(4),
     description: faker.lorem.paragraph(),
-    date: faker.date.recent().toISOString(),
+    date: faker.date.recent().toISOString().slice(0, 10),
     imgSrc: faker.image.url(),
     author: {
       name: faker.person.fullName(),

@@ -6,14 +6,14 @@ import {
 import { ArrowLeft } from "lucide-react"
 import { PostSummary } from "@/blog/components/post-summary"
 import { postModules } from "@/blog/post-modules"
-import { getBlogPostModuleBySlug, getBlogPostSummary } from "@/blog/utils"
+import { getBlogPostFrontmatter, getBlogPostModuleBySlug } from "@/blog/utils"
 import config from "@/config"
 import { MDXProvider } from "@/mdx"
 import { Link } from "@/ui/link"
 
 export const Route = createFileRoute("/_content-layout/blog/$slug")({
   loader: ({ params }) => {
-    const post = getBlogPostSummary(postModules, params.slug)
+    const post = getBlogPostFrontmatter(postModules, params.slug)
     if (!post) throw notFound()
     return { post }
   },
@@ -37,7 +37,8 @@ export const Route = createFileRoute("/_content-layout/blog/$slug")({
 
 function BlogPost() {
   const { post } = Route.useLoaderData()
-  const mdxModule = getBlogPostModuleBySlug(postModules, post.slug)
+  const { slug } = Route.useParams()
+  const mdxModule = getBlogPostModuleBySlug(postModules, slug)
   const PostComponent = mdxModule?.default
 
   if (!PostComponent) throw notFound()
