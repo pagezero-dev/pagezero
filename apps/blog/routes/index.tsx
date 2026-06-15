@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { BlogPostsList } from "@/blog/components/blog-posts-list"
-import { getBlogPostSummaries } from "@/blog/rpc"
+import { postModules } from "@/blog/post-modules"
+import { getBlogPostSummaries } from "@/blog/utils"
 import { Section } from "@/content/components/section"
 
 export const Route = createFileRoute("/_content-layout/blog")({
-  loader: async () => ({ posts: await getBlogPostSummaries() }),
+  loader: () => ({ posts: getBlogPostSummaries(postModules) }),
   component: BlogIndex,
 })
 
