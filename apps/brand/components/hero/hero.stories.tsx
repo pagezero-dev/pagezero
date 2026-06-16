@@ -4,7 +4,7 @@ import { Button } from "@/ui/button"
 import { Hero } from "./hero"
 
 const meta = {
-  title: "Apps/Content/Hero",
+  title: "Apps/Brand/Hero",
   component: Hero,
   parameters: {
     layout: "fullscreen",

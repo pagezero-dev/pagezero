@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router"
 import { BlogPostsList } from "@/blog/components/blog-posts-list"
 import { postModules } from "@/blog/post-modules"
 import { getBlogPostFrontmatters } from "@/blog/utils"
-import { Section } from "@/content/components/section"
+import { Section } from "@/brand/components/section"
 
-export const Route = createFileRoute("/_content-layout/blog")({
+export const Route = createFileRoute("/_brand-layout/blog")({
   loader: () => ({ posts: getBlogPostFrontmatters(postModules) }),
   component: BlogIndex,
 })

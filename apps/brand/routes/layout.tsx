@@ -1,14 +1,14 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router"
 import { ChevronDown } from "lucide-react"
 import { useLogout, useUser } from "@/auth/hooks"
+import { Footer } from "@/brand/components/footer"
+import { Header } from "@/brand/components/header"
+import { Logo } from "@/brand/components/logo"
 import config from "@/config"
-import { Footer } from "@/content/components/footer"
-import { Header } from "@/content/components/header"
-import { Logo } from "@/content/components/logo"
 import { Button } from "@/ui/button"
 import { Dropdown } from "@/ui-lite/dropdown"
 
-export const Route = createFileRoute("/_content-layout")({
+export const Route = createFileRoute("/_brand-layout")({
   component: ContentLayout,
 })
 

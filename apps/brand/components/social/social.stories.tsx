@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Social } from "./social"
 
 const meta = {
-  title: "Apps/Content/Social",
+  title: "Apps/Brand/Social",
   component: Social,
   parameters: {
     layout: "centered",

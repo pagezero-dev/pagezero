@@ -12,7 +12,7 @@ import { Link } from "@/ui/link"
 import { Features } from "./features"
 
 const meta = {
-  title: "Apps/Content/Features",
+  title: "Apps/Brand/Features",
   component: Features,
   parameters: {},
   decorators: [

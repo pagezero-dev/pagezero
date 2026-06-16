@@ -11,7 +11,7 @@ import config from "@/config"
 import { MDXProvider } from "@/mdx"
 import { Link } from "@/ui/link"
 
-export const Route = createFileRoute("/_content-layout/blog/$slug")({
+export const Route = createFileRoute("/_brand-layout/blog/$slug")({
   loader: ({ params }) => {
     const post = getBlogPostFrontmatter(postModules, params.slug)
     if (!post) throw notFound()

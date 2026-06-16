@@ -3,7 +3,7 @@ import config from "@/config"
 import { Heading, List, Muted, P } from "@/ui/typography"
 import { Section } from "../components/section"
 
-export const Route = createFileRoute("/_content-layout/privacy")({
+export const Route = createFileRoute("/_brand-layout/privacy")({
   component: Privacy,
 })
 

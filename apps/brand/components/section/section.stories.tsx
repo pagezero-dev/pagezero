@@ -4,7 +4,7 @@ import { Badge } from "@/ui/badge"
 import { Section } from "./section"
 
 const meta = {
-  title: "Apps/Content/Section",
+  title: "Apps/Brand/Section",
   component: Section,
   parameters: {
     layout: "fullscreen",
