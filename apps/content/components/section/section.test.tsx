@@ -68,9 +68,7 @@ describe("<Section />", () => {
   })
 
   it("applies medium background variant", () => {
-    const { container } = render(
-      <Section background="medium">Content</Section>,
-    )
+    const { container } = render(<Section background="medium">Content</Section>)
     const section = container.querySelector("section")
     expect(section).toHaveClass("bg-muted/50")
   })
