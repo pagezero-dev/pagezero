@@ -22,7 +22,7 @@ import { AnimatedCyberpunkGrid } from "../components/hero/animated-backgrounds"
 import { Section } from "../components/section"
 import { Testimonials } from "../components/testimonials"
 
-export const Route = createFileRoute("/_content-layout/")({
+export const Route = createFileRoute("/_brand-layout/")({
   component: Index,
 })
 

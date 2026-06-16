@@ -6,7 +6,7 @@ import { Dropdown } from "@/ui-lite/dropdown"
 import { Header } from "./header"
 
 const meta = {
-  title: "Apps/Content/Header",
+  title: "Apps/Brand/Header",
   component: Header,
   parameters: {
     layout: "fullscreen",

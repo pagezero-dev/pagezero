@@ -3,7 +3,7 @@ import config from "@/config"
 import { Heading, List, Muted, P } from "@/ui/typography"
 import { Section } from "../components/section"
 
-export const Route = createFileRoute("/_content-layout/terms-and-conditions")({
+export const Route = createFileRoute("/_brand-layout/terms-and-conditions")({
   component: TermsAndConditions,
 })
 

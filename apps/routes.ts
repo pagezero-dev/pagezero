@@ -1,10 +1,10 @@
 import { index, layout, rootRoute, route } from "@tanstack/virtual-file-routes"
 
 export const routes = rootRoute("root.tsx", [
-  layout("content-layout", "content/routes/layout.tsx", [
-    index("content/routes/home.tsx"),
-    route("/privacy", "content/routes/privacy.tsx"),
-    route("/terms-and-conditions", "content/routes/terms-and-conditions.tsx"),
+  layout("brand-layout", "brand/routes/layout.tsx", [
+    index("brand/routes/home.tsx"),
+    route("/privacy", "brand/routes/privacy.tsx"),
+    route("/terms-and-conditions", "brand/routes/terms-and-conditions.tsx"),
     route("/blog", "blog/routes/index.tsx"),
     route("/blog/$slug", "blog/routes/post.tsx"),
   ]),

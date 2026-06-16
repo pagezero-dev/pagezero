@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Testimonials } from "./testimonials"
 
 const meta = {
-  title: "Apps/Content/Testimonials",
+  title: "Apps/Brand/Testimonials",
   component: Testimonials,
   parameters: {},
   decorators: [

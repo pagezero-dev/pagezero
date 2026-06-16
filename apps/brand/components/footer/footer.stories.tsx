@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Footer } from "./footer"
 
 const meta = {
-  title: "Apps/Content/Footer",
+  title: "Apps/Brand/Footer",
   component: Footer,
   parameters: {},
   tags: ["autodocs"],
