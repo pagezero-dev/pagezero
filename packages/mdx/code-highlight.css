@@ -1,0 +1,38 @@
+/* Minimal syntax highlighting for MDX fenced code blocks */
+
+pre code.hljs {
+  color: inherit;
+  background: transparent;
+}
+
+.hljs-keyword,
+.hljs-built_in {
+  color: var(--chart-3);
+}
+
+.hljs-type {
+  color: var(--chart-1);
+}
+
+.hljs-string,
+.hljs-template-variable {
+  color: var(--chart-2);
+}
+
+.hljs-title.function_,
+.hljs-variable.language_ {
+  color: var(--foreground);
+}
+
+.hljs-subst {
+  color: var(--chart-5);
+}
+
+.hljs-comment {
+  color: var(--muted-foreground);
+}
+
+.hljs-number,
+.hljs-literal {
+  color: var(--chart-4);
+}

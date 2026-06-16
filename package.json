@@ -53,6 +53,7 @@
     "dev:email": "email dev -d ./apps/email/templates -p 3001"
   },
   "dependencies": {
+    "@mdx-js/react": "3.1.1",
     "@polar-sh/sdk": "0.41.1",
     "@tanstack/react-query": "5.101.0",
     "@tanstack/react-router": "1.170.15",
@@ -77,6 +78,7 @@
     "@cloudflare/vite-plugin": "1.36.4",
     "@dotenvx/dotenvx": "1.51.4",
     "@faker-js/faker": "10.1.0",
+    "@mdx-js/rollup": "3.1.1",
     "@playwright/test": "1.59.1",
     "@react-email/ui": "6.1.1",
     "@storybook/addon-docs": "10.3.5",
@@ -99,6 +101,8 @@
     "drizzle-kit": "0.31.10",
     "fast-glob": "3.3.3",
     "happy-dom": "20.8.9",
+    "rehype-highlight": "7.0.2",
+    "remark-gfm": "4.0.1",
     "rollup-plugin-visualizer": "7.0.1",
     "storybook": "10.3.5",
     "tailwindcss": "4.1.18",

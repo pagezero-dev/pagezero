@@ -34,6 +34,9 @@ function ContentLayout() {
           <a href="/#about">About</a>
         </Button>
         <Button variant="ghost" asChild>
+          <Link to="/blog">Blog</Link>
+        </Button>
+        <Button variant="ghost" asChild>
           <a href="/docs">Docs</a>
         </Button>
         {user ? (

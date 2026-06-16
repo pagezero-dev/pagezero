@@ -11,12 +11,14 @@
 import { Route as rootRouteImport } from './root'
 import { Route as authRoutesLoginRouteImport } from './auth/routes/login'
 import { Route as contentRoutesLayoutRouteImport } from './content/routes/layout'
+import { Route as blogRoutesIndexRouteImport } from './blog/routes/index'
 import { Route as paymentsRoutesWebhookRouteImport } from './payments/routes/webhook'
 import { Route as paymentsRoutesSuccessRouteImport } from './payments/routes/success'
 import { Route as emailRoutesSentRouteImport } from './email/routes/sent'
 import { Route as contentRoutesTermsAndConditionsRouteImport } from './content/routes/terms-and-conditions'
 import { Route as contentRoutesPrivacyRouteImport } from './content/routes/privacy'
 import { Route as contentRoutesHomeRouteImport } from './content/routes/home'
+import { Route as blogRoutesPostRouteImport } from './blog/routes/post'
 
 const authRoutesLoginRoute = authRoutesLoginRouteImport.update({
   id: '/login',
@@ -26,6 +28,11 @@ const authRoutesLoginRoute = authRoutesLoginRouteImport.update({
 const contentRoutesLayoutRoute = contentRoutesLayoutRouteImport.update({
   id: '/_content-layout',
   getParentRoute: () => rootRouteImport,
+} as any)
+const blogRoutesIndexRoute = blogRoutesIndexRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => contentRoutesLayoutRoute,
 } as any)
 const paymentsRoutesWebhookRoute = paymentsRoutesWebhookRouteImport.update({
   id: '/payments/webhook',
@@ -58,6 +65,11 @@ const contentRoutesHomeRoute = contentRoutesHomeRouteImport.update({
   path: '/',
   getParentRoute: () => contentRoutesLayoutRoute,
 } as any)
+const blogRoutesPostRoute = blogRoutesPostRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => contentRoutesLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof contentRoutesHomeRoute
@@ -67,6 +79,8 @@ export interface FileRoutesByFullPath {
   '/emails/sent': typeof emailRoutesSentRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
   '/payments/webhook': typeof paymentsRoutesWebhookRoute
+  '/blog': typeof blogRoutesIndexRoute
+  '/blog/$slug': typeof blogRoutesPostRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof authRoutesLoginRoute
@@ -76,6 +90,8 @@ export interface FileRoutesByTo {
   '/emails/sent': typeof emailRoutesSentRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
   '/payments/webhook': typeof paymentsRoutesWebhookRoute
+  '/blog': typeof blogRoutesIndexRoute
+  '/blog/$slug': typeof blogRoutesPostRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,6 +103,8 @@ export interface FileRoutesById {
   '/emails/sent': typeof emailRoutesSentRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
   '/payments/webhook': typeof paymentsRoutesWebhookRoute
+  '/_content-layout/blog': typeof blogRoutesIndexRoute
+  '/_content-layout/blog/$slug': typeof blogRoutesPostRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,6 +116,8 @@ export interface FileRouteTypes {
     | '/emails/sent'
     | '/payments/success'
     | '/payments/webhook'
+    | '/blog'
+    | '/blog/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -107,6 +127,8 @@ export interface FileRouteTypes {
     | '/emails/sent'
     | '/payments/success'
     | '/payments/webhook'
+    | '/blog'
+    | '/blog/$slug'
   id:
     | '__root__'
     | '/_content-layout'
@@ -117,6 +139,8 @@ export interface FileRouteTypes {
     | '/emails/sent'
     | '/payments/success'
     | '/payments/webhook'
+    | '/_content-layout/blog'
+    | '/_content-layout/blog/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -142,6 +166,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof contentRoutesLayoutRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_content-layout/blog': {
+      id: '/_content-layout/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof blogRoutesIndexRouteImport
+      parentRoute: typeof contentRoutesLayoutRoute
     }
     '/payments/webhook': {
       id: '/payments/webhook'
@@ -185,6 +216,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof contentRoutesHomeRouteImport
       parentRoute: typeof contentRoutesLayoutRoute
     }
+    '/_content-layout/blog/$slug': {
+      id: '/_content-layout/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof blogRoutesPostRouteImport
+      parentRoute: typeof contentRoutesLayoutRoute
+    }
   }
 }
 
@@ -192,12 +230,16 @@ interface contentRoutesLayoutRouteChildren {
   contentRoutesHomeRoute: typeof contentRoutesHomeRoute
   contentRoutesPrivacyRoute: typeof contentRoutesPrivacyRoute
   contentRoutesTermsAndConditionsRoute: typeof contentRoutesTermsAndConditionsRoute
+  blogRoutesIndexRoute: typeof blogRoutesIndexRoute
+  blogRoutesPostRoute: typeof blogRoutesPostRoute
 }
 
 const contentRoutesLayoutRouteChildren: contentRoutesLayoutRouteChildren = {
   contentRoutesHomeRoute: contentRoutesHomeRoute,
   contentRoutesPrivacyRoute: contentRoutesPrivacyRoute,
   contentRoutesTermsAndConditionsRoute: contentRoutesTermsAndConditionsRoute,
+  blogRoutesIndexRoute: blogRoutesIndexRoute,
+  blogRoutesPostRoute: blogRoutesPostRoute,
 }
 
 const contentRoutesLayoutRouteWithChildren =
