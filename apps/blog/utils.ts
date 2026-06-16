@@ -1,7 +1,7 @@
 import {
   type BlogPostFrontmatter,
-  type BlogPostMdxModule,
   type BlogPostFrontmatterWithSlug,
+  type BlogPostMdxModule,
   blogPostFrontmatterSchema,
 } from "./types"
 

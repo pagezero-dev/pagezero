@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest"
 import type { BlogPostFrontmatter, BlogPostMdxModule } from "./types"
 import {
   getBlogPostFrontmatter,
-  getBlogPostModuleBySlug,
   getBlogPostFrontmatters,
+  getBlogPostModuleBySlug,
   toBlogPostFrontmatter,
 } from "./utils"
 
