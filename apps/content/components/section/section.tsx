@@ -14,6 +14,7 @@ const sectionVariants = cva("", {
     background: {
       none: "",
       light: "bg-muted/30",
+      medium: "bg-muted/50",
       dark: "bg-muted",
     },
   },
@@ -26,16 +27,16 @@ const sectionVariants = cva("", {
 type SectionProps = {
   children?: ReactNode
   id?: string
-} & VariantProps<typeof sectionVariants> &
-  (
-    | { title: string; description?: string }
-    | { title?: never; description?: never }
-  )
+  title?: string
+  description?: string
+  badge?: ReactNode
+} & VariantProps<typeof sectionVariants>
 
 export const Section = ({
   children,
   title,
   description,
+  badge,
   id,
   spacingSize,
   background,
@@ -46,7 +47,10 @@ export const Section = ({
       className={cn(sectionVariants({ spacingSize, background }))}
     >
       <div className="container mx-auto px-5">
-        {title && (
+        {badge && (
+          <div className="mx-auto mb-4 flex justify-center">{badge}</div>
+        )}
+        {(title || description) && (
           <div className="mx-auto mb-20 max-w-2xl text-center">
             {title && (
               <Heading level={2} className="mb-4 text-4xl">
