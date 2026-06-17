@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react"
 import { BlogPostSummary } from "@/blog/components/blog-post-summary"
 import { postModules } from "@/blog/post-modules"
 import { getBlogPostFrontmatter, getBlogPostModuleBySlug } from "@/blog/utils"
+import { ProseArticle } from "@/brand/components/prose-article"
 import config from "@/config"
 import { MDXProvider } from "@/mdx"
 import { Link } from "@/ui/link"
@@ -44,7 +45,7 @@ function BlogPost() {
   if (!PostComponent) throw notFound()
 
   return (
-    <div className="mx-auto max-w-prose px-5 py-32 text-muted-foreground">
+    <ProseArticle>
       <nav className="mb-12">
         <Link
           size="sm"
@@ -68,6 +69,6 @@ function BlogPost() {
       <MDXProvider>
         <PostComponent />
       </MDXProvider>
-    </div>
+    </ProseArticle>
   )
 }
