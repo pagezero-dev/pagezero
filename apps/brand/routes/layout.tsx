@@ -112,8 +112,11 @@ function ContentLayout() {
           {
             heading: "Legal",
             children: [
-              { label: "Privacy", href: "/privacy" },
-              { label: "Terms and Conditions", href: "/terms-and-conditions" },
+              { label: "Privacy", href: "/legal/privacy" },
+              {
+                label: "Terms and Conditions",
+                href: "/legal/terms-and-conditions",
+              },
             ],
           },
         ]}
