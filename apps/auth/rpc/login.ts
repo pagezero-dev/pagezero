@@ -3,6 +3,7 @@ import { redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { getRequestHeader } from "@tanstack/react-start/server"
 import { z } from "zod"
+import { validateTurnstile } from "@/cloudflare/turnstile"
 import { sendAuthOtpEmail } from "@/email/templates.server"
 import { parseFormData } from "@/form"
 import {
@@ -11,7 +12,6 @@ import {
   getRedirectUrl,
   isOTPExpired,
   signOtp,
-  verifyHuman,
   verifyOtp,
 } from "../auth.server"
 import { updateAppSession } from "../session.server"
@@ -54,7 +54,7 @@ export const loginFormAction = createServerFn({ method: "POST" })
     const cloudflareTurnstileSecretKey = env.CLOUDFLARE_TURNSTILE_SECRET_KEY
     if (cloudflareTurnstileSecretKey) {
       const ip = getRequestHeader("CF-Connecting-IP")
-      const isHuman = await verifyHuman({
+      const isHuman = await validateTurnstile({
         secret: cloudflareTurnstileSecretKey,
         token: turnstileResponse,
         ip,
