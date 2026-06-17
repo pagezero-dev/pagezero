@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { BlogPostsList } from "@/blog/components/blog-posts-list"
-import { postModules } from "@/blog/post-modules"
-import { blogPostFrontmatterSchema } from "@/blog/types"
+import { blogPostFrontmatterSchema, postModules } from "@/blog/content"
 import { Section } from "@/brand/components/section"
 import { getMdxFrontmatters } from "@/mdx"
 

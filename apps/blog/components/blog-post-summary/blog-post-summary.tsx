@@ -1,5 +1,4 @@
 import { User } from "lucide-react"
-import type { BlogPostAuthor } from "@/blog/types"
 import { Link } from "@/ui/link"
 import { Heading, Muted, Small } from "@/ui/typography"
 import { cn } from "@/ui/utils"
@@ -12,6 +11,13 @@ function formatBlogDate(date: Date): string {
     day: "numeric",
     timeZone: "UTC",
   }).format(date)
+}
+
+interface BlogPostAuthor {
+  name: string
+  role?: string
+  imageSrc?: string
+  url?: string
 }
 
 interface BlogPostSummaryBaseProps {
@@ -119,4 +125,4 @@ export const BlogPostSummary = ({
   )
 }
 
-export type { BlogPostSummaryProps }
+export type { BlogPostAuthor, BlogPostSummaryProps }

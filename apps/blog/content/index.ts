@@ -1,4 +1,9 @@
 import { z } from "zod"
+import type { MdxModule } from "@/mdx"
+
+export const postModules = import.meta.glob<MdxModule>("./*.mdx", {
+  eager: true,
+})
 
 export const blogPostAuthorSchema = z.object({
   name: z.string(),
@@ -6,8 +11,6 @@ export const blogPostAuthorSchema = z.object({
   imageSrc: z.string().optional(),
   url: z.string().optional(),
 })
-
-export type BlogPostAuthor = z.infer<typeof blogPostAuthorSchema>
 
 export const blogPostFrontmatterSchema = z.object({
   title: z.string(),
@@ -17,9 +20,3 @@ export const blogPostFrontmatterSchema = z.object({
   imgSrc: z.string(),
   author: blogPostAuthorSchema,
 })
-
-export type BlogPostFrontmatterWithSlug = z.infer<
-  typeof blogPostFrontmatterSchema
-> & {
-  slug: string
-}

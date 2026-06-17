@@ -1,7 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { ProseArticle } from "@/brand/components/prose-article"
-import { legalModules } from "@/brand/legal-modules"
-import { legalDocumentFrontmatterSchema } from "@/brand/types"
+import { legalDocumentFrontmatterSchema, legalModules } from "@/brand/content"
 import config from "@/config"
 import { getMdxModuleBySlug, MDXProvider } from "@/mdx"
 import { Muted } from "@/ui/typography"
