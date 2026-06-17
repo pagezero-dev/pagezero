@@ -6,17 +6,21 @@ import {
 import { ArrowLeft } from "lucide-react"
 import { BlogPostSummary } from "@/blog/components/blog-post-summary"
 import { postModules } from "@/blog/post-modules"
-import { getBlogPostFrontmatter, getBlogPostModuleBySlug } from "@/blog/utils"
+import { blogPostFrontmatterSchema } from "@/blog/types"
 import { ProseArticle } from "@/brand/components/prose-article"
 import config from "@/config"
-import { MDXProvider } from "@/mdx"
+import { getMdxModuleBySlug, MDXProvider } from "@/mdx"
 import { Link } from "@/ui/link"
 
 export const Route = createFileRoute("/_brand-layout/blog/$slug")({
   loader: ({ params }) => {
-    const post = getBlogPostFrontmatter(postModules, params.slug)
-    if (!post) throw notFound()
-    return { post }
+    const mdxModule = getMdxModuleBySlug(
+      postModules,
+      blogPostFrontmatterSchema,
+      params.slug,
+    )
+    if (!mdxModule) throw notFound()
+    return { post: mdxModule.frontmatter }
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [] }
@@ -39,7 +43,11 @@ export const Route = createFileRoute("/_brand-layout/blog/$slug")({
 function BlogPost() {
   const { post } = Route.useLoaderData()
   const { slug } = Route.useParams()
-  const mdxModule = getBlogPostModuleBySlug(postModules, slug)
+  const mdxModule = getMdxModuleBySlug(
+    postModules,
+    blogPostFrontmatterSchema,
+    slug,
+  )
   const PostComponent = mdxModule?.default
 
   if (!PostComponent) throw notFound()

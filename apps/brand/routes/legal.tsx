@@ -1,12 +1,9 @@
 import { createFileRoute, notFound } from "@tanstack/react-router"
 import { ProseArticle } from "@/brand/components/prose-article"
 import { legalModules } from "@/brand/legal-modules"
-import {
-  getLegalDocumentFrontmatter,
-  getLegalDocumentModuleBySlug,
-} from "@/brand/utils"
+import { legalDocumentFrontmatterSchema } from "@/brand/types"
 import config from "@/config"
-import { MDXProvider } from "@/mdx"
+import { getMdxModuleBySlug, MDXProvider } from "@/mdx"
 import { Muted } from "@/ui/typography"
 
 function formatLegalDate(date: Date): string {
@@ -20,9 +17,13 @@ function formatLegalDate(date: Date): string {
 
 export const Route = createFileRoute("/_brand-layout/legal/$slug")({
   loader: ({ params }) => {
-    const document = getLegalDocumentFrontmatter(legalModules, params.slug)
-    if (!document) throw notFound()
-    return { document }
+    const mdxModule = getMdxModuleBySlug(
+      legalModules,
+      legalDocumentFrontmatterSchema,
+      params.slug,
+    )
+    if (!mdxModule) throw notFound()
+    return { document: mdxModule.frontmatter }
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [] }
@@ -37,7 +38,11 @@ export const Route = createFileRoute("/_brand-layout/legal/$slug")({
 function LegalDocument() {
   const { document } = Route.useLoaderData()
   const { slug } = Route.useParams()
-  const mdxModule = getLegalDocumentModuleBySlug(legalModules, slug)
+  const mdxModule = getMdxModuleBySlug(
+    legalModules,
+    legalDocumentFrontmatterSchema,
+    slug,
+  )
   const DocumentComponent = mdxModule?.default
 
   if (!DocumentComponent) throw notFound()
