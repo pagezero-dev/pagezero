@@ -10,12 +10,12 @@ declare global {
   }
 }
 
-interface VerifyHumanProps {
+interface TurnstileProps {
   siteKey: string
   subjectKey?: string
 }
 
-export const VerifyHuman = ({ siteKey, subjectKey }: VerifyHumanProps) => {
+export const Turnstile = ({ siteKey, subjectKey }: TurnstileProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isLoaded, setIsLoaded] = useState(false)
 

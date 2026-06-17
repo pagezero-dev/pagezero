@@ -2,13 +2,13 @@ import { useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { z } from "zod"
 import { SignIn } from "@/auth/components/sign-in"
-import { VerifyHuman } from "@/auth/components/verify-human"
 import {
   getLoginPageData,
   loginFormAction,
   loginFormSchema,
   requireGuestUser,
 } from "@/auth/rpc"
+import { Turnstile } from "@/cloudflare/turnstile"
 import { useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
 
@@ -65,7 +65,7 @@ function Login() {
           expiresAt={expiresAt}
         />
         {cloudflareTurnstilePublicKey && (
-          <VerifyHuman
+          <Turnstile
             siteKey={cloudflareTurnstilePublicKey}
             subjectKey={turnstileSubjectKey}
           />
