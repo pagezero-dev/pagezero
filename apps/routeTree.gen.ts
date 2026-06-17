@@ -15,9 +15,8 @@ import { Route as blogRoutesIndexRouteImport } from './blog/routes/index'
 import { Route as paymentsRoutesWebhookRouteImport } from './payments/routes/webhook'
 import { Route as paymentsRoutesSuccessRouteImport } from './payments/routes/success'
 import { Route as emailRoutesSentRouteImport } from './email/routes/sent'
-import { Route as brandRoutesTermsAndConditionsRouteImport } from './brand/routes/terms-and-conditions'
-import { Route as brandRoutesPrivacyRouteImport } from './brand/routes/privacy'
 import { Route as brandRoutesHomeRouteImport } from './brand/routes/home'
+import { Route as brandRoutesLegalRouteImport } from './brand/routes/legal'
 import { Route as blogRoutesPostRouteImport } from './blog/routes/post'
 
 const authRoutesLoginRoute = authRoutesLoginRouteImport.update({
@@ -49,20 +48,14 @@ const emailRoutesSentRoute = emailRoutesSentRouteImport.update({
   path: '/emails/sent',
   getParentRoute: () => rootRouteImport,
 } as any)
-const brandRoutesTermsAndConditionsRoute =
-  brandRoutesTermsAndConditionsRouteImport.update({
-    id: '/terms-and-conditions',
-    path: '/terms-and-conditions',
-    getParentRoute: () => brandRoutesLayoutRoute,
-  } as any)
-const brandRoutesPrivacyRoute = brandRoutesPrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => brandRoutesLayoutRoute,
-} as any)
 const brandRoutesHomeRoute = brandRoutesHomeRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => brandRoutesLayoutRoute,
+} as any)
+const brandRoutesLegalRoute = brandRoutesLegalRouteImport.update({
+  id: '/legal/$slug',
+  path: '/legal/$slug',
   getParentRoute: () => brandRoutesLayoutRoute,
 } as any)
 const blogRoutesPostRoute = blogRoutesPostRouteImport.update({
@@ -74,73 +67,67 @@ const blogRoutesPostRoute = blogRoutesPostRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof brandRoutesHomeRoute
   '/login': typeof authRoutesLoginRoute
-  '/privacy': typeof brandRoutesPrivacyRoute
-  '/terms-and-conditions': typeof brandRoutesTermsAndConditionsRoute
   '/emails/sent': typeof emailRoutesSentRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
   '/payments/webhook': typeof paymentsRoutesWebhookRoute
   '/blog': typeof blogRoutesIndexRoute
   '/blog/$slug': typeof blogRoutesPostRoute
+  '/legal/$slug': typeof brandRoutesLegalRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof authRoutesLoginRoute
   '/': typeof brandRoutesHomeRoute
-  '/privacy': typeof brandRoutesPrivacyRoute
-  '/terms-and-conditions': typeof brandRoutesTermsAndConditionsRoute
   '/emails/sent': typeof emailRoutesSentRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
   '/payments/webhook': typeof paymentsRoutesWebhookRoute
   '/blog': typeof blogRoutesIndexRoute
   '/blog/$slug': typeof blogRoutesPostRoute
+  '/legal/$slug': typeof brandRoutesLegalRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_brand-layout': typeof brandRoutesLayoutRouteWithChildren
   '/login': typeof authRoutesLoginRoute
   '/_brand-layout/': typeof brandRoutesHomeRoute
-  '/_brand-layout/privacy': typeof brandRoutesPrivacyRoute
-  '/_brand-layout/terms-and-conditions': typeof brandRoutesTermsAndConditionsRoute
   '/emails/sent': typeof emailRoutesSentRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
   '/payments/webhook': typeof paymentsRoutesWebhookRoute
   '/_brand-layout/blog': typeof blogRoutesIndexRoute
   '/_brand-layout/blog/$slug': typeof blogRoutesPostRoute
+  '/_brand-layout/legal/$slug': typeof brandRoutesLegalRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/login'
-    | '/privacy'
-    | '/terms-and-conditions'
     | '/emails/sent'
     | '/payments/success'
     | '/payments/webhook'
     | '/blog'
     | '/blog/$slug'
+    | '/legal/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
     | '/'
-    | '/privacy'
-    | '/terms-and-conditions'
     | '/emails/sent'
     | '/payments/success'
     | '/payments/webhook'
     | '/blog'
     | '/blog/$slug'
+    | '/legal/$slug'
   id:
     | '__root__'
     | '/_brand-layout'
     | '/login'
     | '/_brand-layout/'
-    | '/_brand-layout/privacy'
-    | '/_brand-layout/terms-and-conditions'
     | '/emails/sent'
     | '/payments/success'
     | '/payments/webhook'
     | '/_brand-layout/blog'
     | '/_brand-layout/blog/$slug'
+    | '/_brand-layout/legal/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -195,25 +182,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof emailRoutesSentRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_brand-layout/terms-and-conditions': {
-      id: '/_brand-layout/terms-and-conditions'
-      path: '/terms-and-conditions'
-      fullPath: '/terms-and-conditions'
-      preLoaderRoute: typeof brandRoutesTermsAndConditionsRouteImport
-      parentRoute: typeof brandRoutesLayoutRoute
-    }
-    '/_brand-layout/privacy': {
-      id: '/_brand-layout/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof brandRoutesPrivacyRouteImport
-      parentRoute: typeof brandRoutesLayoutRoute
-    }
     '/_brand-layout/': {
       id: '/_brand-layout/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof brandRoutesHomeRouteImport
+      parentRoute: typeof brandRoutesLayoutRoute
+    }
+    '/_brand-layout/legal/$slug': {
+      id: '/_brand-layout/legal/$slug'
+      path: '/legal/$slug'
+      fullPath: '/legal/$slug'
+      preLoaderRoute: typeof brandRoutesLegalRouteImport
       parentRoute: typeof brandRoutesLayoutRoute
     }
     '/_brand-layout/blog/$slug': {
@@ -228,18 +208,16 @@ declare module '@tanstack/react-router' {
 
 interface brandRoutesLayoutRouteChildren {
   brandRoutesHomeRoute: typeof brandRoutesHomeRoute
-  brandRoutesPrivacyRoute: typeof brandRoutesPrivacyRoute
-  brandRoutesTermsAndConditionsRoute: typeof brandRoutesTermsAndConditionsRoute
   blogRoutesIndexRoute: typeof blogRoutesIndexRoute
   blogRoutesPostRoute: typeof blogRoutesPostRoute
+  brandRoutesLegalRoute: typeof brandRoutesLegalRoute
 }
 
 const brandRoutesLayoutRouteChildren: brandRoutesLayoutRouteChildren = {
   brandRoutesHomeRoute: brandRoutesHomeRoute,
-  brandRoutesPrivacyRoute: brandRoutesPrivacyRoute,
-  brandRoutesTermsAndConditionsRoute: brandRoutesTermsAndConditionsRoute,
   blogRoutesIndexRoute: blogRoutesIndexRoute,
   blogRoutesPostRoute: blogRoutesPostRoute,
+  brandRoutesLegalRoute: brandRoutesLegalRoute,
 }
 
 const brandRoutesLayoutRouteWithChildren =
