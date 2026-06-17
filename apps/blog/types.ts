@@ -1,4 +1,3 @@
-import type { ComponentType } from "react"
 import { z } from "zod"
 
 export const blogPostAuthorSchema = z.object({
@@ -19,13 +18,8 @@ export const blogPostFrontmatterSchema = z.object({
   author: blogPostAuthorSchema,
 })
 
-export type BlogPostFrontmatter = z.infer<typeof blogPostFrontmatterSchema>
-
-export type BlogPostMdxModule = {
-  frontmatter?: BlogPostFrontmatter
-  default: ComponentType
-}
-
-export type BlogPostFrontmatterWithSlug = BlogPostFrontmatter & {
+export type BlogPostFrontmatterWithSlug = z.infer<
+  typeof blogPostFrontmatterSchema
+> & {
   slug: string
 }

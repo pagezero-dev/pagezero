@@ -1,11 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { BlogPostsList } from "@/blog/components/blog-posts-list"
 import { postModules } from "@/blog/post-modules"
-import { getBlogPostFrontmatters } from "@/blog/utils"
+import { blogPostFrontmatterSchema } from "@/blog/types"
 import { Section } from "@/brand/components/section"
+import { getMdxFrontmatters } from "@/mdx"
 
 export const Route = createFileRoute("/_brand-layout/blog")({
-  loader: () => ({ posts: getBlogPostFrontmatters(postModules) }),
+  loader: () => ({
+    posts: getMdxFrontmatters(postModules, blogPostFrontmatterSchema).sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    ),
+  }),
   component: BlogIndex,
 })
 
