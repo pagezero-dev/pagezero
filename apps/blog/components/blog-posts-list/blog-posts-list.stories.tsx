@@ -1,8 +1,10 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import type { BlogPostFrontmatterWithSlug } from "@/blog/types"
 import { withRouter } from "@/test/storybook"
-import { BlogPostsList } from "./blog-posts-list"
+import {
+  type BlogPostFrontmatterWithSlug,
+  BlogPostsList,
+} from "./blog-posts-list"
 
 function createPost(): BlogPostFrontmatterWithSlug {
   return {

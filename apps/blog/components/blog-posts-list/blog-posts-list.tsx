@@ -1,6 +1,18 @@
 import { Link } from "@tanstack/react-router"
-import { BlogPostSummary } from "@/blog/components/blog-post-summary"
-import type { BlogPostFrontmatterWithSlug } from "@/blog/types"
+import {
+  type BlogPostAuthor,
+  BlogPostSummary,
+} from "@/blog/components/blog-post-summary"
+
+export interface BlogPostFrontmatterWithSlug {
+  slug: string
+  title: string
+  description: string
+  keywords?: string[]
+  date: string
+  imgSrc: string
+  author: BlogPostAuthor
+}
 
 interface BlogPostsListProps {
   posts: BlogPostFrontmatterWithSlug[]
