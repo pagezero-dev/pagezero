@@ -8,6 +8,7 @@ export const routes = rootRoute("root.tsx", [
     route("/blog/$slug", "blog/routes/post.tsx"),
   ]),
   route("/login", "auth/routes/login.tsx"),
+  route("/newsletter/confirm", "newsletter/routes/confirm.tsx"),
   route("/payments/success", "payments/routes/success.tsx"),
   route("/payments/webhook", "payments/routes/webhook.ts"),
   route("/emails/sent", "email/routes/sent.ts"),

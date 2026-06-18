@@ -14,6 +14,7 @@ import { Route as brandRoutesLayoutRouteImport } from './brand/routes/layout'
 import { Route as blogRoutesIndexRouteImport } from './blog/routes/index'
 import { Route as paymentsRoutesWebhookRouteImport } from './payments/routes/webhook'
 import { Route as paymentsRoutesSuccessRouteImport } from './payments/routes/success'
+import { Route as newsletterRoutesConfirmRouteImport } from './newsletter/routes/confirm'
 import { Route as emailRoutesSentRouteImport } from './email/routes/sent'
 import { Route as brandRoutesHomeRouteImport } from './brand/routes/home'
 import { Route as brandRoutesLegalRouteImport } from './brand/routes/legal'
@@ -43,6 +44,11 @@ const paymentsRoutesSuccessRoute = paymentsRoutesSuccessRouteImport.update({
   path: '/payments/success',
   getParentRoute: () => rootRouteImport,
 } as any)
+const newsletterRoutesConfirmRoute = newsletterRoutesConfirmRouteImport.update({
+  id: '/newsletter/confirm',
+  path: '/newsletter/confirm',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const emailRoutesSentRoute = emailRoutesSentRouteImport.update({
   id: '/emails/sent',
   path: '/emails/sent',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/': typeof brandRoutesHomeRoute
   '/login': typeof authRoutesLoginRoute
   '/emails/sent': typeof emailRoutesSentRoute
+  '/newsletter/confirm': typeof newsletterRoutesConfirmRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
   '/payments/webhook': typeof paymentsRoutesWebhookRoute
   '/blog': typeof blogRoutesIndexRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/login': typeof authRoutesLoginRoute
   '/': typeof brandRoutesHomeRoute
   '/emails/sent': typeof emailRoutesSentRoute
+  '/newsletter/confirm': typeof newsletterRoutesConfirmRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
   '/payments/webhook': typeof paymentsRoutesWebhookRoute
   '/blog': typeof blogRoutesIndexRoute
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/login': typeof authRoutesLoginRoute
   '/_brand-layout/': typeof brandRoutesHomeRoute
   '/emails/sent': typeof emailRoutesSentRoute
+  '/newsletter/confirm': typeof newsletterRoutesConfirmRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
   '/payments/webhook': typeof paymentsRoutesWebhookRoute
   '/_brand-layout/blog': typeof blogRoutesIndexRoute
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/emails/sent'
+    | '/newsletter/confirm'
     | '/payments/success'
     | '/payments/webhook'
     | '/blog'
@@ -112,6 +122,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/'
     | '/emails/sent'
+    | '/newsletter/confirm'
     | '/payments/success'
     | '/payments/webhook'
     | '/blog'
@@ -123,6 +134,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/_brand-layout/'
     | '/emails/sent'
+    | '/newsletter/confirm'
     | '/payments/success'
     | '/payments/webhook'
     | '/_brand-layout/blog'
@@ -134,6 +146,7 @@ export interface RootRouteChildren {
   brandRoutesLayoutRoute: typeof brandRoutesLayoutRouteWithChildren
   authRoutesLoginRoute: typeof authRoutesLoginRoute
   emailRoutesSentRoute: typeof emailRoutesSentRoute
+  newsletterRoutesConfirmRoute: typeof newsletterRoutesConfirmRoute
   paymentsRoutesSuccessRoute: typeof paymentsRoutesSuccessRoute
   paymentsRoutesWebhookRoute: typeof paymentsRoutesWebhookRoute
 }
@@ -173,6 +186,13 @@ declare module '@tanstack/react-router' {
       path: '/payments/success'
       fullPath: '/payments/success'
       preLoaderRoute: typeof paymentsRoutesSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/newsletter/confirm': {
+      id: '/newsletter/confirm'
+      path: '/newsletter/confirm'
+      fullPath: '/newsletter/confirm'
+      preLoaderRoute: typeof newsletterRoutesConfirmRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/emails/sent': {
@@ -227,6 +247,7 @@ const rootRouteChildren: RootRouteChildren = {
   brandRoutesLayoutRoute: brandRoutesLayoutRouteWithChildren,
   authRoutesLoginRoute: authRoutesLoginRoute,
   emailRoutesSentRoute: emailRoutesSentRoute,
+  newsletterRoutesConfirmRoute: newsletterRoutesConfirmRoute,
   paymentsRoutesSuccessRoute: paymentsRoutesSuccessRoute,
   paymentsRoutesWebhookRoute: paymentsRoutesWebhookRoute,
 }
