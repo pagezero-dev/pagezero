@@ -30,10 +30,10 @@ export const Route = createFileRoute("/payments/webhook")({
           switch (event.type) {
             case "order.paid":
             case "subscription.active":
-              return onPaymentSuccess(event, env)
+              return onPaymentSuccess(event)
             case "order.refunded":
             case "subscription.revoked":
-              return onPaymentRevoked(event, env)
+              return onPaymentRevoked(event)
             default:
               return new Response("Event not handled", { status: 202 })
           }
