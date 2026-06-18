@@ -17,14 +17,6 @@ export const subscribeFormSchema = z.object({
   "cf-turnstile-response": z.string().optional(),
 })
 
-export const getSubscribePageData = createServerFn({ method: "GET" }).handler(
-  async () => {
-    return {
-      cloudflareTurnstilePublicKey: env.CLOUDFLARE_TURNSTILE_PUBLIC_KEY,
-    }
-  },
-)
-
 export const subscribeFormAction = createServerFn({ method: "POST" })
   .validator((data: FormData) => parseFormData(data, subscribeFormSchema))
   .handler(async ({ data }) => {
