@@ -3,8 +3,9 @@ import { notFound } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { Resend } from "resend"
 import { z } from "zod"
+import { verify } from "@/crypto"
 import { parseFormData } from "@/form"
-import { isExpired, verifyConfirmation } from "../newsletter.server"
+import { isExpired } from "../newsletter.server"
 
 export const confirmFormSchema = z.object({
   email: z.email(),
@@ -20,7 +21,7 @@ export const getConfirmPageData = createServerFn({ method: "GET" })
     }
 
     const { email, expiresAt, signature } = data
-    const isValidLink = await verifyConfirmation(
+    const isValidLink = await verify(
       env.OTP_SECRET,
       { email, expiresAt },
       signature,
@@ -46,7 +47,7 @@ export const confirmFormAction = createServerFn({ method: "POST" })
 
     const { email, expiresAt, signature } = data
 
-    const isValid = await verifyConfirmation(
+    const isValid = await verify(
       env.OTP_SECRET,
       { email, expiresAt },
       signature,

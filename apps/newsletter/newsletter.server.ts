@@ -1,25 +1,6 @@
-import { sign, verify } from "@/crypto"
-
 export type NewsletterConfirmationPayload = {
   email: string
   expiresAt: number
-}
-
-export async function signConfirmation(
-  secret: string,
-  { email, expiresAt }: NewsletterConfirmationPayload,
-) {
-  const data = JSON.stringify({ email, expiresAt })
-  return sign(secret, data)
-}
-
-export async function verifyConfirmation(
-  secret: string,
-  { email, expiresAt }: NewsletterConfirmationPayload,
-  signature: string,
-) {
-  const data = JSON.stringify({ email, expiresAt })
-  return verify(secret, data, signature)
 }
 
 export function generateExpiration(minutesOffset: number = 30) {

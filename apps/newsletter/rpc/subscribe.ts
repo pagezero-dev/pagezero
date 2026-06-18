@@ -4,13 +4,10 @@ import { getRequestHeader } from "@tanstack/react-start/server"
 import { z } from "zod"
 import { validateTurnstile } from "@/cloudflare/turnstile"
 import config from "@/config"
+import { sign } from "@/crypto"
 import { sendNewsletterConfirmEmail } from "@/email/templates.server"
 import { parseFormData } from "@/form"
-import {
-  buildConfirmUrl,
-  generateExpiration,
-  signConfirmation,
-} from "../newsletter.server"
+import { buildConfirmUrl, generateExpiration } from "../newsletter.server"
 
 export const subscribeFormSchema = z.object({
   email: z.email(),
@@ -41,10 +38,7 @@ export const subscribeFormAction = createServerFn({ method: "POST" })
     }
 
     const expiresAt = generateExpiration()
-    const signature = await signConfirmation(env.OTP_SECRET, {
-      email,
-      expiresAt,
-    })
+    const signature = await sign(env.OTP_SECRET, { email, expiresAt })
     const confirmUrl = buildConfirmUrl(config.core.websiteUrl, {
       email,
       expiresAt,
