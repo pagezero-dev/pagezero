@@ -20,14 +20,11 @@ export const getConfirmPageData = createServerFn({ method: "GET" })
     }
 
     const { email, expiresAt, signature } = data
-    const hasToken = Boolean(email && expiresAt && signature)
-    const isValidLink =
-      hasToken &&
-      (await verifyConfirmation(
-        env.OTP_SECRET,
-        { email, expiresAt },
-        signature,
-      ))
+    const isValidLink = await verifyConfirmation(
+      env.OTP_SECRET,
+      { email, expiresAt },
+      signature,
+    )
 
     if (!isValidLink) {
       throw notFound()
