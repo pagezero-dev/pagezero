@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers"
+import { notFound } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { Resend } from "resend"
 import { z } from "zod"
@@ -12,9 +13,7 @@ export const confirmFormSchema = z.object({
 })
 
 export const getConfirmPageData = createServerFn({ method: "GET" })
-  .validator(
-    (data: { email: string; expiresAt: number; signature: string }) => data,
-  )
+  .validator(confirmFormSchema)
   .handler(async ({ data }) => {
     if (!env.OTP_SECRET) {
       throw new Error("OTP_SECRET is not set")
@@ -31,14 +30,10 @@ export const getConfirmPageData = createServerFn({ method: "GET" })
       ))
 
     if (!isValidLink) {
-      return {
-        isValidLink: false as const,
-        error: "Invalid confirmation link",
-      }
+      throw notFound()
     }
 
     return {
-      isValidLink: true as const,
       email,
       expiresAt,
       signature,

@@ -30,19 +30,14 @@ export const Route = createFileRoute("/newsletter/confirm")({
 })
 
 function Confirm() {
-  const loaderData = Route.useLoaderData()
+  const { email, expiresAt, signature } = Route.useLoaderData()
   const { data, error, isPending, onSubmit } = useFormAction(
     confirmFormAction,
     confirmFormSchema,
   )
-  const isValidLink = loaderData.isValidLink
-  const email = isValidLink ? loaderData.email : undefined
-  const expiresAt = isValidLink ? loaderData.expiresAt : undefined
-  const signature = isValidLink ? loaderData.signature : undefined
-  const loaderError = isValidLink ? undefined : loaderData.error
   const actionError = data && "error" in data ? data.error : undefined
   const success = data && "success" in data ? data.success : undefined
-  const displayError = actionError ?? loaderError ?? error?.message
+  const displayError = actionError ?? error?.message
 
   return (
     <form
@@ -55,7 +50,7 @@ function Confirm() {
         <div>
           <Heading level={2}>Newsletter</Heading>
           <Muted>Confirm your email address to subscribe:</Muted>
-          {isValidLink && email && <Muted className="font-bold">{email}</Muted>}
+          <Muted className="font-bold">{email}</Muted>
         </div>
 
         {displayError && (
@@ -74,10 +69,10 @@ function Confirm() {
 
         {!success && (
           <div className="space-y-4">
-            <input type="hidden" name="email" value={email ?? ""} />
-            <input type="hidden" name="expiresAt" value={expiresAt ?? ""} />
-            <input type="hidden" name="signature" value={signature ?? ""} />
-            <Button type="submit" disabled={!isValidLink || isPending}>
+            <input type="hidden" name="email" value={email} />
+            <input type="hidden" name="expiresAt" value={expiresAt} />
+            <input type="hidden" name="signature" value={signature} />
+            <Button type="submit" disabled={isPending}>
               {isPending ? <Loader2 className="size-4 animate-spin" /> : null}
               Confirm subscription
             </Button>
