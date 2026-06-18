@@ -4,6 +4,7 @@ import { createServerFn } from "@tanstack/react-start"
 import { getRequestHeader } from "@tanstack/react-start/server"
 import { z } from "zod"
 import { validateTurnstile } from "@/cloudflare/turnstile"
+import { sign, verify } from "@/crypto"
 import { sendAuthOtpEmail } from "@/email/templates.server"
 import { parseFormData } from "@/form"
 import {
@@ -11,8 +12,6 @@ import {
   generateOTPExpiration,
   getRedirectUrl,
   isOTPExpired,
-  signOtp,
-  verifyOtp,
 } from "../auth.server"
 import { updateAppSession } from "../session.server"
 import { getOrCreateUserByEmail } from "../user.server"
@@ -68,7 +67,7 @@ export const loginFormAction = createServerFn({ method: "POST" })
     if (!otp) {
       const generatedOtp = generateOTP()
       const generatedExpiresAt = generateOTPExpiration()
-      const generatedSignature = await signOtp(env.OTP_SECRET, {
+      const generatedSignature = await sign(env.OTP_SECRET, {
         email,
         otp: generatedOtp,
         expiresAt: generatedExpiresAt,
@@ -87,7 +86,7 @@ export const loginFormAction = createServerFn({ method: "POST" })
       }
     }
 
-    const isValid = await verifyOtp(
+    const isValid = await verify(
       env.OTP_SECRET,
       {
         email,

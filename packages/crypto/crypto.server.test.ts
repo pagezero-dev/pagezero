@@ -3,7 +3,7 @@ import { sign, verify } from "./crypto.server"
 
 describe("crypto", () => {
   const testSecret = "test-secret-key"
-  const testData = "hello world"
+  const testData = { message: "hello world" }
 
   it("signs and verifies data", async () => {
     const signature = await sign(testSecret, testData)
@@ -19,7 +19,11 @@ describe("crypto", () => {
 
   it("fails verification if the data is invalid", async () => {
     const signature = await sign(testSecret, testData)
-    const isValid = await verify(testSecret, "invalid-data", signature)
+    const isValid = await verify(
+      testSecret,
+      { message: "invalid-data" },
+      signature,
+    )
     expect(isValid).toBe(false)
   })
 

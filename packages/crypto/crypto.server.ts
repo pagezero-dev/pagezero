@@ -44,32 +44,32 @@ function hashToArrayBuffer(hash: string): ArrayBuffer {
 }
 
 /**
- * Creates an HMAC signature for the provided data using the given secret.
+ * Creates an HMAC signature for the provided JSON payload using the given secret.
  *
  * @param secret - The secret key used for signing
- * @param data - The string data to sign
+ * @param data - The JSON-serializable payload to sign
  * @returns A hash string representation of the signature
  */
-export async function sign(secret: string, data: string) {
+export async function sign<T>(secret: string, data: T) {
   const key = await createKey(secret, ["sign"])
   const encoder = new TextEncoder()
   const signatureBuffer = await crypto.subtle.sign(
     "HMAC",
     key,
-    encoder.encode(data),
+    encoder.encode(JSON.stringify(data)),
   )
   return arrayBufferToHash(signatureBuffer)
 }
 
 /**
- * Verifies if a signature is valid for the given data and secret.
+ * Verifies if a signature is valid for the given JSON payload and secret.
  *
  * @param secret - The secret key that was used for signing
- * @param data - The string data that was signed
+ * @param data - The JSON-serializable payload that was signed
  * @param signature - The hash string signature to verify
  * @returns A boolean indicating whether the signature is valid
  */
-export async function verify(secret: string, data: string, signature: string) {
+export async function verify<T>(secret: string, data: T, signature: string) {
   const key = await createKey(secret, ["verify"])
   const encoder = new TextEncoder()
   let signatureBuffer: ArrayBuffer
@@ -82,6 +82,6 @@ export async function verify(secret: string, data: string, signature: string) {
     "HMAC",
     key,
     signatureBuffer,
-    encoder.encode(data),
+    encoder.encode(JSON.stringify(data)),
   )
 }
