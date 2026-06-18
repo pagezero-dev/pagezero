@@ -1,5 +1,6 @@
 import { env } from "cloudflare:workers"
 import { render } from "react-email"
+import { Resend } from "resend"
 import config from "@/config"
 
 export type EmailConfig = {
@@ -45,20 +46,21 @@ export async function sendEmail({
     developmentMailsSent.push({ from, to, subject, body })
     return { id: "development" }
   }
-  const html = await render(react)
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${resendApiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ from, to, subject, html }),
+  const resend = new Resend(resendApiKey)
+  const { data, error } = await resend.emails.send({
+    from,
+    to,
+    subject,
+    react,
   })
 
-  if (!response.ok) {
-    throw new Error(`Failed to send email (${response.status})`)
+  if (error) {
+    throw new Error(error.message)
   }
 
-  return response.json()
+  if (!data) {
+    throw new Error("Failed to send email")
+  }
+
+  return data
 }
