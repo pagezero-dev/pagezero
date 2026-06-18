@@ -35,9 +35,7 @@ function Confirm() {
     confirmFormAction,
     confirmFormSchema,
   )
-  const actionError = data && "error" in data ? data.error : undefined
-  const success = data && "success" in data ? data.success : undefined
-  const displayError = actionError ?? error?.message
+  const { success } = data || {}
 
   return (
     <form
@@ -53,10 +51,10 @@ function Confirm() {
           <Muted className="font-bold">{email}</Muted>
         </div>
 
-        {displayError && (
+        {error?.message && (
           <Alert variant="destructive">
             <AlertTriangleIcon />
-            <AlertDescription>{displayError}</AlertDescription>
+            <AlertDescription>{error.message}</AlertDescription>
           </Alert>
         )}
 

@@ -53,11 +53,11 @@ export const confirmFormAction = createServerFn({ method: "POST" })
       signature,
     )
     if (!isValid) {
-      return { error: "Invalid confirmation link" }
+      throw new Error("Invalid confirmation link")
     }
 
     if (isExpired(expiresAt)) {
-      return { error: "This confirmation link has expired" }
+      throw new Error("Confirmation link has expired")
     }
 
     if (!env.RESEND_API_KEY) {
