@@ -15,7 +15,6 @@ import type {
 
 export async function onPaymentSuccess(
   event: WebhookOrderPaidPayload | WebhookSubscriptionActivePayload,
-  env: Env,
 ) {
   try {
     const productId = event.data.productId
@@ -36,7 +35,6 @@ export async function onPaymentSuccess(
     await grantUserRole(user.id, userRoleToGrant)
     await sendAccessGrantedEmail({
       to: user.email,
-      env,
       productName: productConfig.name,
     })
     return new Response("Payment success", { status: 201 })
@@ -48,7 +46,6 @@ export async function onPaymentSuccess(
       if (error.message === "Product not found") {
         await sendAccessFailureEmail({
           to: event.data.customer.email,
-          env,
         })
         return new Response(error.message, { status: 200 })
       }
@@ -59,7 +56,6 @@ export async function onPaymentSuccess(
 
 export async function onPaymentRevoked(
   event: WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload,
-  env: Env,
 ) {
   try {
     const productId = event.data.productId
@@ -80,7 +76,6 @@ export async function onPaymentRevoked(
     await revokeUserRole(user.id, userRoleToRevoke)
     await sendAccessRevokedEmail({
       to: user.email,
-      env,
       productName: productConfig.name,
     })
     return new Response("Payment revoked", { status: 201 })

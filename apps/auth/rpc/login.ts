@@ -74,7 +74,7 @@ export const loginFormAction = createServerFn({ method: "POST" })
         expiresAt: generatedExpiresAt,
       })
       try {
-        await sendAuthOtpEmail({ to: email, otp: generatedOtp, env })
+        await sendAuthOtpEmail({ to: email, otp: generatedOtp })
       } catch {
         throw new Error("Failed to send an email")
       }

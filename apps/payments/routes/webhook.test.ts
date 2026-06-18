@@ -194,7 +194,6 @@ describe("Webhook", () => {
       expect(await hasUserRole(user.id, "pro" as unknown as Role)).toBe(true)
       expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
         to: "new@example.com",
-        env: { POLAR_WEBHOOK_SECRET: "test" },
         productName: "Pro",
       })
     })
@@ -224,7 +223,6 @@ describe("Webhook", () => {
       expect(response.status).toBe(201)
       expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
         to: "existing@example.com",
-        env: { POLAR_WEBHOOK_SECRET: "test" },
         productName: "Pro",
       })
     })
@@ -273,7 +271,6 @@ describe("Webhook", () => {
       expect(await response.text()).toBe("Product not found")
       expect(sendAccessFailureEmail).toHaveBeenCalledWith({
         to: "existing@example.com",
-        env: { POLAR_WEBHOOK_SECRET: "test" },
       })
     })
   })
@@ -305,7 +302,6 @@ describe("Webhook", () => {
       )
       expect(sendAccessRevokedEmail).toHaveBeenCalledWith({
         to: "existing@example.com",
-        env: { POLAR_WEBHOOK_SECRET: "test" },
         productName: "Pro",
       })
     })
