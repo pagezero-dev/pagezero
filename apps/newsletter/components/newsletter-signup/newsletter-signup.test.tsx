@@ -1,7 +1,5 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import type { ComponentProps } from "react"
 import { describe, expect, it, vi } from "vitest"
 import { z } from "zod"
 
@@ -19,20 +17,6 @@ vi.mock("@/form", () => ({
 
 import { useFormAction } from "@/form"
 import { NewsletterSignup } from "./newsletter-signup"
-
-function renderNewsletterSignup(
-  props: ComponentProps<typeof NewsletterSignup> = {},
-) {
-  const queryClient = new QueryClient({
-    defaultOptions: { mutations: { retry: false } },
-  })
-
-  return render(
-    <QueryClientProvider client={queryClient}>
-      <NewsletterSignup {...props} />
-    </QueryClientProvider>,
-  )
-}
 
 function mockUseFormAction(value: Partial<ReturnType<typeof useFormAction>>) {
   vi.mocked(useFormAction).mockReturnValue({
@@ -52,7 +36,7 @@ describe("<NewsletterSignup />", () => {
   it("renders email field and subscribe button", () => {
     mockUseFormAction({})
 
-    renderNewsletterSignup()
+    render(<NewsletterSignup />)
     expect(screen.getByPlaceholderText("you@example.com")).toBeInTheDocument()
     expect(
       screen.getByRole("button", { name: "Subscribe" }),
@@ -64,7 +48,7 @@ describe("<NewsletterSignup />", () => {
       data: { success: "Check your email to confirm your subscription" },
     })
 
-    renderNewsletterSignup()
+    render(<NewsletterSignup />)
     expect(
       screen.getByText("Check your email to confirm your subscription"),
     ).toBeInTheDocument()
@@ -81,7 +65,7 @@ describe("<NewsletterSignup />", () => {
     mockUseFormAction({ onSubmit })
 
     const user = userEvent.setup()
-    renderNewsletterSignup()
+    render(<NewsletterSignup />)
     await user.type(
       screen.getByPlaceholderText("you@example.com"),
       "reader@example.com",
