@@ -30,7 +30,7 @@ export const Route = createFileRoute("/_brand-layout/")({
 })
 
 function Index() {
-  const cloudflareTurnstilePublicKey = Route.useLoaderData()
+  const { cloudflareTurnstilePublicKey } = Route.useLoaderData()
 
   return (
     <>
