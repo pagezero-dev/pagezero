@@ -27,7 +27,7 @@
     "production": {
       "vars": {
         "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "0x4AAAAAABd1vnMC0VAcAlf3",
-        "NEWSLETTER_SEGMENT_ID": ""
+        "NEWSLETTER_SEGMENT_ID": "f7ba881f-cec0-4c63-94ff-e3d5cc867f21"
       },
       "d1_databases": [
         {
@@ -40,7 +40,7 @@
     "preview": {
       "vars": {
         "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "0x4AAAAAABd1vnMC0VAcAlf3",
-        "NEWSLETTER_SEGMENT_ID": ""
+        "NEWSLETTER_SEGMENT_ID": "f7ba881f-cec0-4c63-94ff-e3d5cc867f21"
       },
       "d1_databases": [
         {
