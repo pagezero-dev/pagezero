@@ -10,6 +10,8 @@ import {
   Target,
   Zap,
 } from "lucide-react"
+import { getTurnstilePublicKey } from "@/cloudflare/turnstile"
+import { NewsletterSignup } from "@/newsletter/components/newsletter-signup"
 import { CheckoutButton } from "@/payments/components/checkout-button"
 import { Pricing } from "@/payments/components/pricing"
 import { Button } from "@/ui/button"
@@ -23,10 +25,13 @@ import { Section } from "../components/section"
 import { Testimonials } from "../components/testimonials"
 
 export const Route = createFileRoute("/_brand-layout/")({
+  loader: () => getTurnstilePublicKey(),
   component: Index,
 })
 
 function Index() {
+  const { cloudflareTurnstilePublicKey } = Route.useLoaderData()
+
   return (
     <>
       <Hero
@@ -374,6 +379,19 @@ function Index() {
             },
           ]}
         />
+      </Section>
+
+      <Section
+        id="newsletter"
+        title="Stay in the loop"
+        description="Get product updates, tips, and news delivered to your inbox."
+        background="light"
+      >
+        <div className="mx-auto max-w-md">
+          <NewsletterSignup
+            cloudflareTurnstilePublicKey={cloudflareTurnstilePublicKey}
+          />
+        </div>
       </Section>
     </>
   )

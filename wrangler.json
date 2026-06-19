@@ -13,7 +13,8 @@
   },
   "upload_source_maps": true,
   "vars": {
-    "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "1x00000000000000000000BB"
+    "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "1x00000000000000000000BB",
+    "NEWSLETTER_SEGMENT_ID": ""
   },
   "d1_databases": [
     {
@@ -25,7 +26,8 @@
   "env": {
     "production": {
       "vars": {
-        "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "0x4AAAAAABd1vnMC0VAcAlf3"
+        "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "0x4AAAAAABd1vnMC0VAcAlf3",
+        "NEWSLETTER_SEGMENT_ID": "f7ba881f-cec0-4c63-94ff-e3d5cc867f21"
       },
       "d1_databases": [
         {
@@ -37,7 +39,8 @@
     },
     "preview": {
       "vars": {
-        "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "0x4AAAAAABd1vnMC0VAcAlf3"
+        "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "0x4AAAAAABd1vnMC0VAcAlf3",
+        "NEWSLETTER_SEGMENT_ID": "f7ba881f-cec0-4c63-94ff-e3d5cc867f21"
       },
       "d1_databases": [
         {
@@ -49,7 +52,8 @@
     },
     "test": {
       "vars": {
-        "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": ""
+        "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "",
+        "NEWSLETTER_SEGMENT_ID": ""
       },
       "d1_databases": [
         {

@@ -70,6 +70,16 @@ export default defineConfig({
       : []),
   ],
   test: {
+    // `cloudflare:workers` is a Workers-runtime virtual module that Vite cannot
+    // resolve in the test environment. Alias it to a stub so modules importing
+    // `env` can be loaded; tests can still override it with `vi.mock`.
+    alias: {
+      "cloudflare:workers": new URL(
+        "./packages/cloudflare/test/cloudflare-workers.stub.ts",
+        import.meta.url,
+      ).pathname,
+    },
+
     // Restores all original implementations on spies created manually
     restoreMocks: true,
 
