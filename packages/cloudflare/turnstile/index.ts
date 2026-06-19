@@ -1,3 +1,3 @@
+export * from "./rpc"
 export { Turnstile } from "./turnstile"
 export { validateTurnstile } from "./validate-turnstile.server"
-export * from "./rpc"
