@@ -107,14 +107,14 @@ function List({ className, ...props }: React.ComponentProps<"ul">) {
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
-    <div className="my-6 w-full overflow-y-auto">
-      <table className={cn("w-full", className)} {...props} />
+    <div className="my-6 w-full overflow-x-auto rounded-lg border">
+      <table className={cn("w-full text-sm", className)} {...props} />
     </div>
   )
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
-  return <thead className={cn(className)} {...props} />
+  return <thead className={cn("bg-muted/50", className)} {...props} />
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
@@ -124,7 +124,10 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
-      className={cn("m-0 border-t p-0 even:bg-muted", className)}
+      className={cn(
+        "border-b last:border-b-0 odd:bg-transparent even:bg-muted/30",
+        className,
+      )}
       {...props}
     />
   )
@@ -134,7 +137,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   return (
     <th
       className={cn(
-        "border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
+        "px-4 py-3 text-left font-medium text-muted-foreground [[align=center]]:text-center [[align=right]]:text-right",
         className,
       )}
       {...props}
@@ -146,7 +149,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   return (
     <td
       className={cn(
-        "border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",
+        "px-4 py-3 text-left text-muted-foreground first:font-medium first:text-foreground [[align=center]]:text-center [[align=right]]:text-right",
         className,
       )}
       {...props}
