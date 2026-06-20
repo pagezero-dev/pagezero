@@ -13,14 +13,3 @@ export function generateOTP() {
   // convert to string and ensure it's exactly 6 digits by padding with leading zeros if needed
   return otp.toString().padStart(6, "0")
 }
-
-export function generateOTPExpiration(minutesOffset: number = 5) {
-  const now = new Date()
-  now.setMinutes(now.getMinutes() + minutesOffset)
-  return now.getTime()
-}
-
-export function isOTPExpired(expiresAt: number) {
-  const now = new Date()
-  return now.getTime() > expiresAt
-}

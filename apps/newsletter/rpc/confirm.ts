@@ -4,8 +4,8 @@ import { createServerFn } from "@tanstack/react-start"
 import { Resend } from "resend"
 import { z } from "zod"
 import { verify } from "@/crypto"
+import { isExpired } from "@/date"
 import { parseFormData } from "@/form"
-import { isExpired } from "../newsletter.server"
 
 export const confirmFormSchema = z.object({
   email: z.email(),
