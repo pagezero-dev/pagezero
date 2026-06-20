@@ -3,16 +3,6 @@ export type NewsletterConfirmationPayload = {
   expiresAt: number
 }
 
-export function generateExpiration(minutesOffset: number = 30) {
-  const now = new Date()
-  now.setMinutes(now.getMinutes() + minutesOffset)
-  return now.getTime()
-}
-
-export function isExpired(expiresAt: number) {
-  return Date.now() > expiresAt
-}
-
 export function buildConfirmUrl(
   baseUrl: string,
   {

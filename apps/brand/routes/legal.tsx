@@ -2,17 +2,9 @@ import { createFileRoute, notFound } from "@tanstack/react-router"
 import { ProseArticle } from "@/brand/components/prose-article"
 import { legalDocumentFrontmatterSchema, legalModules } from "@/brand/content"
 import config from "@/config"
+import { formatDate } from "@/date"
 import { getMdxModuleBySlug, MDXProvider } from "@/mdx"
 import { Muted } from "@/ui/typography"
-
-function formatLegalDate(date: Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  }).format(date)
-}
 
 export const Route = createFileRoute("/_brand-layout/legal/$slug")({
   loader: ({ params }) => {
@@ -48,7 +40,7 @@ function LegalDocument() {
 
   return (
     <ProseArticle title={document.title}>
-      <Muted>Last updated: {formatLegalDate(new Date(document.date))}</Muted>
+      <Muted>Last updated: {formatDate(new Date(document.date))}</Muted>
       <MDXProvider>
         <DocumentComponent />
       </MDXProvider>

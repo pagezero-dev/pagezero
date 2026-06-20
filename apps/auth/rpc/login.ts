@@ -5,14 +5,10 @@ import { getRequestHeader } from "@tanstack/react-start/server"
 import { z } from "zod"
 import { validateTurnstile } from "@/cloudflare/turnstile"
 import { sign, verify } from "@/crypto"
+import { expiresInMinutes, isExpired } from "@/date"
 import { sendAuthOtpEmail } from "@/email/templates.server"
 import { parseFormData } from "@/form"
-import {
-  generateOTP,
-  generateOTPExpiration,
-  getRedirectUrl,
-  isOTPExpired,
-} from "../auth.server"
+import { generateOTP, getRedirectUrl } from "../auth.server"
 import { updateAppSession } from "../session.server"
 import { getOrCreateUserByEmail } from "../user.server"
 
@@ -66,7 +62,7 @@ export const loginFormAction = createServerFn({ method: "POST" })
 
     if (!otp) {
       const generatedOtp = generateOTP()
-      const generatedExpiresAt = generateOTPExpiration()
+      const generatedExpiresAt = expiresInMinutes(5)
       const generatedSignature = await sign(env.OTP_SECRET, {
         email,
         otp: generatedOtp,
@@ -105,7 +101,7 @@ export const loginFormAction = createServerFn({ method: "POST" })
       }
     }
 
-    if (isOTPExpired(expiresAt ?? 0)) {
+    if (isExpired(expiresAt ?? 0)) {
       throw new Error("Verification code expired")
     }
 

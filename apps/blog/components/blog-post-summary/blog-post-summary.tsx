@@ -1,17 +1,8 @@
 import { User } from "lucide-react"
+import { formatDate } from "@/date"
 import { Link } from "@/ui/link"
 import { Heading, Muted, Small } from "@/ui/typography"
 import { cn } from "@/ui/utils"
-
-/** Stable across SSR and client; date-only frontmatter parses as UTC midnight */
-function formatBlogDate(date: Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  }).format(date)
-}
 
 interface BlogPostAuthor {
   name: string
@@ -111,7 +102,7 @@ export const BlogPostSummary = ({
           isHeader ? "mb-4 block" : "-mb-2",
         )}
       >
-        {formatBlogDate(date)}
+        {formatDate(date)}
       </time>
       <Heading
         level={isHeader ? 1 : 3}
