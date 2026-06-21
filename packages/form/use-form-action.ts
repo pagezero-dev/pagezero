@@ -103,5 +103,5 @@ export function useFormAction<
       onSubmit,
       fields,
     }
-  }, [mutation, schema, mutation.error, mutation.mutate])
+  }, [mutation, schema])
 }
