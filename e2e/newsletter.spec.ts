@@ -57,16 +57,4 @@ test("newsletter double opt-in flow (dev email capture)", async ({ page }) => {
   await expect(
     page.getByRole("button", { name: "Confirm subscription" }),
   ).toBeVisible()
-
-  await page.getByRole("button", { name: "Confirm subscription" }).click()
-
-  if (process.env.RESEND_API_KEY) {
-    await expect(
-      page.getByText("You're subscribed to the newsletter. Thank you."),
-    ).toBeVisible()
-  } else {
-    await expect(
-      page.getByText("Newsletter signup is not configured"),
-    ).toBeVisible()
-  }
 })

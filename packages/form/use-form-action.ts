@@ -30,7 +30,10 @@ type UseFormActionResult<
   TError,
   TSchema extends z.ZodObject<z.ZodRawShape>,
   TOnMutateResult = unknown,
-> = Omit<UseMutationResult<TResponse, TError, FormData, TOnMutateResult>, "data" | "error"> & {
+> = Omit<
+  UseMutationResult<TResponse, TError, FormData, TOnMutateResult>,
+  "data" | "error"
+> & {
   data: TResponse | undefined
   error: TError | null | undefined
   onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
