@@ -17,7 +17,7 @@ const testSchema = z.object({
   name: z.string(),
 })
 
-type TestError = Error | FormError<typeof testSchema>
+type TestError = Error | FormError<typeof testSchema> | null
 
 function renderFormAction<TResponse = unknown>(
   serverFn: (opts: { data: FormData }) => Promise<TResponse>,
@@ -130,6 +130,23 @@ describe("useFormAction", () => {
     expect(result.current.error?.message).toBe("Server error")
   })
 
+  it("exposes data on successful mutation", async () => {
+    const response = { ok: true }
+    const serverFn = vi.fn().mockResolvedValue(response)
+
+    const { result } = renderFormAction(serverFn)
+
+    act(() => {
+      result.current.mutate(new FormData())
+    })
+
+    await waitFor(() => {
+      expect(result.current.data).toEqual(response)
+    })
+
+    expect(result.current.error).toBeNull()
+  })
+
   it("forwards mutation options such as onSuccess", async () => {
     const onSuccess = vi.fn()
     const serverFn = vi.fn().mockResolvedValue({ ok: true })
@@ -146,5 +163,24 @@ describe("useFormAction", () => {
 
     expect(onSuccess.mock.calls[0]?.[0]).toEqual({ ok: true })
     expect(onSuccess.mock.calls[0]?.[1]).toBeInstanceOf(FormData)
+  })
+
+  it("forwards mutation options such as onSettled", async () => {
+    const onSettled = vi.fn()
+    const serverFn = vi.fn().mockResolvedValue({ ok: true })
+
+    const { result } = renderFormAction(serverFn, { onSettled })
+
+    act(() => {
+      result.current.mutate(new FormData())
+    })
+
+    await waitFor(() => {
+      expect(onSettled).toHaveBeenCalled()
+    })
+
+    expect(onSettled.mock.calls[0]?.[0]).toEqual({ ok: true })
+    expect(onSettled.mock.calls[0]?.[1]).toBeNull()
+    expect(onSettled.mock.calls[0]?.[2]).toBeInstanceOf(FormData)
   })
 })

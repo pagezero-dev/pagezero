@@ -4,7 +4,7 @@ import {
   useMutation,
 } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/react-start"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import type { z } from "zod"
 
 export interface FormError<TSchema extends z.ZodType> {
@@ -30,7 +30,12 @@ type UseFormActionResult<
   TError,
   TSchema extends z.ZodObject<z.ZodRawShape>,
   TOnMutateResult = unknown,
-> = UseMutationResult<TResponse, TError, FormData, TOnMutateResult> & {
+> = Omit<
+  UseMutationResult<TResponse, TError, FormData, TOnMutateResult>,
+  "data" | "error"
+> & {
+  data: TResponse | undefined
+  error: TError | null | undefined
   onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
   fields: FormFields<TSchema>
 }
@@ -76,7 +81,7 @@ function getFormFields<TSchema extends z.ZodObject<z.ZodRawShape>>(
 export function useFormAction<
   TResponse,
   TSchema extends z.ZodObject<z.ZodRawShape>,
-  TError = Error | FormError<TSchema>,
+  TError = Error | FormError<TSchema> | null,
   TOnMutateResult = unknown,
 >(
   schema: TSchema,
@@ -84,10 +89,17 @@ export function useFormAction<
   options?: UseFormActionOptions<TResponse, TError, TOnMutateResult>,
 ): UseFormActionResult<TResponse, TError, TSchema, TOnMutateResult> {
   const runServerFn = useServerFn(serverFn)
+  const [data, setData] = useState<TResponse>()
+  const [error, setError] = useState<TError | null>()
 
   const mutation = useMutation({
     ...options,
     mutationFn: (formData: FormData) => runServerFn({ data: formData }),
+    onSettled: (data, error, ...rest) => {
+      setData(data)
+      setError(error)
+      options?.onSettled?.(data, error, ...rest)
+    },
   })
 
   return useMemo(() => {
@@ -96,12 +108,14 @@ export function useFormAction<
       mutation.mutate(new FormData(event.currentTarget))
     }
 
-    const fields = getFormFields(schema, mutation.error)
+    const fields = getFormFields(schema, error)
 
     return {
       ...mutation,
+      data,
+      error,
       onSubmit,
       fields,
     }
-  }, [mutation, schema])
+  }, [mutation, schema, data, error])
 }
