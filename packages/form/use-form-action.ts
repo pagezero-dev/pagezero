@@ -66,15 +66,12 @@ export function useFormAction<
     mutationFn: (formData: FormData) => runServerFn({ data: formData }),
   })
 
-  const onSubmit = useCallback(
-    (event: React.SubmitEvent<HTMLFormElement>) => {
+  return useMemo(() => {
+    const onSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
       event.preventDefault()
       mutation.mutate(new FormData(event.currentTarget))
-    },
-    [mutation.mutate],
-  )
+    }
 
-  return useMemo(() => {
     const fieldErrors = isFormError<TSchema>(mutation.error)
       ? mutation.error.fields
       : undefined
@@ -97,5 +94,5 @@ export function useFormAction<
       onSubmit,
       fields,
     }
-  }, [mutation, onSubmit, schema, mutation.error])
+  }, [mutation, schema, mutation.error, mutation.mutate])
 }
