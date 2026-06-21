@@ -32,8 +32,8 @@ function Login() {
   const { cloudflareTurnstilePublicKey, redirectTo } = Route.useLoaderData()
   const queryClient = useQueryClient()
   const { data, error, isPending, onSubmit } = useFormAction(
-    loginFormAction,
     loginFormSchema,
+    loginFormAction,
     {
       onSuccess: () => {
         void queryClient.invalidateQueries({ queryKey: ["user"] })

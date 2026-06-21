@@ -12,17 +12,16 @@ describe("parseFormData", () => {
     const formData = new FormData()
     formData.set("email", "user@example.com")
 
-    expect(parseFormData(formData, testSchema)).toEqual({
+    expect(parseFormData(testSchema, formData)).toEqual({
       email: "user@example.com",
     })
   })
 
   it("throws when data is not FormData", () => {
     expect(() =>
-      parseFormData(
-        { email: "user@example.com" } as unknown as FormData,
-        testSchema,
-      ),
+      parseFormData(testSchema, {
+        email: "user@example.com",
+      } as unknown as FormData),
     ).toThrow("Expected FormData")
   })
 
@@ -34,7 +33,7 @@ describe("parseFormData", () => {
     })
 
     try {
-      parseFormData(formData, schema)
+      parseFormData(schema, formData)
       expect.unreachable("Expected parseFormData to throw")
     } catch (error) {
       expect(error).toEqual({
@@ -55,7 +54,7 @@ describe("parseFormData", () => {
     })
 
     try {
-      parseFormData(formData, schema)
+      parseFormData(schema, formData)
       expect.unreachable("Expected parseFormData to throw")
     } catch (error) {
       expect(error).toMatchObject({

@@ -17,8 +17,8 @@ export function NewsletterSignup({
   className,
 }: NewsletterSignupProps) {
   const { data, error, isPending, onSubmit } = useFormAction(
-    subscribeFormAction,
     subscribeFormSchema,
+    subscribeFormAction,
   )
   const success = data?.success
   const turnstileSubjectKey = isPending ? "pending" : "idle"

@@ -31,7 +31,7 @@ export const getLoginPageData = createServerFn({ method: "GET" })
   })
 
 export const loginFormAction = createServerFn({ method: "POST" })
-  .validator((data: FormData) => parseFormData(data, loginFormSchema))
+  .validator((data: FormData) => parseFormData(loginFormSchema, data))
   .handler(async ({ data }) => {
     if (!env.OTP_SECRET) {
       throw new Error("OTP_SECRET is not set")

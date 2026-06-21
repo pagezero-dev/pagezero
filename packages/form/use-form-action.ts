@@ -52,8 +52,8 @@ function isFormError<TSchema extends z.ZodType>(
 }
 
 function getFormFields<TSchema extends z.ZodObject<z.ZodRawShape>>(
-  error: unknown,
   schema: TSchema,
+  error: unknown,
 ): FormFields<TSchema> {
   const fieldErrors = isFormError<TSchema>(error) ? error.fields : undefined
 
@@ -79,8 +79,8 @@ export function useFormAction<
   TError = Error | FormError<TSchema>,
   TOnMutateResult = unknown,
 >(
-  serverFn: FormActionServerFn<TResponse>,
   schema: TSchema,
+  serverFn: FormActionServerFn<TResponse>,
   options?: UseFormActionOptions<TResponse, TError, TOnMutateResult>,
 ): UseFormActionResult<TResponse, TError, TSchema, TOnMutateResult> {
   const runServerFn = useServerFn(serverFn)
@@ -96,7 +96,7 @@ export function useFormAction<
       mutation.mutate(new FormData(event.currentTarget))
     }
 
-    const fields = getFormFields(mutation.error, schema)
+    const fields = getFormFields(schema, mutation.error)
 
     return {
       ...mutation,
