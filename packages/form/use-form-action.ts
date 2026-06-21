@@ -26,14 +26,19 @@ type FormFields<TSchema extends z.ZodObject<z.ZodRawShape>> = {
 }
 
 type UseFormActionResult<
-  TData,
+  TResponse,
   TError,
   TSchema extends z.ZodObject<z.ZodRawShape>,
   TOnMutateResult = unknown,
-> = UseMutationResult<TData, TError, FormData, TOnMutateResult> & {
+> = UseMutationResult<TResponse, TError, FormData, TOnMutateResult> & {
   onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
   fields: FormFields<TSchema>
 }
+
+type UseFormActionOptions<TResponse, TError, TOnMutateResult> = Omit<
+  UseMutationOptions<TResponse, TError, FormData, TOnMutateResult>,
+  "mutationFn"
+>
 
 function isFormError<TSchema extends z.ZodType>(
   error: unknown,
@@ -76,10 +81,7 @@ export function useFormAction<
 >(
   serverFn: FormActionServerFn<TResponse>,
   schema: TSchema,
-  options?: Omit<
-    UseMutationOptions<TResponse, TError, FormData, TOnMutateResult>,
-    "mutationFn"
-  >,
+  options?: UseFormActionOptions<TResponse, TError, TOnMutateResult>,
 ): UseFormActionResult<TResponse, TError, TSchema, TOnMutateResult> {
   const runServerFn = useServerFn(serverFn)
 
