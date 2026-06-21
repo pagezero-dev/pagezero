@@ -39,7 +39,7 @@ export const getConfirmPageData = createServerFn({ method: "GET" })
   })
 
 export const confirmFormAction = createServerFn({ method: "POST" })
-  .validator((data: FormData) => parseFormData(data, confirmFormSchema))
+  .validator((data: FormData) => parseFormData(confirmFormSchema, data))
   .handler(async ({ data }) => {
     if (!env.OTP_SECRET) {
       throw new Error("OTP_SECRET is not set")

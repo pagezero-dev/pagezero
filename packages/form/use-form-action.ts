@@ -4,7 +4,7 @@ import {
   useMutation,
 } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/react-start"
-import { useCallback, useMemo } from "react"
+import { useMemo } from "react"
 import type { z } from "zod"
 
 export interface FormError<TSchema extends z.ZodType> {
@@ -26,14 +26,19 @@ type FormFields<TSchema extends z.ZodObject<z.ZodRawShape>> = {
 }
 
 type UseFormActionResult<
-  TData,
+  TResponse,
   TError,
   TSchema extends z.ZodObject<z.ZodRawShape>,
   TOnMutateResult = unknown,
-> = UseMutationResult<TData, TError, FormData, TOnMutateResult> & {
+> = UseMutationResult<TResponse, TError, FormData, TOnMutateResult> & {
   onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
   fields: FormFields<TSchema>
 }
+
+type UseFormActionOptions<TResponse, TError, TOnMutateResult> = Omit<
+  UseMutationOptions<TResponse, TError, FormData, TOnMutateResult>,
+  "mutationFn"
+>
 
 function isFormError<TSchema extends z.ZodType>(
   error: unknown,
@@ -46,18 +51,37 @@ function isFormError<TSchema extends z.ZodType>(
   )
 }
 
+function getFormFields<TSchema extends z.ZodObject<z.ZodRawShape>>(
+  schema: TSchema,
+  error: unknown,
+): FormFields<TSchema> {
+  const fieldErrors = isFormError<TSchema>(error) ? error.fields : undefined
+
+  const fields = Object.fromEntries(
+    Object.keys(schema.shape).map((key) => {
+      const fieldKey = key as keyof z.infer<TSchema> & string
+      return [
+        key,
+        {
+          name: fieldKey,
+          errors: fieldErrors?.[fieldKey] ?? [],
+        },
+      ]
+    }),
+  ) as FormFields<TSchema>
+
+  return fields
+}
+
 export function useFormAction<
   TResponse,
   TSchema extends z.ZodObject<z.ZodRawShape>,
   TError = Error | FormError<TSchema>,
   TOnMutateResult = unknown,
 >(
-  serverFn: FormActionServerFn<TResponse>,
   schema: TSchema,
-  options?: Omit<
-    UseMutationOptions<TResponse, TError, FormData, TOnMutateResult>,
-    "mutationFn"
-  >,
+  serverFn: FormActionServerFn<TResponse>,
+  options?: UseFormActionOptions<TResponse, TError, TOnMutateResult>,
 ): UseFormActionResult<TResponse, TError, TSchema, TOnMutateResult> {
   const runServerFn = useServerFn(serverFn)
 
@@ -66,36 +90,18 @@ export function useFormAction<
     mutationFn: (formData: FormData) => runServerFn({ data: formData }),
   })
 
-  const onSubmit = useCallback(
-    (event: React.SubmitEvent<HTMLFormElement>) => {
+  return useMemo(() => {
+    const onSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
       event.preventDefault()
       mutation.mutate(new FormData(event.currentTarget))
-    },
-    [mutation.mutate],
-  )
+    }
 
-  return useMemo(() => {
-    const fieldErrors = isFormError<TSchema>(mutation.error)
-      ? mutation.error.fields
-      : undefined
-
-    const fields = Object.fromEntries(
-      Object.keys(schema.shape).map((key) => {
-        const fieldKey = key as keyof z.infer<TSchema> & string
-        return [
-          key,
-          {
-            name: fieldKey,
-            errors: fieldErrors?.[fieldKey] ?? [],
-          },
-        ]
-      }),
-    ) as FormFields<TSchema>
+    const fields = getFormFields(schema, mutation.error)
 
     return {
       ...mutation,
       onSubmit,
       fields,
     }
-  }, [mutation, onSubmit, schema, mutation.error])
+  }, [mutation, schema])
 }

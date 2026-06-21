@@ -32,8 +32,8 @@ export const Route = createFileRoute("/newsletter/confirm")({
 function Confirm() {
   const { email, expiresAt, signature } = Route.useLoaderData()
   const { data, error, isPending, onSubmit } = useFormAction(
-    confirmFormAction,
     confirmFormSchema,
+    confirmFormAction,
   )
   const { success } = data || {}
 

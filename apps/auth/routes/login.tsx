@@ -32,8 +32,8 @@ function Login() {
   const { cloudflareTurnstilePublicKey, redirectTo } = Route.useLoaderData()
   const queryClient = useQueryClient()
   const { data, error, isPending, onSubmit } = useFormAction(
-    loginFormAction,
     loginFormSchema,
+    loginFormAction,
     {
       onSuccess: () => {
         void queryClient.invalidateQueries({ queryKey: ["user"] })
@@ -58,6 +58,7 @@ function Login() {
       <main className="flex h-screen flex-col items-center justify-center gap-4">
         <input type="hidden" name="redirectTo" value={redirectTo} />
         <SignIn
+          isPending={isPending}
           email={email}
           error={actionError ?? error?.message}
           success={success}

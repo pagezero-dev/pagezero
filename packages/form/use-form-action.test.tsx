@@ -30,7 +30,7 @@ function renderFormAction<TResponse = unknown>(
     defaultOptions: { mutations: { retry: false } },
   })
 
-  return renderHook(() => useFormAction(serverFn, testSchema, options), {
+  return renderHook(() => useFormAction(testSchema, serverFn, options), {
     wrapper: ({ children }) => (
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     ),

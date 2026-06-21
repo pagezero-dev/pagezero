@@ -16,7 +16,7 @@ export const subscribeFormSchema = z.object({
 })
 
 export const subscribeFormAction = createServerFn({ method: "POST" })
-  .validator((data: FormData) => parseFormData(data, subscribeFormSchema))
+  .validator((data: FormData) => parseFormData(subscribeFormSchema, data))
   .handler(async ({ data }) => {
     if (!env.OTP_SECRET) {
       throw new Error("OTP_SECRET is not set")
