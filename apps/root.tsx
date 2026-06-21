@@ -64,29 +64,22 @@ function RootComponent() {
 }
 
 function RootErrorComponent({ error }: { error: unknown }) {
-  return (
-    <RootDocument>
-      <ErrorPage error={error} />
-    </RootDocument>
-  )
+  return <ErrorPage error={error} />
 }
 
 function RootNotFoundComponent() {
   return (
-    <RootDocument>
-      <ErrorPage
-        error={{
-          name: "Page not found",
-          message:
-            "The page you're looking for doesn't exist or has been moved.",
-        }}
-        action={
-          <Button asChild variant="outline">
-            <a href="/">Go home</a>
-          </Button>
-        }
-      />
-    </RootDocument>
+    <ErrorPage
+      error={{
+        name: "Page not found",
+        message: "The page you're looking for doesn't exist or has been moved.",
+      }}
+      action={
+        <Button asChild variant="outline">
+          <a href="/">Go home</a>
+        </Button>
+      }
+    />
   )
 }
 
