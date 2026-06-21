@@ -1,4 +1,4 @@
-import { AlertTriangleIcon, InfoIcon, LockIcon } from "lucide-react"
+import { AlertTriangleIcon, InfoIcon, Loader2, LockIcon } from "lucide-react"
 import { useEffect, useId, useState } from "react"
 import { Alert, AlertDescription } from "@/ui/alert"
 import { Button } from "@/ui/button"
@@ -12,6 +12,7 @@ interface SignInProps {
   success?: string
   signature?: string
   expiresAt?: number
+  isPending?: boolean
 }
 
 export const SignIn = ({
@@ -20,6 +21,7 @@ export const SignIn = ({
   success,
   signature,
   expiresAt,
+  isPending,
 }: SignInProps) => {
   const [otp, setOtp] = useState("")
   const emailInputId = useId()
@@ -95,7 +97,8 @@ export const SignIn = ({
       </div>
 
       <div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? <Loader2 className="size-4 animate-spin" /> : null}
           {email ? "Verify" : "Login"}
         </Button>
       </div>
