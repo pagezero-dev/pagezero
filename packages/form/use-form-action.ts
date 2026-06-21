@@ -46,6 +46,28 @@ function isFormError<TSchema extends z.ZodType>(
   )
 }
 
+function getFormFields<TSchema extends z.ZodObject<z.ZodRawShape>>(
+  error: unknown,
+  schema: TSchema,
+): FormFields<TSchema> {
+  const fieldErrors = isFormError<TSchema>(error) ? error.fields : undefined
+
+  const fields = Object.fromEntries(
+    Object.keys(schema.shape).map((key) => {
+      const fieldKey = key as keyof z.infer<TSchema> & string
+      return [
+        key,
+        {
+          name: fieldKey,
+          errors: fieldErrors?.[fieldKey] ?? [],
+        },
+      ]
+    }),
+  ) as FormFields<TSchema>
+
+  return fields
+}
+
 export function useFormAction<
   TResponse,
   TSchema extends z.ZodObject<z.ZodRawShape>,
@@ -72,22 +94,7 @@ export function useFormAction<
       mutation.mutate(new FormData(event.currentTarget))
     }
 
-    const fieldErrors = isFormError<TSchema>(mutation.error)
-      ? mutation.error.fields
-      : undefined
-
-    const fields = Object.fromEntries(
-      Object.keys(schema.shape).map((key) => {
-        const fieldKey = key as keyof z.infer<TSchema> & string
-        return [
-          key,
-          {
-            name: fieldKey,
-            errors: fieldErrors?.[fieldKey] ?? [],
-          },
-        ]
-      }),
-    ) as FormFields<TSchema>
+    const fields = getFormFields(mutation.error, schema)
 
     return {
       ...mutation,
