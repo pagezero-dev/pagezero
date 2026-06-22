@@ -1,4 +1,3 @@
-import { defineConfig } from "drizzle-kit"
-import config from "./packages/db/drizzle.config"
+import config from "@/db/drizzle.config"
 
-export default defineConfig(config)
+export default config

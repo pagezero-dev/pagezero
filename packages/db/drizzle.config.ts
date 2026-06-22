@@ -1,5 +1,4 @@
 import { config } from "@dotenvx/dotenvx"
-import type { Config } from "drizzle-kit"
 import { defineConfig } from "drizzle-kit"
 import glob from "fast-glob"
 import wranglerConfig from "../../wrangler.json"
