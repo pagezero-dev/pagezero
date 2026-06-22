@@ -1,5 +1,5 @@
 import crypto from "node:crypto"
-import { defineConfig } from "drizzle-kit"
+import type { Config } from "drizzle-kit"
 import wranglerConfig from "../../wrangler.json"
 
 const DEFAULT_DB_BINDING = "DB_MAIN"
@@ -11,7 +11,7 @@ function isValidCloudflareEnv(value?: string): value is CloudflareEnv {
   return !!value && value in wranglerConfig.env
 }
 
-function getD1DatabaseByBinding(binding: string, cloudflareEnv?: string) {
+function getDbId(binding: string, cloudflareEnv?: string) {
   const databases = isValidCloudflareEnv(cloudflareEnv)
     ? wranglerConfig.env[cloudflareEnv].d1_databases
     : wranglerConfig.d1_databases
@@ -21,7 +21,7 @@ function getD1DatabaseByBinding(binding: string, cloudflareEnv?: string) {
     throw new Error(`D1 database binding not found: ${binding}`)
   }
 
-  return database
+  return database.database_id
 }
 
 function getLocalSqliteDbUrl(databaseId: string) {
@@ -45,39 +45,57 @@ function getLocalSqliteDbUrl(databaseId: string) {
   return `./.wrangler/state/v3/d1/${MINIFLARE_D1_UNIQUE_KEY}/${hash}.sqlite`
 }
 
-export function getDbCredentials(
-  dbBinding: string = DEFAULT_DB_BINDING,
-  cloudflareEnv?: string,
-) {
+export function getConfig({
+  dbBinding = DEFAULT_DB_BINDING,
+  cloudflareEnv,
+  accountId,
+  token,
+}: {
+  dbBinding?: string
+  cloudflareEnv?: string
+  accountId?: string
+  token?: string
+}): Config {
   const isRemote =
     cloudflareEnv && ["production", "preview"].includes(cloudflareEnv)
 
-  const databaseId = getD1DatabaseByBinding(
-    dbBinding,
-    cloudflareEnv,
-  ).database_id
+  const dbRootName = dbBinding.replace("DB_", "").toLowerCase()
+  const databaseId = getDbId(dbBinding, cloudflareEnv)
+  const dialect = "sqlite"
+  const schema = `./packages/db/${dbRootName}/schema.ts`
+  const out = `./packages/db/${dbRootName}/migrations`
 
   if (isRemote) {
+    if (!accountId || !token) {
+      throw new Error("Account ID and token are required for remote databases")
+    }
+
     return {
+      dialect,
+      schema,
+      out,
       driver: "d1-http",
       dbCredentials: {
-        accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
-        token: process.env.CLOUDFLARE_API_TOKEN,
+        accountId,
+        token,
         databaseId,
       },
     }
   }
 
   return {
+    dialect,
+    schema,
+    out,
     dbCredentials: {
       url: getLocalSqliteDbUrl(databaseId),
     },
   }
 }
 
-export default defineConfig({
-  dialect: "sqlite",
-  schema: "./packages/db/main/schema.ts",
-  out: "./packages/db/main/migrations",
-  ...getDbCredentials(process.env.DB_BINDING, process.env.CLOUDFLARE_ENV),
+export default getConfig({
+  dbBinding: process.env.DB_BINDING,
+  cloudflareEnv: process.env.CLOUDFLARE_ENV,
+  accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+  token: process.env.CLOUDFLARE_API_TOKEN,
 })
