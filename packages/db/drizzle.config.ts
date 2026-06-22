@@ -1,4 +1,3 @@
-import { config } from "@dotenvx/dotenvx"
 import { defineConfig } from "drizzle-kit"
 import glob from "fast-glob"
 import wranglerConfig from "../../wrangler.json"
@@ -37,8 +36,6 @@ function getDatabaseId(cloudflareEnv?: string) {
 }
 
 export function getDbCredentials() {
-  config({ path: ".env", quiet: true, ignore: ["MISSING_ENV_FILE"] })
-
   const isRemote =
     isValidCloudflareEnv(process.env.CLOUDFLARE_ENV) &&
     ["production", "preview"].includes(process.env.CLOUDFLARE_ENV)
