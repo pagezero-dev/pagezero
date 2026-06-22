@@ -180,7 +180,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: d1 migrations apply DB_MAIN --env ${{ env.APP_ENV }}
+          command: d1 migrations apply DB_MAIN --env ${{ env.APP_ENV }} --remote
 
   deploy:
     name: 🚀 Deploy
