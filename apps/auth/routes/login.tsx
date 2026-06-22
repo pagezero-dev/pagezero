@@ -6,6 +6,7 @@ import {
   getLoginPageData,
   loginFormAction,
   loginFormSchema,
+  requireAuthConfiguration,
   requireGuestUser,
 } from "@/auth/rpc"
 import { Turnstile } from "@/cloudflare/turnstile"
@@ -19,6 +20,7 @@ const loginSearchSchema = z.object({
 export const Route = createFileRoute("/login")({
   validateSearch: (search) => loginSearchSchema.parse(search),
   beforeLoad: async () => {
+    requireAuthConfiguration()
     await requireGuestUser()
   },
   loaderDeps: ({ search }) => ({ redirectTo: search.redirectTo ?? "/" }),

@@ -1,3 +1,4 @@
+import { env } from "cloudflare:workers"
 import { redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { getRequestUrl } from "@tanstack/react-start/server"
@@ -35,3 +36,13 @@ export const requireGuestUser = createServerFn({ method: "GET" }).handler(
     }
   },
 )
+
+export const requireAuthConfiguration = createServerFn({
+  method: "GET",
+}).handler(() => {
+  if (!env.OTP_SECRET || !env.SESSION_COOKIE_SECRET) {
+    throw new Error(
+      "Authentication OTP_SECRET or SESSION_COOKIE_SECRET is not configured",
+    )
+  }
+})
