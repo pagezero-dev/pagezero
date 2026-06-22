@@ -11,7 +11,7 @@ node_modules
 .DS_Store
 
 # DB
-/packages/db/schema.sql
+/packages/db/*/schema.sql
 
 # Cloudflare
 /.wrangler
