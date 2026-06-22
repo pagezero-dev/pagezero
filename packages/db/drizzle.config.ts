@@ -5,22 +5,6 @@ import wranglerConfig from "../../wrangler.json"
 const DEFAULT_DB_BINDING = "DB_MAIN"
 const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
 
-function durableObjectNamespaceIdFromName(uniqueKey: string, name: string) {
-  const key = crypto.createHash("sha256").update(uniqueKey).digest()
-  const nameHmac = crypto
-    .createHmac("sha256", key)
-    .update(name)
-    .digest()
-    .subarray(0, 16)
-  const hmac = crypto
-    .createHmac("sha256", key)
-    .update(nameHmac)
-    .digest()
-    .subarray(0, 16)
-
-  return Buffer.concat([nameHmac, hmac]).toString("hex")
-}
-
 type CloudflareEnv = keyof typeof wranglerConfig.env
 
 function isValidCloudflareEnv(value?: string): value is CloudflareEnv {
@@ -41,10 +25,22 @@ function getD1DatabaseByBinding(binding: string, cloudflareEnv?: string) {
 }
 
 function getLocalSqliteDbUrl(databaseId: string) {
-  const hash = durableObjectNamespaceIdFromName(
-    MINIFLARE_D1_UNIQUE_KEY,
-    databaseId,
-  )
+  const key = crypto
+    .createHash("sha256")
+    .update(MINIFLARE_D1_UNIQUE_KEY)
+    .digest()
+  const nameHmac = crypto
+    .createHmac("sha256", key)
+    .update(databaseId)
+    .digest()
+    .subarray(0, 16)
+  const hmac = crypto
+    .createHmac("sha256", key)
+    .update(nameHmac)
+    .digest()
+    .subarray(0, 16)
+
+  const hash = Buffer.concat([nameHmac, hmac]).toString("hex")
 
   return `./.wrangler/state/v3/d1/${MINIFLARE_D1_UNIQUE_KEY}/${hash}.sqlite`
 }
