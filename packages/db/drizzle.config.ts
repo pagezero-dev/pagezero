@@ -2,7 +2,7 @@ import crypto from "node:crypto"
 import { defineConfig } from "drizzle-kit"
 import wranglerConfig from "../../wrangler.json"
 
-const DB_BINDING = process.env.DB_BINDING || "DB_MAIN"
+const DEFAULT_DB_BINDING = "DB_MAIN"
 const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
 
 function durableObjectNamespaceIdFromName(uniqueKey: string, name: string) {
@@ -49,14 +49,16 @@ function getLocalSqliteDbUrl(databaseId: string) {
   return `./.wrangler/state/v3/d1/${MINIFLARE_D1_UNIQUE_KEY}/${hash}.sqlite`
 }
 
-export function getDbCredentials() {
+export function getDbCredentials(
+  dbBinding: string = DEFAULT_DB_BINDING,
+  cloudflareEnv?: string,
+) {
   const isRemote =
-    process.env.CLOUDFLARE_ENV &&
-    ["production", "preview"].includes(process.env.CLOUDFLARE_ENV)
+    cloudflareEnv && ["production", "preview"].includes(cloudflareEnv)
 
   const databaseId = getD1DatabaseByBinding(
-    DB_BINDING,
-    process.env.CLOUDFLARE_ENV,
+    dbBinding,
+    cloudflareEnv,
   ).database_id
 
   if (isRemote) {
@@ -81,5 +83,5 @@ export default defineConfig({
   dialect: "sqlite",
   schema: "./packages/db/main/schema.ts",
   out: "./packages/db/main/migrations",
-  ...getDbCredentials(),
+  ...getDbCredentials(process.env.DB_BINDING, process.env.CLOUDFLARE_ENV),
 })
