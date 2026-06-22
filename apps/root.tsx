@@ -64,7 +64,11 @@ function RootComponent() {
 }
 
 function RootErrorComponent({ error }: { error: unknown }) {
-  return <ErrorPage error={error} />
+  return (
+    <RootDocument>
+      <ErrorPage error={error} />
+    </RootDocument>
+  )
 }
 
 function RootNotFoundComponent() {

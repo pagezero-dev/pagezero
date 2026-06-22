@@ -20,7 +20,7 @@ const loginSearchSchema = z.object({
 export const Route = createFileRoute("/login")({
   validateSearch: (search) => loginSearchSchema.parse(search),
   beforeLoad: async () => {
-    requireAuthConfiguration()
+    await requireAuthConfiguration()
     await requireGuestUser()
   },
   loaderDeps: ({ search }) => ({ redirectTo: search.redirectTo ?? "/" }),
