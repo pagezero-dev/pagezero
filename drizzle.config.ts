@@ -1,9 +1,4 @@
 import { defineConfig } from "drizzle-kit"
-import { getDbCredentials } from "@/db/utils"
+import { getDrizzleConfig } from "@/db/config"
 
-export default defineConfig({
-  dialect: "sqlite",
-  schema: "./packages/db/main/schema.ts",
-  out: "./packages/db/main/migrations",
-  ...getDbCredentials(),
-})
+export default defineConfig(getDrizzleConfig())
