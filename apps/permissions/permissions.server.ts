@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm"
 import config, { userRoles } from "@/config"
-import { getDb } from "@/db"
-import * as schema from "@/db/schema"
+import { getMainDb } from "@/db/main"
+import * as schema from "@/db/main/schema"
 import type { UnionKeys } from "@/types/utils"
 
 export type PermissionsConfig = {
@@ -21,7 +21,7 @@ const getRolePermissions = (roleName: Role) => {
 }
 
 export async function hasUserRole(userId: number, roleName: Role) {
-  const db = getDb()
+  const db = getMainDb()
   const user = await db.query.users.findFirst({
     where: eq(schema.users.id, userId),
     with: {
@@ -40,7 +40,7 @@ export async function hasUserPermissions(
   userId: number,
   permissions: Permission[],
 ) {
-  const db = getDb()
+  const db = getMainDb()
   const user = await db.query.users.findFirst({
     where: eq(schema.users.id, userId),
     with: {
@@ -60,12 +60,12 @@ export async function hasUserPermissions(
 }
 
 export async function grantUserRole(userId: number, roleName: Role) {
-  const db = getDb()
+  const db = getMainDb()
   await db.insert(schema.userRoles).values({ userId, roleName })
 }
 
 export async function revokeUserRole(userId: number, roleName: Role) {
-  const db = getDb()
+  const db = getMainDb()
   await db
     .delete(schema.userRoles)
     .where(

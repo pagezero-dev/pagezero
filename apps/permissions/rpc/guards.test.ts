@@ -12,8 +12,8 @@ import {
   vi,
 } from "vitest"
 import { users } from "@/auth/db/schema"
-import { getDb } from "@/db"
-import * as schema from "@/db/schema"
+import { getMainDb } from "@/db/main"
+import * as schema from "@/db/main/schema"
 import { userRoles } from "../db/schema"
 import type { Permission, PermissionsConfig, Role } from "../permissions.server"
 import { requireUserPermissions, requireUserRole } from "./guards"
@@ -26,8 +26,8 @@ vi.mock("@tanstack/react-start", async (importOriginal) => {
   }
 })
 
-vi.mock("@/db", () => ({
-  getDb: vi.fn(),
+vi.mock("@/db/main", () => ({
+  getMainDb: vi.fn(),
 }))
 
 vi.mock("@/config", () => ({
@@ -50,12 +50,15 @@ describe("Guards", () => {
 
   beforeAll(async () => {
     // Create schema
-    const migrationSql = fs.readFileSync("./packages/db/schema.sql", "utf-8")
+    const migrationSql = fs.readFileSync(
+      "./packages/db/main/schema.sql",
+      "utf-8",
+    )
     sqlite.exec(migrationSql)
   })
 
   beforeEach(async () => {
-    vi.mocked(getDb).mockReturnValue(db as ReturnType<typeof getDb>)
+    vi.mocked(getMainDb).mockReturnValue(db as ReturnType<typeof getMainDb>)
 
     // Clear tables
     sqlite.exec("PRAGMA foreign_keys = OFF")

@@ -18,7 +18,7 @@
     "db:clean": "tsx ./packages/db/scripts/clean.ts",
     "db:doctor": "drizzle-kit up && drizzle-kit check",
     "db:drop": "drizzle-kit drop",
-    "db:export": "drizzle-kit export > ./packages/db/schema.sql",
+    "db:export": "drizzle-kit export > ./packages/db/main/schema.sql",
     "db:generate": "bun run db:generate:imports && drizzle-kit generate",
     "db:generate:imports": "bun ./packages/db/scripts/schema-imports.ts",
     "db:generate:reset": "rm -rf ./packages/db/migrations && bun run db:generate --name=init",

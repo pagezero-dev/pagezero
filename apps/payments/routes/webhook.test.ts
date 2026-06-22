@@ -13,9 +13,9 @@ import {
   vi,
 } from "vitest"
 import { getUserByEmail } from "@/auth/user.server"
-import { getDb } from "@/db"
-import * as schema from "@/db/schema"
-import { userRoles, users } from "@/db/schema"
+import { getMainDb } from "@/db/main"
+import * as schema from "@/db/main/schema"
+import { userRoles, users } from "@/db/main/schema"
 import {
   sendAccessFailureEmail,
   sendAccessGrantedEmail,
@@ -45,8 +45,8 @@ vi.mock("cloudflare:workers", () => ({
   env: mockEnv,
 }))
 
-vi.mock("@/db", () => ({
-  getDb: vi.fn(),
+vi.mock("@/db/main", () => ({
+  getMainDb: vi.fn(),
 }))
 
 vi.mock("@polar-sh/sdk/webhooks")
@@ -98,7 +98,10 @@ describe("Webhook", () => {
   })()
 
   beforeAll(async () => {
-    const migrationSql = fs.readFileSync("./packages/db/schema.sql", "utf-8")
+    const migrationSql = fs.readFileSync(
+      "./packages/db/main/schema.sql",
+      "utf-8",
+    )
     sqlite.exec(migrationSql)
   })
 
@@ -111,7 +114,7 @@ describe("Webhook", () => {
       Reflect.deleteProperty(mockEnv, key)
     }
 
-    vi.mocked(getDb).mockReturnValue(db as ReturnType<typeof getDb>)
+    vi.mocked(getMainDb).mockReturnValue(db as ReturnType<typeof getMainDb>)
 
     sqlite.exec("PRAGMA foreign_keys = OFF")
     await db.delete(users)
