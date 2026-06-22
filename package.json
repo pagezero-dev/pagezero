@@ -90,7 +90,6 @@
     "better-sqlite3": "12.8.0",
     "commander": "14.0.3",
     "drizzle-kit": "0.31.10",
-    "fast-glob": "3.3.3",
     "happy-dom": "20.8.9",
     "rehype-highlight": "7.0.2",
     "remark-gfm": "4.0.1",

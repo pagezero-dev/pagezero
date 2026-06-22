@@ -1,46 +1,63 @@
+import crypto from "node:crypto"
 import { defineConfig } from "drizzle-kit"
-import glob from "fast-glob"
 import wranglerConfig from "../../wrangler.json"
 
-function getLocalSqliteDbUrl() {
-  const dbUrls = glob.sync("./.wrangler/state/v3/d1/**/*.sqlite", {
-    ignore: ["./.wrangler/state/v3/d1/**/metadata.sqlite*"],
-  })
+const DB_BINDING = process.env.DB_BINDING || "DB_MAIN"
+const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
 
-  if (dbUrls.length > 1) {
-    throw new Error("Multiple SQLite databases found")
-  }
+function durableObjectNamespaceIdFromName(uniqueKey: string, name: string) {
+  const key = crypto.createHash("sha256").update(uniqueKey).digest()
+  const nameHmac = crypto
+    .createHmac("sha256", key)
+    .update(name)
+    .digest()
+    .subarray(0, 16)
+  const hmac = crypto
+    .createHmac("sha256", key)
+    .update(nameHmac)
+    .digest()
+    .subarray(0, 16)
 
-  if (dbUrls.length === 0) {
-    throw new Error("No SQLite databases found")
-  }
-
-  return dbUrls[0]
+  return Buffer.concat([nameHmac, hmac]).toString("hex")
 }
 
-function isValidCloudflareEnv(
-  value?: string,
-): value is keyof typeof wranglerConfig.env {
+type CloudflareEnv = keyof typeof wranglerConfig.env
+
+function isValidCloudflareEnv(value?: string): value is CloudflareEnv {
   return !!value && value in wranglerConfig.env
 }
 
-function getDatabaseId(cloudflareEnv?: string) {
-  if (
-    isValidCloudflareEnv(cloudflareEnv) &&
-    ["production", "preview"].includes(cloudflareEnv)
-  ) {
-    return wranglerConfig.env[cloudflareEnv].d1_databases[0].database_id
+function getD1DatabaseByBinding(binding: string, cloudflareEnv?: string) {
+  const databases = isValidCloudflareEnv(cloudflareEnv)
+    ? wranglerConfig.env[cloudflareEnv].d1_databases
+    : wranglerConfig.d1_databases
+  const database = databases.find((db) => db.binding === binding)
+
+  if (!database) {
+    throw new Error(`D1 database binding not found: ${binding}`)
   }
 
-  return wranglerConfig.d1_databases[0].database_id
+  return database
+}
+
+function getLocalSqliteDbUrl(databaseId: string) {
+  const hash = durableObjectNamespaceIdFromName(
+    MINIFLARE_D1_UNIQUE_KEY,
+    databaseId,
+  )
+
+  return `./.wrangler/state/v3/d1/${MINIFLARE_D1_UNIQUE_KEY}/${hash}.sqlite`
 }
 
 export function getDbCredentials() {
   const isRemote =
-    isValidCloudflareEnv(process.env.CLOUDFLARE_ENV) &&
+    process.env.CLOUDFLARE_ENV &&
     ["production", "preview"].includes(process.env.CLOUDFLARE_ENV)
 
-  const databaseId = getDatabaseId(process.env.CLOUDFLARE_ENV)
+  const databaseId = getD1DatabaseByBinding(
+    DB_BINDING,
+    process.env.CLOUDFLARE_ENV,
+  ).database_id
 
   if (isRemote) {
     return {
@@ -55,7 +72,7 @@ export function getDbCredentials() {
 
   return {
     dbCredentials: {
-      url: getLocalSqliteDbUrl(),
+      url: getLocalSqliteDbUrl(databaseId),
     },
   }
 }
