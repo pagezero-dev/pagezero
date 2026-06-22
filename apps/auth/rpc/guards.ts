@@ -39,7 +39,7 @@ export const requireGuestUser = createServerFn({ method: "GET" }).handler(
 
 export const requireAuthConfiguration = createServerFn({
   method: "GET",
-}).handler(() => {
+}).handler(async () => {
   if (!env.OTP_SECRET || !env.SESSION_COOKIE_SECRET) {
     throw new Error(
       "Authentication OTP_SECRET or SESSION_COOKIE_SECRET is not configured",
