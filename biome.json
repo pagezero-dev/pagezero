@@ -8,7 +8,7 @@
   "files": {
     "includes": [
       "**",
-      "!packages/db/migrations/meta/*",
+      "!packages/db/*/migrations/meta/*",
       "!worker-configuration.d.ts",
       "!apps/routeTree.gen.ts",
       "!dist"
