@@ -1,4 +1,4 @@
 import { defineConfig } from "drizzle-kit"
-import { getDrizzleConfig } from "@/db/config"
+import config from "./packages/db/drizzle.config"
 
-export default defineConfig(getDrizzleConfig())
+export default defineConfig(config)

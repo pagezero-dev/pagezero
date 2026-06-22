@@ -1,9 +1,8 @@
 import { config } from "@dotenvx/dotenvx"
-import Database from "better-sqlite3"
-import { drizzle as drizzleLocal } from "drizzle-orm/better-sqlite3"
+import type { Config } from "drizzle-kit"
+import { defineConfig } from "drizzle-kit"
 import glob from "fast-glob"
 import wranglerConfig from "../../wrangler.json"
-import { drizzle as drizzleRemote } from "./drivers/d1-http"
 
 function getLocalSqliteDbUrl() {
   const dbUrls = glob.sync("./.wrangler/state/v3/d1/**/*.sqlite", {
@@ -19,29 +18,6 @@ function getLocalSqliteDbUrl() {
   }
 
   return dbUrls[0]
-}
-
-export function getLocalOrRemoteDb() {
-  config({ path: ".env" })
-  if (
-    process.env.CLOUDFLARE_ACCOUNT_ID &&
-    process.env.CLOUDFLARE_DATABASE_ID &&
-    process.env.CLOUDFLARE_API_TOKEN
-  ) {
-    console.log("🎫 Cloudflare credentials found")
-    console.log("🔗 Connecting to remote db...")
-    return drizzleRemote(
-      {
-        accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
-        databaseId: process.env.CLOUDFLARE_DATABASE_ID,
-        token: process.env.CLOUDFLARE_API_TOKEN,
-      },
-      { logger: true },
-    )
-  } else {
-    console.log("🔗 Connecting to local db...")
-    return drizzleLocal(new Database(getLocalSqliteDbUrl()), { logger: true })
-  }
 }
 
 function isValidCloudflareEnv(
@@ -87,3 +63,10 @@ export function getDbCredentials() {
     },
   }
 }
+
+export default defineConfig({
+  dialect: "sqlite",
+  schema: "./packages/db/main/schema.ts",
+  out: "./packages/db/main/migrations",
+  ...getDbCredentials(),
+})
