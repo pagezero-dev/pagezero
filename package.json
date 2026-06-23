@@ -29,6 +29,7 @@
     "dev:email": "email dev -d ./apps/email/templates -p 3001",
     "doctor": "bun run check && bun run check:types && bun run test",
     "generate": "tsx ./packages/generate/generate.ts",
+    "generate:secret": "bun -e \"console.log(require('crypto').randomBytes(32).toString('hex'))\"",
     "generate:types": "wrangler types",
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
     "git:reset": "rm -rf .git && git init .",
