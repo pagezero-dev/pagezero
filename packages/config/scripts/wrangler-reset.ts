@@ -14,6 +14,10 @@ wranglerJson.env.preview.d1_databases[0].database_name = `${projectName}-preview
 wranglerJson.env.test.d1_databases[0].database_name = `${projectName}-test`
 delete wranglerJson.env.production.d1_databases[0].database_id
 delete wranglerJson.env.preview.d1_databases[0].database_id
+wranglerJson.env.production.vars.CLOUDFLARE_TURNSTILE_PUBLIC_KEY = ""
+wranglerJson.env.production.vars.NEWSLETTER_SEGMENT_ID = ""
+wranglerJson.env.preview.vars.CLOUDFLARE_TURNSTILE_PUBLIC_KEY = ""
+wranglerJson.env.preview.vars.NEWSLETTER_SEGMENT_ID = ""
 
 await write("./wrangler.json", JSON.stringify(wranglerJson, null, 2))
 
