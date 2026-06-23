@@ -10,6 +10,8 @@ import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 import { routes } from "./apps/routes"
 
+// import config from "./packages/config"
+
 const isStorybook = process.argv[1]?.includes("storybook")
 
 export default defineConfig({
@@ -56,6 +58,18 @@ export default defineConfig({
               virtualRouteConfig: routes,
               generatedRouteTree: "routeTree.gen.ts",
             },
+            // Enables prerendering for selected pages and sitemap generation
+            // prerender: {
+            //   enabled: true,
+            //   crawlLinks: true,
+            //   filter: ({ path }) =>
+            //     ["/", "/payments/success"].includes(path) ||
+            //     ["/blog", "/legal"].some((prefix) => path.startsWith(prefix)),
+            // },
+            // sitemap: {
+            //   enabled: true,
+            //   host: config.core.websiteUrl,
+            // },
           }),
           react(),
         ]
