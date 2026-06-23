@@ -12,8 +12,8 @@ wranglerJson.d1_databases[0].database_name = `${projectName}-development`
 wranglerJson.env.production.d1_databases[0].database_name = `${projectName}-production`
 wranglerJson.env.preview.d1_databases[0].database_name = `${projectName}-preview`
 wranglerJson.env.test.d1_databases[0].database_name = `${projectName}-test`
-wranglerJson.env.production.d1_databases[0].database_id = "<DATABASE_ID>"
-wranglerJson.env.preview.d1_databases[0].database_id = "<DATABASE_ID>"
+delete wranglerJson.env.production.d1_databases[0].database_id
+delete wranglerJson.env.preview.d1_databases[0].database_id
 
 await write("./wrangler.json", JSON.stringify(wranglerJson, null, 2))
 
