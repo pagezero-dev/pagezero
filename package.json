@@ -26,6 +26,7 @@
     "deploy:production": "CLOUDFLARE_ENV=production bun run build && wrangler deploy",
     "deploy:preview": "CLOUDFLARE_ENV=preview bun run build && wrangler deploy",
     "dev": "NODE_OPTIONS=\"--inspect\" vite dev",
+    "dev:email": "email dev -d ./apps/email/templates -p 3001",
     "doctor": "bun run check && bun run check:types && bun run test",
     "generate": "tsx ./packages/generate/generate.ts",
     "generate:types": "wrangler types",
@@ -35,14 +36,14 @@
     "setup": "bun install && bun run setup:env && playwright install --with-deps chromium && CI=1 bun run db:migrate",
     "setup:env": "cp .init.env .env && cp .init.env.test .env.test",
     "setup:reset": "git clean -fdxq && bun run setup",
+    "setup:wrangler": "bun ./packages/config/scripts/wrangler-reset.ts",
     "storybook": "storybook dev -p 6006 --no-open",
     "test": "bun run db:export && vitest run",
     "test:coverage": "bun run db:export && vitest run --coverage",
     "test:e2e": "playwright test --project=e2e",
     "test:e2e:ui": "playwright test --ui --project=e2e",
     "test:smoke": "playwright test --project=smoke",
-    "test:watch": "bun run db:export && vitest watch",
-    "dev:email": "email dev -d ./apps/email/templates -p 3001"
+    "test:watch": "bun run db:export && vitest watch"
   },
   "dependencies": {
     "@mdx-js/react": "3.1.1",
