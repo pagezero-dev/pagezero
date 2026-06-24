@@ -21,6 +21,10 @@ function getDbId(binding: string, cloudflareEnv?: string) {
     throw new Error(`D1 database binding not found: ${binding}`)
   }
 
+  if (!("database_id" in database)) {
+    throw new Error(`D1 database ID not found: ${binding}`)
+  }
+
   return database.database_id
 }
 
