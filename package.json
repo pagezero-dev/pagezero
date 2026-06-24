@@ -37,7 +37,7 @@
     "setup": "bun install && bun run setup:env && playwright install --with-deps chromium && CI=1 bun run db:migrate",
     "setup:env": "cp .init.env .env && cp .init.env.test .env.test",
     "setup:reset": "git clean -fdxq && bun run setup",
-    "setup:wrangler": "bun ./packages/config/scripts/wrangler-reset.ts",
+    "setup:wrangler": "bun ./packages/config/scripts/wrangler-reset.ts && bun check:fix",
     "storybook": "storybook dev -p 6006 --no-open",
     "test": "bun run db:export && vitest run",
     "test:coverage": "bun run db:export && vitest run --coverage",
