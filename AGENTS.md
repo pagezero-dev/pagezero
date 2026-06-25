@@ -34,7 +34,6 @@ PageZERO is a full-stack TypeScript web application starter built for Cloudflare
 │   ├── config/            # Application configuration
 │   ├── crypto/            # Cryptographic utilities
 │   ├── db/                # Database schema, migrations, scripts
-│   ├── generate/          # Code generation templates
 │   ├── types/             # Shared TypeScript types
 │   ├── ui/                # UI component library (shadcn-style)
 │   └── ui-lite/           # Lightweight UI components (no external deps)
@@ -266,16 +265,14 @@ bun run test:e2e:ui  # Run e2e tests with UI
 bun run storybook    # Start Storybook (localhost:6006)
 bun run db:studio    # Open Drizzle Studio
 bun run db:migrate   # Run database migrations
-bun run generate     # Generate new component scaffold
 ```
 
 ## Adding New Features
 
 ### New UI Component
 
-1. Create folder in `packages/ui/component-name/`
-2. Add `component-name.tsx`, `index.ts`, `component-name.test.tsx`, `component-name.stories.tsx`
-3. Or use: `bun run generate` to scaffold
+1. Use the `create-component` skill (`.agents/skills/create-component/SKILL.md`) to scaffold
+2. Or manually: create folder in `packages/ui/component-name/` and add `component-name.tsx`, `index.ts`, `component-name.test.tsx`, `component-name.stories.tsx`
 
 ### New Feature Module
 
