@@ -19,7 +19,7 @@ const confirmSearchSchema = z.object({
 })
 
 export const Route = createFileRoute("/newsletter/confirm")({
-  validateSearch: (search) => confirmSearchSchema.parse(search),
+  validateSearch: confirmSearchSchema,
   loaderDeps: ({ search }) => ({
     email: search.email,
     expiresAt: search.expiresAt,

@@ -14,7 +14,13 @@ export const confirmFormSchema = z.object({
 })
 
 export const getConfirmPageData = createServerFn({ method: "GET" })
-  .validator(confirmFormSchema)
+  .validator((data) => {
+    try {
+      return confirmFormSchema.parse(data)
+    } catch {
+      throw notFound()
+    }
+  })
   .handler(async ({ data }) => {
     if (!env.OTP_SECRET) {
       throw new Error("OTP_SECRET is not set")
