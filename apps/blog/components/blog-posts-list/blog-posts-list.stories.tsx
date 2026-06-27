@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker"
-import type { Meta, StoryObj } from "@storybook/react-vite"
-import { withRouter } from "@/test/storybook"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import {
   type BlogPostFrontmatterWithSlug,
   BlogPostsList,
@@ -34,7 +33,6 @@ const meta = {
         <Story />
       </div>
     ),
-    withRouter,
   ],
 } satisfies Meta<typeof BlogPostsList>
 

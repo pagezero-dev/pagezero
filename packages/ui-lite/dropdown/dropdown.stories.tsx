@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { ChevronDown, LogOut, Settings, User } from "lucide-react"
 import { Button } from "@/ui/button"
 import { Dropdown } from "./dropdown"

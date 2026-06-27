@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { Image, Music, Video } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs"
 

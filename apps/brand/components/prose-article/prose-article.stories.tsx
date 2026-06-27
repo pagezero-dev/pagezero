@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker"
-import type { Meta, StoryObj } from "@storybook/react-vite"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { Heading, P } from "@/ui/typography"
 import { ProseArticle } from "./prose-article"
 

@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker"
-import type { Meta, StoryObj } from "@storybook/react-vite"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { ChevronDown } from "lucide-react"
 import { Button } from "@/ui/button"
 import { Dropdown } from "@/ui-lite/dropdown"

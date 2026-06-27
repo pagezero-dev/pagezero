@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker"
-import type { Meta, StoryObj } from "@storybook/react-vite"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { Cog } from "lucide-react"
 import { fn } from "storybook/test"
 import { Button } from "./button"

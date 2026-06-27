@@ -77,7 +77,7 @@ describe("<{ComponentName} />", () => {
 ### `{component-name}.stories.tsx` - Storybook Stories
 
 ```tsx
-import type { Meta, StoryObj } from "@storybook/react-vite"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 
 import { {ComponentName} } from "./{component-name}"
 
