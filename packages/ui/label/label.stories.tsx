@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { Checkbox } from "../checkbox"
 import { Input } from "../input"
 import { Label } from "./label"

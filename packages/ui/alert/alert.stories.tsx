@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { AlertTriangleIcon, InfoIcon } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "./alert"

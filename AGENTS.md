@@ -215,11 +215,11 @@ describe("<Component />", () => {
 ### Storybook
 
 - Stories go alongside components
-- Use `Meta` and `StoryObj` types from `@storybook/react-vite`
+- Use `Meta` and `StoryObj` types from `@storybook/tanstack-react`
 - Title format: `"Apps/ModuleName/ComponentName"` or `"Packages/UI/ComponentName"`
 
 ```typescript
-import type { Meta, StoryObj } from "@storybook/react-vite"
+import type { Meta, StoryObj } from "@storybook/tanstack-react"
 
 const meta = {
   title: "Packages/UI/Button",

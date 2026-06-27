@@ -1,5 +1,5 @@
 import { withThemeByClassName } from "@storybook/addon-themes"
-import type { Preview } from "@storybook/react-vite"
+import type { Preview } from "@storybook/tanstack-react"
 
 import "../apps/core/styles/index.css"
 
