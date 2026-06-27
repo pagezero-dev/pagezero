@@ -5,7 +5,8 @@
   "main": "@tanstack/react-start/server-entry",
   "assets": {
     "directory": "./dist/client",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    "html_handling": "drop-trailing-slash"
   },
   "preview_urls": true,
   "observability": {
