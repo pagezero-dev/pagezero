@@ -177,7 +177,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: 🚚 Database migration
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: d1 migrations apply DB_MAIN --env ${{ env.APP_ENV }} --remote
@@ -216,7 +216,7 @@ jobs:
 
       - name: 🚀 Deploy
         id: deploy
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
