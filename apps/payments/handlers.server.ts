@@ -16,6 +16,11 @@ import type {
 export async function onPaymentSuccess(
   event: WebhookOrderPaidPayload | WebhookSubscriptionActivePayload,
 ) {
+  const email = event.data.customer.email
+  if (!email) {
+    throw new Error("Customer email not found")
+  }
+
   try {
     const productId = event.data.productId
     const productConfig = Object.values(config.payments.products).find(
@@ -27,7 +32,7 @@ export async function onPaymentSuccess(
     if (!productConfig) {
       throw new Error("Product not found")
     }
-    const user = await getOrCreateUserByEmail(event.data.customer.email)
+    const user = await getOrCreateUserByEmail(email)
     const userRoleToGrant = productConfig.userRoleToGrant
     if (await hasUserRole(user.id, userRoleToGrant)) {
       throw new Error("User already has access")
@@ -44,9 +49,7 @@ export async function onPaymentSuccess(
         return new Response(error.message, { status: 200 })
       }
       if (error.message === "Product not found") {
-        await sendAccessFailureEmail({
-          to: event.data.customer.email,
-        })
+        await sendAccessFailureEmail({ to: email })
         return new Response(error.message, { status: 200 })
       }
     }
@@ -57,6 +60,11 @@ export async function onPaymentSuccess(
 export async function onPaymentRevoked(
   event: WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload,
 ) {
+  const email = event.data.customer.email
+  if (!email) {
+    throw new Error("Customer email not found")
+  }
+
   try {
     const productId = event.data.productId
     const productConfig = Object.values(config.payments.products).find(
@@ -68,7 +76,7 @@ export async function onPaymentRevoked(
     if (!productConfig) {
       throw new Error("Product not found")
     }
-    const user = await getUserByEmail(event.data.customer.email)
+    const user = await getUserByEmail(email)
     if (!user) {
       throw new Error("User not found")
     }
