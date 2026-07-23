@@ -7,7 +7,6 @@
     "packages/db/*/migrations/meta/*",
     "worker-configuration.d.ts",
     "apps/routeTree.gen.ts",
-    "dist",
     "**/*.{md,mdx,yml,yaml}",
     "apps/core/styles/fonts.css",
     "apps/payments/routes/webhook.test.ts"
