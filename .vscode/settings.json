@@ -1,8 +1,9 @@
 {
   "editor.defaultFormatter": "oxc.oxc-vscode",
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false, // disable default behavior
   "editor.codeActionsOnSave": {
-    "source.fixAll.oxc": "explicit"
+    "source.format.oxc": "always", // run formatter first
+    "source.fixAll.oxc": "always", // run lint fixes after
   },
   "tailwindCSS.classFunctions": ["cva", "cn", "clsx"],
   "files.associations": {
