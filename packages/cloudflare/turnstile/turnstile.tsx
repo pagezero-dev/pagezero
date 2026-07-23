@@ -45,7 +45,7 @@ export const Turnstile = ({ siteKey, subjectKey }: TurnstileProps) => {
   }, [])
 
   // Render the turnstile widget once the script is ready and the placeholder is in view
-  // biome-ignore lint/correctness/useExhaustiveDependencies: executing effect on siteKey, subjectKey, isLoaded, isInView change is expected
+  // oxlint-disable-next-line react/exhaustive-deps -- executing effect on siteKey, subjectKey, isLoaded, isInView change is expected
   useEffect(() => {
     const ref = containerRef.current
     if (!isLoaded || !isInView || !ref) {

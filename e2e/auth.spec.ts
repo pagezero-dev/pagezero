@@ -42,7 +42,7 @@ test("basic authentication flow", async ({ page }) => {
   expect(otpCodeFromEmail).toMatch(/^\d{6}$/)
 
   // Provide OTP
-  // biome-ignore lint/style/noNonNullAssertion: otpCodeFromEmail is not null at this point
+  // oxlint-disable-next-line typescript/no-non-null-assertion -- otpCodeFromEmail is not null at this point
   await page.getByPlaceholder("Verification code").fill(otpCodeFromEmail!)
   await page.getByRole("button", { name: "Verify" }).click()
   await page.waitForURL("/")

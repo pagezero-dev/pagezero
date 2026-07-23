@@ -27,7 +27,7 @@ export const SignIn = ({
   const emailInputId = useId()
   const otpInputId = useId()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: executing effect on error, email change is expected
+  // oxlint-disable-next-line react/exhaustive-deps -- executing effect on error, email change is expected
   useEffect(() => {
     setOtp("")
   }, [error, email])

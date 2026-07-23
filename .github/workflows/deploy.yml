@@ -43,7 +43,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: 💎 Quality check
-        run: bunx biome ci
+        run: bun run check
 
   types:
     name: ʦ Types check

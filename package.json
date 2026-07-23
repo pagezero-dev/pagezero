@@ -12,8 +12,8 @@
   },
   "scripts": {
     "build": "vite build",
-    "check": "biome check",
-    "check:fix": "biome check --write",
+    "check": "oxlint && oxfmt --check",
+    "check:fix": "oxlint --fix && oxfmt",
     "check:types": "tsc",
     "db:clean": "rm -rf ./.wrangler/state/v3/d1",
     "db:drop": "drizzle-kit drop",
@@ -66,7 +66,6 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.15",
     "@cloudflare/vite-plugin": "1.36.4",
     "@faker-js/faker": "10.5.0",
     "@mdx-js/rollup": "3.1.1",
@@ -90,6 +89,8 @@
     "better-sqlite3": "12.11.1",
     "drizzle-kit": "0.31.10",
     "happy-dom": "20.10.6",
+    "oxfmt": "0.60.0",
+    "oxlint": "1.75.0",
     "rehype-highlight": "7.0.2",
     "remark-gfm": "4.0.1",
     "rollup-plugin-visualizer": "7.0.1",
