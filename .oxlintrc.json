@@ -2,13 +2,7 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "oxc", "react"],
   "categories": {
-    "correctness": "error",
-    "suspicious": "warn",
-    "pedantic": "off",
-    "perf": "off",
-    "style": "off",
-    "restriction": "off",
-    "nursery": "off"
+    "suspicious": "warn"
   },
   "settings": {
     "react": {
@@ -16,14 +10,10 @@
     }
   },
   "rules": {
-    "typescript/consistent-type-imports": "off",
     "react/react-in-jsx-scope": "off",
     "unicorn/consistent-function-scoping": "off",
     "unicorn/no-array-sort": "off",
     "no-shadow": "off"
-  },
-  "env": {
-    "builtin": true
   },
   "ignorePatterns": [
     "packages/db/*/migrations/meta/*",

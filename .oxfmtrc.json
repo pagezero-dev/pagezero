@@ -1,16 +1,7 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "useTabs": false,
-  "tabWidth": 2,
   "printWidth": 80,
-  "singleQuote": false,
-  "jsxSingleQuote": false,
-  "quoteProps": "as-needed",
-  "trailingComma": "all",
   "semi": false,
-  "arrowParens": "always",
-  "bracketSameLine": false,
-  "bracketSpacing": true,
   "sortPackageJson": false,
   "ignorePatterns": [
     "packages/db/*/migrations/meta/*",
