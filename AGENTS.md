@@ -10,7 +10,7 @@ PageZERO is a full-stack TypeScript web application starter built for Cloudflare
 
 - **Frontend**: React 19, TanStack Router, TanStack Start, TanStack Query, TailwindCSS 4, Radix UI
 - **Backend**: Cloudflare Workers, Drizzle ORM, D1 SQLite
-- **Tooling**: Bun (package manager), Biome (linting/formatting), Vitest (unit tests), Playwright (e2e tests), Storybook (UI development)
+- **Tooling**: Bun (package manager), Oxlint (linting), Oxfmt (formatting), Vitest (unit tests), Playwright (e2e tests), Storybook (UI development)
 - **Email**: React Email, Resend
 - **Payments**: Polar.sh integration
 
@@ -240,15 +240,15 @@ export const Primary: Story = {
 
 ### Formatting & Linting
 
-- **Biome** handles both formatting and linting
+- **Oxlint** handles linting; **Oxfmt** handles formatting
 - Indentation: 2 spaces
 - Quotes: double quotes
 - Semicolons: as needed (ASI)
-- Tailwind classes: sorted automatically via `useSortedClasses` rule
+- Config: `.oxlintrc.json` (lint), `.oxfmtrc.json` (format)
 
 Run checks:
 ```bash
-bun run check        # Check formatting and linting
+bun run check        # Check linting and formatting
 bun run check:fix    # Auto-fix issues
 bun run check:types  # TypeScript type checking
 ```
@@ -299,7 +299,7 @@ bun run db:migrate   # Run database migrations
 ## CI/CD Pipeline
 
 GitHub Actions workflow (`.github/workflows/deploy.yml`):
-1. Quality check (Biome)
+1. Quality check (Oxlint + Oxfmt)
 2. Type check (TypeScript)
 3. Unit tests (Vitest)
 4. E2E tests (Playwright)
@@ -323,6 +323,7 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`):
 | `packages/config/index.ts` | App configuration |
 | `apps/auth/session.server.ts` | Session helpers (`useAppSession`, `updateAppSession`, `clearAppSession`) |
 | `vite.config.ts` | Vite + TanStack Start + Vitest configuration |
-| `biome.json` | Linting/formatting rules |
+| `.oxlintrc.json` | Oxlint rules |
+| `.oxfmtrc.json` | Oxfmt formatting options |
 | `drizzle.config.ts` | Database configuration |
 | `wrangler.json` | Cloudflare Workers config |

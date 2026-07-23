@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "react"],
+  "categories": {
+    "suspicious": "warn"
+  },
+  "settings": {
+    "react": {
+      "version": "19.2.5"
+    }
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/no-array-sort": "off",
+    "no-shadow": "off"
+  },
+  "ignorePatterns": [
+    "packages/db/*/migrations/meta/*",
+    "worker-configuration.d.ts",
+    "apps/routeTree.gen.ts"
+  ]
+}

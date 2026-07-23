@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80,
+  "semi": false,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "packages/db/*/migrations/meta/*",
+    "worker-configuration.d.ts",
+    "apps/routeTree.gen.ts",
+    "**/*.{md,mdx,yml,yaml}",
+    "apps/core/styles/fonts.css",
+    "apps/payments/routes/webhook.test.ts"
+  ]
+}

@@ -1,8 +1,9 @@
 {
-  "editor.defaultFormatter": "biomejs.biome",
-  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": false, // disable default behavior
   "editor.codeActionsOnSave": {
-    "source.fixAll.biome": "explicit"
+    "source.format.oxc": "always", // run formatter first
+    "source.fixAll.oxc": "always" // run lint fixes after
   },
   "tailwindCSS.classFunctions": ["cva", "cn", "clsx"],
   "files.associations": {
