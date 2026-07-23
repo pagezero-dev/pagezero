@@ -4,7 +4,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "explicit"
   },
-  "oxc.fmt.configPath": ".oxfmtrc.json",
   "tailwindCSS.classFunctions": ["cva", "cn", "clsx"],
   "files.associations": {
     "*.css": "tailwindcss"
