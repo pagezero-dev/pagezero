@@ -40,10 +40,7 @@ const Link = ({
   const Comp = asChild ? SlotPrimitive.Slot : "a"
 
   return (
-    <Comp
-      className={cn(linkVariants({ size, underline, className }))}
-      {...props}
-    >
+    <Comp className={cn(linkVariants({ size, underline, className }))} {...props}>
       {children}
     </Comp>
   )

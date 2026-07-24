@@ -1,6 +1,8 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/tanstack-react"
+
 import { Button } from "@/ui/button"
+
 import { Dialog } from "./dialog"
 
 const meta = {

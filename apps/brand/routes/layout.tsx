@@ -1,12 +1,13 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router"
 import { ChevronDown } from "lucide-react"
+
 import { useLogout, useUser } from "@/auth/hooks"
 import { Footer } from "@/brand/components/footer"
 import { Header } from "@/brand/components/header"
 import { Logo } from "@/brand/components/logo"
 import config from "@/config"
-import { Button } from "@/ui/button"
 import { Dropdown } from "@/ui-lite/dropdown"
+import { Button } from "@/ui/button"
 
 export const Route = createFileRoute("/_brand-layout")({
   component: ContentLayout,
@@ -21,7 +22,7 @@ function ContentLayout() {
       <Header
         position="absolute"
         logo={
-          <a href="/" className="flex items-center gap-2 font-bold text-lg">
+          <a href="/" className="flex items-center gap-2 text-lg font-bold">
             <Logo className="size-9" />
             {config.core.projectName}
           </a>

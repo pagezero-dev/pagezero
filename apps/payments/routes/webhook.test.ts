@@ -1,17 +1,11 @@
 import fs from "node:fs"
+
 import { validateEvent, WebhookVerificationError } from "@polar-sh/sdk/webhooks"
 import Database from "better-sqlite3"
 import { drizzle } from "drizzle-orm/better-sqlite3"
 import type { DrizzleD1Database } from "drizzle-orm/d1"
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest"
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
+
 import { getUserByEmail } from "@/auth/user.server"
 import { getMainDb } from "@/db/main"
 import * as schema from "@/db/main/schema"
@@ -21,12 +15,8 @@ import {
   sendAccessGrantedEmail,
   sendAccessRevokedEmail,
 } from "@/email/templates.server"
-import {
-  grantUserRole,
-  hasUserRole,
-  type PermissionsConfig,
-  type Role,
-} from "@/permissions"
+import { grantUserRole, hasUserRole, type PermissionsConfig, type Role } from "@/permissions"
+
 import type {
   PaymentsConfig,
   WebhookEvents,
@@ -84,9 +74,7 @@ vi.mock("@/config", () => ({
 
 describe("Webhook", () => {
   const sqlite = new Database(":memory:")
-  const db = drizzle(sqlite, { schema }) as unknown as DrizzleD1Database<
-    typeof schema
-  >
+  const db = drizzle(sqlite, { schema }) as unknown as DrizzleD1Database<typeof schema>
   const existingUserId = 1
   const postHandler = (() => {
     const handlers = Route.options.server?.handlers
@@ -98,10 +86,7 @@ describe("Webhook", () => {
   })()
 
   beforeAll(async () => {
-    const migrationSql = fs.readFileSync(
-      "./packages/db/main/schema.sql",
-      "utf-8",
-    )
+    const migrationSql = fs.readFileSync("./packages/db/main/schema.sql", "utf-8")
     sqlite.exec(migrationSql)
   })
 
@@ -121,9 +106,7 @@ describe("Webhook", () => {
     await db.delete(userRoles)
     sqlite.exec("PRAGMA foreign_keys = ON")
 
-    await db
-      .insert(users)
-      .values([{ id: existingUserId, email: "existing@example.com" }])
+    await db.insert(users).values([{ id: existingUserId, email: "existing@example.com" }])
   })
 
   function setEnv(env: Partial<Env>) {
@@ -168,10 +151,7 @@ describe("Webhook", () => {
     expect(await response.text()).toBe("Event not handled")
   })
 
-  describe.each([
-    "order.paid",
-    "subscription.active",
-  ])("on '%s' event", async (eventType) => {
+  describe.each(["order.paid", "subscription.active"])("on '%s' event", async (eventType) => {
     it("grants access to a new user and returns HTTP 201", async () => {
       vi.mocked(validateEvent).mockReturnValue({
         type: eventType,
@@ -202,9 +182,7 @@ describe("Webhook", () => {
     })
 
     it("grants access to an existing user and returns HTTP 201", async () => {
-      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
-        false,
-      )
+      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(false)
       vi.mocked(validateEvent).mockReturnValue({
         type: eventType,
         data: {
@@ -220,9 +198,7 @@ describe("Webhook", () => {
       const response = await postHandler({
         request: new Request("http://localhost"),
       })
-      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
-        true,
-      )
+      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(true)
       expect(response.status).toBe(201)
       expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
         to: "existing@example.com",
@@ -278,10 +254,7 @@ describe("Webhook", () => {
     })
   })
 
-  describe.each([
-    "order.refunded",
-    "subscription.revoked",
-  ])("on '%s' event", async (eventType) => {
+  describe.each(["order.refunded", "subscription.revoked"])("on '%s' event", async (eventType) => {
     it("revokes user access and returns HTTP 201", async () => {
       await grantUserRole(existingUserId, "pro" as unknown as Role)
       vi.mocked(validateEvent).mockReturnValue({
@@ -300,9 +273,7 @@ describe("Webhook", () => {
         request: new Request("http://localhost"),
       })
       expect(response.status).toBe(201)
-      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
-        false,
-      )
+      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(false)
       expect(sendAccessRevokedEmail).toHaveBeenCalledWith({
         to: "existing@example.com",
         productName: "Pro",

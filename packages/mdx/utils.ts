@@ -16,9 +16,7 @@ export function getMdxModuleBySlug<T>(
   schema: z.ZodType<T>,
   slug: string,
 ): (MdxModule & { frontmatter: T }) | null {
-  const entry = Object.entries(modules).find(
-    ([path]) => slugFromMdxPath(path) === slug,
-  )
+  const entry = Object.entries(modules).find(([path]) => slugFromMdxPath(path) === slug)
   if (!entry) return null
   const [, mod] = entry
   return {

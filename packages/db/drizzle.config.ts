@@ -1,5 +1,7 @@
 import crypto from "node:crypto"
+
 import type { Config } from "drizzle-kit"
+
 import wranglerConfig from "../../wrangler.json"
 
 const DEFAULT_DB_BINDING = "DB_MAIN"
@@ -29,20 +31,9 @@ function getDbId(binding: string, cloudflareEnv?: string) {
 }
 
 function getLocalSqliteDbUrl(databaseId: string) {
-  const key = crypto
-    .createHash("sha256")
-    .update(MINIFLARE_D1_UNIQUE_KEY)
-    .digest()
-  const nameHmac = crypto
-    .createHmac("sha256", key)
-    .update(databaseId)
-    .digest()
-    .subarray(0, 16)
-  const hmac = crypto
-    .createHmac("sha256", key)
-    .update(nameHmac)
-    .digest()
-    .subarray(0, 16)
+  const key = crypto.createHash("sha256").update(MINIFLARE_D1_UNIQUE_KEY).digest()
+  const nameHmac = crypto.createHmac("sha256", key).update(databaseId).digest().subarray(0, 16)
+  const hmac = crypto.createHmac("sha256", key).update(nameHmac).digest().subarray(0, 16)
 
   const hash = Buffer.concat([nameHmac, hmac]).toString("hex")
 
@@ -60,8 +51,7 @@ export function getConfig({
   accountId?: string
   token?: string
 }): Config {
-  const isRemote =
-    cloudflareEnv && ["production", "preview"].includes(cloudflareEnv)
+  const isRemote = cloudflareEnv && ["production", "preview"].includes(cloudflareEnv)
 
   const dbRootName = dbBinding.replace("DB_", "").toLowerCase()
   const databaseId = getDbId(dbBinding, cloudflareEnv)

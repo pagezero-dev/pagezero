@@ -1,19 +1,14 @@
 import fs from "node:fs"
+
 import Database from "better-sqlite3"
 import { drizzle } from "drizzle-orm/better-sqlite3"
 import type { DrizzleD1Database } from "drizzle-orm/d1"
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest"
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
+
 import { users } from "@/auth/db/schema"
 import { getMainDb } from "@/db/main"
 import * as schema from "@/db/main/schema"
+
 import { userRoles } from "./db/schema"
 import {
   grantUserRole,
@@ -41,18 +36,13 @@ vi.mock("@/config", () => ({
 
 describe("Permissions", () => {
   const sqlite = new Database(":memory:")
-  const db = drizzle(sqlite, { schema }) as unknown as DrizzleD1Database<
-    typeof schema
-  >
+  const db = drizzle(sqlite, { schema }) as unknown as DrizzleD1Database<typeof schema>
   const defaultUserId = 1
   const adminUserId = 2
 
   beforeAll(async () => {
     // Create schema
-    const migrationSql = fs.readFileSync(
-      "./packages/db/main/schema.sql",
-      "utf-8",
-    )
+    const migrationSql = fs.readFileSync("./packages/db/main/schema.sql", "utf-8")
     sqlite.exec(migrationSql)
   })
 
@@ -72,9 +62,7 @@ describe("Permissions", () => {
     ])
 
     // Insert user roles relations
-    await db
-      .insert(userRoles)
-      .values([{ userId: adminUserId, roleName: "admin" as Role }])
+    await db.insert(userRoles).values([{ userId: adminUserId, roleName: "admin" as Role }])
   })
 
   describe("hasUserRole", () => {
@@ -84,10 +72,7 @@ describe("Permissions", () => {
     })
 
     it("should return false if user does not have required role", async () => {
-      const result = await hasUserRole(
-        defaultUserId,
-        "admin" as unknown as Role,
-      )
+      const result = await hasUserRole(defaultUserId, "admin" as unknown as Role)
       expect(result).toBe(false)
     })
   })
@@ -103,43 +88,33 @@ describe("Permissions", () => {
     })
 
     it("should return false if user does not have all required permissions", async () => {
-      const result = await hasUserPermissions(defaultUserId, [
-        "write",
-      ] as unknown as Permission[])
+      const result = await hasUserPermissions(defaultUserId, ["write"] as unknown as Permission[])
       expect(result).toBe(false)
     })
 
     it("throws if user not found", async () => {
-      await expect(
-        hasUserPermissions(999, ["read"] as unknown as Permission[]),
-      ).rejects.toThrow("User not found")
+      await expect(hasUserPermissions(999, ["read"] as unknown as Permission[])).rejects.toThrow(
+        "User not found",
+      )
     })
   })
 
   describe("grantUserRole", () => {
     it("should update user role", async () => {
-      expect(await hasUserRole(defaultUserId, "admin" as unknown as Role)).toBe(
-        false,
-      )
+      expect(await hasUserRole(defaultUserId, "admin" as unknown as Role)).toBe(false)
 
       await grantUserRole(defaultUserId, "admin" as unknown as Role)
 
-      expect(await hasUserRole(defaultUserId, "admin" as unknown as Role)).toBe(
-        true,
-      )
+      expect(await hasUserRole(defaultUserId, "admin" as unknown as Role)).toBe(true)
     })
   })
 
   describe("revokeUserRole", () => {
     it("should revoke user role", async () => {
-      expect(await hasUserRole(adminUserId, "admin" as unknown as Role)).toBe(
-        true,
-      )
+      expect(await hasUserRole(adminUserId, "admin" as unknown as Role)).toBe(true)
 
       await revokeUserRole(adminUserId, "admin" as unknown as Role)
-      expect(await hasUserRole(adminUserId, "admin" as unknown as Role)).toBe(
-        false,
-      )
+      expect(await hasUserRole(adminUserId, "admin" as unknown as Role)).toBe(false)
     })
   })
 

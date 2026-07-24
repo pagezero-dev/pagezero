@@ -1,9 +1,6 @@
-import {
-  createFileRoute,
-  notFound,
-  Link as RouterLink,
-} from "@tanstack/react-router"
+import { createFileRoute, notFound, Link as RouterLink } from "@tanstack/react-router"
 import { ArrowLeft } from "lucide-react"
+
 import { BlogPostSummary } from "@/blog/components/blog-post-summary"
 import { blogPostFrontmatterSchema, postModules } from "@/blog/content"
 import { ProseArticle } from "@/brand/components/prose-article"
@@ -13,11 +10,7 @@ import { Link } from "@/ui/link"
 
 export const Route = createFileRoute("/_brand-layout/blog/$slug")({
   loader: ({ params }) => {
-    const mdxModule = getMdxModuleBySlug(
-      postModules,
-      blogPostFrontmatterSchema,
-      params.slug,
-    )
+    const mdxModule = getMdxModuleBySlug(postModules, blogPostFrontmatterSchema, params.slug)
     if (!mdxModule) throw notFound()
     return { post: mdxModule.frontmatter }
   },
@@ -29,9 +22,7 @@ export const Route = createFileRoute("/_brand-layout/blog/$slug")({
       meta: [
         { title: `${pageTitle} - ${config.core.projectName}` },
         { name: "description", content: post.description },
-        ...(post.keywords?.length
-          ? [{ name: "keywords", content: post.keywords.join(", ") }]
-          : []),
+        ...(post.keywords?.length ? [{ name: "keywords", content: post.keywords.join(", ") }] : []),
         { property: "og:image", content: post.imgSrc },
       ],
     }
@@ -42,11 +33,7 @@ export const Route = createFileRoute("/_brand-layout/blog/$slug")({
 function BlogPost() {
   const { post } = Route.useLoaderData()
   const { slug } = Route.useParams()
-  const mdxModule = getMdxModuleBySlug(
-    postModules,
-    blogPostFrontmatterSchema,
-    slug,
-  )
+  const mdxModule = getMdxModuleBySlug(postModules, blogPostFrontmatterSchema, slug)
   const PostComponent = mdxModule?.default
 
   if (!PostComponent) throw notFound()
@@ -54,12 +41,7 @@ function BlogPost() {
   return (
     <ProseArticle>
       <nav className="mb-12">
-        <Link
-          size="sm"
-          underline="hover"
-          asChild
-          className="text-muted-foreground"
-        >
+        <Link size="sm" underline="hover" asChild className="text-muted-foreground">
           <RouterLink to="/blog">
             <ArrowLeft aria-hidden />
             All posts

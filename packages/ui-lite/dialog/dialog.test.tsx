@@ -10,11 +10,7 @@ describe("<Dialog />", async () => {
     render(
       <Dialog
         content={
-          <Dialog.Content
-            title="dialog title"
-            description="dialog description"
-            onOk={() => {}}
-          >
+          <Dialog.Content title="dialog title" description="dialog description" onOk={() => {}}>
             dialog content
           </Dialog.Content>
         }

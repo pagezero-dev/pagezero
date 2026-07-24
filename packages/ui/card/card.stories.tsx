@@ -1,6 +1,8 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/tanstack-react"
+
 import { Button } from "@/ui/button"
+
 import {
   Card,
   CardAction,
@@ -56,9 +58,7 @@ export const WithAction: Story = {
     <Card>
       <CardHeader>
         <CardTitle>Card with Action</CardTitle>
-        <CardDescription>
-          This card has an action button in the header.
-        </CardDescription>
+        <CardDescription>This card has an action button in the header.</CardDescription>
         <CardAction>
           <Button size="sm" variant="outline">
             Action
@@ -98,9 +98,7 @@ export const LongContent: Story = {
     <Card>
       <CardHeader>
         <CardTitle>Card with Long Content</CardTitle>
-        <CardDescription>
-          This demonstrates how the card handles longer content.
-        </CardDescription>
+        <CardDescription>This demonstrates how the card handles longer content.</CardDescription>
       </CardHeader>
       <CardContent>
         <p>{faker.lorem.paragraphs(1)}</p>

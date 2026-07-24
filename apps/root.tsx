@@ -1,15 +1,12 @@
-import {
-  createRootRoute,
-  HeadContent,
-  Outlet,
-  Scripts,
-} from "@tanstack/react-router"
+import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router"
 import { type ReactNode } from "react"
+
 import config from "@/config"
 import { ErrorPage } from "@/core/components/error-page"
 import fonts from "@/core/fonts/inter-normal-latin.woff2?url"
-import styles from "@/core/styles/index.css?url"
 import { Button } from "@/ui/button"
+
+import styles from "@/core/styles/index.css?url"
 
 export const Route = createRootRoute({
   head: () => ({

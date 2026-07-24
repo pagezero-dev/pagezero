@@ -1,5 +1,6 @@
 import { Link } from "@/ui/link"
 import { Heading, Muted } from "@/ui/typography"
+
 import { Social, type SocialMediaUrls } from "../social"
 
 interface Navigation {
@@ -13,11 +14,7 @@ interface FooterProps {
   socialMediaUrls?: SocialMediaUrls
 }
 
-export const Footer = ({
-  companyName,
-  navigation,
-  socialMediaUrls,
-}: FooterProps) => {
+export const Footer = ({ companyName, navigation, socialMediaUrls }: FooterProps) => {
   const currentYear = new Date().getFullYear()
   return (
     <footer className="container mx-auto mt-40 px-5">
@@ -30,12 +27,7 @@ export const Footer = ({
             <ul className="space-y-2">
               {children.map(({ label, href }) => (
                 <li key={label}>
-                  <Link
-                    href={href}
-                    size="sm"
-                    underline="hover"
-                    className="text-muted-foreground"
-                  >
+                  <Link href={href} size="sm" underline="hover" className="text-muted-foreground">
                     {label}
                   </Link>
                 </li>
@@ -44,7 +36,7 @@ export const Footer = ({
           </section>
         ))}
       </div>
-      <div className="mt-24 flex flex-col items-center justify-between gap-8 border-border border-t py-8 sm:flex-row">
+      <div className="border-border mt-24 flex flex-col items-center justify-between gap-8 border-t py-8 sm:flex-row">
         <Muted>
           © {currentYear} {companyName}. All rights reserved.
         </Muted>

@@ -1,15 +1,15 @@
 import { CircleCheck } from "lucide-react"
 import { Button, Heading, Section, Text } from "react-email"
+
 import config from "@/config"
+
 import Layout from "./layout"
 
 interface AccessGrantedEmailProps {
   productName: string
 }
 
-export default function AccessGrantedEmail({
-  productName,
-}: AccessGrantedEmailProps) {
+export default function AccessGrantedEmail({ productName }: AccessGrantedEmailProps) {
   return (
     <Layout>
       <CircleCheck className="size-16 fill-green-500 text-white" />
@@ -19,14 +19,11 @@ export default function AccessGrantedEmail({
       <Section className="mb-4 max-w-sm">
         <Heading as="h2">What's next?</Heading>
 
-        <Text>
-          Your purchase is connected to the email address you provided during
-          checkout.
-        </Text>
+        <Text>Your purchase is connected to the email address you provided during checkout.</Text>
         <Text>Sign in with the same email address to access your content.</Text>
         <Button
           href={`${config.core.websiteUrl}/login`}
-          className="rounded-md bg-black px-4 py-2 font-medium text-sm text-white shadow-xs"
+          className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white shadow-xs"
         >
           Sign in
         </Button>

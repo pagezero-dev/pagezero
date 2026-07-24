@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
+
 import { BlogPostsList } from "@/blog/components/blog-posts-list"
 import { blogPostFrontmatterSchema, postModules } from "@/blog/content"
 import { Section } from "@/brand/components/section"
@@ -6,7 +7,7 @@ import { getMdxFrontmatters } from "@/mdx"
 
 export const Route = createFileRoute("/_brand-layout/blog")({
   loader: () => ({
-    posts: getMdxFrontmatters(postModules, blogPostFrontmatterSchema).sort(
+    posts: getMdxFrontmatters(postModules, blogPostFrontmatterSchema).toSorted(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     ),
   }),

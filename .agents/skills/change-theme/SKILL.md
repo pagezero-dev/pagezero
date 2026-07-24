@@ -30,29 +30,29 @@ The file contains three main sections:
 
 ## Available Color Variables
 
-| Variable | Purpose |
-|----------|---------|
-| `--background` | Page background |
-| `--foreground` | Default text color |
-| `--card` | Card backgrounds |
-| `--card-foreground` | Card text |
-| `--popover` | Popover/dropdown backgrounds |
-| `--popover-foreground` | Popover text |
-| `--primary` | Primary brand color (buttons, links) |
-| `--primary-foreground` | Text on primary color |
-| `--secondary` | Secondary actions |
-| `--secondary-foreground` | Text on secondary |
-| `--muted` | Muted backgrounds |
-| `--muted-foreground` | Muted/subtle text |
-| `--accent` | Accent highlights |
-| `--accent-foreground` | Text on accent |
-| `--destructive` | Error/danger states |
-| `--border` | Border colors |
-| `--input` | Input field borders |
-| `--ring` | Focus ring color |
-| `--radius` | Border radius base value |
-| `--chart-1` to `--chart-5` | Chart colors |
-| `--sidebar-*` | Sidebar-specific colors |
+| Variable                   | Purpose                              |
+| -------------------------- | ------------------------------------ |
+| `--background`             | Page background                      |
+| `--foreground`             | Default text color                   |
+| `--card`                   | Card backgrounds                     |
+| `--card-foreground`        | Card text                            |
+| `--popover`                | Popover/dropdown backgrounds         |
+| `--popover-foreground`     | Popover text                         |
+| `--primary`                | Primary brand color (buttons, links) |
+| `--primary-foreground`     | Text on primary color                |
+| `--secondary`              | Secondary actions                    |
+| `--secondary-foreground`   | Text on secondary                    |
+| `--muted`                  | Muted backgrounds                    |
+| `--muted-foreground`       | Muted/subtle text                    |
+| `--accent`                 | Accent highlights                    |
+| `--accent-foreground`      | Text on accent                       |
+| `--destructive`            | Error/danger states                  |
+| `--border`                 | Border colors                        |
+| `--input`                  | Input field borders                  |
+| `--ring`                   | Focus ring color                     |
+| `--radius`                 | Border radius base value             |
+| `--chart-1` to `--chart-5` | Chart colors                         |
+| `--sidebar-*`              | Sidebar-specific colors              |
 
 ## Color Format
 

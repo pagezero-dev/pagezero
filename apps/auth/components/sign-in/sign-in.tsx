@@ -1,5 +1,6 @@
 import { AlertTriangleIcon, InfoIcon, Loader2, LockIcon } from "lucide-react"
 import { useEffect, useId, useState } from "react"
+
 import { Alert, AlertDescription } from "@/ui/alert"
 import { Button } from "@/ui/button"
 import { Input } from "@/ui/input"
@@ -15,14 +16,7 @@ interface SignInProps {
   isPending?: boolean
 }
 
-export const SignIn = ({
-  email,
-  error,
-  success,
-  signature,
-  expiresAt,
-  isPending,
-}: SignInProps) => {
+export const SignIn = ({ email, error, success, signature, expiresAt, isPending }: SignInProps) => {
   const [otp, setOtp] = useState("")
   const emailInputId = useId()
   const otpInputId = useId()
@@ -47,12 +41,8 @@ export const SignIn = ({
       </div>
 
       <div className="space-y-4">
-        {signature && (
-          <input type="hidden" name="signature" value={signature} />
-        )}
-        {expiresAt && (
-          <input type="hidden" name="expiresAt" value={expiresAt} />
-        )}
+        {signature && <input type="hidden" name="signature" value={signature} />}
+        {expiresAt && <input type="hidden" name="expiresAt" value={expiresAt} />}
         {email && <input type="hidden" name="email" value={email} />}
 
         {error && (
@@ -72,12 +62,7 @@ export const SignIn = ({
         {!email && (
           <div className="space-y-3">
             <Label htmlFor={emailInputId}>Email</Label>
-            <Input
-              type="email"
-              id={emailInputId}
-              name="email"
-              placeholder="Enter your email"
-            />
+            <Input type="email" id={emailInputId} name="email" placeholder="Enter your email" />
           </div>
         )}
 

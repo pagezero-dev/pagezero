@@ -5,11 +5,7 @@ import { Testimonials } from "./testimonials"
 
 describe("<Testimonials />", async () => {
   it("renders", async () => {
-    render(
-      <Testimonials
-        items={[{ quote: "Test quote", author: { name: "John" } }]}
-      />,
-    )
+    render(<Testimonials items={[{ quote: "Test quote", author: { name: "John" } }]} />)
     expect(screen.getByText('"Test quote"')).toBeInTheDocument()
     expect(screen.getByText("John")).toBeInTheDocument()
   })

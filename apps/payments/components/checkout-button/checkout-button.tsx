@@ -1,7 +1,9 @@
 import type { ReactNode } from "react"
+
 import { useUser } from "@/auth/hooks"
 import config from "@/config"
 import { Button, type ButtonProps } from "@/ui/button"
+
 import type { Product } from "../../types"
 
 type CheckoutButtonProps = {
@@ -9,11 +11,7 @@ type CheckoutButtonProps = {
   children: ReactNode
 } & Omit<ButtonProps, "asChild">
 
-export const CheckoutButton = ({
-  productId,
-  children,
-  ...props
-}: CheckoutButtonProps) => {
+export const CheckoutButton = ({ productId, children, ...props }: CheckoutButtonProps) => {
   const { data: userData } = useUser()
   const user = userData?.user
   const mode = import.meta.env.PROD ? "production" : "preview"

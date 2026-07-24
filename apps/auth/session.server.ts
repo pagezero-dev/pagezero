@@ -1,5 +1,5 @@
-import { env } from "cloudflare:workers"
 import { useSession } from "@tanstack/react-start/server"
+import { env } from "cloudflare:workers"
 
 export type SessionData = {
   userId?: string
@@ -30,9 +30,7 @@ export async function useAppSession() {
 }
 
 export async function updateAppSession(
-  update:
-    | Partial<SessionData>
-    | ((oldData: SessionData) => Partial<SessionData>),
+  update: Partial<SessionData> | ((oldData: SessionData) => Partial<SessionData>),
 ) {
   const session = await useAppSession()
   return session.update(update)

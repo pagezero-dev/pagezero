@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
+
 import { Button } from "@/ui/button"
+
 import { Hero } from "./hero"
 
 describe("<Hero />", async () => {
@@ -21,12 +23,8 @@ describe("<Hero />", async () => {
         }
       ></Hero>,
     )
-    expect(
-      screen.getByRole("heading", { name: "Test title" }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: "Test title" })).toBeInTheDocument()
     expect(screen.getByText("Test description")).toBeInTheDocument()
-    expect(
-      screen.getByRole("link", { name: "Get started" }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Get started" })).toBeInTheDocument()
   })
 })

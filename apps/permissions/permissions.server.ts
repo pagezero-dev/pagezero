@@ -1,4 +1,5 @@
 import { and, eq } from "drizzle-orm"
+
 import config, { userRoles } from "@/config"
 import { getMainDb } from "@/db/main"
 import * as schema from "@/db/main/schema"
@@ -10,9 +11,7 @@ export type PermissionsConfig = {
 
 export type Role = (typeof userRoles)[number]
 
-export type Permission = UnionKeys<
-  (typeof config)["permissions"]["roleToPermissions"][Role]
->
+export type Permission = UnionKeys<(typeof config)["permissions"]["roleToPermissions"][Role]>
 
 const getRolePermissions = (roleName: Role) => {
   return Object.entries(config.permissions.roleToPermissions[roleName] ?? {})
@@ -36,10 +35,7 @@ export async function hasUserRole(userId: number, roleName: Role) {
   return user.roles.some((role) => role.roleName === roleName)
 }
 
-export async function hasUserPermissions(
-  userId: number,
-  permissions: Permission[],
-) {
+export async function hasUserPermissions(userId: number, permissions: Permission[]) {
   const db = getMainDb()
   const user = await db.query.users.findFirst({
     where: eq(schema.users.id, userId),
@@ -52,9 +48,7 @@ export async function hasUserPermissions(
     throw new Error("User not found")
   }
 
-  const userPermissions = user.roles.flatMap((role) =>
-    getRolePermissions(role.roleName),
-  )
+  const userPermissions = user.roles.flatMap((role) => getRolePermissions(role.roleName))
 
   return permissions.every((permission) => userPermissions.includes(permission))
 }
@@ -68,10 +62,5 @@ export async function revokeUserRole(userId: number, roleName: Role) {
   const db = getMainDb()
   await db
     .delete(schema.userRoles)
-    .where(
-      and(
-        eq(schema.userRoles.userId, userId),
-        eq(schema.userRoles.roleName, roleName),
-      ),
-    )
+    .where(and(eq(schema.userRoles.userId, userId), eq(schema.userRoles.roleName, roleName)))
 }

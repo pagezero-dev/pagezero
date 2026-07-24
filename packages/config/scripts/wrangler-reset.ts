@@ -1,4 +1,5 @@
 import { basename } from "node:path"
+
 import { file, write } from "bun"
 
 const projectName = basename(process.cwd())

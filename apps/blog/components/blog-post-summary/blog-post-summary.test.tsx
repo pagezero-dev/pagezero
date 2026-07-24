@@ -15,13 +15,7 @@ describe("<BlogPostSummary />", () => {
   describe("variant summary", () => {
     it("renders description", async () => {
       const user = userEvent.setup()
-      render(
-        <BlogPostSummary
-          {...baseProps}
-          variant="summary"
-          description="Post description"
-        />,
-      )
+      render(<BlogPostSummary {...baseProps} variant="summary" description="Post description" />)
       const element = screen.getByText("Post description")
       await user.click(element)
       expect(element).toBeInTheDocument()
@@ -41,9 +35,7 @@ describe("<BlogPostSummary />", () => {
       )
 
       expect(screen.getByText("Jane Doe")).toBeInTheDocument()
-      expect(
-        screen.queryByRole("link", { name: "Jane Doe" }),
-      ).not.toBeInTheDocument()
+      expect(screen.queryByRole("link", { name: "Jane Doe" })).not.toBeInTheDocument()
     })
   })
 
@@ -51,9 +43,7 @@ describe("<BlogPostSummary />", () => {
     it("renders title, date, and author", () => {
       render(<BlogPostSummary {...baseProps} variant="header" />)
 
-      expect(
-        screen.getByRole("heading", { level: 1, name: "Test post" }),
-      ).toBeInTheDocument()
+      expect(screen.getByRole("heading", { level: 1, name: "Test post" })).toBeInTheDocument()
       expect(screen.getByText("PageZERO")).toBeInTheDocument()
       expect(screen.getByRole("img", { name: "Test post" })).toBeInTheDocument()
     })

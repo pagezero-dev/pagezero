@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/react-start"
+
 import { logout as logoutAction } from "../rpc/logout"
 
 export function useLogout() {

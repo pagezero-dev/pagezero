@@ -1,16 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { AlertTriangleIcon, CircleCheck, Loader2, MailIcon } from "lucide-react"
 import { z } from "zod"
+
 import { useFormAction } from "@/form"
 import { Alert, AlertDescription } from "@/ui/alert"
 import { Button } from "@/ui/button"
 import { Link as UiLink } from "@/ui/link"
 import { Heading, Muted } from "@/ui/typography"
-import {
-  confirmFormAction,
-  confirmFormSchema,
-  getConfirmPageData,
-} from "../rpc"
+
+import { confirmFormAction, confirmFormSchema, getConfirmPageData } from "../rpc"
 
 const confirmSearchSchema = z.object({
   email: z.string().catch(""),
@@ -31,10 +29,7 @@ export const Route = createFileRoute("/newsletter/confirm")({
 
 function Confirm() {
   const { email, expiresAt, signature } = Route.useLoaderData()
-  const { data, error, isPending, onSubmit } = useFormAction(
-    confirmFormSchema,
-    confirmFormAction,
-  )
+  const { data, error, isPending, onSubmit } = useFormAction(confirmFormSchema, confirmFormAction)
   const { success } = data || {}
 
   return (

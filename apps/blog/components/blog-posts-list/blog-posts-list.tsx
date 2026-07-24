@@ -1,8 +1,6 @@
 import { Link } from "@tanstack/react-router"
-import {
-  type BlogPostAuthor,
-  BlogPostSummary,
-} from "@/blog/components/blog-post-summary"
+
+import { type BlogPostAuthor, BlogPostSummary } from "@/blog/components/blog-post-summary"
 
 export interface BlogPostFrontmatterWithSlug {
   slug: string
@@ -26,7 +24,7 @@ export function BlogPostsList({ posts }: BlogPostsListProps) {
           <Link
             to="/blog/$slug"
             params={{ slug: post.slug }}
-            className="block rounded-xl no-underline outline-offset-4 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+            className="focus-visible:outline-ring block rounded-xl no-underline outline-offset-4 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2"
           >
             <BlogPostSummary
               variant="summary"

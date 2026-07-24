@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
+
 import { Button } from "@/ui/button"
 
 import { Pricing } from "./pricing"
@@ -102,10 +103,7 @@ describe("<Pricing />", () => {
       <Pricing>
         <Pricing.Plan {...mockPlans.basic} cta={<Button>Get Started</Button>} />
         <Pricing.Plan {...mockPlans.pro} cta={<Button>Get Started</Button>} />
-        <Pricing.Plan
-          {...mockPlans.enterprise}
-          cta={<Button>Get Started</Button>}
-        />
+        <Pricing.Plan {...mockPlans.enterprise} cta={<Button>Get Started</Button>} />
       </Pricing>,
     )
 
@@ -157,18 +155,9 @@ describe("<Pricing />", () => {
   it("displays call-to-action buttons", () => {
     render(
       <Pricing>
-        <Pricing.Plan
-          {...mockPlans.minimal}
-          cta={<Button>Get Started</Button>}
-        />
-        <Pricing.Plan
-          {...mockPlans.minimal}
-          cta={<Button>Start Free Trial</Button>}
-        />
-        <Pricing.Plan
-          {...mockPlans.minimal}
-          cta={<Button>Contact Sales</Button>}
-        />
+        <Pricing.Plan {...mockPlans.minimal} cta={<Button>Get Started</Button>} />
+        <Pricing.Plan {...mockPlans.minimal} cta={<Button>Start Free Trial</Button>} />
+        <Pricing.Plan {...mockPlans.minimal} cta={<Button>Contact Sales</Button>} />
       </Pricing>,
     )
 
@@ -182,10 +171,7 @@ describe("<Pricing />", () => {
       <Pricing>
         <Pricing.Plan {...mockPlans.basic} cta={<Button>Get Started</Button>} />
         <Pricing.Plan {...mockPlans.pro} cta={<Button>Get Started</Button>} />
-        <Pricing.Plan
-          {...mockPlans.enterprise}
-          cta={<Button>Get Started</Button>}
-        />
+        <Pricing.Plan {...mockPlans.enterprise} cta={<Button>Get Started</Button>} />
       </Pricing>,
     )
 
@@ -228,8 +214,6 @@ describe("<Pricing />", () => {
       </Pricing>,
     )
 
-    expect(
-      screen.getByText("Best for growing teams and businesses"),
-    ).toBeInTheDocument()
+    expect(screen.getByText("Best for growing teams and businesses")).toBeInTheDocument()
   })
 })

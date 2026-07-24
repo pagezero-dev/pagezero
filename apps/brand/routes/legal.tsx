@@ -1,4 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router"
+
 import { ProseArticle } from "@/brand/components/prose-article"
 import { legalDocumentFrontmatterSchema, legalModules } from "@/brand/content"
 import config from "@/config"
@@ -8,11 +9,7 @@ import { Muted } from "@/ui/typography"
 
 export const Route = createFileRoute("/_brand-layout/legal/$slug")({
   loader: ({ params }) => {
-    const mdxModule = getMdxModuleBySlug(
-      legalModules,
-      legalDocumentFrontmatterSchema,
-      params.slug,
-    )
+    const mdxModule = getMdxModuleBySlug(legalModules, legalDocumentFrontmatterSchema, params.slug)
     if (!mdxModule) throw notFound()
     return { document: mdxModule.frontmatter }
   },
@@ -29,11 +26,7 @@ export const Route = createFileRoute("/_brand-layout/legal/$slug")({
 function LegalDocument() {
   const { document } = Route.useLoaderData()
   const { slug } = Route.useParams()
-  const mdxModule = getMdxModuleBySlug(
-    legalModules,
-    legalDocumentFrontmatterSchema,
-    slug,
-  )
+  const mdxModule = getMdxModuleBySlug(legalModules, legalDocumentFrontmatterSchema, slug)
   const DocumentComponent = mdxModule?.default
 
   if (!DocumentComponent) throw notFound()

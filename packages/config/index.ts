@@ -5,10 +5,7 @@ import type { PermissionsConfig } from "@/permissions"
 
 export const userRoles = ["premium", "elite"] as const
 
-export type Config = CoreConfig &
-  EmailConfig &
-  PermissionsConfig &
-  PaymentsConfig
+export type Config = CoreConfig & EmailConfig & PermissionsConfig & PaymentsConfig
 
 const config: Config = {
   core: {
@@ -42,8 +39,7 @@ const config: Config = {
           production: "your-production-product-id",
         },
         checkoutLink: {
-          preview:
-            "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
+          preview: "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
           production:
             "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
         },
@@ -56,8 +52,7 @@ const config: Config = {
           production: "your-production-product-id",
         },
         checkoutLink: {
-          preview:
-            "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
+          preview: "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
           production:
             "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
         },

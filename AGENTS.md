@@ -190,6 +190,7 @@ function MyComponent() {
 ### Tests
 
 **Unit Tests (Vitest)**:
+
 - Node tests: `*.test.ts` - run in Node environment
 - DOM tests: `*.test.tsx` - run in happy-dom environment
 - Use `describe`, `it`, `expect` from vitest
@@ -208,6 +209,7 @@ describe("<Component />", () => {
 ```
 
 **E2E Tests (Playwright)**:
+
 - Located in `e2e/` directory
 - Smoke tests: `*.smoke.spec.ts` - run against deployed environments
 - Regular e2e: `*.spec.ts` - run against local dev server
@@ -247,6 +249,7 @@ export const Primary: Story = {
 - Config: `.oxlintrc.json` (lint), `.oxfmtrc.json` (format)
 
 Run checks:
+
 ```bash
 bun run check        # Format check, lint, and type check
 bun run check:fix    # Auto-fix format/lint, then type check
@@ -298,6 +301,7 @@ bun run db:migrate   # Run database migrations
 ## CI/CD Pipeline
 
 GitHub Actions workflow (`.github/workflows/deploy.yml`):
+
 1. Quality check (format, lint, types)
 2. Unit tests (Vitest)
 3. E2E tests (Playwright)
@@ -310,18 +314,18 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`):
 
 ## Key Files Reference
 
-| File | Purpose |
-|------|---------|
-| `apps/routes.ts` | Virtual route config (add new routes here) |
-| `apps/routeTree.gen.ts` | Auto-generated route tree (do not edit) |
-| `apps/root.tsx` | App root route and document shell |
-| `apps/router.tsx` | Router factory with QueryClient setup |
-| `packages/db/schema.ts` | Database schema exports |
-| `packages/db/index.ts` | `getDb()` helper for database access |
-| `packages/config/index.ts` | App configuration |
+| File                          | Purpose                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------ |
+| `apps/routes.ts`              | Virtual route config (add new routes here)                               |
+| `apps/routeTree.gen.ts`       | Auto-generated route tree (do not edit)                                  |
+| `apps/root.tsx`               | App root route and document shell                                        |
+| `apps/router.tsx`             | Router factory with QueryClient setup                                    |
+| `packages/db/schema.ts`       | Database schema exports                                                  |
+| `packages/db/index.ts`        | `getDb()` helper for database access                                     |
+| `packages/config/index.ts`    | App configuration                                                        |
 | `apps/auth/session.server.ts` | Session helpers (`useAppSession`, `updateAppSession`, `clearAppSession`) |
-| `vite.config.ts` | Vite + TanStack Start + Vitest configuration |
-| `.oxlintrc.json` | Oxlint rules |
-| `.oxfmtrc.json` | Oxfmt formatting options |
-| `drizzle.config.ts` | Database configuration |
-| `wrangler.json` | Cloudflare Workers config |
+| `vite.config.ts`              | Vite + TanStack Start + Vitest configuration                             |
+| `.oxlintrc.json`              | Oxlint rules                                                             |
+| `.oxfmtrc.json`               | Oxfmt formatting options                                                 |
+| `drizzle.config.ts`           | Database configuration                                                   |
+| `wrangler.json`               | Cloudflare Workers config                                                |

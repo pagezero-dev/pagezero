@@ -1,19 +1,14 @@
 import fs from "node:fs"
+
 import Database from "better-sqlite3"
 import { drizzle } from "drizzle-orm/better-sqlite3"
 import type { DrizzleD1Database } from "drizzle-orm/d1"
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest"
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
+
 import { users } from "@/auth/db/schema"
 import { getMainDb } from "@/db/main"
 import * as schema from "@/db/main/schema"
+
 import { userRoles } from "../db/schema"
 import type { Permission, PermissionsConfig, Role } from "../permissions.server"
 import { requireUserPermissions, requireUserRole } from "./guards"
@@ -42,18 +37,13 @@ vi.mock("@/config", () => ({
 
 describe("Guards", () => {
   const sqlite = new Database(":memory:")
-  const db = drizzle(sqlite, { schema }) as unknown as DrizzleD1Database<
-    typeof schema
-  >
+  const db = drizzle(sqlite, { schema }) as unknown as DrizzleD1Database<typeof schema>
   const defaultUserId = 1
   const adminUserId = 2
 
   beforeAll(async () => {
     // Create schema
-    const migrationSql = fs.readFileSync(
-      "./packages/db/main/schema.sql",
-      "utf-8",
-    )
+    const migrationSql = fs.readFileSync("./packages/db/main/schema.sql", "utf-8")
     sqlite.exec(migrationSql)
   })
 
@@ -73,9 +63,7 @@ describe("Guards", () => {
     ])
 
     // Insert user roles relations
-    await db
-      .insert(userRoles)
-      .values([{ userId: adminUserId, roleName: "admin" as Role }])
+    await db.insert(userRoles).values([{ userId: adminUserId, roleName: "admin" as Role }])
   })
 
   describe("requireUserPermissions", () => {
