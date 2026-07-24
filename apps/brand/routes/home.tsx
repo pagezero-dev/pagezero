@@ -10,6 +10,7 @@ import {
   Target,
   Zap,
 } from "lucide-react"
+
 import { getTurnstilePublicKey } from "@/cloudflare/turnstile"
 import { NewsletterSignup } from "@/newsletter/components/newsletter-signup"
 import { CheckoutButton } from "@/payments/components/checkout-button"
@@ -17,6 +18,7 @@ import { Pricing } from "@/payments/components/pricing"
 import { Button } from "@/ui/button"
 import { Card, CardContent } from "@/ui/card"
 import { P } from "@/ui/typography"
+
 import { Faq } from "../components/faq"
 import { Features } from "../components/features"
 import { Hero } from "../components/hero"
@@ -156,9 +158,9 @@ function Index() {
         description="Share your story and build trust with potential customers."
       >
         <Card className="mx-auto max-w-4xl p-0">
-          <CardContent className="p-5 text-muted-foreground md:p-10">
+          <CardContent className="text-muted-foreground p-5 md:p-10">
             {/* Profile Picture or Team Photo */}
-            <div className="mx-auto mb-3 flex size-44 items-center justify-center rounded bg-muted p-3 md:float-left md:mr-5">
+            <div className="bg-muted mx-auto mb-3 flex size-44 items-center justify-center rounded p-3 md:float-left md:mr-5">
               Your Photo
             </div>
 
@@ -176,7 +178,7 @@ function Index() {
             </P>
 
             {/* Optional: Video Introduction */}
-            <div className="mt-8 flex aspect-video w-full items-center justify-center rounded-lg bg-muted">
+            <div className="bg-muted mt-8 flex aspect-video w-full items-center justify-center rounded-lg">
               Video Introduction (Optional)
             </div>
           </CardContent>

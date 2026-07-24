@@ -1,6 +1,8 @@
 import { eq } from "drizzle-orm"
+
 import { getMainDb } from "@/db/main"
 import * as schema from "@/db/main/schema"
+
 import type { useAppSession } from "./session.server"
 
 export async function getUserById(userId: number) {

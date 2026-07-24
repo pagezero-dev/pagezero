@@ -1,5 +1,6 @@
 import { Mail } from "lucide-react"
 import { Button, Heading, Text } from "react-email"
+
 import Layout from "./layout"
 
 interface NewsletterConfirmEmailProps {
@@ -18,7 +19,7 @@ export default function NewsletterConfirmEmail({ confirmUrl }: NewsletterConfirm
       <Text>Click the button below to confirm. This link expires soon.</Text>
       <Button
         href={confirmUrl}
-        className="rounded-md bg-gray-300 px-4 py-2 font-semibold text-gray-800 text-sm shadow-xs"
+        className="rounded-md bg-gray-300 px-4 py-2 text-sm font-semibold text-gray-800 shadow-xs"
       >
         Confirm subscription
       </Button>

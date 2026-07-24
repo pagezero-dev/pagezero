@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
+
 import { type BlogPostFrontmatterWithSlug, BlogPostsList } from "./blog-posts-list"
 
 const samplePosts: BlogPostFrontmatterWithSlug[] = [

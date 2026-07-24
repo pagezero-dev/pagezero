@@ -1,6 +1,8 @@
 import { CircleAlert } from "lucide-react"
 import { Heading, Link, Text } from "react-email"
+
 import config from "@/config"
+
 import Layout from "./layout"
 
 export default function AccessFailureEmail() {

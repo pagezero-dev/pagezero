@@ -1,13 +1,15 @@
-import { env } from "cloudflare:workers"
 import { createServerFn } from "@tanstack/react-start"
 import { getRequestHeader } from "@tanstack/react-start/server"
+import { env } from "cloudflare:workers"
 import { z } from "zod"
+
 import { validateTurnstile } from "@/cloudflare/turnstile"
 import config from "@/config"
 import { sign } from "@/crypto"
 import { expiresInMinutes } from "@/date"
 import { sendNewsletterConfirmEmail } from "@/email/templates.server"
 import { parseFormData } from "@/form"
+
 import { buildConfirmUrl } from "../newsletter.server"
 
 export const subscribeFormSchema = z.object({

@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test"
+
 import config from "@/config"
 
 test("has content on home page", async ({ page }) => {

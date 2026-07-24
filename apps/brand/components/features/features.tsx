@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+
 import { Large } from "@/ui/typography"
 
 interface FeaturesProps {
@@ -24,10 +25,10 @@ const FeaturesItem = ({ title, icon, cta, children }: FeatureItemProps) => {
   return (
     <div className="flex flex-col items-start gap-3">
       <div className="flex items-center gap-3">
-        <div className="size-6 shrink-0 text-primary">{icon}</div>
+        <div className="text-primary size-6 shrink-0">{icon}</div>
         <Large className="text-pretty">{title}</Large>
       </div>
-      <div className="grow text-muted-foreground">{children}</div>
+      <div className="text-muted-foreground grow">{children}</div>
       {cta}
     </div>
   )

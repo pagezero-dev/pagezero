@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { fn } from "storybook/test"
+
 import { Label } from "../label"
 import { Checkbox } from "./checkbox"
 
@@ -56,7 +57,7 @@ export const WithinBox: Story = {
   render: (args) => (
     <Label
       htmlFor="with-border"
-      className="flex items-start gap-3 rounded-lg border p-3 hover:bg-accent/50 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950"
+      className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950"
     >
       <Checkbox
         id="with-border"
@@ -65,7 +66,7 @@ export const WithinBox: Story = {
         {...args}
       />
       <div className="grid gap-1.5 font-normal">
-        <p className="font-medium text-sm leading-none">Enable notifications</p>
+        <p className="text-sm leading-none font-medium">Enable notifications</p>
         <p className="text-muted-foreground text-sm">
           You can enable or disable notifications at any time.
         </p>

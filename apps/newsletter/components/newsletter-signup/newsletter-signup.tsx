@@ -1,10 +1,12 @@
 import { AlertTriangleIcon, InfoIcon, Loader2, Mail } from "lucide-react"
+
 import { Turnstile } from "@/cloudflare/turnstile"
 import { useFormAction } from "@/form"
 import { Alert, AlertDescription } from "@/ui/alert"
 import { Button } from "@/ui/button"
 import { Input } from "@/ui/input"
 import { cn } from "@/ui/utils"
+
 import { subscribeFormAction, subscribeFormSchema } from "../../rpc/subscribe"
 
 export interface NewsletterSignupProps {

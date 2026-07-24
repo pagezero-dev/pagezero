@@ -1,4 +1,5 @@
 import { z } from "zod"
+
 import type { MdxModule } from "@/mdx"
 
 export const legalModules = import.meta.glob<MdxModule>("./legal/*.mdx", {

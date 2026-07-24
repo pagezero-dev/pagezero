@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/tanstack-react"
+
 import { BlogPostSummary } from "./blog-post-summary"
 
 const meta = {

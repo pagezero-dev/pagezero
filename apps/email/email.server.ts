@@ -1,6 +1,7 @@
 import { env } from "cloudflare:workers"
 import { render } from "react-email"
 import { Resend } from "resend"
+
 import config from "@/config"
 
 export type EmailConfig = {

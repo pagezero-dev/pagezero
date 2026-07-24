@@ -1,4 +1,5 @@
 import { Minus, Plus } from "lucide-react"
+
 import { Large } from "@/ui/typography"
 
 interface FaqProps {
@@ -19,7 +20,7 @@ export const Faq = ({ items }: FaqProps) => {
                   <Plus className="size-5 group-open:hidden" />
                 </div>
               </summary>
-              <div className="mt-6 text-muted-foreground">{answer}</div>
+              <div className="text-muted-foreground mt-6">{answer}</div>
             </details>
           </li>
         ))}

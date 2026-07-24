@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router"
 import { BadgeCheck } from "lucide-react"
 import { motion } from "motion/react"
 import { useState } from "react"
+
 import { Badge } from "@/ui/badge"
 import { Button } from "@/ui/button"
 import { Heading, P } from "@/ui/typography"
@@ -16,7 +17,7 @@ function PaymentSuccess() {
     <main className="flex h-screen flex-col items-center justify-center">
       <div className="flex max-w-lg flex-col items-center gap-4 p-10 text-center">
         <motion.div layout={true} className="flex flex-col items-center gap-4">
-          <BadgeCheck className="size-18 fill-green-500 text-background" />
+          <BadgeCheck className="text-background size-18 fill-green-500" />
 
           <Heading level={1} className="font-bold">
             Payment Successful!
@@ -29,7 +30,7 @@ function PaymentSuccess() {
           </P>
         )}
         {whatsNext && (
-          <ol className="fade-in mb-6 animate-in space-y-4 text-left text-muted-foreground duration-300">
+          <ol className="fade-in animate-in text-muted-foreground mb-6 space-y-4 text-left duration-300">
             <li className="flex items-baseline gap-4">
               <Badge variant="secondary">1</Badge>
               <div>You should receive an email shortly confirming your access.</div>

@@ -1,5 +1,6 @@
 import { RectangleEllipsis } from "lucide-react"
 import { Heading, Text } from "react-email"
+
 import Layout from "./layout"
 
 interface AuthOtpEmailProps {

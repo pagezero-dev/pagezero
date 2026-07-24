@@ -8,6 +8,7 @@ import rehypeHighlight from "rehype-highlight"
 import remarkGfm from "remark-gfm"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
+
 import { routes } from "./apps/routes"
 
 // import config from "./packages/config"

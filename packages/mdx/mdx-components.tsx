@@ -1,5 +1,6 @@
 import "./code-highlight.css"
 import type { ComponentProps } from "react"
+
 import { Link } from "@/ui/link"
 import {
   Blockquote,
@@ -22,7 +23,7 @@ function isBlockCode(className: string | undefined) {
 
 export const mdxComponents = {
   h1: (props: ComponentProps<"h1">) => (
-    <Heading level={1} className="mb-20 text-center text-foreground" {...props} />
+    <Heading level={1} className="text-foreground mb-20 text-center" {...props} />
   ),
   h2: (props: ComponentProps<"h2">) => <Heading level={2} {...props} />,
   h3: (props: ComponentProps<"h3">) => <Heading level={3} {...props} />,

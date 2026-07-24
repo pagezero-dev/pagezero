@@ -1,9 +1,11 @@
 import fs from "node:fs"
+
 import { validateEvent, WebhookVerificationError } from "@polar-sh/sdk/webhooks"
 import Database from "better-sqlite3"
 import { drizzle } from "drizzle-orm/better-sqlite3"
 import type { DrizzleD1Database } from "drizzle-orm/d1"
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
+
 import { getUserByEmail } from "@/auth/user.server"
 import { getMainDb } from "@/db/main"
 import * as schema from "@/db/main/schema"
@@ -14,6 +16,7 @@ import {
   sendAccessRevokedEmail,
 } from "@/email/templates.server"
 import { grantUserRole, hasUserRole, type PermissionsConfig, type Role } from "@/permissions"
+
 import type {
   PaymentsConfig,
   WebhookEvents,

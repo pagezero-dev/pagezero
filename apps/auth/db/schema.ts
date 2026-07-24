@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm"
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
+
 import { userRoles } from "@/permissions/db/schema"
 
 // Define tables

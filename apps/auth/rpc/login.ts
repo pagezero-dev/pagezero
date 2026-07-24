@@ -1,13 +1,15 @@
-import { env } from "cloudflare:workers"
 import { redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
 import { getRequestHeader } from "@tanstack/react-start/server"
+import { env } from "cloudflare:workers"
 import { z } from "zod"
+
 import { validateTurnstile } from "@/cloudflare/turnstile"
 import { sign, verify } from "@/crypto"
 import { expiresInMinutes, isExpired } from "@/date"
 import { sendAuthOtpEmail } from "@/email/templates.server"
 import { parseFormData } from "@/form"
+
 import { generateOTP, getRedirectUrl } from "../auth.server"
 import { updateAppSession } from "../session.server"
 import { getOrCreateUserByEmail } from "../user.server"

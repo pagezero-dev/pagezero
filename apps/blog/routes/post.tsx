@@ -1,5 +1,6 @@
 import { createFileRoute, notFound, Link as RouterLink } from "@tanstack/react-router"
 import { ArrowLeft } from "lucide-react"
+
 import { BlogPostSummary } from "@/blog/components/blog-post-summary"
 import { blogPostFrontmatterSchema, postModules } from "@/blog/content"
 import { ProseArticle } from "@/brand/components/prose-article"

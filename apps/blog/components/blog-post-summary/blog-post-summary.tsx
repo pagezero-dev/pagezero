@@ -1,4 +1,5 @@
 import { User } from "lucide-react"
+
 import { formatDate } from "@/date"
 import { Link } from "@/ui/link"
 import { Heading, Muted, Small } from "@/ui/typography"
@@ -28,8 +29,8 @@ function PostAuthor({ author, linkName }: { author: BlogPostAuthor; linkName: bo
       {author.imageSrc ? (
         <img src={author.imageSrc} alt="" className="h-12 w-12 rounded-full border" />
       ) : (
-        <div className="flex size-12 items-center justify-center rounded-full border bg-muted">
-          <User className="size-6 text-muted-foreground" />
+        <div className="bg-muted flex size-12 items-center justify-center rounded-full border">
+          <User className="text-muted-foreground size-6" />
         </div>
       )}
       <dl>

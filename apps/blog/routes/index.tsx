@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
+
 import { BlogPostsList } from "@/blog/components/blog-posts-list"
 import { blogPostFrontmatterSchema, postModules } from "@/blog/content"
 import { Section } from "@/brand/components/section"

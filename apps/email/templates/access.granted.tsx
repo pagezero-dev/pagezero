@@ -1,6 +1,8 @@
 import { CircleCheck } from "lucide-react"
 import { Button, Heading, Section, Text } from "react-email"
+
 import config from "@/config"
+
 import Layout from "./layout"
 
 interface AccessGrantedEmailProps {
@@ -21,7 +23,7 @@ export default function AccessGrantedEmail({ productName }: AccessGrantedEmailPr
         <Text>Sign in with the same email address to access your content.</Text>
         <Button
           href={`${config.core.websiteUrl}/login`}
-          className="rounded-md bg-black px-4 py-2 font-medium text-sm text-white shadow-xs"
+          className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white shadow-xs"
         >
           Sign in
         </Button>

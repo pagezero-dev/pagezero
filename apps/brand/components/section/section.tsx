@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import type { ReactNode } from "react"
+
 import { Heading, Lead } from "@/ui/typography"
 import { cn } from "@/ui/utils"
 

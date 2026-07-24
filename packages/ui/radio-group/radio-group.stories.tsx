@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { fn } from "storybook/test"
+
 import { Label } from "../label"
 import { RadioGroup, RadioGroupItem } from "./radio-group"
 
