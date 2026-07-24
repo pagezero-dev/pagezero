@@ -251,9 +251,8 @@ export const Primary: Story = {
 Run checks:
 
 ```bash
-bun run check        # Check linting and formatting
-bun run check:fix    # Auto-fix issues
-bun run check:types  # TypeScript type checking
+bun run check        # Format check, lint, and type check
+bun run check:fix    # Auto-fix format/lint, then type check
 ```
 
 ## Common Scripts
@@ -303,13 +302,12 @@ bun run db:migrate   # Run database migrations
 
 GitHub Actions workflow (`.github/workflows/deploy.yml`):
 
-1. Quality check (Oxlint + Oxfmt)
-2. Type check (TypeScript)
-3. Unit tests (Vitest)
-4. E2E tests (Playwright)
-5. Database migration
-6. Deploy to Cloudflare Workers
-7. Smoke tests against deployed URL
+1. Quality check (format, lint, types)
+2. Unit tests (Vitest)
+3. E2E tests (Playwright)
+4. Database migration
+5. Deploy to Cloudflare Workers
+6. Smoke tests against deployed URL
 
 - **main branch**: deploys to production
 - **PRs**: deploy to preview environment
