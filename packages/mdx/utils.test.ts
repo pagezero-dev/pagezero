@@ -38,9 +38,7 @@ describe("getMdxModuleBySlug", () => {
   it("throws when frontmatter is missing required fields", () => {
     const modules = { "./content/invalid.mdx": { default: () => null } }
 
-    expect(() =>
-      getMdxModuleBySlug(modules, frontmatterSchema, "invalid"),
-    ).toThrow()
+    expect(() => getMdxModuleBySlug(modules, frontmatterSchema, "invalid")).toThrow()
   })
 
   it("throws when imgSrc is missing", () => {
@@ -53,9 +51,7 @@ describe("getMdxModuleBySlug", () => {
       } as Frontmatter),
     ])
 
-    expect(() =>
-      getMdxModuleBySlug(modules, frontmatterSchema, "missing-cover"),
-    ).toThrow()
+    expect(() => getMdxModuleBySlug(modules, frontmatterSchema, "missing-cover")).toThrow()
   })
 
   it("returns the MDX module with parsed frontmatter for a matching slug", () => {
@@ -85,9 +81,7 @@ describe("getMdxModuleBySlug", () => {
       ),
     ])
 
-    expect(
-      getMdxModuleBySlug(modules, frontmatterSchema, "test")?.frontmatter,
-    ).toEqual({
+    expect(getMdxModuleBySlug(modules, frontmatterSchema, "test")?.frontmatter).toEqual({
       title: "Test post",
       description: "Desc",
       date: "2026-05-18",
@@ -160,9 +154,7 @@ describe("getMdxFrontmatters", () => {
       ),
     ])
 
-    expect(getMdxFrontmatters(modules, frontmatterSchema)[0]?.slug).toBe(
-      "win-post",
-    )
+    expect(getMdxFrontmatters(modules, frontmatterSchema)[0]?.slug).toBe("win-post")
   })
 
   it("skips modules without a parsable slug", () => {
@@ -216,9 +208,7 @@ describe("getMdxFrontmatters", () => {
       ),
     ])
 
-    expect(getMdxFrontmatters(modules, frontmatterSchema)[0]?.imgSrc).toBe(
-      "/assets/test-cover.png",
-    )
+    expect(getMdxFrontmatters(modules, frontmatterSchema)[0]?.imgSrc).toBe("/assets/test-cover.png")
   })
 
   it("throws when date is not a valid ISO date", () => {

@@ -21,12 +21,8 @@ describe("<Hero />", async () => {
         }
       ></Hero>,
     )
-    expect(
-      screen.getByRole("heading", { name: "Test title" }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: "Test title" })).toBeInTheDocument()
     expect(screen.getByText("Test description")).toBeInTheDocument()
-    expect(
-      screen.getByRole("link", { name: "Get started" }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Get started" })).toBeInTheDocument()
   })
 })

@@ -32,9 +32,7 @@ export async function getOrCreateUserByEmail(email: string) {
   return user
 }
 
-export async function getUserId(
-  session: Awaited<ReturnType<typeof useAppSession>>,
-) {
+export async function getUserId(session: Awaited<ReturnType<typeof useAppSession>>) {
   const userId = session.data.userId
   return userId ? Number(userId) : 0
 }

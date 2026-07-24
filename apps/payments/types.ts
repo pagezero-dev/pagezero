@@ -4,18 +4,12 @@ import type { Role } from "@/permissions"
 
 export type WebhookEvents = ReturnType<typeof validateEvent>
 
-export type WebhookOrderPaidPayload = Extract<
-  WebhookEvents,
-  { type: "order.paid" }
->
+export type WebhookOrderPaidPayload = Extract<WebhookEvents, { type: "order.paid" }>
 export type WebhookSubscriptionActivePayload = Extract<
   WebhookEvents,
   { type: "subscription.active" }
 >
-export type WebhookOrderRefundedPayload = Extract<
-  WebhookEvents,
-  { type: "order.refunded" }
->
+export type WebhookOrderRefundedPayload = Extract<WebhookEvents, { type: "order.refunded" }>
 export type WebhookSubscriptionRevokedPayload = Extract<
   WebhookEvents,
   { type: "subscription.revoked" }

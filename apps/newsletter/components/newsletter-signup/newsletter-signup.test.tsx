@@ -38,9 +38,7 @@ describe("<NewsletterSignup />", () => {
 
     render(<NewsletterSignup />)
     expect(screen.getByPlaceholderText("you@example.com")).toBeInTheDocument()
-    expect(
-      screen.getByRole("button", { name: "Subscribe" }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Subscribe" })).toBeInTheDocument()
   })
 
   it("shows success message from form action", () => {
@@ -49,12 +47,8 @@ describe("<NewsletterSignup />", () => {
     })
 
     render(<NewsletterSignup />)
-    expect(
-      screen.getByText("Check your email to confirm your subscription"),
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByRole("button", { name: "Subscribe" }),
-    ).not.toBeInTheDocument()
+    expect(screen.getByText("Check your email to confirm your subscription")).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Subscribe" })).not.toBeInTheDocument()
   })
 
   it("submits the form via onSubmit", async () => {
@@ -66,10 +60,7 @@ describe("<NewsletterSignup />", () => {
 
     const user = userEvent.setup()
     render(<NewsletterSignup />)
-    await user.type(
-      screen.getByPlaceholderText("you@example.com"),
-      "reader@example.com",
-    )
+    await user.type(screen.getByPlaceholderText("you@example.com"), "reader@example.com")
     await user.click(screen.getByRole("button", { name: "Subscribe" }))
     expect(onSubmit).toHaveBeenCalled()
   })

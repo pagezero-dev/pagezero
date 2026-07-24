@@ -11,9 +11,7 @@ describe("<ProseArticle />", () => {
 
   it("renders title when provided", () => {
     render(<ProseArticle title="Test Title">Content</ProseArticle>)
-    expect(
-      screen.getByRole("heading", { level: 1, name: "Test Title" }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole("heading", { level: 1, name: "Test Title" })).toBeInTheDocument()
     expect(screen.getByText("Content")).toBeInTheDocument()
   })
 

@@ -9,11 +9,7 @@ type CheckoutButtonProps = {
   children: ReactNode
 } & Omit<ButtonProps, "asChild">
 
-export const CheckoutButton = ({
-  productId,
-  children,
-  ...props
-}: CheckoutButtonProps) => {
+export const CheckoutButton = ({ productId, children, ...props }: CheckoutButtonProps) => {
   const { data: userData } = useUser()
   const user = userData?.user
   const mode = import.meta.env.PROD ? "production" : "preview"

@@ -15,6 +15,7 @@ Create a new UI component following the PageZERO component structure pattern.
 Ask the user in a single question:
 
 > What component would you like to create and where should it go?
+>
 > - **Purpose**: What should it do/display?
 > - **Location**: `packages/ui/` (reusable) or `apps/{feature}/components/` (feature-specific)
 

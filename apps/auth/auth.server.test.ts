@@ -15,8 +15,6 @@ describe("getRedirectUrl", () => {
   })
 
   it("should return only the pathname if the redirectTo is a full url with query params", () => {
-    expect(getRedirectUrl("https://test.com/test-path?query=123")).toBe(
-      "/test-path?query=123",
-    )
+    expect(getRedirectUrl("https://test.com/test-path?query=123")).toBe("/test-path?query=123")
   })
 })

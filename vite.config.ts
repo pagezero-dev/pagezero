@@ -30,11 +30,7 @@ export default defineConfig({
       onwarn(warning, warn) {
         // Third-party packages ship incomplete sourcemaps - nothing we can fix
         // https://github.com/vitejs/vite/issues/15012
-        if (
-          warning.message.includes(
-            "Error when using sourcemap for reporting an error",
-          )
-        ) {
+        if (warning.message.includes("Error when using sourcemap for reporting an error")) {
           return
         }
         warn(warning)

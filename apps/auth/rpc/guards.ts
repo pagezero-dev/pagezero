@@ -15,8 +15,7 @@ export const requireUserId = createServerFn({ method: "GET" })
     if (!userID) {
       const requestURLObject = getRequestUrl()
       const redirectToURL =
-        data?.redirectTo ??
-        `${requestURLObject.pathname}${requestURLObject.search}`
+        data?.redirectTo ?? `${requestURLObject.pathname}${requestURLObject.search}`
       throw redirect(
         redirectToURL
           ? { to: LOGIN_ROUTE, search: { redirectTo: redirectToURL } }
@@ -26,23 +25,19 @@ export const requireUserId = createServerFn({ method: "GET" })
     return userID
   })
 
-export const requireGuestUser = createServerFn({ method: "GET" }).handler(
-  async () => {
-    const session = await useAppSession()
-    const userId = await getUserId(session)
+export const requireGuestUser = createServerFn({ method: "GET" }).handler(async () => {
+  const session = await useAppSession()
+  const userId = await getUserId(session)
 
-    if (userId && (await isValidUserId(userId))) {
-      throw redirect({ to: "/" })
-    }
-  },
-)
+  if (userId && (await isValidUserId(userId))) {
+    throw redirect({ to: "/" })
+  }
+})
 
 export const requireAuthConfiguration = createServerFn({
   method: "GET",
 }).handler(async () => {
   if (!env.OTP_SECRET || !env.SESSION_COOKIE_SECRET) {
-    throw new Error(
-      "Authentication OTP_SECRET or SESSION_COOKIE_SECRET is not configured",
-    )
+    throw new Error("Authentication OTP_SECRET or SESSION_COOKIE_SECRET is not configured")
   }
 })

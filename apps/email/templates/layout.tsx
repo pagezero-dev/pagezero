@@ -18,16 +18,12 @@ export default function Layout({ children }: { children: ReactNode }) {
             fontStyle="normal"
           />
         </Head>
-        <Container className="rounded-lg bg-gray-100 p-6 text-center">
-          {children}
-        </Container>
+        <Container className="rounded-lg bg-gray-100 p-6 text-center">{children}</Container>
         <Container className="mt-8 text-center text-gray-500 text-sm">
           <Text className="mb-0">
             © {new Date().getFullYear()} {config.core.projectName}
           </Text>
-          <Link href={config.core.websiteUrl}>
-            {new URL(config.core.websiteUrl).hostname}
-          </Link>
+          <Link href={config.core.websiteUrl}>{new URL(config.core.websiteUrl).hostname}</Link>
         </Container>
       </Html>
     </Tailwind>

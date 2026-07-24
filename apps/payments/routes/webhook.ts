@@ -8,10 +8,7 @@ export const Route = createFileRoute("/payments/webhook")({
   server: {
     handlers: {
       GET: async () => {
-        return Response.json(
-          { error: "Webhook does not handle GET requests" },
-          { status: 404 },
-        )
+        return Response.json({ error: "Webhook does not handle GET requests" }, { status: 404 })
       },
       POST: async ({ request }) => {
         try {
@@ -21,11 +18,7 @@ export const Route = createFileRoute("/payments/webhook")({
 
           const payload = await request.text()
           const headers = Object.fromEntries(request.headers.entries())
-          const event: WebhookEvents = validateEvent(
-            payload,
-            headers,
-            env.POLAR_WEBHOOK_SECRET,
-          )
+          const event: WebhookEvents = validateEvent(payload, headers, env.POLAR_WEBHOOK_SECRET)
 
           switch (event.type) {
             case "order.paid":

@@ -42,11 +42,7 @@ describe("<Section />", () => {
 
   it("renders all props together", () => {
     render(
-      <Section
-        title="Test Title"
-        description="Test description"
-        badge={<span>Badge label</span>}
-      >
+      <Section title="Test Title" description="Test description" badge={<span>Badge label</span>}>
         Test content
       </Section>,
     )

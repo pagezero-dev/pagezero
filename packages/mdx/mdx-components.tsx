@@ -22,11 +22,7 @@ function isBlockCode(className: string | undefined) {
 
 export const mdxComponents = {
   h1: (props: ComponentProps<"h1">) => (
-    <Heading
-      level={1}
-      className="mb-20 text-center text-foreground"
-      {...props}
-    />
+    <Heading level={1} className="mb-20 text-center text-foreground" {...props} />
   ),
   h2: (props: ComponentProps<"h2">) => <Heading level={2} {...props} />,
   h3: (props: ComponentProps<"h3">) => <Heading level={3} {...props} />,
@@ -34,28 +30,17 @@ export const mdxComponents = {
   h5: (props: ComponentProps<"h5">) => <Heading level={5} {...props} />,
   h6: (props: ComponentProps<"h6">) => <Heading level={6} {...props} />,
   p: (props: ComponentProps<"p">) => <P {...props} />,
-  blockquote: (props: ComponentProps<"blockquote">) => (
-    <Blockquote {...props} />
-  ),
+  blockquote: (props: ComponentProps<"blockquote">) => <Blockquote {...props} />,
   ul: (props: ComponentProps<"ul">) => <List {...props} />,
   ol: ({ className, ...props }: ComponentProps<"ol">) => (
-    <ol
-      className={cn("my-6 ml-6 list-decimal [&>li]:mt-2", className)}
-      {...props}
-    />
+    <ol className={cn("my-6 ml-6 list-decimal [&>li]:mt-2", className)} {...props} />
   ),
-  a: ({ className, ...props }: ComponentProps<"a">) => (
-    <Link className={className} {...props} />
-  ),
+  a: ({ className, ...props }: ComponentProps<"a">) => <Link className={className} {...props} />,
   hr: ({ className, ...props }: ComponentProps<"hr">) => (
     <hr className={cn("my-8 border-border", className)} {...props} />
   ),
   img: ({ className, alt = "", ...props }: ComponentProps<"img">) => (
-    <img
-      className={cn("my-6 rounded-lg border", className)}
-      alt={alt}
-      {...props}
-    />
+    <img className={cn("my-6 rounded-lg border", className)} alt={alt} {...props} />
   ),
   code: ({ className, children, ...props }: ComponentProps<"code">) => {
     if (isBlockCode(className)) {

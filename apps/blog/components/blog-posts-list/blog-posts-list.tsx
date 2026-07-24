@@ -1,8 +1,5 @@
 import { Link } from "@tanstack/react-router"
-import {
-  type BlogPostAuthor,
-  BlogPostSummary,
-} from "@/blog/components/blog-post-summary"
+import { type BlogPostAuthor, BlogPostSummary } from "@/blog/components/blog-post-summary"
 
 export interface BlogPostFrontmatterWithSlug {
   slug: string

@@ -23,11 +23,10 @@ export async function onPaymentSuccess(
 
   try {
     const productId = event.data.productId
-    const productConfig = Object.values(config.payments.products).find(
-      (product) =>
-        import.meta.env.PROD
-          ? product.polarProductId.production === productId
-          : product.polarProductId.preview === productId,
+    const productConfig = Object.values(config.payments.products).find((product) =>
+      import.meta.env.PROD
+        ? product.polarProductId.production === productId
+        : product.polarProductId.preview === productId,
     )
     if (!productConfig) {
       throw new Error("Product not found")
@@ -67,11 +66,10 @@ export async function onPaymentRevoked(
 
   try {
     const productId = event.data.productId
-    const productConfig = Object.values(config.payments.products).find(
-      (product) =>
-        import.meta.env.PROD
-          ? product.polarProductId.production === productId
-          : product.polarProductId.preview === productId,
+    const productConfig = Object.values(config.payments.products).find((product) =>
+      import.meta.env.PROD
+        ? product.polarProductId.production === productId
+        : product.polarProductId.preview === productId,
     )
     if (!productConfig) {
       throw new Error("Product not found")

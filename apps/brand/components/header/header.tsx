@@ -9,11 +9,7 @@ interface HeaderProps {
   position?: "relative" | "sticky" | "absolute"
 }
 
-export const Header = ({
-  logo,
-  children,
-  position = "relative",
-}: HeaderProps) => {
+export const Header = ({ logo, children, position = "relative" }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   return (
     <header
@@ -29,15 +25,8 @@ export const Header = ({
         <div>{logo}</div>
 
         <div className="lg:hidden">
-          <Button
-            variant="ghost"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+          <Button variant="ghost" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
         <div

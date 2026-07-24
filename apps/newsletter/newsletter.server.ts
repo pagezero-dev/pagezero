@@ -5,11 +5,7 @@ export type NewsletterConfirmationPayload = {
 
 export function buildConfirmUrl(
   baseUrl: string,
-  {
-    email,
-    expiresAt,
-    signature,
-  }: NewsletterConfirmationPayload & { signature: string },
+  { email, expiresAt, signature }: NewsletterConfirmationPayload & { signature: string },
 ) {
   const url = new URL("/newsletter/confirm", baseUrl)
   url.searchParams.set("email", email)

@@ -1,11 +1,6 @@
 export const Logo = ({ className }: { className?: string }) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 400 400"
-      className={className}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 400 400" className={className}>
       <title>PageZERO logo</title>
       <rect width="400" height="400" fill="#fff" rx="100" />
       <path
