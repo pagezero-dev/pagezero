@@ -168,187 +168,187 @@ describe("Webhook", () => {
     expect(await response.text()).toBe("Event not handled")
   })
 
-  describe.each([
-    "order.paid",
-    "subscription.active",
-  ])("on '%s' event", async (eventType) => {
-    it("grants access to a new user and returns HTTP 201", async () => {
-      vi.mocked(validateEvent).mockReturnValue({
-        type: eventType,
-        data: {
-          productId: "pro-preview-product-id",
-          customer: {
-            email: "new@example.com",
+  describe.each(["order.paid", "subscription.active"])(
+    "on '%s' event",
+    async (eventType) => {
+      it("grants access to a new user and returns HTTP 201", async () => {
+        vi.mocked(validateEvent).mockReturnValue({
+          type: eventType,
+          data: {
+            productId: "pro-preview-product-id",
+            customer: {
+              email: "new@example.com",
+            },
           },
-        },
-      } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      setEnv({
-        POLAR_WEBHOOK_SECRET: "test",
-      })
-      const response = await postHandler({
-        request: new Request("http://localhost"),
+        } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
+        setEnv({
+          POLAR_WEBHOOK_SECRET: "test",
+        })
+        const response = await postHandler({
+          request: new Request("http://localhost"),
+        })
+
+        const user = await getUserByEmail("new@example.com")
+        if (!user) {
+          throw new Error("User not found")
+        }
+        expect(response.status).toBe(201)
+        expect(await hasUserRole(user.id, "pro" as unknown as Role)).toBe(true)
+        expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
+          to: "new@example.com",
+          productName: "Pro",
+        })
       })
 
-      const user = await getUserByEmail("new@example.com")
-      if (!user) {
-        throw new Error("User not found")
-      }
-      expect(response.status).toBe(201)
-      expect(await hasUserRole(user.id, "pro" as unknown as Role)).toBe(true)
-      expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
-        to: "new@example.com",
-        productName: "Pro",
-      })
-    })
-
-    it("grants access to an existing user and returns HTTP 201", async () => {
-      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
-        false,
-      )
-      vi.mocked(validateEvent).mockReturnValue({
-        type: eventType,
-        data: {
-          productId: "pro-preview-product-id",
-          customer: {
-            email: "existing@example.com",
+      it("grants access to an existing user and returns HTTP 201", async () => {
+        expect(
+          await hasUserRole(existingUserId, "pro" as unknown as Role),
+        ).toBe(false)
+        vi.mocked(validateEvent).mockReturnValue({
+          type: eventType,
+          data: {
+            productId: "pro-preview-product-id",
+            customer: {
+              email: "existing@example.com",
+            },
           },
-        },
-      } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      setEnv({
-        POLAR_WEBHOOK_SECRET: "test",
+        } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
+        setEnv({
+          POLAR_WEBHOOK_SECRET: "test",
+        })
+        const response = await postHandler({
+          request: new Request("http://localhost"),
+        })
+        expect(
+          await hasUserRole(existingUserId, "pro" as unknown as Role),
+        ).toBe(true)
+        expect(response.status).toBe(201)
+        expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
+          to: "existing@example.com",
+          productName: "Pro",
+        })
       })
-      const response = await postHandler({
-        request: new Request("http://localhost"),
-      })
-      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
-        true,
-      )
-      expect(response.status).toBe(201)
-      expect(sendAccessGrantedEmail).toHaveBeenCalledWith({
-        to: "existing@example.com",
-        productName: "Pro",
-      })
-    })
 
-    it("returns HTTP 200 when user already has access", async () => {
-      await grantUserRole(existingUserId, "pro" as unknown as Role)
+      it("returns HTTP 200 when user already has access", async () => {
+        await grantUserRole(existingUserId, "pro" as unknown as Role)
 
-      vi.mocked(validateEvent).mockReturnValue({
-        type: eventType,
-        data: {
-          productId: "pro-preview-product-id",
-          customer: {
-            email: "existing@example.com",
+        vi.mocked(validateEvent).mockReturnValue({
+          type: eventType,
+          data: {
+            productId: "pro-preview-product-id",
+            customer: {
+              email: "existing@example.com",
+            },
           },
-        },
-      } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      setEnv({
-        POLAR_WEBHOOK_SECRET: "test",
-      })
-      const response = await postHandler({
-        request: new Request("http://localhost"),
+        } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
+        setEnv({
+          POLAR_WEBHOOK_SECRET: "test",
+        })
+        const response = await postHandler({
+          request: new Request("http://localhost"),
+        })
+
+        expect(response.status).toBe(200)
+        expect(await response.text()).toBe("User already has access")
+        expect(sendAccessFailureEmail).not.toHaveBeenCalledWith()
       })
 
-      expect(response.status).toBe(200)
-      expect(await response.text()).toBe("User already has access")
-      expect(sendAccessFailureEmail).not.toHaveBeenCalledWith()
-    })
-
-    it("returns HTTP 200 when product is not found", async () => {
-      vi.mocked(validateEvent).mockReturnValue({
-        type: eventType,
-        data: {
-          productId: "not-found-product-id",
-          customer: {
-            email: "existing@example.com",
+      it("returns HTTP 200 when product is not found", async () => {
+        vi.mocked(validateEvent).mockReturnValue({
+          type: eventType,
+          data: {
+            productId: "not-found-product-id",
+            customer: {
+              email: "existing@example.com",
+            },
           },
-        },
-      } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
-      setEnv({
-        POLAR_WEBHOOK_SECRET: "test",
+        } as WebhookOrderPaidPayload | WebhookSubscriptionActivePayload)
+        setEnv({
+          POLAR_WEBHOOK_SECRET: "test",
+        })
+        const response = await postHandler({
+          request: new Request("http://localhost"),
+        })
+        expect(response.status).toBe(200)
+        expect(await response.text()).toBe("Product not found")
+        expect(sendAccessFailureEmail).toHaveBeenCalledWith({
+          to: "existing@example.com",
+        })
       })
-      const response = await postHandler({
-        request: new Request("http://localhost"),
-      })
-      expect(response.status).toBe(200)
-      expect(await response.text()).toBe("Product not found")
-      expect(sendAccessFailureEmail).toHaveBeenCalledWith({
-        to: "existing@example.com",
-      })
-    })
-  })
+    },
+  )
 
-  describe.each([
-    "order.refunded",
-    "subscription.revoked",
-  ])("on '%s' event", async (eventType) => {
-    it("revokes user access and returns HTTP 201", async () => {
-      await grantUserRole(existingUserId, "pro" as unknown as Role)
-      vi.mocked(validateEvent).mockReturnValue({
-        type: eventType,
-        data: {
-          productId: "pro-preview-product-id",
-          customer: {
-            email: "existing@example.com",
+  describe.each(["order.refunded", "subscription.revoked"])(
+    "on '%s' event",
+    async (eventType) => {
+      it("revokes user access and returns HTTP 201", async () => {
+        await grantUserRole(existingUserId, "pro" as unknown as Role)
+        vi.mocked(validateEvent).mockReturnValue({
+          type: eventType,
+          data: {
+            productId: "pro-preview-product-id",
+            customer: {
+              email: "existing@example.com",
+            },
           },
-        },
-      } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
-      setEnv({
-        POLAR_WEBHOOK_SECRET: "test",
+        } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
+        setEnv({
+          POLAR_WEBHOOK_SECRET: "test",
+        })
+        const response = await postHandler({
+          request: new Request("http://localhost"),
+        })
+        expect(response.status).toBe(201)
+        expect(
+          await hasUserRole(existingUserId, "pro" as unknown as Role),
+        ).toBe(false)
+        expect(sendAccessRevokedEmail).toHaveBeenCalledWith({
+          to: "existing@example.com",
+          productName: "Pro",
+        })
       })
-      const response = await postHandler({
-        request: new Request("http://localhost"),
-      })
-      expect(response.status).toBe(201)
-      expect(await hasUserRole(existingUserId, "pro" as unknown as Role)).toBe(
-        false,
-      )
-      expect(sendAccessRevokedEmail).toHaveBeenCalledWith({
-        to: "existing@example.com",
-        productName: "Pro",
-      })
-    })
 
-    it("returns HTTP 200 when user is not found", async () => {
-      vi.mocked(validateEvent).mockReturnValue({
-        type: eventType,
-        data: {
-          productId: "pro-preview-product-id",
-          customer: {
-            email: "not-found@example.com",
+      it("returns HTTP 200 when user is not found", async () => {
+        vi.mocked(validateEvent).mockReturnValue({
+          type: eventType,
+          data: {
+            productId: "pro-preview-product-id",
+            customer: {
+              email: "not-found@example.com",
+            },
           },
-        },
-      } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
-      setEnv({
-        POLAR_WEBHOOK_SECRET: "test",
+        } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
+        setEnv({
+          POLAR_WEBHOOK_SECRET: "test",
+        })
+        const response = await postHandler({
+          request: new Request("http://localhost"),
+        })
+        expect(response.status).toBe(200)
+        expect(await response.text()).toBe("User not found")
+        expect(sendAccessRevokedEmail).not.toHaveBeenCalled()
       })
-      const response = await postHandler({
-        request: new Request("http://localhost"),
-      })
-      expect(response.status).toBe(200)
-      expect(await response.text()).toBe("User not found")
-      expect(sendAccessRevokedEmail).not.toHaveBeenCalled()
-    })
 
-    it("returns HTTP 200 when product is not found", async () => {
-      vi.mocked(validateEvent).mockReturnValue({
-        type: eventType,
-        data: {
-          productId: "not-found-product-id",
-          customer: {
-            email: "existing@example.com",
+      it("returns HTTP 200 when product is not found", async () => {
+        vi.mocked(validateEvent).mockReturnValue({
+          type: eventType,
+          data: {
+            productId: "not-found-product-id",
+            customer: {
+              email: "existing@example.com",
+            },
           },
-        },
-      } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
-      setEnv({
-        POLAR_WEBHOOK_SECRET: "test",
+        } as WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload)
+        setEnv({
+          POLAR_WEBHOOK_SECRET: "test",
+        })
+        const response = await postHandler({
+          request: new Request("http://localhost"),
+        })
+        expect(response.status).toBe(200)
+        expect(await response.text()).toBe("Product not found")
+        expect(sendAccessRevokedEmail).not.toHaveBeenCalled()
       })
-      const response = await postHandler({
-        request: new Request("http://localhost"),
-      })
-      expect(response.status).toBe(200)
-      expect(await response.text()).toBe("Product not found")
-      expect(sendAccessRevokedEmail).not.toHaveBeenCalled()
-    })
-  })
+    },
+  )
 })
