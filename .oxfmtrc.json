@@ -6,7 +6,6 @@
   "ignorePatterns": [
     "packages/db/*/migrations/meta/*",
     "worker-configuration.d.ts",
-    "apps/routeTree.gen.ts",
-    "**/*.{md,mdx,yml,yaml}"
+    "apps/routeTree.gen.ts"
   ]
 }

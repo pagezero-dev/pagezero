@@ -10,15 +10,15 @@ updates:
     directory: "/"
     schedule:
       interval: "quarterly"
-    open-pull-requests-limit: 0  # Disabled. To enable, change to > 0, recommended value: 10
+    open-pull-requests-limit: 0 # Disabled. To enable, change to > 0, recommended value: 10
     commit-message:
       prefix: "chore(deps)"
     ignore:
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
       - dependency-name: "@types/bun"
-        
-    groups:      
+
+    groups:
       patch:
         update-types:
           - "patch"
