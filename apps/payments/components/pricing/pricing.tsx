@@ -36,15 +36,7 @@ interface PlanProps {
   cta: ReactNode
 }
 
-const PricingPlan = ({
-  name,
-  price,
-  period,
-  description,
-  features,
-  highlight,
-  cta,
-}: PlanProps) => {
+const PricingPlan = ({ name, price, period, description, features, highlight, cta }: PlanProps) => {
   return (
     <Card
       className={cn("relative basis-1/3", {
@@ -52,16 +44,12 @@ const PricingPlan = ({
       })}
     >
       {highlight && (
-        <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 transform">
-          {highlight}
-        </Badge>
+        <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 transform">{highlight}</Badge>
       )}
 
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">{name}</CardTitle>
-        {description && (
-          <CardDescription className="text-sm">{description}</CardDescription>
-        )}
+        {description && <CardDescription className="text-sm">{description}</CardDescription>}
         <div className="mt-4">
           <span className="font-bold text-4xl">{price}</span>
           <Muted className="ml-1 inline">{period}</Muted>

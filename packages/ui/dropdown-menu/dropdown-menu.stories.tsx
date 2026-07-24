@@ -54,9 +54,7 @@ export const Default: Story = {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive">
-          Delete Account
-        </DropdownMenuItem>
+        <DropdownMenuItem variant="destructive">Delete Account</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   ),
@@ -95,9 +93,7 @@ export const WithCheckboxItems: Story = {
         <DropdownMenuContent className="w-56">
           <DropdownMenuLabel>Appearance</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuCheckboxItem checked>
-            Show Status Bar
-          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem checked>Show Status Bar</DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem>Show Line Numbers</DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem>Show Minimap</DropdownMenuCheckboxItem>
         </DropdownMenuContent>

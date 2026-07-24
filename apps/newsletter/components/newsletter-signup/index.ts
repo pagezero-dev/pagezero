@@ -1,4 +1,1 @@
-export {
-  NewsletterSignup,
-  type NewsletterSignupProps,
-} from "./newsletter-signup"
+export { NewsletterSignup, type NewsletterSignupProps } from "./newsletter-signup"

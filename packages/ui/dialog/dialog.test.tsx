@@ -20,9 +20,7 @@ describe("<Dialog />", () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Test Dialog</DialogTitle>
-            <DialogDescription>
-              Dialog description for testing
-            </DialogDescription>
+            <DialogDescription>Dialog description for testing</DialogDescription>
           </DialogHeader>
           <div>Dialog content</div>
         </DialogContent>
@@ -31,9 +29,7 @@ describe("<Dialog />", () => {
 
     // Dialog content should not be visible initially
     expect(screen.queryByText("Test Dialog")).not.toBeInTheDocument()
-    expect(
-      screen.queryByText("Dialog description for testing"),
-    ).not.toBeInTheDocument()
+    expect(screen.queryByText("Dialog description for testing")).not.toBeInTheDocument()
     expect(screen.queryByText("Dialog content")).not.toBeInTheDocument()
 
     // Click the trigger button
@@ -41,9 +37,7 @@ describe("<Dialog />", () => {
 
     // Dialog content should be visible
     expect(screen.getByText("Test Dialog")).toBeInTheDocument()
-    expect(
-      screen.getByText("Dialog description for testing"),
-    ).toBeInTheDocument()
+    expect(screen.getByText("Dialog description for testing")).toBeInTheDocument()
     expect(screen.getByText("Dialog content")).toBeInTheDocument()
   })
 

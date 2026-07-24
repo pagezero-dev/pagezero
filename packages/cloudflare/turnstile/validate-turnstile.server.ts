@@ -12,13 +12,10 @@ export async function validateTurnstile({
   body.append("response", token ?? "")
   body.append("remoteip", ip ?? "")
 
-  const result = await fetch(
-    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-    {
-      method: "POST",
-      body,
-    },
-  )
+  const result = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    method: "POST",
+    body,
+  })
 
   const outcome = await result.json<{ success: boolean }>()
   if (outcome.success) {

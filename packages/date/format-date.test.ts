@@ -9,8 +9,6 @@ describe("formatDate", () => {
 
   it("supports custom locale and time zone", () => {
     const date = new Date("2026-01-15T23:00:00.000Z")
-    expect(
-      formatDate(date, { locale: "en-GB", timeZone: "Europe/Warsaw" }),
-    ).toBe("16 Jan 2026")
+    expect(formatDate(date, { locale: "en-GB", timeZone: "Europe/Warsaw" })).toBe("16 Jan 2026")
   })
 })

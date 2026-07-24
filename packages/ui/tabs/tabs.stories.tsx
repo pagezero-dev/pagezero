@@ -33,8 +33,7 @@ export const Default: Story = {
       <TabsContent value="account" className="p-4">
         <h3 className="font-medium text-lg">Account</h3>
         <p className="mt-2 text-muted-foreground text-sm">
-          Make changes to your account settings here. Click save when you're
-          done.
+          Make changes to your account settings here. Click save when you're done.
         </p>
       </TabsContent>
       <TabsContent value="password" className="p-4">
@@ -78,9 +77,7 @@ export const WithIcons: Story = {
       </TabsContent>
       <TabsContent value="photos" className="p-4">
         <h3 className="font-medium text-lg">Photos</h3>
-        <p className="mt-2 text-muted-foreground text-sm">
-          View and manage your photo library.
-        </p>
+        <p className="mt-2 text-muted-foreground text-sm">View and manage your photo library.</p>
       </TabsContent>
       <TabsContent value="videos" className="p-4">
         <h3 className="font-medium text-lg">Videos</h3>

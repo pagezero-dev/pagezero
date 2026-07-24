@@ -11,9 +11,7 @@ export const userRoles = sqliteTable(
   {
     userId: integer("user_id").references(() => users.id),
     roleName: text("role_name", {
-      enum: Object.keys(
-        config.permissions.roleToPermissions,
-      ) as NonEmptyArray<Role>,
+      enum: Object.keys(config.permissions.roleToPermissions) as NonEmptyArray<Role>,
     }).notNull(),
   },
   (table) => [primaryKey({ columns: [table.userId, table.roleName] })],

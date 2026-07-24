@@ -1,8 +1,4 @@
-import {
-  type UseMutationOptions,
-  type UseMutationResult,
-  useMutation,
-} from "@tanstack/react-query"
+import { type UseMutationOptions, type UseMutationResult, useMutation } from "@tanstack/react-query"
 import { useServerFn } from "@tanstack/react-start"
 import { useMemo, useState } from "react"
 import type { z } from "zod"
@@ -14,9 +10,7 @@ export interface FormError<TSchema extends z.ZodType> {
   }
 }
 
-type FormActionServerFn<TResponse> = (opts: {
-  data: FormData
-}) => Promise<TResponse>
+type FormActionServerFn<TResponse> = (opts: { data: FormData }) => Promise<TResponse>
 
 type FormFields<TSchema extends z.ZodObject<z.ZodRawShape>> = {
   [K in keyof z.infer<TSchema>]: {
@@ -30,10 +24,7 @@ type UseFormActionResult<
   TError,
   TSchema extends z.ZodObject<z.ZodRawShape>,
   TOnMutateResult = unknown,
-> = Omit<
-  UseMutationResult<TResponse, TError, FormData, TOnMutateResult>,
-  "data" | "error"
-> & {
+> = Omit<UseMutationResult<TResponse, TError, FormData, TOnMutateResult>, "data" | "error"> & {
   data: TResponse | undefined
   error: TError | null | undefined
   onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
@@ -45,15 +36,8 @@ type UseFormActionOptions<TResponse, TError, TOnMutateResult> = Omit<
   "mutationFn"
 >
 
-function isFormError<TSchema extends z.ZodType>(
-  error: unknown,
-): error is FormError<TSchema> {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "fields" in error &&
-    "message" in error
-  )
+function isFormError<TSchema extends z.ZodType>(error: unknown): error is FormError<TSchema> {
+  return typeof error === "object" && error !== null && "fields" in error && "message" in error
 }
 
 function getFormFields<TSchema extends z.ZodObject<z.ZodRawShape>>(

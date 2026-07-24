@@ -25,30 +25,24 @@ function PaymentSuccess() {
 
         {!whatsNext && (
           <P className="text-muted-foreground">
-            Thank you for your purchase. Your payment has been processed
-            successfully.
+            Thank you for your purchase. Your payment has been processed successfully.
           </P>
         )}
         {whatsNext && (
           <ol className="fade-in mb-6 animate-in space-y-4 text-left text-muted-foreground duration-300">
             <li className="flex items-baseline gap-4">
               <Badge variant="secondary">1</Badge>
-              <div>
-                You should receive an email shortly confirming your access.
-              </div>
+              <div>You should receive an email shortly confirming your access.</div>
             </li>
             <li className="flex items-baseline gap-4">
               <Badge variant="secondary">2</Badge>
               <div>
-                Your purchase is connected to the email address you provided
-                during checkout.
+                Your purchase is connected to the email address you provided during checkout.
               </div>
             </li>
             <li className="flex items-baseline gap-4">
               <Badge variant="secondary">3</Badge>
-              <div>
-                Sign in with the same email address to access your content.
-              </div>
+              <div>Sign in with the same email address to access your content.</div>
             </li>
           </ol>
         )}
@@ -59,11 +53,7 @@ function PaymentSuccess() {
           </Button>
 
           {!whatsNext && (
-            <Button
-              variant="outline"
-              disabled={whatsNext}
-              onClick={() => setWhatsNext(true)}
-            >
+            <Button variant="outline" disabled={whatsNext} onClick={() => setWhatsNext(true)}>
               What's next?
             </Button>
           )}

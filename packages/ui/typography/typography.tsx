@@ -44,16 +44,8 @@ function P({ className, ...props }: React.ComponentProps<"p">) {
   return <p className={cn("mb-6 leading-7", className)} {...props} />
 }
 
-function Blockquote({
-  className,
-  ...props
-}: React.ComponentProps<"blockquote">) {
-  return (
-    <blockquote
-      className={cn("my-6 border-l-2 pl-6 italic", className)}
-      {...props}
-    />
-  )
+function Blockquote({ className, ...props }: React.ComponentProps<"blockquote">) {
+  return <blockquote className={cn("my-6 border-l-2 pl-6 italic", className)} {...props} />
 }
 
 function InlineCode({ className, ...props }: React.ComponentProps<"code">) {
@@ -69,12 +61,7 @@ function InlineCode({ className, ...props }: React.ComponentProps<"code">) {
 }
 
 function Lead({ className, ...props }: React.ComponentProps<"p">) {
-  return (
-    <p
-      className={cn("my-4 text-muted-foreground text-xl", className)}
-      {...props}
-    />
-  )
+  return <p className={cn("my-4 text-muted-foreground text-xl", className)} {...props} />
 }
 
 function Large({ className, ...props }: React.ComponentProps<"div">) {
@@ -82,27 +69,15 @@ function Large({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function Small({ className, ...props }: React.ComponentProps<"small">) {
-  return (
-    <small
-      className={cn("font-medium text-sm leading-none", className)}
-      {...props}
-    />
-  )
+  return <small className={cn("font-medium text-sm leading-none", className)} {...props} />
 }
 
 function Muted({ className, ...props }: React.ComponentProps<"p">) {
-  return (
-    <p className={cn("text-muted-foreground text-sm", className)} {...props} />
-  )
+  return <p className={cn("text-muted-foreground text-sm", className)} {...props} />
 }
 
 function List({ className, ...props }: React.ComponentProps<"ul">) {
-  return (
-    <ul
-      className={cn("my-6 ml-6 list-disc [&>li]:mt-2", className)}
-      {...props}
-    />
-  )
+  return <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-2", className)} {...props} />
 }
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
@@ -124,10 +99,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
-      className={cn(
-        "border-b last:border-b-0 odd:bg-transparent even:bg-muted/30",
-        className,
-      )}
+      className={cn("border-b last:border-b-0 odd:bg-transparent even:bg-muted/30", className)}
       {...props}
     />
   )

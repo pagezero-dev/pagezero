@@ -45,9 +45,7 @@ describe("requireUserId", () => {
       data: {},
     } as Awaited<ReturnType<typeof useAppSession>>)
     vi.mocked(getUserId).mockResolvedValue(0)
-    vi.mocked(getRequestUrl).mockReturnValue(
-      new URL("http://test.com/test-path?query=123"),
-    )
+    vi.mocked(getRequestUrl).mockReturnValue(new URL("http://test.com/test-path?query=123"))
 
     await expect(requireUserId()).rejects.toEqual(
       redirect({
@@ -63,9 +61,7 @@ describe("requireUserId", () => {
     } as Awaited<ReturnType<typeof useAppSession>>)
     vi.mocked(getUserId).mockResolvedValue(0)
 
-    await expect(
-      requireUserId({ data: { redirectTo: "/custom-path" } }),
-    ).rejects.toEqual(
+    await expect(requireUserId({ data: { redirectTo: "/custom-path" } })).rejects.toEqual(
       redirect({
         to: "/login",
         search: { redirectTo: "/custom-path" },

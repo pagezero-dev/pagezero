@@ -13,11 +13,7 @@ interface FooterProps {
   socialMediaUrls?: SocialMediaUrls
 }
 
-export const Footer = ({
-  companyName,
-  navigation,
-  socialMediaUrls,
-}: FooterProps) => {
+export const Footer = ({ companyName, navigation, socialMediaUrls }: FooterProps) => {
   const currentYear = new Date().getFullYear()
   return (
     <footer className="container mx-auto mt-40 px-5">
@@ -30,12 +26,7 @@ export const Footer = ({
             <ul className="space-y-2">
               {children.map(({ label, href }) => (
                 <li key={label}>
-                  <Link
-                    href={href}
-                    size="sm"
-                    underline="hover"
-                    className="text-muted-foreground"
-                  >
+                  <Link href={href} size="sm" underline="hover" className="text-muted-foreground">
                     {label}
                   </Link>
                 </li>

@@ -13,13 +13,7 @@ export function sendAuthOtpEmail({ to, otp }: { to: string; otp: string }) {
   })
 }
 
-export function sendNewsletterConfirmEmail({
-  to,
-  confirmUrl,
-}: {
-  to: string
-  confirmUrl: string
-}) {
+export function sendNewsletterConfirmEmail({ to, confirmUrl }: { to: string; confirmUrl: string }) {
   return sendEmail({
     to,
     subject: "Confirm your newsletter subscription",
@@ -35,13 +29,7 @@ export function sendAccessFailureEmail({ to }: { to: string }) {
   })
 }
 
-export function sendAccessRevokedEmail({
-  to,
-  productName,
-}: {
-  to: string
-  productName: string
-}) {
+export function sendAccessRevokedEmail({ to, productName }: { to: string; productName: string }) {
   return sendEmail({
     to,
     subject: "Access revoked",
@@ -49,13 +37,7 @@ export function sendAccessRevokedEmail({
   })
 }
 
-export function sendAccessGrantedEmail({
-  to,
-  productName,
-}: {
-  to: string
-  productName: string
-}) {
+export function sendAccessGrantedEmail({ to, productName }: { to: string; productName: string }) {
   return sendEmail({
     to,
     subject: "Access granted",

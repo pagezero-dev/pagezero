@@ -19,11 +19,7 @@ describe("crypto", () => {
 
   it("fails verification if the data is invalid", async () => {
     const signature = await sign(testSecret, testData)
-    const isValid = await verify(
-      testSecret,
-      { message: "invalid-data" },
-      signature,
-    )
+    const isValid = await verify(testSecret, { message: "invalid-data" }, signature)
     expect(isValid).toBe(false)
   })
 

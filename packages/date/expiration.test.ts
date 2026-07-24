@@ -4,9 +4,7 @@ import { expiresInMinutes, isExpired } from "./expiration"
 describe("expiresInMinutes", () => {
   it("returns a timestamp offset from the given date", () => {
     const from = new Date("2026-01-01T12:00:00.000Z")
-    expect(expiresInMinutes(30, from)).toBe(
-      new Date("2026-01-01T12:30:00.000Z").getTime(),
-    )
+    expect(expiresInMinutes(30, from)).toBe(new Date("2026-01-01T12:30:00.000Z").getTime())
   })
 })
 

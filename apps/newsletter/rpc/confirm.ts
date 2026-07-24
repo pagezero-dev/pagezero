@@ -27,11 +27,7 @@ export const getConfirmPageData = createServerFn({ method: "GET" })
     }
 
     const { email, expiresAt, signature } = data
-    const isValidLink = await verify(
-      env.OTP_SECRET,
-      { email, expiresAt },
-      signature,
-    )
+    const isValidLink = await verify(env.OTP_SECRET, { email, expiresAt }, signature)
 
     if (!isValidLink) {
       throw notFound()
@@ -53,11 +49,7 @@ export const confirmFormAction = createServerFn({ method: "POST" })
 
     const { email, expiresAt, signature } = data
 
-    const isValid = await verify(
-      env.OTP_SECRET,
-      { email, expiresAt },
-      signature,
-    )
+    const isValid = await verify(env.OTP_SECRET, { email, expiresAt }, signature)
     if (!isValid) {
       throw new Error("Invalid confirmation link")
     }
@@ -83,9 +75,7 @@ export const confirmFormAction = createServerFn({ method: "POST" })
     if (createError) {
       const message = createError.message.toLowerCase()
       const isDuplicate =
-        message.includes("already") ||
-        message.includes("duplicate") ||
-        message.includes("exists")
+        message.includes("already") || message.includes("duplicate") || message.includes("exists")
       if (!isDuplicate) {
         throw createError
       }
@@ -98,9 +88,7 @@ export const confirmFormAction = createServerFn({ method: "POST" })
     if (segmentError) {
       const message = segmentError.message.toLowerCase()
       const isBenign =
-        message.includes("already") ||
-        message.includes("duplicate") ||
-        message.includes("exists")
+        message.includes("already") || message.includes("duplicate") || message.includes("exists")
       if (!isBenign) {
         throw segmentError
       }

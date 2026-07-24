@@ -22,30 +22,18 @@ type BlogPostSummaryProps =
   | (BlogPostSummaryBaseProps & { variant: "summary"; description: string })
   | (BlogPostSummaryBaseProps & { variant: "header"; description?: never })
 
-function PostAuthor({
-  author,
-  linkName,
-}: {
-  author: BlogPostAuthor
-  linkName: boolean
-}) {
+function PostAuthor({ author, linkName }: { author: BlogPostAuthor; linkName: boolean }) {
   return (
     <div className="flex items-center gap-4">
       {author.imageSrc ? (
-        <img
-          src={author.imageSrc}
-          alt=""
-          className="h-12 w-12 rounded-full border"
-        />
+        <img src={author.imageSrc} alt="" className="h-12 w-12 rounded-full border" />
       ) : (
         <div className="flex size-12 items-center justify-center rounded-full border bg-muted">
           <User className="size-6 text-muted-foreground" />
         </div>
       )}
       <dl>
-        <dt
-          className={cn("font-semibold text-sm", linkName && "text-foreground")}
-        >
+        <dt className={cn("font-semibold text-sm", linkName && "text-foreground")}>
           {linkName && author.url ? (
             <Link
               href={author.url}
@@ -84,9 +72,7 @@ export const BlogPostSummary = ({
   const Wrapper = isHeader ? "header" : "article"
 
   return (
-    <Wrapper
-      className={cn(isHeader ? "mb-12" : "flex max-w-sm flex-col gap-5")}
-    >
+    <Wrapper className={cn(isHeader ? "mb-12" : "flex max-w-sm flex-col gap-5")}>
       <img
         src={imgSrc}
         alt={title}
@@ -97,10 +83,7 @@ export const BlogPostSummary = ({
       />
       <time
         dateTime={date.toISOString()}
-        className={cn(
-          "text-muted-foreground text-sm",
-          isHeader ? "mb-4 block" : "-mb-2",
-        )}
+        className={cn("text-muted-foreground text-sm", isHeader ? "mb-4 block" : "-mb-2")}
       >
         {formatDate(date)}
       </time>

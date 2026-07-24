@@ -36,9 +36,7 @@ test("basic authentication flow", async ({ page }) => {
     fetch("/emails/sent").then((res) => res.json()),
   )) as DevelopmentEmailPayload[]
   const lastEmail = emails[emails.length - 1]
-  const otpCodeFromEmail = lastEmail.body.match(
-    /Verification code:\s+(\d{6})/,
-  )?.[1]
+  const otpCodeFromEmail = lastEmail.body.match(/Verification code:\s+(\d{6})/)?.[1]
   expect(otpCodeFromEmail).toMatch(/^\d{6}$/)
 
   // Provide OTP
@@ -49,9 +47,7 @@ test("basic authentication flow", async ({ page }) => {
   await page.reload()
 
   // Check logged in state
-  await expect(
-    page.getByRole("button", { name: "test@test.com" }),
-  ).toBeVisible()
+  await expect(page.getByRole("button", { name: "test@test.com" })).toBeVisible()
 
   // Logout
   await page.getByRole("button", { name: "test@test.com" }).click()

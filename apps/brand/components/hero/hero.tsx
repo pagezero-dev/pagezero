@@ -16,9 +16,7 @@ export const Hero = ({ title, description, cta, children }: HeroProps) => {
         <Heading level={1} className="my-0 text-center text-5xl md:text-6xl">
           {title}
         </Heading>
-        <p className="text-center text-muted-foreground text-xl leading-relaxed">
-          {description}
-        </p>
+        <p className="text-center text-muted-foreground text-xl leading-relaxed">{description}</p>
         <div className="flex items-center gap-4">{cta}</div>
       </div>
     </section>

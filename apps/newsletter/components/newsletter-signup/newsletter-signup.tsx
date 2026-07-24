@@ -24,11 +24,7 @@ export function NewsletterSignup({
   const turnstileSubjectKey = isPending ? "pending" : "idle"
 
   return (
-    <form
-      onSubmit={onSubmit}
-      noValidate
-      className={cn("flex flex-col gap-2", className)}
-    >
+    <form onSubmit={onSubmit} noValidate className={cn("flex flex-col gap-2", className)}>
       {error?.message && (
         <Alert variant="destructive">
           <AlertTriangleIcon />
@@ -43,10 +39,7 @@ export function NewsletterSignup({
       )}
 
       {cloudflareTurnstilePublicKey ? (
-        <Turnstile
-          siteKey={cloudflareTurnstilePublicKey}
-          subjectKey={turnstileSubjectKey}
-        />
+        <Turnstile siteKey={cloudflareTurnstilePublicKey} subjectKey={turnstileSubjectKey} />
       ) : null}
 
       {!success ? (
@@ -61,11 +54,7 @@ export function NewsletterSignup({
           />
 
           <Button type="submit" disabled={isPending}>
-            {isPending ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              <Mail className="size-4" />
-            )}
+            {isPending ? <Loader2 className="size-4 animate-spin" /> : <Mail className="size-4" />}
             Subscribe
           </Button>
         </div>

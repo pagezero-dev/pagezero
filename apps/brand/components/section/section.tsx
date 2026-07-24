@@ -42,14 +42,9 @@ export const Section = ({
   background,
 }: SectionProps) => {
   return (
-    <section
-      id={id}
-      className={cn(sectionVariants({ spacingSize, background }))}
-    >
+    <section id={id} className={cn(sectionVariants({ spacingSize, background }))}>
       <div className="container mx-auto px-5">
-        {badge && (
-          <div className="mx-auto mb-4 flex justify-center">{badge}</div>
-        )}
+        {badge && <div className="mx-auto mb-4 flex justify-center">{badge}</div>}
         {(title || description) && (
           <div className="mx-auto mb-20 max-w-2xl text-center">
             {title && (

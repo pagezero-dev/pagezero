@@ -10,10 +10,7 @@ export const Faq = ({ items }: FaqProps) => {
     <div className="mx-auto max-w-screen-md">
       <ul>
         {items.map(({ question, answer }) => (
-          <li
-            key={question}
-            className="border-border border-t py-5 last:border-b"
-          >
+          <li key={question} className="border-border border-t py-5 last:border-b">
             <details className="group">
               <summary className="flex cursor-pointer items-center justify-between gap-1">
                 <Large>{question}</Large>
