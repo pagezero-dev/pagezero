@@ -1,7 +1,7 @@
 {
   "include": ["**/*.ts", "**/*.tsx", "apps/routeTree.gen.ts"],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "lib": ["DOM", "DOM.Iterable", "ES2023"],
     "types": ["node", "./worker-configuration.d.ts", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,

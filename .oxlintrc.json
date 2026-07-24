@@ -10,10 +10,7 @@
     }
   },
   "rules": {
-    "react/react-in-jsx-scope": "off",
-    "unicorn/consistent-function-scoping": "off",
-    "unicorn/no-array-sort": "off",
-    "no-shadow": "off"
+    "react/react-in-jsx-scope": "off"
   },
   "ignorePatterns": [
     "packages/db/*/migrations/meta/*",

@@ -7,7 +7,7 @@ import { getMdxFrontmatters } from "@/mdx"
 
 export const Route = createFileRoute("/_brand-layout/blog")({
   loader: () => ({
-    posts: getMdxFrontmatters(postModules, blogPostFrontmatterSchema).sort(
+    posts: getMdxFrontmatters(postModules, blogPostFrontmatterSchema).toSorted(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     ),
   }),
