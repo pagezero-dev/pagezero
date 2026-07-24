@@ -42,37 +42,14 @@ jobs:
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: 💎 Quality check
-        run: bun run check
-
-  types:
-    name: ʦ Types check
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout repo
-        uses: actions/checkout@v6
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: .tool-versions
-
-      - name: 🥟 Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .tool-versions
-
-      - name: 📦 Install dependencies
-        run: bun install --frozen-lockfile
-
       - name: 📋 Copy environment variables
         run: bun run setup:env
 
       - name: 📦 Generate types
         run: bun run generate:types
 
-      - name: ʦ Types check
-        run: bun run check:types
+      - name: 💎 Quality check
+        run: bun run check
 
   unit-tests:
     name: ⚡️ Unit tests
@@ -153,7 +130,7 @@ jobs:
   database:
     name: 🚚 Database migration
     runs-on: ubuntu-latest
-    needs: [check, types, unit-tests, e2e-tests]
+    needs: [check, unit-tests, e2e-tests]
     if: ${{ github.ref == 'refs/heads/main' || github.event.pull_request.draft == false }}
     concurrency:
       group: database-${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
