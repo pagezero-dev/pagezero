@@ -1,4 +1,5 @@
 import { User } from "lucide-react"
+
 import { Muted } from "@/ui/typography"
 
 type TestimonialAuthor = {
@@ -22,23 +23,23 @@ interface TestimonialsProps {
 
 const Testimonial = ({ quote, author }: TestimonialProps) => {
   return (
-    <figure className="break-inside-avoid rounded-lg border bg-card p-6 text-card-foreground shadow-sm transition-shadow duration-200 hover:shadow-md">
+    <figure className="bg-card text-card-foreground break-inside-avoid rounded-lg border p-6 shadow-sm transition-shadow duration-200 hover:shadow-md">
       <blockquote className="leading-relaxed">"{quote}"</blockquote>
       <figcaption className="mt-6 flex gap-4">
         {author.imageSrc ? (
           <img
             src={author.imageSrc}
             alt=""
-            className="size-10 rounded-full border border-border object-cover"
+            className="border-border size-10 rounded-full border object-cover"
           />
         ) : (
-          <div className="flex size-10 items-center justify-center rounded-full border border-border bg-muted">
-            <User className="size-5 text-muted-foreground" />
+          <div className="border-border bg-muted flex size-10 items-center justify-center rounded-full border">
+            <User className="text-muted-foreground size-5" />
           </div>
         )}
 
         <div className="space-y-1">
-          <div className="font-medium text-sm">{author.name}</div>
+          <div className="text-sm font-medium">{author.name}</div>
           {author.id && <Muted className="text-xs">@{author.id}</Muted>}
         </div>
       </figcaption>
@@ -54,7 +55,7 @@ export const Testimonials = ({ items }: TestimonialsProps) => {
           <a
             href={url}
             key={quote}
-            className="block rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="focus-visible:ring-ring block rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             target="_blank"
             rel="noopener noreferrer"
           >

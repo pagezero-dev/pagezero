@@ -1,8 +1,10 @@
 import { relations } from "drizzle-orm"
 import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core"
+
 import { users } from "@/auth/db/schema"
 import config from "@/config"
 import type { NonEmptyArray } from "@/types/utils"
+
 import type { Role } from "../permissions.server"
 
 // Define tables

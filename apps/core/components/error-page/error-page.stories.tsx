@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/tanstack-react"
+
 import { ErrorPage } from "./error-page"
 
 const meta = {

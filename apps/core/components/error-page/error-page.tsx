@@ -37,12 +37,12 @@ export const ErrorPage = ({ error, details, action }: ErrorPageProps) => {
 
   return (
     <main className="container mx-auto flex h-screen flex-col justify-center gap-5">
-      <CircleAlert className="mx-auto h-16 w-16 text-destructive" />
-      <h1 className="text-center font-bold text-4xl text-foreground">{name}</h1>
-      {message && <p className="text-center text-muted-foreground text-xl">{message}</p>}
+      <CircleAlert className="text-destructive mx-auto h-16 w-16" />
+      <h1 className="text-foreground text-center text-4xl font-bold">{name}</h1>
+      {message && <p className="text-muted-foreground text-center text-xl">{message}</p>}
       {action && <div className="text-center">{action}</div>}
       {details && (
-        <pre className="overflow-x-auto rounded-lg border border-destructive border-t-8 bg-destructive/10 p-5 text-destructive text-sm shadow-xs">
+        <pre className="border-destructive bg-destructive/10 text-destructive overflow-x-auto rounded-lg border border-t-8 p-5 text-sm shadow-xs">
           {details}
         </pre>
       )}

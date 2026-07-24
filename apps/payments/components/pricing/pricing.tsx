@@ -1,5 +1,6 @@
 import { Check } from "lucide-react"
 import type { ReactNode } from "react"
+
 import { Badge } from "@/ui/badge/badge"
 import {
   Card,
@@ -51,7 +52,7 @@ const PricingPlan = ({ name, price, period, description, features, highlight, ct
         <CardTitle className="text-2xl">{name}</CardTitle>
         {description && <CardDescription className="text-sm">{description}</CardDescription>}
         <div className="mt-4">
-          <span className="font-bold text-4xl">{price}</span>
+          <span className="text-4xl font-bold">{price}</span>
           <Muted className="ml-1 inline">{period}</Muted>
         </div>
       </CardHeader>
@@ -60,7 +61,7 @@ const PricingPlan = ({ name, price, period, description, features, highlight, ct
         <ul className="space-y-4">
           {features.map((feature) => (
             <li key={feature} className="flex items-center gap-3">
-              <Check className="size-4 text-primary" />
+              <Check className="text-primary size-4" />
               <Small>{feature}</Small>
             </li>
           ))}

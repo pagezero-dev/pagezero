@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { Container, Font, Head, Html, Link, Tailwind, Text } from "react-email"
+
 import config from "@/config"
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -19,7 +20,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           />
         </Head>
         <Container className="rounded-lg bg-gray-100 p-6 text-center">{children}</Container>
-        <Container className="mt-8 text-center text-gray-500 text-sm">
+        <Container className="mt-8 text-center text-sm text-gray-500">
           <Text className="mb-0">
             © {new Date().getFullYear()} {config.core.projectName}
           </Text>

@@ -150,7 +150,7 @@ export const TypographyDemo: Story = {
         The king thought long and hard, and finally came up with{" "}
         <a
           href="https://example.com"
-          className="font-medium text-primary underline underline-offset-4"
+          className="text-primary font-medium underline underline-offset-4"
         >
           a brilliant plan
         </a>

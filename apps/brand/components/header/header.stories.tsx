@@ -1,8 +1,10 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { ChevronDown } from "lucide-react"
-import { Button } from "@/ui/button"
+
 import { Dropdown } from "@/ui-lite/dropdown"
+import { Button } from "@/ui/button"
+
 import { Header } from "./header"
 
 const meta = {
@@ -23,7 +25,7 @@ type Story = StoryObj<typeof meta>
 
 const baseConfig = {
   logo: (
-    <a href={faker.internet.url()} className="font-bold text-lg">
+    <a href={faker.internet.url()} className="text-lg font-bold">
       PageZERO
     </a>
   ),

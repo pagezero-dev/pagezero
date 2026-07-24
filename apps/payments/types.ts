@@ -1,4 +1,5 @@
 import { validateEvent } from "@polar-sh/sdk/webhooks"
+
 import config from "@/config"
 import type { Role } from "@/permissions"
 

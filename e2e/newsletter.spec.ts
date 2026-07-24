@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test"
+
 import type { DevelopmentEmailPayload } from "../apps/email/email.server"
 
 test("newsletter double opt-in flow (dev email capture)", async ({ page }) => {

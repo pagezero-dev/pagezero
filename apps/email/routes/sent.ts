@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
+
 import { developmentMailsSent } from "../email.server"
 
 export const Route = createFileRoute("/emails/sent")({

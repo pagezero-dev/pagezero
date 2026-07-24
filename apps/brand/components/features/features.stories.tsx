@@ -1,7 +1,9 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/tanstack-react"
 import { Archive, ArrowRightCircle, Building2, RefreshCw, TestTube, Zap } from "lucide-react"
+
 import { Link } from "@/ui/link"
+
 import { Features } from "./features"
 
 const meta = {

@@ -1,6 +1,8 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/tanstack-react"
+
 import { Badge } from "@/ui/badge"
+
 import { Section } from "./section"
 
 const meta = {
@@ -31,7 +33,7 @@ export const WithBadge: Story = {
     title: faker.lorem.sentence(),
     description: faker.lorem.paragraph(),
     badge: (
-      <Badge variant="outline" className="px-3 py-2 text-muted-foreground">
+      <Badge variant="outline" className="text-muted-foreground px-3 py-2">
         <span className="mr-1 size-3 rounded-full bg-amber-600" />
         Featured
       </Badge>

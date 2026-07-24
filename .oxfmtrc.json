@@ -1,6 +1,8 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "semi": false,
+  "sortImports": true,
+  "sortTailwindcss": true,
   "ignorePatterns": [
     "packages/db/*/migrations/meta/*",
     "worker-configuration.d.ts",

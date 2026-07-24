@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { z } from "zod"
+
 import { getMdxFrontmatters, getMdxModuleBySlug, type MdxModule } from "./utils"
 
 const frontmatterSchema = z.object({

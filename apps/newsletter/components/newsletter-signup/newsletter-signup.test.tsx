@@ -16,6 +16,7 @@ vi.mock("@/form", () => ({
 }))
 
 import { useFormAction } from "@/form"
+
 import { NewsletterSignup } from "./newsletter-signup"
 
 function mockUseFormAction(value: Partial<ReturnType<typeof useFormAction>>) {

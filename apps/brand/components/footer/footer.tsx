@@ -1,5 +1,6 @@
 import { Link } from "@/ui/link"
 import { Heading, Muted } from "@/ui/typography"
+
 import { Social, type SocialMediaUrls } from "../social"
 
 interface Navigation {
@@ -35,7 +36,7 @@ export const Footer = ({ companyName, navigation, socialMediaUrls }: FooterProps
           </section>
         ))}
       </div>
-      <div className="mt-24 flex flex-col items-center justify-between gap-8 border-border border-t py-8 sm:flex-row">
+      <div className="border-border mt-24 flex flex-col items-center justify-between gap-8 border-t py-8 sm:flex-row">
         <Muted>
           © {currentYear} {companyName}. All rights reserved.
         </Muted>

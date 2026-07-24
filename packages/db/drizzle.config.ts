@@ -1,5 +1,7 @@
 import crypto from "node:crypto"
+
 import type { Config } from "drizzle-kit"
+
 import wranglerConfig from "../../wrangler.json"
 
 const DEFAULT_DB_BINDING = "DB_MAIN"

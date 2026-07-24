@@ -1,4 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router"
+
 import { ProseArticle } from "@/brand/components/prose-article"
 import { legalDocumentFrontmatterSchema, legalModules } from "@/brand/content"
 import config from "@/config"

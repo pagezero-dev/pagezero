@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+
 import { Heading } from "@/ui/typography"
 
 type ProseArticleProps = {
@@ -8,9 +9,9 @@ type ProseArticleProps = {
 
 function ProseArticle({ children, title }: ProseArticleProps) {
   return (
-    <article className="mx-auto max-w-prose px-5 py-32 text-muted-foreground">
+    <article className="text-muted-foreground mx-auto max-w-prose px-5 py-32">
       {title && (
-        <Heading level={1} className="mb-20 text-center text-foreground">
+        <Heading level={1} className="text-foreground mb-20 text-center">
           {title}
         </Heading>
       )}
