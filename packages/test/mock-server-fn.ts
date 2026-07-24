@@ -11,17 +11,17 @@
  * }))
  * ```
  */
-export function mockServerFn() {
-  const createServerFn = () => {
-    const builder = {
-      validator: () => builder,
-      handler:
-        <TData, TResult>(handler: (ctx: { data: TData }) => TResult) =>
-        (opts?: { data: TData }) =>
-          handler({ data: opts?.data as TData }),
-    }
-    return builder
+function createServerFn() {
+  const builder = {
+    validator: () => builder,
+    handler:
+      <TData, TResult>(handler: (ctx: { data: TData }) => TResult) =>
+      (opts?: { data: TData }) =>
+        handler({ data: opts?.data as TData }),
   }
+  return builder
+}
 
+export function mockServerFn() {
   return { createServerFn }
 }

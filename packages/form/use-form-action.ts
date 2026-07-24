@@ -79,10 +79,10 @@ export function useFormAction<
   const mutation = useMutation({
     ...options,
     mutationFn: (formData: FormData) => runServerFn({ data: formData }),
-    onSettled: (data, error, ...rest) => {
-      setData(data)
-      setError(error)
-      options?.onSettled?.(data, error, ...rest)
+    onSettled: (settledData, settledError, ...rest) => {
+      setData(settledData)
+      setError(settledError)
+      options?.onSettled?.(settledData, settledError, ...rest)
     },
   })
 
