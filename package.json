@@ -2,14 +2,10 @@
   "name": "pagezero",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
-  "author": "",
   "license": "MIT",
-  "engines": {
-    "node": ">=24.11.0",
-    "bun": ">=1.3.1"
-  },
+  "author": "",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
     "build": "vite build",
     "check": "oxlint && oxfmt --check",
@@ -101,6 +97,10 @@
     "vite": "8.0.16",
     "vitest": "4.1.9",
     "wrangler": "4.90.1"
+  },
+  "engines": {
+    "bun": ">=1.3.1",
+    "node": ">=24.11.0"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",
