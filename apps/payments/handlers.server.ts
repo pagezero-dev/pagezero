@@ -1,97 +1,76 @@
-import { getOrCreateUserByEmail, getUserByEmail } from "@/auth"
+import type { WebhookOrderPaidPayload } from "@polar-sh/sdk/models/components/webhookorderpaidpayload"
+import type { WebhookOrderRefundedPayload } from "@polar-sh/sdk/models/components/webhookorderrefundedpayload"
+import type { WebhookSubscriptionActivePayload } from "@polar-sh/sdk/models/components/webhooksubscriptionactivepayload"
+import type { WebhookSubscriptionRevokedPayload } from "@polar-sh/sdk/models/components/webhooksubscriptionrevokedpayload"
+
+import { grantUserRole, hasUserRole, revokeUserRole } from "@/auth/roles.server"
+import { getOrCreateUserByEmail, getUserByEmail } from "@/auth/user.server"
 import config from "@/config"
 import {
   sendAccessFailureEmail,
   sendAccessGrantedEmail,
   sendAccessRevokedEmail,
 } from "@/email/templates.server"
-import { grantUserRole, hasUserRole, revokeUserRole } from "@/permissions"
 
-import type {
-  WebhookOrderPaidPayload,
-  WebhookOrderRefundedPayload,
-  WebhookSubscriptionActivePayload,
-  WebhookSubscriptionRevokedPayload,
-} from "./types"
+type PaymentSuccessEvent = WebhookOrderPaidPayload | WebhookSubscriptionActivePayload
+type PaymentRevokedEvent = WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload
 
-export async function onPaymentSuccess(
-  event: WebhookOrderPaidPayload | WebhookSubscriptionActivePayload,
-) {
-  const email = event.data.customer.email
-  if (!email) {
-    throw new Error("Customer email not found")
+function getProductConfig(productId: string | null | undefined) {
+  if (!productId) {
+    return undefined
   }
 
-  try {
-    const productId = event.data.productId
-    const productConfig = Object.values(config.payments.products).find((product) =>
-      import.meta.env.PROD
-        ? product.polarProductId.production === productId
-        : product.polarProductId.preview === productId,
-    )
-    if (!productConfig) {
-      throw new Error("Product not found")
-    }
-    const user = await getOrCreateUserByEmail(email)
-    const userRoleToGrant = productConfig.userRoleToGrant
-    if (await hasUserRole(user.id, userRoleToGrant)) {
-      throw new Error("User already has access")
-    }
-    await grantUserRole(user.id, userRoleToGrant)
-    await sendAccessGrantedEmail({
-      to: user.email,
-      productName: productConfig.name,
-    })
-    return new Response("Payment success", { status: 201 })
-  } catch (error) {
-    if (error instanceof Error) {
-      if (error.message === "User already has access") {
-        return new Response(error.message, { status: 200 })
-      }
-      if (error.message === "Product not found") {
-        await sendAccessFailureEmail({ to: email })
-        return new Response(error.message, { status: 200 })
-      }
-    }
-    throw error
-  }
+  return Object.values(config.payments.products).find((product) =>
+    import.meta.env.PROD
+      ? product.polarProductId.production === productId
+      : product.polarProductId.preview === productId,
+  )
 }
 
-export async function onPaymentRevoked(
-  event: WebhookOrderRefundedPayload | WebhookSubscriptionRevokedPayload,
-) {
+export async function onPaymentSuccess(event: PaymentSuccessEvent) {
   const email = event.data.customer.email
   if (!email) {
     throw new Error("Customer email not found")
   }
 
-  try {
-    const productId = event.data.productId
-    const productConfig = Object.values(config.payments.products).find((product) =>
-      import.meta.env.PROD
-        ? product.polarProductId.production === productId
-        : product.polarProductId.preview === productId,
-    )
-    if (!productConfig) {
-      throw new Error("Product not found")
-    }
-    const user = await getUserByEmail(email)
-    if (!user) {
-      throw new Error("User not found")
-    }
-    const userRoleToRevoke = productConfig.userRoleToGrant
-    await revokeUserRole(user.id, userRoleToRevoke)
-    await sendAccessRevokedEmail({
-      to: user.email,
-      productName: productConfig.name,
-    })
-    return new Response("Payment revoked", { status: 201 })
-  } catch (error) {
-    if (error instanceof Error) {
-      if (["User not found", "Product not found"].includes(error.message)) {
-        return new Response(error.message, { status: 200 })
-      }
-    }
-    throw error
+  const productConfig = getProductConfig(event.data.productId)
+  if (!productConfig) {
+    await sendAccessFailureEmail({ to: email })
+    return
   }
+
+  const user = await getOrCreateUserByEmail(email)
+  const userRoleToGrant = productConfig.userRoleToGrant
+  if (await hasUserRole(user.id, userRoleToGrant)) {
+    return
+  }
+
+  await grantUserRole(user.id, userRoleToGrant)
+  await sendAccessGrantedEmail({
+    to: user.email,
+    productName: productConfig.name,
+  })
+}
+
+export async function onPaymentRevoked(event: PaymentRevokedEvent) {
+  const email = event.data.customer.email
+  if (!email) {
+    throw new Error("Customer email not found")
+  }
+
+  const productConfig = getProductConfig(event.data.productId)
+  if (!productConfig) {
+    return
+  }
+
+  const user = await getUserByEmail(email)
+  if (!user) {
+    return
+  }
+
+  await revokeUserRole(user.id, productConfig.userRoleToGrant)
+  await sendAccessRevokedEmail({
+    to: user.email,
+    productName: productConfig.name,
+  })
 }

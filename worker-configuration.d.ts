@@ -7,9 +7,11 @@ declare namespace Cloudflare {
 		ASSETS: Fetcher;
 		CLOUDFLARE_TURNSTILE_PUBLIC_KEY: "0x4AAAAAABd1vnMC0VAcAlf3";
 		NEWSLETTER_SEGMENT_ID: "f7ba881f-cec0-4c63-94ff-e3d5cc867f21";
-		SESSION_COOKIE_SECRET: string;
+		BETTER_AUTH_SECRET: string;
+		BETTER_AUTH_URL: string;
 		OTP_SECRET: string;
 		RESEND_API_KEY: string;
+		POLAR_ACCESS_TOKEN: string;
 		POLAR_WEBHOOK_SECRET: string;
 		CLOUDFLARE_TURNSTILE_SECRET_KEY: string;
 	}
@@ -18,9 +20,11 @@ declare namespace Cloudflare {
 		ASSETS: Fetcher;
 		CLOUDFLARE_TURNSTILE_PUBLIC_KEY: "0x4AAAAAABd1vnMC0VAcAlf3";
 		NEWSLETTER_SEGMENT_ID: "f7ba881f-cec0-4c63-94ff-e3d5cc867f21";
-		SESSION_COOKIE_SECRET: string;
+		BETTER_AUTH_SECRET: string;
+		BETTER_AUTH_URL: string;
 		OTP_SECRET: string;
 		RESEND_API_KEY: string;
+		POLAR_ACCESS_TOKEN: string;
 		POLAR_WEBHOOK_SECRET: string;
 		CLOUDFLARE_TURNSTILE_SECRET_KEY: string;
 	}
@@ -29,9 +33,11 @@ declare namespace Cloudflare {
 		ASSETS: Fetcher;
 		CLOUDFLARE_TURNSTILE_PUBLIC_KEY: "";
 		NEWSLETTER_SEGMENT_ID: "";
-		SESSION_COOKIE_SECRET: string;
+		BETTER_AUTH_SECRET: string;
+		BETTER_AUTH_URL: string;
 		OTP_SECRET: string;
 		RESEND_API_KEY: string;
+		POLAR_ACCESS_TOKEN: string;
 		POLAR_WEBHOOK_SECRET: string;
 		CLOUDFLARE_TURNSTILE_SECRET_KEY: string;
 	}
@@ -40,9 +46,11 @@ declare namespace Cloudflare {
 		ASSETS: Fetcher;
 		CLOUDFLARE_TURNSTILE_PUBLIC_KEY: "0x4AAAAAABd1vnMC0VAcAlf3" | "" | "1x00000000000000000000BB";
 		NEWSLETTER_SEGMENT_ID: "f7ba881f-cec0-4c63-94ff-e3d5cc867f21" | "";
-		SESSION_COOKIE_SECRET: string;
+		BETTER_AUTH_SECRET: string;
+		BETTER_AUTH_URL: string;
 		OTP_SECRET: string;
 		RESEND_API_KEY: string;
+		POLAR_ACCESS_TOKEN: string;
 		POLAR_WEBHOOK_SECRET: string;
 		CLOUDFLARE_TURNSTILE_SECRET_KEY: string;
 	}
@@ -52,7 +60,7 @@ type StringifyValues<EnvType extends Record<string, unknown>> = {
 	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
 };
 declare namespace NodeJS {
-	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "CLOUDFLARE_TURNSTILE_PUBLIC_KEY" | "NEWSLETTER_SEGMENT_ID" | "SESSION_COOKIE_SECRET" | "OTP_SECRET" | "RESEND_API_KEY" | "POLAR_WEBHOOK_SECRET" | "CLOUDFLARE_TURNSTILE_SECRET_KEY">> {}
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "CLOUDFLARE_TURNSTILE_PUBLIC_KEY" | "NEWSLETTER_SEGMENT_ID" | "BETTER_AUTH_SECRET" | "BETTER_AUTH_URL" | "OTP_SECRET" | "RESEND_API_KEY" | "POLAR_ACCESS_TOKEN" | "POLAR_WEBHOOK_SECRET" | "CLOUDFLARE_TURNSTILE_SECRET_KEY">> {}
 }
 
 // Begin runtime types

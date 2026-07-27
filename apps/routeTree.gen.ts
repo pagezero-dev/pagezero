@@ -12,11 +12,11 @@ import { Route as rootRouteImport } from './root'
 import { Route as authRoutesLoginRouteImport } from './auth/routes/login'
 import { Route as brandRoutesLayoutRouteImport } from './brand/routes/layout'
 import { Route as blogRoutesIndexRouteImport } from './blog/routes/index'
-import { Route as paymentsRoutesWebhookRouteImport } from './payments/routes/webhook'
 import { Route as paymentsRoutesSuccessRouteImport } from './payments/routes/success'
 import { Route as newsletterRoutesConfirmRouteImport } from './newsletter/routes/confirm'
 import { Route as emailRoutesSentRouteImport } from './email/routes/sent'
 import { Route as brandRoutesHomeRouteImport } from './brand/routes/home'
+import { Route as authRoutesApiDotauthDotsplatRouteImport } from './auth/routes/api.auth.$'
 import { Route as brandRoutesLegalRouteImport } from './brand/routes/legal'
 import { Route as blogRoutesPostRouteImport } from './blog/routes/post'
 
@@ -33,11 +33,6 @@ const blogRoutesIndexRoute = blogRoutesIndexRouteImport.update({
   id: '/blog',
   path: '/blog',
   getParentRoute: () => brandRoutesLayoutRoute,
-} as any)
-const paymentsRoutesWebhookRoute = paymentsRoutesWebhookRouteImport.update({
-  id: '/payments/webhook',
-  path: '/payments/webhook',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const paymentsRoutesSuccessRoute = paymentsRoutesSuccessRouteImport.update({
   id: '/payments/success',
@@ -59,6 +54,12 @@ const brandRoutesHomeRoute = brandRoutesHomeRouteImport.update({
   path: '/',
   getParentRoute: () => brandRoutesLayoutRoute,
 } as any)
+const authRoutesApiDotauthDotsplatRoute =
+  authRoutesApiDotauthDotsplatRouteImport.update({
+    id: '/api/auth/$',
+    path: '/api/auth/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const brandRoutesLegalRoute = brandRoutesLegalRouteImport.update({
   id: '/legal/$slug',
   path: '/legal/$slug',
@@ -76,10 +77,10 @@ export interface FileRoutesByFullPath {
   '/emails/sent': typeof emailRoutesSentRoute
   '/newsletter/confirm': typeof newsletterRoutesConfirmRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
-  '/payments/webhook': typeof paymentsRoutesWebhookRoute
   '/blog': typeof blogRoutesIndexRoute
   '/blog/$slug': typeof blogRoutesPostRoute
   '/legal/$slug': typeof brandRoutesLegalRoute
+  '/api/auth/$': typeof authRoutesApiDotauthDotsplatRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof authRoutesLoginRoute
@@ -87,10 +88,10 @@ export interface FileRoutesByTo {
   '/emails/sent': typeof emailRoutesSentRoute
   '/newsletter/confirm': typeof newsletterRoutesConfirmRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
-  '/payments/webhook': typeof paymentsRoutesWebhookRoute
   '/blog': typeof blogRoutesIndexRoute
   '/blog/$slug': typeof blogRoutesPostRoute
   '/legal/$slug': typeof brandRoutesLegalRoute
+  '/api/auth/$': typeof authRoutesApiDotauthDotsplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -100,10 +101,10 @@ export interface FileRoutesById {
   '/emails/sent': typeof emailRoutesSentRoute
   '/newsletter/confirm': typeof newsletterRoutesConfirmRoute
   '/payments/success': typeof paymentsRoutesSuccessRoute
-  '/payments/webhook': typeof paymentsRoutesWebhookRoute
   '/_brand-layout/blog': typeof blogRoutesIndexRoute
   '/_brand-layout/blog/$slug': typeof blogRoutesPostRoute
   '/_brand-layout/legal/$slug': typeof brandRoutesLegalRoute
+  '/api/auth/$': typeof authRoutesApiDotauthDotsplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -113,10 +114,10 @@ export interface FileRouteTypes {
     | '/emails/sent'
     | '/newsletter/confirm'
     | '/payments/success'
-    | '/payments/webhook'
     | '/blog'
     | '/blog/$slug'
     | '/legal/$slug'
+    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -124,10 +125,10 @@ export interface FileRouteTypes {
     | '/emails/sent'
     | '/newsletter/confirm'
     | '/payments/success'
-    | '/payments/webhook'
     | '/blog'
     | '/blog/$slug'
     | '/legal/$slug'
+    | '/api/auth/$'
   id:
     | '__root__'
     | '/_brand-layout'
@@ -136,10 +137,10 @@ export interface FileRouteTypes {
     | '/emails/sent'
     | '/newsletter/confirm'
     | '/payments/success'
-    | '/payments/webhook'
     | '/_brand-layout/blog'
     | '/_brand-layout/blog/$slug'
     | '/_brand-layout/legal/$slug'
+    | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -148,7 +149,7 @@ export interface RootRouteChildren {
   emailRoutesSentRoute: typeof emailRoutesSentRoute
   newsletterRoutesConfirmRoute: typeof newsletterRoutesConfirmRoute
   paymentsRoutesSuccessRoute: typeof paymentsRoutesSuccessRoute
-  paymentsRoutesWebhookRoute: typeof paymentsRoutesWebhookRoute
+  authRoutesApiDotauthDotsplatRoute: typeof authRoutesApiDotauthDotsplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -173,13 +174,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog'
       preLoaderRoute: typeof blogRoutesIndexRouteImport
       parentRoute: typeof brandRoutesLayoutRoute
-    }
-    '/payments/webhook': {
-      id: '/payments/webhook'
-      path: '/payments/webhook'
-      fullPath: '/payments/webhook'
-      preLoaderRoute: typeof paymentsRoutesWebhookRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/payments/success': {
       id: '/payments/success'
@@ -208,6 +202,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof brandRoutesHomeRouteImport
       parentRoute: typeof brandRoutesLayoutRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof authRoutesApiDotauthDotsplatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_brand-layout/legal/$slug': {
       id: '/_brand-layout/legal/$slug'
@@ -249,7 +250,7 @@ const rootRouteChildren: RootRouteChildren = {
   emailRoutesSentRoute: emailRoutesSentRoute,
   newsletterRoutesConfirmRoute: newsletterRoutesConfirmRoute,
   paymentsRoutesSuccessRoute: paymentsRoutesSuccessRoute,
-  paymentsRoutesWebhookRoute: paymentsRoutesWebhookRoute,
+  authRoutesApiDotauthDotsplatRoute: authRoutesApiDotauthDotsplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

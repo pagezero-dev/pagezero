@@ -9,22 +9,20 @@ PageZERO is a full-stack TypeScript web application starter built for Cloudflare
 ### Tech Stack
 
 - **Frontend**: React 19, TanStack Router, TanStack Start, TanStack Query, TailwindCSS 4, Radix UI
-- **Backend**: Cloudflare Workers, Drizzle ORM, D1 SQLite
+- **Backend**: Cloudflare Workers, Drizzle ORM, D1 SQLite, Better Auth
 - **Tooling**: Bun (package manager), Oxlint (linting), Oxfmt (formatting), Vitest (unit tests), Playwright (e2e tests), Storybook (UI development)
 - **Email**: React Email, Resend
-- **Payments**: Polar.sh integration
+- **Payments**: Polar.sh integration (via Better Auth Polar plugin)
 
 ## Project Structure
 
 ```
 ├── apps/                    # Feature modules (domain-specific code)
-│   ├── auth/               # Authentication (login, logout, session management)
+│   ├── auth/               # Authentication (Better Auth: email OTP, sessions, access control)
 │   ├── brand/              # Marketing pages and brand components
 │   ├── core/               # App shell (root, routes, styles)
 │   ├── email/              # Email templates and sending logic
-│   ├── payments/           # Payment integration (Polar.sh)
-│   ├── permissions/        # Role-based permissions system
-│   └── user/               # User management
+│   ├── payments/           # Payment integration (Polar.sh via Better Auth)
 │   ├── root.tsx            # App root route (createRootRoute)
 │   ├── router.tsx          # Router factory (createRouter + QueryClient)
 │   ├── routes.ts           # Virtual route config (rootRoute, layout, route)
@@ -106,21 +104,22 @@ export { Button, type ButtonProps }
 Routes use TanStack Router conventions with `createFileRoute`. Callable server logic lives in the feature module's `rpc/` directory as `createServerFn` exports:
 
 ```typescript
-// apps/user/rpc/get-user.ts
+// apps/auth/rpc/get-user.ts
 import { createServerFn } from "@tanstack/react-start"
-import { getDb } from "@/db"
+import { getRequestHeaders } from "@tanstack/react-start/server"
+
+import { auth } from "@/auth/auth.server"
 
 export const getUser = createServerFn({ method: "GET" }).handler(async () => {
-  const db = getDb()
-  // query db...
-  return { user }
+  const session = await auth.api.getSession({ headers: getRequestHeaders() })
+  return { user: session?.user ?? null }
 })
 ```
 
 ```typescript
-// apps/user/routes/profile.tsx
+// apps/auth/routes/profile.tsx
 import { createFileRoute } from "@tanstack/react-router"
-import { getUser } from "@/user/rpc"
+import { getUser } from "@/auth/rpc"
 
 export const Route = createFileRoute("/profile")({
   loader: () => getUser(),
@@ -158,13 +157,13 @@ export const routes = rootRoute("root.tsx", [
 
 - Schema defined in `packages/db/schema.ts` (auto-generated imports)
 - Feature schemas in `apps/*/db/schema.ts`
-- Access the database via `getDb()` from `@/db` inside server functions:
+- Access the database via `getMainDb()` from `@/db/main` inside server functions:
 
 ```typescript
-import { getDb } from "@/db"
+import { getMainDb } from "@/db/main"
 
 const getData = createServerFn({ method: "GET" }).handler(async () => {
-  const db = getDb()
+  const db = getMainDb()
   // use Drizzle ORM...
 })
 ```
@@ -177,11 +176,11 @@ Use TanStack Query for client-side data fetching. Server functions (`createServe
 
 ```typescript
 import { useQuery } from "@tanstack/react-query"
-import { getUser } from "@/user/rpc"
+import { getUser } from "@/auth/rpc"
 
 function MyComponent() {
   const { data } = useQuery({
-    queryKey: ["my-data"],
+    queryKey: ["user"],
     queryFn: () => getUser(),
   })
 }
@@ -314,18 +313,20 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`):
 
 ## Key Files Reference
 
-| File                          | Purpose                                                                  |
-| ----------------------------- | ------------------------------------------------------------------------ |
-| `apps/routes.ts`              | Virtual route config (add new routes here)                               |
-| `apps/routeTree.gen.ts`       | Auto-generated route tree (do not edit)                                  |
-| `apps/root.tsx`               | App root route and document shell                                        |
-| `apps/router.tsx`             | Router factory with QueryClient setup                                    |
-| `packages/db/schema.ts`       | Database schema exports                                                  |
-| `packages/db/index.ts`        | `getDb()` helper for database access                                     |
-| `packages/config/index.ts`    | App configuration                                                        |
-| `apps/auth/session.server.ts` | Session helpers (`useAppSession`, `updateAppSession`, `clearAppSession`) |
-| `vite.config.ts`              | Vite + TanStack Start + Vitest configuration                             |
-| `.oxlintrc.json`              | Oxlint rules                                                             |
-| `.oxfmtrc.json`               | Oxfmt formatting options                                                 |
-| `drizzle.config.ts`           | Database configuration                                                   |
-| `wrangler.json`               | Cloudflare Workers config                                                |
+| File                        | Purpose                                                    |
+| --------------------------- | ---------------------------------------------------------- |
+| `apps/routes.ts`            | Virtual route config (add new routes here)                 |
+| `apps/routeTree.gen.ts`     | Auto-generated route tree (do not edit)                    |
+| `apps/root.tsx`             | App root route and document shell                          |
+| `apps/router.tsx`           | Router factory with QueryClient setup                      |
+| `packages/db/schema.ts`     | Database schema exports                                    |
+| `packages/db/main/index.ts` | `getMainDb()` helper for database access                   |
+| `packages/config/index.ts`  | App configuration                                          |
+| `apps/auth/auth.server.ts`  | Better Auth instance (email OTP, captcha, admin AC, Polar) |
+| `apps/auth/auth-client.ts`  | Better Auth client (browser)                               |
+| `apps/auth/access.ts`       | Access-control roles (`user`, `admin`, `premium`, `elite`) |
+| `vite.config.ts`            | Vite + TanStack Start + Vitest configuration               |
+| `.oxlintrc.json`            | Oxlint rules                                               |
+| `.oxfmtrc.json`             | Oxfmt formatting options                                   |
+| `drizzle.config.ts`         | Database configuration                                     |
+| `wrangler.json`             | Cloudflare Workers config                                  |

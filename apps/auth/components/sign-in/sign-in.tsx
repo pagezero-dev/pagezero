@@ -1,5 +1,5 @@
 import { AlertTriangleIcon, InfoIcon, Loader2, LockIcon } from "lucide-react"
-import { useEffect, useId, useState } from "react"
+import { useEffect, useId, useState, type FormEvent } from "react"
 
 import { Alert, AlertDescription } from "@/ui/alert"
 import { Button } from "@/ui/button"
@@ -11,12 +11,19 @@ interface SignInProps {
   email?: string
   error?: string
   success?: string
-  signature?: string
-  expiresAt?: number
   isPending?: boolean
+  onSubmitEmail?: (email: string) => void | Promise<void>
+  onSubmitOtp?: (otp: string) => void | Promise<void>
 }
 
-export const SignIn = ({ email, error, success, signature, expiresAt, isPending }: SignInProps) => {
+export const SignIn = ({
+  email,
+  error,
+  success,
+  isPending,
+  onSubmitEmail,
+  onSubmitOtp,
+}: SignInProps) => {
   const [otp, setOtp] = useState("")
   const emailInputId = useId()
   const otpInputId = useId()
@@ -26,8 +33,25 @@ export const SignIn = ({ email, error, success, signature, expiresAt, isPending 
     setOtp("")
   }, [error, email])
 
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+
+    if (email) {
+      await onSubmitOtp?.(otp)
+      return
+    }
+
+    const submittedEmail = String(formData.get("email") ?? "")
+    await onSubmitEmail?.(submittedEmail)
+  }
+
   return (
-    <div className="w-full max-w-xs space-y-10">
+    <form
+      onSubmit={(event) => void handleSubmit(event)}
+      noValidate
+      className="w-full max-w-xs space-y-10"
+    >
       <div className="text-center">
         <LockIcon className="mx-auto size-8" />
         <Heading level={2} className="text-center">
@@ -41,10 +65,6 @@ export const SignIn = ({ email, error, success, signature, expiresAt, isPending 
       </div>
 
       <div className="space-y-4">
-        {signature && <input type="hidden" name="signature" value={signature} />}
-        {expiresAt && <input type="hidden" name="expiresAt" value={expiresAt} />}
-        {email && <input type="hidden" name="email" value={email} />}
-
         {error && (
           <Alert variant="destructive">
             <AlertTriangleIcon />
@@ -87,6 +107,6 @@ export const SignIn = ({ email, error, success, signature, expiresAt, isPending 
           {email ? "Verify" : "Login"}
         </Button>
       </div>
-    </div>
+    </form>
   )
 }

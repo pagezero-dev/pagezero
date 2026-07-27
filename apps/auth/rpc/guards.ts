@@ -1,19 +1,24 @@
 import { redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
+import { getRequestHeaders } from "@tanstack/react-start/server"
 import { getRequestUrl } from "@tanstack/react-start/server"
 import { env } from "cloudflare:workers"
 
-import { useAppSession } from "../session.server"
-import { getUserId, isValidUserId } from "../user.server"
+import type { ContentPermission } from "../access"
+import { auth } from "../auth.server"
+import { isValidUserId } from "../user.server"
 
 const LOGIN_ROUTE = "/login"
 
 export const requireUserId = createServerFn({ method: "GET" })
   .validator((data?: { redirectTo?: string }) => data)
   .handler(async ({ data }) => {
-    const session = await useAppSession()
-    const userID = await getUserId(session)
-    if (!userID) {
+    const session = await auth.api.getSession({
+      headers: getRequestHeaders(),
+    })
+    const userId = session?.user.id
+
+    if (!isValidUserId(userId)) {
       const requestURLObject = getRequestUrl()
       const redirectToURL =
         data?.redirectTo ?? `${requestURLObject.pathname}${requestURLObject.search}`
@@ -23,14 +28,16 @@ export const requireUserId = createServerFn({ method: "GET" })
           : { to: LOGIN_ROUTE },
       )
     }
-    return userID
+
+    return userId
   })
 
 export const requireGuestUser = createServerFn({ method: "GET" }).handler(async () => {
-  const session = await useAppSession()
-  const userId = await getUserId(session)
+  const session = await auth.api.getSession({
+    headers: getRequestHeaders(),
+  })
 
-  if (userId && (await isValidUserId(userId))) {
+  if (session?.user.id) {
     throw redirect({ to: "/" })
   }
 })
@@ -38,7 +45,35 @@ export const requireGuestUser = createServerFn({ method: "GET" }).handler(async 
 export const requireAuthConfiguration = createServerFn({
   method: "GET",
 }).handler(async () => {
-  if (!env.OTP_SECRET || !env.SESSION_COOKIE_SECRET) {
-    throw new Error("Authentication OTP_SECRET or SESSION_COOKIE_SECRET is not configured")
+  if (!env.BETTER_AUTH_SECRET || !env.BETTER_AUTH_URL) {
+    throw new Error("Authentication BETTER_AUTH_SECRET or BETTER_AUTH_URL is not configured")
   }
 })
+
+export const requireUserPermissions = createServerFn({ method: "GET" })
+  .validator((data: { userId: string; permissions: ContentPermission[] }) => data)
+  .handler(async ({ data: { userId, permissions } }) => {
+    const result = await auth.api.userHasPermission({
+      body: {
+        userId,
+        permissions: {
+          content: permissions,
+        },
+      },
+    })
+
+    if (!result.success) {
+      throw new Error("User does not have the required permissions")
+    }
+
+    return userId
+  })
+
+export const requireUserRole = createServerFn({ method: "GET" })
+  .validator((data: { userId: string; roleName: string }) => data)
+  .handler(async ({ data: { userId, roleName } }) => {
+    const { hasUserRole } = await import("../roles.server")
+    if (!(await hasUserRole(userId, roleName))) {
+      throw new Error("User does not have the required role")
+    }
+  })
