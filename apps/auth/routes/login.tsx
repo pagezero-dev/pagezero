@@ -1,20 +1,22 @@
 import { useQueryClient } from "@tanstack/react-query"
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
-import { useState } from "react"
+import { createFileRoute, Link } from "@tanstack/react-router"
 import { z } from "zod"
 
-import { authClient } from "@/auth/auth-client"
 import { SignIn } from "@/auth/components/sign-in"
-import { getRedirectUrl } from "@/auth/redirect"
-import { getLoginPageData, requireAuthConfiguration, requireGuestUser } from "@/auth/rpc"
+import {
+  getLoginPageData,
+  loginFormAction,
+  loginFormSchema,
+  requireAuthConfiguration,
+  requireGuestUser,
+} from "@/auth/rpc"
 import { Turnstile } from "@/cloudflare/turnstile"
+import { useFormAction } from "@/form"
 import { Link as UiLink } from "@/ui/link"
 
 const loginSearchSchema = z.object({
   redirectTo: z.string().optional().catch("/"),
 })
-
-const LOGIN_EMAIL_SCHEMA = z.email()
 
 export const Route = createFileRoute("/login")({
   validateSearch: (search) => loginSearchSchema.parse(search),
@@ -29,108 +31,26 @@ export const Route = createFileRoute("/login")({
   component: Login,
 })
 
-function getTurnstileToken() {
-  const input = document.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')
-  return input?.value || undefined
-}
-
 function Login() {
   const { cloudflareTurnstilePublicKey, redirectTo } = Route.useLoaderData()
-  const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const [email, setEmail] = useState<string>()
-  const [error, setError] = useState<string>()
-  const [success, setSuccess] = useState<string>()
-  const [isPending, setIsPending] = useState(false)
+  const { data, error, isPending, onSubmit } = useFormAction(loginFormSchema, loginFormAction, {
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["user"] })
+    },
+  })
+  const { email, success, error: actionError } = data ?? {}
   const turnstileSubjectKey = isPending ? "pending" : "idle"
 
-  async function withCaptchaHeaders<T>(
-    run: (headers?: Record<string, string>) => Promise<T>,
-  ): Promise<T> {
-    const token = getTurnstileToken()
-    if (!token) {
-      return run()
-    }
-    return run({
-      "x-captcha-response": token,
-    })
-  }
-
-  async function onSubmitEmail(submittedEmail: string) {
-    setError(undefined)
-    setSuccess(undefined)
-
-    const parsed = LOGIN_EMAIL_SCHEMA.safeParse(submittedEmail)
-    if (!parsed.success) {
-      setError("Invalid email address")
-      return
-    }
-
-    setIsPending(true)
-    try {
-      const result = await withCaptchaHeaders((headers) =>
-        authClient.emailOtp.sendVerificationOtp({
-          email: parsed.data,
-          type: "sign-in",
-          fetchOptions: headers ? { headers } : undefined,
-        }),
-      )
-
-      if (result.error) {
-        setError(result.error.message ?? "Failed to send verification code")
-        return
-      }
-
-      setEmail(parsed.data)
-      setSuccess("Check your email for temporary password")
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to send verification code")
-    } finally {
-      setIsPending(false)
-    }
-  }
-
-  async function onSubmitOtp(otp: string) {
-    if (!email) {
-      return
-    }
-
-    setError(undefined)
-    setIsPending(true)
-    try {
-      const result = await withCaptchaHeaders((headers) =>
-        authClient.signIn.emailOtp({
-          email,
-          otp,
-          fetchOptions: headers ? { headers } : undefined,
-        }),
-      )
-
-      if (result.error) {
-        const message = result.error.message ?? "Invalid verification code"
-        setError(message === "Invalid OTP" ? "Invalid verification code" : message)
-        return
-      }
-
-      void queryClient.invalidateQueries({ queryKey: ["user"] })
-      await navigate({ to: getRedirectUrl(redirectTo) })
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid verification code")
-    } finally {
-      setIsPending(false)
-    }
-  }
-
   return (
-    <div className="container mx-auto mt-4 space-y-4">
+    <form onSubmit={onSubmit} noValidate className="container mx-auto mt-4 space-y-4">
       <main className="flex h-screen flex-col items-center justify-center gap-4">
+        <input type="hidden" name="redirectTo" value={redirectTo} />
         <SignIn
           isPending={isPending}
           email={email}
-          error={error}
+          error={actionError ?? error?.message}
           success={success}
-          onSubmitEmail={onSubmitEmail}
-          onSubmitOtp={onSubmitOtp}
         />
         {cloudflareTurnstilePublicKey && (
           <Turnstile siteKey={cloudflareTurnstilePublicKey} subjectKey={turnstileSubjectKey} />
@@ -141,6 +61,6 @@ function Login() {
           </UiLink>
         </p>
       </main>
-    </div>
+    </form>
   )
 }

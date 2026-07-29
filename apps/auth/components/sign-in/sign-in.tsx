@@ -1,5 +1,5 @@
 import { AlertTriangleIcon, InfoIcon, Loader2, LockIcon } from "lucide-react"
-import { useEffect, useId, useState, type FormEvent } from "react"
+import { useEffect, useId, useState } from "react"
 
 import { Alert, AlertDescription } from "@/ui/alert"
 import { Button } from "@/ui/button"
@@ -12,18 +12,9 @@ interface SignInProps {
   error?: string
   success?: string
   isPending?: boolean
-  onSubmitEmail?: (email: string) => void | Promise<void>
-  onSubmitOtp?: (otp: string) => void | Promise<void>
 }
 
-export const SignIn = ({
-  email,
-  error,
-  success,
-  isPending,
-  onSubmitEmail,
-  onSubmitOtp,
-}: SignInProps) => {
+export const SignIn = ({ email, error, success, isPending }: SignInProps) => {
   const [otp, setOtp] = useState("")
   const emailInputId = useId()
   const otpInputId = useId()
@@ -33,25 +24,8 @@ export const SignIn = ({
     setOtp("")
   }, [error, email])
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-
-    if (email) {
-      await onSubmitOtp?.(otp)
-      return
-    }
-
-    const submittedEmail = String(formData.get("email") ?? "")
-    await onSubmitEmail?.(submittedEmail)
-  }
-
   return (
-    <form
-      onSubmit={(event) => void handleSubmit(event)}
-      noValidate
-      className="w-full max-w-xs space-y-10"
-    >
+    <div className="w-full max-w-xs space-y-10">
       <div className="text-center">
         <LockIcon className="mx-auto size-8" />
         <Heading level={2} className="text-center">
@@ -65,6 +39,8 @@ export const SignIn = ({
       </div>
 
       <div className="space-y-4">
+        {email && <input type="hidden" name="email" value={email} />}
+
         {error && (
           <Alert variant="destructive">
             <AlertTriangleIcon />
@@ -107,6 +83,6 @@ export const SignIn = ({
           {email ? "Verify" : "Login"}
         </Button>
       </div>
-    </form>
+    </div>
   )
 }

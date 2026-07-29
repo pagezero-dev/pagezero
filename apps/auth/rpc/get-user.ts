@@ -1,9 +1,7 @@
 import { createServerFn } from "@tanstack/react-start"
 import { getRequestHeaders } from "@tanstack/react-start/server"
-import { env } from "cloudflare:workers"
 
 import { auth } from "../auth.server"
-import { getRedirectUrl } from "../redirect"
 
 export type UserData = {
   user: { id: string; email: string; name: string; role?: string | null } | null
@@ -28,12 +26,3 @@ export const getUser = createServerFn({ method: "GET" }).handler(async () => {
 
   return { user: null } satisfies UserData
 })
-
-export const getLoginPageData = createServerFn({ method: "GET" })
-  .validator((data: { redirectTo: string }) => data)
-  .handler(async ({ data }) => {
-    return {
-      cloudflareTurnstilePublicKey: env.CLOUDFLARE_TURNSTILE_PUBLIC_KEY,
-      redirectTo: getRedirectUrl(data.redirectTo),
-    }
-  })
