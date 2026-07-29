@@ -2,6 +2,7 @@ import { checkout, polar, portal, webhooks } from "@polar-sh/better-auth"
 import { Polar } from "@polar-sh/sdk"
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { APIError, createAuthEndpoint } from "better-auth/api"
 import { admin, captcha, emailOTP } from "better-auth/plugins"
 import { tanstackStartCookies } from "better-auth/tanstack-start"
 import { env } from "cloudflare:workers"
@@ -14,6 +15,9 @@ import { onPaymentRevoked, onPaymentSuccess } from "@/payments/handlers.server"
 
 import { ac, admin as adminRole, elite, premium, user } from "./access"
 
+export const POLAR_NOT_CONFIGURED_MESSAGE =
+  "Polar is not configured. Set POLAR_ACCESS_TOKEN to enable payments."
+
 function getPolarProducts() {
   const mode = import.meta.env.PROD ? "production" : "preview"
   return Object.entries(config.payments.products).map(([slug, product]) => ({
@@ -22,10 +26,23 @@ function getPolarProducts() {
   }))
 }
 
+function createPolarNotConfiguredPlugin() {
+  return {
+    id: "polar-not-configured",
+    endpoints: {
+      checkout: createAuthEndpoint("/checkout", { method: "POST" }, async () => {
+        throw new APIError("BAD_REQUEST", {
+          message: POLAR_NOT_CONFIGURED_MESSAGE,
+        })
+      }),
+    },
+  }
+}
+
 function createPolarPlugins() {
   const accessToken = env.POLAR_ACCESS_TOKEN
   if (!accessToken) {
-    return []
+    return [createPolarNotConfiguredPlugin()]
   }
 
   const polarClient = new Polar({

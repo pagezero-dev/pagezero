@@ -16,11 +16,12 @@ interface DialogProps {
   content: ReactNode
   children: ReactNode
   open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
-export const Dialog = ({ content, children, open }: DialogProps) => {
+export const Dialog = ({ content, children, open, onOpenChange }: DialogProps) => {
   return (
-    <UIDialog open={open}>
+    <UIDialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       {content}
     </UIDialog>
