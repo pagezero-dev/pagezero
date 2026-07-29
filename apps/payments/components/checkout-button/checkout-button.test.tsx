@@ -6,7 +6,7 @@ import { CheckoutButton } from "./checkout-button"
 
 const checkout = vi.fn()
 
-vi.mock("@/auth/auth-client", () => ({
+vi.mock("@/auth/auth.client", () => ({
   authClient: {
     checkout: (...args: unknown[]) => checkout(...args),
   },
@@ -21,6 +21,8 @@ describe("<CheckoutButton />", async () => {
     expect(button).toBeInTheDocument()
     await user.click(button)
 
-    expect(checkout).toHaveBeenCalledWith({ slug: "elite" })
+    await vi.waitFor(() => {
+      expect(checkout).toHaveBeenCalledWith({ slug: "elite" })
+    })
   })
 })

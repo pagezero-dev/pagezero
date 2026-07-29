@@ -1,6 +1,5 @@
 import type { ReactNode } from "react"
 
-import { authClient } from "@/auth/auth-client"
 import { Button, type ButtonProps } from "@/ui/button"
 
 import type { Product } from "../../types"
@@ -16,7 +15,9 @@ export const CheckoutButton = ({ productId, children, ...props }: CheckoutButton
       type="button"
       {...props}
       onClick={() => {
-        void authClient.checkout({ slug: productId })
+        void import("@/auth/auth.client").then(({ authClient }) => {
+          void authClient.checkout({ slug: productId })
+        })
       }}
     >
       {children}
