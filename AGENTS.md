@@ -64,7 +64,7 @@ import { getUserId } from "@/user"
 - Tests: `*.test.ts` for node tests, `*.test.tsx` for DOM tests
 - Stories: `*.stories.tsx`
 - Server-only code: `*.server.ts` (e.g., `auth.server.ts`) — internal helpers, not callable from the client
-- Client-only code: `*.client.ts` (e.g., `auth.client.ts`) — browser-only modules, not importable from the server
+- Client-only code: `*.client.ts` — browser-only modules, not importable from the server
 - RPC endpoints: `rpc/` directory (e.g., `auth/rpc/get-user.ts`) — `createServerFn` exports
 - Index files: `index.ts` for public exports
 
@@ -324,7 +324,7 @@ GitHub Actions workflow (`.github/workflows/deploy.yml`):
 | `packages/db/main/index.ts` | `getMainDb()` helper for database access                   |
 | `packages/config/index.ts`  | App configuration                                          |
 | `apps/auth/auth.server.ts`  | Better Auth instance (email OTP, captcha, admin AC, Polar) |
-| `apps/auth/auth.client.ts`  | Better Auth client (browser)                               |
+| `apps/auth/auth.ts`         | Better Auth client                                         |
 | `apps/auth/access.ts`       | Access-control roles (`user`, `admin`, `premium`, `elite`) |
 | `vite.config.ts`            | Vite + TanStack Start + Vitest configuration               |
 | `.oxlintrc.json`            | Oxlint rules                                               |

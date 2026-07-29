@@ -6,8 +6,8 @@ import { CheckoutButton } from "./checkout-button"
 
 const checkout = vi.fn()
 
-vi.mock("@/auth/auth.client", () => ({
-  authClient: {
+vi.mock("@/auth/auth", () => ({
+  auth: {
     checkout: (...args: unknown[]) => checkout(...args),
   },
 }))

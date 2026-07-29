@@ -4,7 +4,7 @@ import { createAuthClient } from "better-auth/react"
 
 import { ac, admin, elite, premium, user } from "./access"
 
-export const authClient = createAuthClient({
+export const auth = createAuthClient({
   plugins: [
     emailOTPClient(),
     adminClient({

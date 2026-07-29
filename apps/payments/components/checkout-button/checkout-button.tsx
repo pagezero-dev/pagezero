@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react"
 
+import { auth } from "@/auth/auth"
 import { Dialog } from "@/ui-lite/dialog"
 import { Button, type ButtonProps } from "@/ui/button"
 
@@ -33,8 +34,7 @@ export const CheckoutButton = ({ productId, children, ...props }: CheckoutButton
         type="button"
         {...props}
         onClick={() => {
-          void import("@/auth/auth.client").then(async ({ authClient }) => {
-            const { error: checkoutError } = await authClient.checkout({ slug: productId })
+          void auth.checkout({ slug: productId }).then(({ error: checkoutError }) => {
             if (checkoutError) {
               setError(checkoutError.message ?? "Checkout failed")
             }
