@@ -3,7 +3,7 @@ import { Polar } from "@polar-sh/sdk"
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { APIError, createAuthEndpoint } from "better-auth/api"
-import { admin, captcha, emailOTP } from "better-auth/plugins"
+import { admin, emailOTP } from "better-auth/plugins"
 import { tanstackStartCookies } from "better-auth/tanstack-start"
 import { env } from "cloudflare:workers"
 
@@ -95,15 +95,6 @@ export const auth = betterAuth({
         }
       },
     }),
-    ...(env.CLOUDFLARE_TURNSTILE_SECRET_KEY
-      ? [
-          captcha({
-            provider: "cloudflare-turnstile",
-            secretKey: env.CLOUDFLARE_TURNSTILE_SECRET_KEY,
-            endpoints: ["/email-otp/send-verification-otp", "/sign-in/email-otp"],
-          }),
-        ]
-      : []),
     admin({
       ac,
       roles: {
