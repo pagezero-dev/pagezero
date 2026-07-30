@@ -13,13 +13,12 @@ export const getUser = createServerFn({ method: "GET" }).handler(async () => {
   })
 
   if (session?.user) {
-    const user = session.user as typeof session.user & { role?: string | null }
     return {
       user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
+        id: session.user.id,
+        email: session.user.email,
+        name: session.user.name,
+        role: session.user.role,
       },
     } satisfies UserData
   }
