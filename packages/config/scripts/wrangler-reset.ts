@@ -17,8 +17,10 @@ delete wranglerJson.env.production.d1_databases[0].database_id
 delete wranglerJson.env.preview.d1_databases[0].database_id
 wranglerJson.env.production.vars.CLOUDFLARE_TURNSTILE_PUBLIC_KEY = ""
 wranglerJson.env.production.vars.NEWSLETTER_SEGMENT_ID = ""
+wranglerJson.env.production.vars.BETTER_AUTH_URL = ""
 wranglerJson.env.preview.vars.CLOUDFLARE_TURNSTILE_PUBLIC_KEY = ""
 wranglerJson.env.preview.vars.NEWSLETTER_SEGMENT_ID = ""
+wranglerJson.env.preview.vars.BETTER_AUTH_URL = ""
 
 await write("./wrangler.json", JSON.stringify(wranglerJson, null, 2))
 
