@@ -4,6 +4,7 @@ import { admin, emailOTP } from "better-auth/plugins"
 import { tanstackStartCookies } from "better-auth/tanstack-start"
 import { env } from "cloudflare:workers"
 
+import config from "@/config"
 import { getMainDb } from "@/db/main"
 import * as schema from "@/db/main/schema"
 import { sendAuthOtpEmail } from "@/email/templates.server"
@@ -16,7 +17,9 @@ export const auth = betterAuth({
     provider: "sqlite",
     schema,
   }),
-  baseURL: env.BETTER_AUTH_URL,
+  baseURL: {
+    allowedHosts: ["localhost:*", "*.workers.dev", new URL(config.core.websiteUrl).host],
+  },
   secret: env.BETTER_AUTH_SECRET,
   emailAndPassword: {
     enabled: false,

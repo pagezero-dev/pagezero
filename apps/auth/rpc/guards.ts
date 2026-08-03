@@ -45,8 +45,8 @@ export const requireGuestUser = createServerFn({ method: "GET" }).handler(async 
 export const requireAuthConfiguration = createServerFn({
   method: "GET",
 }).handler(async () => {
-  if (!env.BETTER_AUTH_SECRET || !env.BETTER_AUTH_URL) {
-    throw new Error("Authentication BETTER_AUTH_SECRET or BETTER_AUTH_URL is not configured")
+  if (!env.BETTER_AUTH_SECRET) {
+    throw new Error("Authentication BETTER_AUTH_SECRET is not configured")
   }
 })
 
