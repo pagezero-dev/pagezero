@@ -6,6 +6,7 @@ import { env } from "cloudflare:workers"
 
 import type { ContentPermission } from "../access"
 import { auth } from "../auth.server"
+import { hasUserRole } from "../roles.server"
 import { isValidUserId } from "../user.server"
 
 const LOGIN_ROUTE = "/login"
@@ -72,7 +73,6 @@ export const requireUserPermissions = createServerFn({ method: "GET" })
 export const requireUserRole = createServerFn({ method: "GET" })
   .validator((data: { userId: string; roleName: string }) => data)
   .handler(async ({ data: { userId, roleName } }) => {
-    const { hasUserRole } = await import("../roles.server")
     if (!(await hasUserRole(userId, roleName))) {
       throw new Error("User does not have the required role")
     }
