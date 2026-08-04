@@ -21,7 +21,7 @@ const config: Config = {
         name: "Elite",
         userRoleToGrant: "elite",
         polarProductId: {
-          preview: "your-sandbox-product-id",
+          preview: "7b7f14e6-06c2-4779-b61d-ad622e111d4a",
           production: "your-production-product-id",
         },
       },
@@ -29,7 +29,7 @@ const config: Config = {
         name: "Premium",
         userRoleToGrant: "premium",
         polarProductId: {
-          preview: "your-sandbox-product-id",
+          preview: "44a8395f-4b29-4aba-9de3-24858fac87ff",
           production: "your-production-product-id",
         },
       },
