@@ -7,7 +7,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build --mode ${CLOUDFLARE_ENV:-production}",
     "check": "oxfmt --check && oxlint && tsc",
     "check:fix": "oxfmt && oxlint --fix && tsc",
     "db:clean": "rm -rf ./.wrangler/state/v3/d1",

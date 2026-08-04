@@ -4,6 +4,7 @@ import { APIError, createAuthEndpoint } from "better-auth/api"
 import { env } from "cloudflare:workers"
 
 import config from "@/config"
+import { getAppMode } from "@/core"
 
 import { onPaymentRevoked, onPaymentSuccess } from "./handlers.server"
 
@@ -11,7 +12,7 @@ export const POLAR_NOT_CONFIGURED_MESSAGE =
   "Polar is not configured. Set POLAR_ACCESS_TOKEN to enable payments."
 
 function getPolarProducts() {
-  const mode = import.meta.env.PROD ? "production" : "preview"
+  const mode = getAppMode()
   return Object.entries(config.payments.products).map(([slug, product]) => ({
     productId: product.polarProductId[mode],
     slug,
@@ -39,7 +40,7 @@ export function createPolarPlugins() {
 
   const polarClient = new Polar({
     accessToken,
-    server: import.meta.env.PROD ? "production" : "sandbox",
+    server: getAppMode() === "production" ? "production" : "sandbox",
   })
 
   const checkoutPlugin = checkout({
