@@ -27,7 +27,7 @@
     "generate:types": "wrangler types",
     "git:clean": "git branch -l | grep -v 'main' | xargs git branch -D",
     "git:reset": "rm -rf .git && git init .",
-    "preview": "NODE_ENV=development bun run build && vite preview",
+    "preview": "NODE_ENV=development CLOUDFLARE_ENV=preview bun run build && vite preview",
     "setup": "bun install && bun run setup:env && playwright install --with-deps chromium && CI=1 bun run db:migrate",
     "setup:env": "cp .init.env .env && cp .init.env.test .env.test",
     "setup:reset": "git clean -fdxq && bun run setup",
