@@ -21,7 +21,7 @@ function getProductConfig(productId: string | null | undefined) {
     return undefined
   }
 
-  const mode = getAppMode()
+  const mode = getAppMode() === "production" ? "production" : "preview"
   return Object.values(config.payments.products).find(
     (product) => product.polarProductId[mode] === productId,
   )
