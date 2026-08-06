@@ -9,23 +9,22 @@ vi.mock("@tanstack/react-start", async (importOriginal) => {
   }
 })
 
-vi.mock("@/auth/session.server", () => ({
-  useAppSession: vi.fn(),
-}))
-
 vi.mock("@tanstack/react-start/server", () => ({
   getRequestUrl: vi.fn(),
+  getRequestHeaders: vi.fn(() => new Headers()),
 }))
 
-vi.mock("../user.server", () => ({
-  getUserId: vi.fn(),
+vi.mock("../auth.server", () => ({
+  auth: {
+    api: {
+      getSession: vi.fn(),
+    },
+  },
 }))
 
 import { getRequestUrl } from "@tanstack/react-start/server"
 
-import { useAppSession } from "@/auth/session.server"
-
-import { getUserId } from "../user.server"
+import { auth } from "../auth.server"
 import { requireUserId } from "./guards"
 
 describe("requireUserId", () => {
@@ -34,19 +33,15 @@ describe("requireUserId", () => {
   })
 
   it("returns userId when user is authenticated", async () => {
-    vi.mocked(useAppSession).mockResolvedValue({
-      data: { userId: "123" },
-    } as Awaited<ReturnType<typeof useAppSession>>)
-    vi.mocked(getUserId).mockResolvedValue(123)
+    vi.mocked(auth.api.getSession).mockResolvedValue({
+      user: { id: "user-123" },
+    } as Awaited<ReturnType<typeof auth.api.getSession>>)
 
-    await expect(requireUserId()).resolves.toBe(123)
+    await expect(requireUserId()).resolves.toBe("user-123")
   })
 
   it("redirects to login with redirectTo to current path", async () => {
-    vi.mocked(useAppSession).mockResolvedValue({
-      data: {},
-    } as Awaited<ReturnType<typeof useAppSession>>)
-    vi.mocked(getUserId).mockResolvedValue(0)
+    vi.mocked(auth.api.getSession).mockResolvedValue(null)
     vi.mocked(getRequestUrl).mockReturnValue(new URL("http://test.com/test-path?query=123"))
 
     await expect(requireUserId()).rejects.toEqual(
@@ -58,10 +53,7 @@ describe("requireUserId", () => {
   })
 
   it("redirects to login with provided redirectTo", async () => {
-    vi.mocked(useAppSession).mockResolvedValue({
-      data: {},
-    } as Awaited<ReturnType<typeof useAppSession>>)
-    vi.mocked(getUserId).mockResolvedValue(0)
+    vi.mocked(auth.api.getSession).mockResolvedValue(null)
 
     await expect(requireUserId({ data: { redirectTo: "/custom-path" } })).rejects.toEqual(
       redirect({

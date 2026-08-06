@@ -1,15 +1,49 @@
-export function getRedirectUrl(redirectTo: string = "/") {
-  const requestURLObject = new URL(redirectTo, "https://base")
-  return requestURLObject.pathname + requestURLObject.search
-}
+import { betterAuth } from "better-auth"
+import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { admin, emailOTP } from "better-auth/plugins"
+import { tanstackStartCookies } from "better-auth/tanstack-start"
+import { env } from "cloudflare:workers"
 
-export function generateOTP() {
-  // creates a typed array that can hold a single 32-bit unsigned integer
-  const array = new Uint32Array(1)
-  // fills this array with cryptographically strong random values using the Web Crypto API
-  crypto.getRandomValues(array)
-  // apply modulo to generate a number between 0-999999 (6 digits at most)
-  const otp = array[0] % 1000000
-  // convert to string and ensure it's exactly 6 digits by padding with leading zeros if needed
-  return otp.toString().padStart(6, "0")
-}
+import config from "@/config"
+import { getMainDb } from "@/db/main"
+import * as schema from "@/db/main/schema"
+import { sendAuthOtpEmail } from "@/email/templates.server"
+import { createPolarPlugins } from "@/payments/better-auth.server"
+
+import { ac, admin as adminRole, elite, premium, user } from "./access"
+
+export const auth = betterAuth({
+  database: drizzleAdapter(getMainDb(), {
+    provider: "sqlite",
+    schema,
+  }),
+  baseURL: {
+    allowedHosts: ["localhost:*", "*.workers.dev", new URL(config.core.websiteUrl).host],
+  },
+  secret: env.BETTER_AUTH_SECRET,
+  emailAndPassword: {
+    enabled: false,
+  },
+  plugins: [
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }) {
+        if (type === "sign-in") {
+          await sendAuthOtpEmail({ to: email, otp })
+        }
+      },
+    }),
+    admin({
+      ac,
+      roles: {
+        admin: adminRole,
+        user,
+        premium,
+        elite,
+      },
+    }),
+    ...createPolarPlugins(),
+    tanstackStartCookies(),
+  ],
+})
+
+export type Auth = typeof auth

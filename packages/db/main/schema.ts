@@ -2,4 +2,3 @@
 
 export * from "@/auth/db/schema"
 export * from "@/brand/db/schema"
-export * from "@/permissions/db/schema"

@@ -39,11 +39,11 @@ function Login() {
       void queryClient.invalidateQueries({ queryKey: ["user"] })
     },
   })
-  const { email, success, signature, expiresAt, error: actionError } = data ?? {}
+  const { email, success, error: actionError } = data ?? {}
   const turnstileSubjectKey = isPending ? "pending" : "idle"
 
   return (
-    <form onSubmit={onSubmit} noValidate className="container mx-auto mt-4 space-y-4">
+    <form onSubmit={onSubmit} noValidate>
       <main className="flex h-screen flex-col items-center justify-center gap-4">
         <input type="hidden" name="redirectTo" value={redirectTo} />
         <SignIn
@@ -51,8 +51,6 @@ function Login() {
           email={email}
           error={actionError ?? error?.message}
           success={success}
-          signature={signature}
-          expiresAt={expiresAt}
         />
         {cloudflareTurnstilePublicKey && (
           <Turnstile siteKey={cloudflareTurnstilePublicKey} subjectKey={turnstileSubjectKey} />

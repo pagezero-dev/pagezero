@@ -1,11 +1,8 @@
 import type { CoreConfig } from "@/core"
 import type { EmailConfig } from "@/email"
 import type { PaymentsConfig } from "@/payments"
-import type { PermissionsConfig } from "@/permissions"
 
-export const userRoles = ["premium", "elite"] as const
-
-export type Config = CoreConfig & EmailConfig & PermissionsConfig & PaymentsConfig
+export type Config = CoreConfig & EmailConfig & PaymentsConfig
 
 const config: Config = {
   core: {
@@ -18,43 +15,22 @@ const config: Config = {
   email: {
     from: "Acme <onboarding@resend.dev>",
   },
-  permissions: {
-    roleToPermissions: {
-      premium: {
-        viewPremiumContent: true,
-      },
-      elite: {
-        viewPremiumContent: true,
-        viewEliteContent: true,
-      },
-    },
-  },
   payments: {
     products: {
       elite: {
         name: "Elite",
         userRoleToGrant: "elite",
         polarProductId: {
-          preview: "your-sandbox-product-id",
+          preview: "7b7f14e6-06c2-4779-b61d-ad622e111d4a",
           production: "your-production-product-id",
-        },
-        checkoutLink: {
-          preview: "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
-          production:
-            "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
         },
       },
       premium: {
         name: "Premium",
         userRoleToGrant: "premium",
         polarProductId: {
-          preview: "your-sandbox-product-id",
+          preview: "44a8395f-4b29-4aba-9de3-24858fac87ff",
           production: "your-production-product-id",
-        },
-        checkoutLink: {
-          preview: "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
-          production:
-            "https://sandbox-api.polar.sh/v1/checkout-links/your-checkout-link-id/redirect",
         },
       },
     },

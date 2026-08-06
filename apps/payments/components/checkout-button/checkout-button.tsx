@@ -1,7 +1,7 @@
-import type { ReactNode } from "react"
+import { useState, type ReactNode } from "react"
 
-import { useUser } from "@/auth/hooks"
-import config from "@/config"
+import { auth } from "@/auth/auth"
+import { Dialog } from "@/ui-lite/dialog"
 import { Button, type ButtonProps } from "@/ui/button"
 
 import type { Product } from "../../types"
@@ -12,16 +12,37 @@ type CheckoutButtonProps = {
 } & Omit<ButtonProps, "asChild">
 
 export const CheckoutButton = ({ productId, children, ...props }: CheckoutButtonProps) => {
-  const { data: userData } = useUser()
-  const user = userData?.user
-  const mode = import.meta.env.PROD ? "production" : "preview"
-  const href = new URL(config.payments.products[productId].checkoutLink[mode])
-  if (user?.email) {
-    href.searchParams.set("customer_email", user.email)
-  }
+  const [error, setError] = useState<string>()
+
   return (
-    <Button asChild {...props}>
-      <a href={href.toString()}>{children}</a>
-    </Button>
+    <Dialog
+      open={error != null}
+      onOpenChange={(open) => {
+        if (!open) {
+          setError(undefined)
+        }
+      }}
+      content={
+        <Dialog.Content
+          title="Checkout unavailable"
+          description={error}
+          onOk={() => setError(undefined)}
+        />
+      }
+    >
+      <Button
+        type="button"
+        {...props}
+        onClick={() => {
+          void auth.checkout({ slug: productId }).then(({ error: checkoutError }) => {
+            if (checkoutError) {
+              setError(checkoutError.message ?? "Checkout failed")
+            }
+          })
+        }}
+      >
+        {children}
+      </Button>
+    </Dialog>
   )
 }

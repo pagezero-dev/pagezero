@@ -11,12 +11,10 @@ interface SignInProps {
   email?: string
   error?: string
   success?: string
-  signature?: string
-  expiresAt?: number
   isPending?: boolean
 }
 
-export const SignIn = ({ email, error, success, signature, expiresAt, isPending }: SignInProps) => {
+export const SignIn = ({ email, error, success, isPending }: SignInProps) => {
   const [otp, setOtp] = useState("")
   const emailInputId = useId()
   const otpInputId = useId()
@@ -41,8 +39,6 @@ export const SignIn = ({ email, error, success, signature, expiresAt, isPending 
       </div>
 
       <div className="space-y-4">
-        {signature && <input type="hidden" name="signature" value={signature} />}
-        {expiresAt && <input type="hidden" name="expiresAt" value={expiresAt} />}
         {email && <input type="hidden" name="email" value={email} />}
 
         {error && (

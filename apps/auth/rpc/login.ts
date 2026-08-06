@@ -1,25 +1,19 @@
 import { redirect } from "@tanstack/react-router"
 import { createServerFn } from "@tanstack/react-start"
-import { getRequestHeader } from "@tanstack/react-start/server"
+import { getRequestHeader, getRequestHeaders } from "@tanstack/react-start/server"
 import { env } from "cloudflare:workers"
 import { z } from "zod"
 
 import { validateTurnstile } from "@/cloudflare/turnstile"
-import { sign, verify } from "@/crypto"
-import { expiresInMinutes, isExpired } from "@/date"
-import { sendAuthOtpEmail } from "@/email/templates.server"
 import { parseFormData } from "@/form"
 
-import { generateOTP, getRedirectUrl } from "../auth.server"
-import { updateAppSession } from "../session.server"
-import { getOrCreateUserByEmail } from "../user.server"
+import { auth } from "../auth.server"
+import { getRedirectUrl } from "../redirect"
 
 export const loginFormSchema = z.object({
   email: z.email(),
   otp: z.string().optional(),
   redirectTo: z.string().optional(),
-  signature: z.string().optional(),
-  expiresAt: z.coerce.number().optional(),
   "cf-turnstile-response": z.string().optional(),
 })
 
@@ -32,21 +26,17 @@ export const getLoginPageData = createServerFn({ method: "GET" })
     }
   })
 
+function getAuthErrorMessage(error: unknown, fallback: string) {
+  if (error instanceof Error && error.message) {
+    return error.message === "Invalid OTP" ? "Invalid verification code" : error.message
+  }
+  return fallback
+}
+
 export const loginFormAction = createServerFn({ method: "POST" })
   .validator((data: FormData) => parseFormData(loginFormSchema, data))
   .handler(async ({ data }) => {
-    if (!env.OTP_SECRET) {
-      throw new Error("OTP_SECRET is not set")
-    }
-
-    const {
-      email,
-      otp,
-      redirectTo,
-      signature,
-      expiresAt,
-      "cf-turnstile-response": turnstileResponse,
-    } = data
+    const { email, otp, redirectTo, "cf-turnstile-response": turnstileResponse } = data
 
     const cloudflareTurnstileSecretKey = env.CLOUDFLARE_TURNSTILE_SECRET_KEY
     if (cloudflareTurnstileSecretKey) {
@@ -62,53 +52,41 @@ export const loginFormAction = createServerFn({ method: "POST" })
       }
     }
 
+    const headers = getRequestHeaders()
+
     if (!otp) {
-      const generatedOtp = generateOTP()
-      const generatedExpiresAt = expiresInMinutes(5)
-      const generatedSignature = await sign(env.OTP_SECRET, {
-        email,
-        otp: generatedOtp,
-        expiresAt: generatedExpiresAt,
-      })
       try {
-        await sendAuthOtpEmail({ to: email, otp: generatedOtp })
-      } catch {
-        throw new Error("Failed to send an email")
+        await auth.api.sendVerificationOTP({
+          body: {
+            email,
+            type: "sign-in",
+          },
+          headers,
+        })
+      } catch (error) {
+        throw new Error(getAuthErrorMessage(error, "Failed to send an email"), { cause: error })
       }
 
       return {
         email,
-        signature: generatedSignature,
-        expiresAt: generatedExpiresAt,
         success: "Check your email for temporary password",
       }
     }
 
-    const isValid = await verify(
-      env.OTP_SECRET,
-      {
-        email,
-        otp,
-        expiresAt: expiresAt ?? 0,
-      },
-      signature ?? "",
-    )
-
-    if (!isValid) {
+    try {
+      await auth.api.signInEmailOTP({
+        body: {
+          email,
+          otp,
+        },
+        headers,
+      })
+    } catch (error) {
       return {
-        error: "Invalid verification code",
+        error: getAuthErrorMessage(error, "Invalid verification code"),
         email,
-        signature,
-        expiresAt,
       }
     }
-
-    if (isExpired(expiresAt ?? 0)) {
-      throw new Error("Verification code expired")
-    }
-
-    const user = await getOrCreateUserByEmail(email)
-    await updateAppSession({ userId: `${user.id}` })
 
     throw redirect({ to: getRedirectUrl(redirectTo) })
   })

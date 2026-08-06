@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { getRedirectUrl } from "./auth.server"
+import { getRedirectUrl } from "./redirect"
 
 describe("getRedirectUrl", () => {
   it("should return the redirect url pathname with query params", () => {
