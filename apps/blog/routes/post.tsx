@@ -17,13 +17,21 @@ export const Route = createFileRoute("/_brand-layout/blog/$slug")({
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [] }
     const { post } = loaderData
-    const pageTitle = post.title
+    const title = `${post.title} - ${config.core.projectName}`
+    const imageUrl = new URL(post.imgSrc, config.core.websiteUrl).href
     return {
       meta: [
-        { title: `${pageTitle} - ${config.core.projectName}` },
+        { title },
         { name: "description", content: post.description },
         ...(post.keywords?.length ? [{ name: "keywords", content: post.keywords.join(", ") }] : []),
-        { property: "og:image", content: post.imgSrc },
+        { property: "og:type", content: "article" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: post.description },
+        { property: "og:image", content: imageUrl },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: post.description },
+        { name: "twitter:image", content: imageUrl },
       ],
     }
   },

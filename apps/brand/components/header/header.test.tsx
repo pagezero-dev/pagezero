@@ -12,5 +12,6 @@ describe("<Header />", async () => {
     )
     expect(screen.getByText("PageZERO")).toBeInTheDocument()
     expect(screen.getByRole("button", { name: "About us" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Toggle menu" })).toBeInTheDocument()
   })
 })
