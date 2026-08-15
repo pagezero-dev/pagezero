@@ -1,38 +1,8 @@
-/* Minimal syntax highlighting for MDX fenced code blocks */
+@import "highlight.js/styles/stackoverflow-dark.css";
 
+/* Let the MDX pre wrapper own background, padding, and base text color */
 pre code.hljs {
-  color: inherit;
   background: transparent;
-}
-
-.hljs-keyword,
-.hljs-built_in {
-  color: var(--chart-3);
-}
-
-.hljs-type {
-  color: var(--chart-1);
-}
-
-.hljs-string,
-.hljs-template-variable {
-  color: var(--chart-2);
-}
-
-.hljs-title.function_,
-.hljs-variable.language_ {
-  color: var(--foreground);
-}
-
-.hljs-subst {
-  color: var(--chart-5);
-}
-
-.hljs-comment {
-  color: var(--muted-foreground);
-}
-
-.hljs-number,
-.hljs-literal {
-  color: var(--chart-4);
+  color: inherit;
+  padding: 0;
 }
