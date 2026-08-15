@@ -9,7 +9,7 @@ type ProseArticleProps = {
 
 function ProseArticle({ children, title }: ProseArticleProps) {
   return (
-    <article className="text-muted-foreground mx-auto max-w-prose px-5 py-32">
+    <article className="text-muted-foreground mx-auto box-content max-w-prose px-5 py-32">
       {title && (
         <Heading level={1} className="text-foreground mb-20 text-center">
           {title}

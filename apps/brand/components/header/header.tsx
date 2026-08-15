@@ -26,7 +26,11 @@ export const Header = ({ logo, children, position = "relative" }: HeaderProps) =
         <div>{logo}</div>
 
         <div className="lg:hidden">
-          <Button variant="ghost" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <Button
+            variant="ghost"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </div>
