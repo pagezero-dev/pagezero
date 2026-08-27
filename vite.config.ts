@@ -91,6 +91,13 @@ export default defineConfig({
       ).pathname,
     },
 
+    // Bun drops Zod's `export { z }` namespace re-export unless Vite inlines it
+    server: {
+      deps: {
+        inline: ["zod"],
+      },
+    },
+
     // Restores all original implementations on spies created manually
     restoreMocks: true,
 

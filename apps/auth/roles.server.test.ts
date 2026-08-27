@@ -1,8 +1,8 @@
+import { Database } from "bun:sqlite"
 import fs from "node:fs"
 
-import Database from "better-sqlite3"
 import { eq } from "drizzle-orm"
-import { drizzle } from "drizzle-orm/better-sqlite3"
+import { drizzle } from "drizzle-orm/bun-sqlite"
 import type { DrizzleD1Database } from "drizzle-orm/d1"
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
 

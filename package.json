@@ -33,12 +33,12 @@
     "setup:reset": "git clean -fdxq && bun run setup",
     "setup:wrangler": "bun ./packages/config/scripts/wrangler-reset.ts && bun check:fix",
     "storybook": "storybook dev -p 6006 --no-open",
-    "test": "bun run db:export && vitest run",
-    "test:coverage": "bun run db:export && vitest run --coverage",
+    "test": "bun run db:export && bun --bun vitest run",
+    "test:coverage": "bun run db:export && bun --bun vitest run --coverage",
     "test:e2e": "playwright test --project=e2e",
     "test:e2e:ui": "playwright test --ui --project=e2e",
     "test:smoke": "playwright test --project=smoke",
-    "test:watch": "bun run db:export && vitest watch"
+    "test:watch": "bun run db:export && bun --bun vitest watch"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.6.25",
@@ -62,7 +62,7 @@
     "react-email": "6.9.2",
     "resend": "6.19.0",
     "tailwind-merge": "3.6.0",
-    "zod": "4.1.12"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.36.4",
@@ -78,14 +78,12 @@
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",
-    "@types/better-sqlite3": "7.6.13",
     "@types/bun": "1.3.14",
     "@types/node": "24.12.4",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.2",
     "@vitest/coverage-v8": "4.1.9",
-    "better-sqlite3": "12.11.1",
     "drizzle-kit": "0.31.10",
     "happy-dom": "20.10.6",
     "oxfmt": "0.63.0",
@@ -107,7 +105,6 @@
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",
-    "better-sqlite3",
     "esbuild",
     "sharp",
     "workerd"
