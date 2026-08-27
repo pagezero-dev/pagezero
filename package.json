@@ -83,7 +83,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.2",
-    "@vitest/coverage-v8": "4.1.9",
+    "@vitest/coverage-istanbul": "4.1.9",
     "drizzle-kit": "0.31.10",
     "happy-dom": "20.10.6",
     "oxfmt": "0.63.0",

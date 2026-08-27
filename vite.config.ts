@@ -105,6 +105,8 @@ export default defineConfig({
     clearMocks: true,
 
     coverage: {
+      // V8 coverage requires a V8 runtime; Bun is JavaScriptCore
+      provider: "istanbul",
       include: ["{apps,packages}/**/*.{ts,tsx}"],
       exclude: ["**/*.stories.tsx"],
       reporter: ["text", "text-summary"],
