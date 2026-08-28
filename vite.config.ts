@@ -91,6 +91,13 @@ export default defineConfig({
       ).pathname,
     },
 
+    // Bun drops Zod's `export { z }` namespace re-export unless Vite inlines it
+    server: {
+      deps: {
+        inline: ["zod"],
+      },
+    },
+
     // Restores all original implementations on spies created manually
     restoreMocks: true,
 
@@ -98,6 +105,8 @@ export default defineConfig({
     clearMocks: true,
 
     coverage: {
+      // V8 coverage requires a V8 runtime; Bun is JavaScriptCore
+      provider: "istanbul",
       include: ["{apps,packages}/**/*.{ts,tsx}"],
       exclude: ["**/*.stories.tsx"],
       reporter: ["text", "text-summary"],
