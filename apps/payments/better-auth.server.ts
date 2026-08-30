@@ -62,7 +62,7 @@ export function createPolarPlugins() {
   return [
     polar({
       client: polarClient,
-      createCustomerOnSignUp: true,
+      createCustomerOnSignUp: false,
       use: webhookPlugin
         ? [checkoutPlugin, portalPlugin, webhookPlugin]
         : [checkoutPlugin, portalPlugin],

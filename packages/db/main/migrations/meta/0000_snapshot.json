@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "9ede45a4-b19d-4c44-b035-edaa4610ccc3",
+  "id": "9b6676b9-07ca-4967-8826-0606f68f81c6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "account": {
@@ -11,6 +11,13 @@
           "name": "id",
           "type": "text",
           "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "issuer": {
+          "name": "issuer",
+          "type": "text",
+          "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
@@ -90,7 +97,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(cast((julianday('now') - 2440587.5)*86400000 as integer))"
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
         },
         "updated_at": {
           "name": "updated_at",
@@ -101,6 +108,14 @@
         }
       },
       "indexes": {
+        "account_issuer_accountId_uidx": {
+          "name": "account_issuer_accountId_uidx",
+          "columns": [
+            "issuer",
+            "account_id"
+          ],
+          "isUnique": true
+        },
         "account_userId_idx": {
           "name": "account_userId_idx",
           "columns": [
@@ -158,7 +173,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(cast((julianday('now') - 2440587.5)*86400000 as integer))"
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
         },
         "updated_at": {
           "name": "updated_at",
@@ -276,7 +291,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(cast((julianday('now') - 2440587.5)*86400000 as integer))"
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
         },
         "updated_at": {
           "name": "updated_at",
@@ -284,15 +299,14 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(cast((julianday('now') - 2440587.5)*86400000 as integer))"
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
         },
         "role": {
           "name": "role",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": "'user'"
+          "autoincrement": false
         },
         "banned": {
           "name": "banned",
@@ -368,7 +382,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(cast((julianday('now') - 2440587.5)*86400000 as integer))"
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
         },
         "updated_at": {
           "name": "updated_at",
@@ -376,7 +390,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(cast((julianday('now') - 2440587.5)*86400000 as integer))"
+          "default": "(cast(unixepoch('subsecond') * 1000 as integer))"
         }
       },
       "indexes": {
