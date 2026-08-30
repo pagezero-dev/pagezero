@@ -9,7 +9,7 @@ import remarkGfm from "remark-gfm"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 
-import { routes } from "./apps/routes"
+import { routes } from "./apps/routes.ts"
 
 // import config from "./packages/config"
 
