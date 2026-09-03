@@ -9,34 +9,39 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './root'
-import { Route as authRoutesLoginRouteImport } from './auth/routes/login'
 import { Route as brandRoutesLayoutRouteImport } from './brand/routes/layout'
-import { Route as blogRoutesIndexRouteImport } from './blog/routes/index'
-import { Route as paymentsRoutesSuccessRouteImport } from './payments/routes/success'
-import { Route as newsletterRoutesConfirmRouteImport } from './newsletter/routes/confirm'
-import { Route as emailRoutesSentRouteImport } from './email/routes/sent'
+import { Route as authRoutesLoginRouteImport } from './auth/routes/login'
 import { Route as brandRoutesHomeRouteImport } from './brand/routes/home'
-import { Route as authRoutesApiDotauthDotsplatRouteImport } from './auth/routes/api.auth.$'
-import { Route as brandRoutesLegalRouteImport } from './brand/routes/legal'
+import { Route as blogRoutesIndexRouteImport } from './blog/routes/index'
+import { Route as emailRoutesSentRouteImport } from './email/routes/sent'
+import { Route as newsletterRoutesConfirmRouteImport } from './newsletter/routes/confirm'
+import { Route as paymentsRoutesSuccessRouteImport } from './payments/routes/success'
 import { Route as blogRoutesPostRouteImport } from './blog/routes/post'
+import { Route as brandRoutesLegalRouteImport } from './brand/routes/legal'
+import { Route as authRoutesApiDotauthDotsplatRouteImport } from './auth/routes/api.auth.$'
 
+const brandRoutesLayoutRoute = brandRoutesLayoutRouteImport.update({
+  id: '/_brand-layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authRoutesLoginRoute = authRoutesLoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const brandRoutesLayoutRoute = brandRoutesLayoutRouteImport.update({
-  id: '/_brand-layout',
-  getParentRoute: () => rootRouteImport,
+const brandRoutesHomeRoute = brandRoutesHomeRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => brandRoutesLayoutRoute,
 } as any)
 const blogRoutesIndexRoute = blogRoutesIndexRouteImport.update({
   id: '/blog',
   path: '/blog',
   getParentRoute: () => brandRoutesLayoutRoute,
 } as any)
-const paymentsRoutesSuccessRoute = paymentsRoutesSuccessRouteImport.update({
-  id: '/payments/success',
-  path: '/payments/success',
+const emailRoutesSentRoute = emailRoutesSentRouteImport.update({
+  id: '/emails/sent',
+  path: '/emails/sent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const newsletterRoutesConfirmRoute = newsletterRoutesConfirmRouteImport.update({
@@ -44,14 +49,19 @@ const newsletterRoutesConfirmRoute = newsletterRoutesConfirmRouteImport.update({
   path: '/newsletter/confirm',
   getParentRoute: () => rootRouteImport,
 } as any)
-const emailRoutesSentRoute = emailRoutesSentRouteImport.update({
-  id: '/emails/sent',
-  path: '/emails/sent',
+const paymentsRoutesSuccessRoute = paymentsRoutesSuccessRouteImport.update({
+  id: '/payments/success',
+  path: '/payments/success',
   getParentRoute: () => rootRouteImport,
 } as any)
-const brandRoutesHomeRoute = brandRoutesHomeRouteImport.update({
-  id: '/',
-  path: '/',
+const blogRoutesPostRoute = blogRoutesPostRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => brandRoutesLayoutRoute,
+} as any)
+const brandRoutesLegalRoute = brandRoutesLegalRouteImport.update({
+  id: '/legal/$slug',
+  path: '/legal/$slug',
   getParentRoute: () => brandRoutesLayoutRoute,
 } as any)
 const authRoutesApiDotauthDotsplatRoute =
@@ -60,16 +70,6 @@ const authRoutesApiDotauthDotsplatRoute =
     path: '/api/auth/$',
     getParentRoute: () => rootRouteImport,
   } as any)
-const brandRoutesLegalRoute = brandRoutesLegalRouteImport.update({
-  id: '/legal/$slug',
-  path: '/legal/$slug',
-  getParentRoute: () => brandRoutesLayoutRoute,
-} as any)
-const blogRoutesPostRoute = blogRoutesPostRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
-  getParentRoute: () => brandRoutesLayoutRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof brandRoutesHomeRoute
@@ -154,13 +154,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authRoutesLoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_brand-layout': {
       id: '/_brand-layout'
       path: ''
@@ -168,32 +161,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof brandRoutesLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_brand-layout/blog': {
-      id: '/_brand-layout/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof blogRoutesIndexRouteImport
-      parentRoute: typeof brandRoutesLayoutRoute
-    }
-    '/payments/success': {
-      id: '/payments/success'
-      path: '/payments/success'
-      fullPath: '/payments/success'
-      preLoaderRoute: typeof paymentsRoutesSuccessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/newsletter/confirm': {
-      id: '/newsletter/confirm'
-      path: '/newsletter/confirm'
-      fullPath: '/newsletter/confirm'
-      preLoaderRoute: typeof newsletterRoutesConfirmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/emails/sent': {
-      id: '/emails/sent'
-      path: '/emails/sent'
-      fullPath: '/emails/sent'
-      preLoaderRoute: typeof emailRoutesSentRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof authRoutesLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_brand-layout/': {
@@ -203,12 +175,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof brandRoutesHomeRouteImport
       parentRoute: typeof brandRoutesLayoutRoute
     }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof authRoutesApiDotauthDotsplatRouteImport
+    '/_brand-layout/blog': {
+      id: '/_brand-layout/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof blogRoutesIndexRouteImport
+      parentRoute: typeof brandRoutesLayoutRoute
+    }
+    '/emails/sent': {
+      id: '/emails/sent'
+      path: '/emails/sent'
+      fullPath: '/emails/sent'
+      preLoaderRoute: typeof emailRoutesSentRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/newsletter/confirm': {
+      id: '/newsletter/confirm'
+      path: '/newsletter/confirm'
+      fullPath: '/newsletter/confirm'
+      preLoaderRoute: typeof newsletterRoutesConfirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payments/success': {
+      id: '/payments/success'
+      path: '/payments/success'
+      fullPath: '/payments/success'
+      preLoaderRoute: typeof paymentsRoutesSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_brand-layout/blog/$slug': {
+      id: '/_brand-layout/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof blogRoutesPostRouteImport
+      parentRoute: typeof brandRoutesLayoutRoute
     }
     '/_brand-layout/legal/$slug': {
       id: '/_brand-layout/legal/$slug'
@@ -217,12 +217,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof brandRoutesLegalRouteImport
       parentRoute: typeof brandRoutesLayoutRoute
     }
-    '/_brand-layout/blog/$slug': {
-      id: '/_brand-layout/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof blogRoutesPostRouteImport
-      parentRoute: typeof brandRoutesLayoutRoute
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof authRoutesApiDotauthDotsplatRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
