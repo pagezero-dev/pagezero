@@ -6,6 +6,7 @@ description: >-
   to merge a PR, finish a PR, land a PR, or complete a pull request from the
   branch they are on. Never ask for a PR number; the skill applies only to the
   PR tied to the checked-out branch.
+disable-model-invocation: true
 ---
 
 # Merge PR

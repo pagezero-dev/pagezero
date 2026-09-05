@@ -4,6 +4,7 @@ description: >-
   Creates a new UI component with implementation, index, tests, and Storybook
   stories following PageZERO conventions. Use when adding a UI component or when
   the user asks to scaffold a component in packages/ui or apps.
+disable-model-invocation: true
 ---
 
 # Create Component
