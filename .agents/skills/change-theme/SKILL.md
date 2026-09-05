@@ -4,6 +4,7 @@ description: >-
   Updates the shadcn/ui theme by editing OKLCH CSS custom properties in
   apps/core/styles/tailwind.css. Use when the user wants to change colors,
   theme appearance, or match a brand palette.
+disable-model-invocation: true
 ---
 
 # Change Theme

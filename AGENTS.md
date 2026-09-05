@@ -166,6 +166,7 @@ useQuery({ queryKey: ["user"], queryFn: () => getUser() })
 
 | Skill                                      | When                                                     |
 | ------------------------------------------ | -------------------------------------------------------- |
+| `.agents/skills/pagezero-upgrade/SKILL.md` | `/pagezero-upgrade` only — do not apply automatically    |
 | `.agents/skills/create-component/SKILL.md` | New UI component in `packages/ui` or `apps/*/components` |
 | `.agents/skills/change-theme/SKILL.md`     | Colors / theme in `apps/core/styles/tailwind.css`        |
 | `.agents/skills/create-pr/SKILL.md`        | Open or push a pull request                              |
