@@ -164,13 +164,13 @@ useQuery({ queryKey: ["user"], queryFn: () => getUser() })
 
 ## Skills
 
-| Skill                                      | When                                                       |
-| ------------------------------------------ | ---------------------------------------------------------- |
-| `.agents/skills/pagezero-upgrade/SKILL.md` | `/pagezero-upgrade` only — do not apply automatically      |
-| `.agents/skills/create-component/SKILL.md` | New UI component in `packages/ui` or `apps/*/components`   |
-| `.agents/skills/change-theme/SKILL.md`     | Colors / theme in `apps/core/styles/tailwind.css`          |
-| `.agents/skills/create-pr/SKILL.md`        | Open or push a pull request                                |
-| `.agents/skills/merge-pr/SKILL.md`         | Squash-merge the PR for the current branch                 |
+| Skill                                      | When                                                     |
+| ------------------------------------------ | -------------------------------------------------------- |
+| `.agents/skills/pagezero-upgrade/SKILL.md` | `/pagezero-upgrade` only — do not apply automatically    |
+| `.agents/skills/create-component/SKILL.md` | New UI component in `packages/ui` or `apps/*/components` |
+| `.agents/skills/change-theme/SKILL.md`     | Colors / theme in `apps/core/styles/tailwind.css`        |
+| `.agents/skills/create-pr/SKILL.md`        | Open or push a pull request                              |
+| `.agents/skills/merge-pr/SKILL.md`         | Squash-merge the PR for the current branch               |
 
 ## Scripts
 
