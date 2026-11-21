@@ -1,6 +1,5 @@
 CREATE TABLE `account` (
 	`id` text PRIMARY KEY NOT NULL,
-	`issuer` text NOT NULL,
 	`account_id` text NOT NULL,
 	`provider_id` text NOT NULL,
 	`user_id` text NOT NULL,
@@ -16,7 +15,6 @@ CREATE TABLE `account` (
 	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `account_issuer_accountId_uidx` ON `account` (`issuer`,`account_id`);--> statement-breakpoint
 CREATE INDEX `account_userId_idx` ON `account` (`user_id`);--> statement-breakpoint
 CREATE TABLE `session` (
 	`id` text PRIMARY KEY NOT NULL,
