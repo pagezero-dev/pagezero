@@ -46,8 +46,8 @@ PageZERO is a full-stack TypeScript starter for Cloudflare: TanStack Start, Work
 `@/` maps to `./packages/*` then `./apps/*`:
 
 ```typescript
-import { Button } from "@/ui/button"
 import { getUser } from "@/auth/rpc"
+import { Button } from "@/ui/button"
 ```
 
 ## Hard rules
