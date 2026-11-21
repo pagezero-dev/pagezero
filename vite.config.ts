@@ -98,6 +98,9 @@ export default defineConfig({
       },
     },
 
+    // Vitest 5.1 forks use child.channel.unref(), which Bun 1.4 does not implement
+    pool: "threads",
+
     // Restores all original implementations on spies created manually
     restoreMocks: true,
 
