@@ -15,6 +15,7 @@ node_modules
 
 # Cloudflare
 /.wrangler
+/.cloudflare
 /.env*
 
 # Storybook

@@ -12,9 +12,5 @@
   "rules": {
     "react/react-in-jsx-scope": "off"
   },
-  "ignorePatterns": [
-    "packages/db/*/migrations/meta/*",
-    "worker-configuration.d.ts",
-    "apps/routeTree.gen.ts"
-  ]
+  "ignorePatterns": ["packages/db/*/migrations/meta/*", ".cloudflare/**", "apps/routeTree.gen.ts"]
 }

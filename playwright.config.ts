@@ -52,9 +52,6 @@ export default defineConfig({
       command: process.env.CI ? "vite preview --mode e2e" : "bun run dev --mode e2e",
       url: baseURL,
       reuseExistingServer: !process.env.CI,
-      env: {
-        CLOUDFLARE_ENV: "e2e",
-      },
     },
   }),
 })

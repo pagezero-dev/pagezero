@@ -24,12 +24,12 @@ updates:
           - "patch"
         exclude-patterns:
           - "@cloudflare/*"
-          - "wrangler"
+          - "cf"
 
       cloudflare:
         patterns:
           - "@cloudflare/*"
-          - "wrangler"
+          - "cf"
 
       react:
         patterns:

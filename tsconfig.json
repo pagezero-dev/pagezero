@@ -1,8 +1,8 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "apps/routeTree.gen.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "apps/routeTree.gen.ts", ".cloudflare/types"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2023"],
-    "types": ["node", "./worker-configuration.d.ts", "vite/client"],
+    "types": ["node", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",

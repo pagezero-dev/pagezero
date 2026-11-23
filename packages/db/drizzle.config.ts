@@ -2,32 +2,19 @@ import crypto from "node:crypto"
 
 import type { Config } from "drizzle-kit"
 
-import wranglerConfig from "../../wrangler.json"
+import { getD1Main } from "../config/cloudflare-identity.ts"
 
 const DEFAULT_DB_BINDING = "DB_MAIN"
 const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
 
-type CloudflareEnv = keyof typeof wranglerConfig.env
+function getDbId(cloudflareEnv?: string) {
+  const databaseId = getD1Main(cloudflareEnv).id
 
-function isValidCloudflareEnv(value?: string): value is CloudflareEnv {
-  return !!value && value in wranglerConfig.env
-}
-
-function getDbId(binding: string, cloudflareEnv?: string) {
-  const databases = isValidCloudflareEnv(cloudflareEnv)
-    ? wranglerConfig.env[cloudflareEnv].d1_databases
-    : wranglerConfig.d1_databases
-  const database = databases.find((db) => db.binding === binding)
-
-  if (!database) {
-    throw new Error(`D1 database binding not found: ${binding}`)
+  if (!databaseId) {
+    throw new Error(`D1 database ID not found for mode: ${cloudflareEnv ?? "development"}`)
   }
 
-  if (!("database_id" in database)) {
-    throw new Error(`D1 database ID not found: ${binding}`)
-  }
-
-  return database.database_id
+  return databaseId
 }
 
 function getLocalSqliteDbUrl(databaseId: string) {
@@ -37,7 +24,7 @@ function getLocalSqliteDbUrl(databaseId: string) {
 
   const hash = Buffer.concat([nameHmac, hmac]).toString("hex")
 
-  return `./.wrangler/state/v3/d1/${MINIFLARE_D1_UNIQUE_KEY}/${hash}.sqlite`
+  return `./.cloudflare/state/v3/d1/${MINIFLARE_D1_UNIQUE_KEY}/${hash}.sqlite`
 }
 
 export function getConfig({
@@ -54,7 +41,7 @@ export function getConfig({
   const isRemote = cloudflareEnv && ["production", "preview"].includes(cloudflareEnv)
 
   const dbRootName = dbBinding.replace("DB_", "").toLowerCase()
-  const databaseId = getDbId(dbBinding, cloudflareEnv)
+  const databaseId = getDbId(cloudflareEnv)
   const dialect = "sqlite"
   const schema = `./packages/db/${dbRootName}/schema.ts`
   const out = `./packages/db/${dbRootName}/migrations`

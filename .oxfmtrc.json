@@ -6,7 +6,7 @@
   "ignorePatterns": [
     ".agents/skills/**",
     "packages/db/*/migrations/meta/*",
-    "worker-configuration.d.ts",
+    ".cloudflare/**",
     "apps/routeTree.gen.ts"
   ]
 }
