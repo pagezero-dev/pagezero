@@ -84,15 +84,15 @@ refactor(db): extract query builder utilities
 
 Pick the type based on the nature of the changes:
 
-| Change | Type |
-|--------|------|
-| New feature or capability | `feat` |
-| Bug fix | `fix` |
-| Maintenance, deps, config | `chore` |
-| Documentation only | `docs` |
+| Change                               | Type       |
+| ------------------------------------ | ---------- |
+| New feature or capability            | `feat`     |
+| Bug fix                              | `fix`      |
+| Maintenance, deps, config            | `chore`    |
+| Documentation only                   | `docs`     |
 | Code restructure, no behavior change | `refactor` |
-| Adding or updating tests | `test` |
-| CI/CD pipeline changes | `ci` |
-| Performance improvement | `perf` |
-| Formatting, whitespace, semicolons | `style` |
-| Build system or tooling | `build` |
+| Adding or updating tests             | `test`     |
+| CI/CD pipeline changes               | `ci`       |
+| Performance improvement              | `perf`     |
+| Formatting, whitespace, semicolons   | `style`    |
+| Build system or tooling              | `build`    |
