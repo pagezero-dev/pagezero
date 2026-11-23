@@ -199,7 +199,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          ./node_modules/.bin/cf deploy --prebuilt --mode production
+          bunx cf deploy --prebuilt --mode production
           url=$(bun -e 'import config from "./packages/config/index.ts"; console.log(config.core.websiteUrl)')
           echo "deployment-url=$url" >> "$GITHUB_OUTPUT"
 
@@ -211,7 +211,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -o pipefail
-          url=$(./node_modules/.bin/cf previews deploy --prebuilt --mode preview | jq -r '.preview_urls[0] // .deployment_urls[0]')
+          url=$(bunx cf previews deploy --prebuilt --mode preview | jq -r '.preview_urls[0] // .deployment_urls[0]')
           echo "deployment-url=$url" >> "$GITHUB_OUTPUT"
 
   smoke-tests:

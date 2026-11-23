@@ -33,7 +33,7 @@ if (mode) {
   args.push("--mode", mode)
 }
 
-const result = spawnSync(["./node_modules/.bin/cf", ...args], {
+const result = spawnSync(["bunx", "cf", ...args], {
   stdout: "inherit",
   stderr: "inherit",
 })
