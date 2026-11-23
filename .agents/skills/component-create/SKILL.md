@@ -1,10 +1,9 @@
 ---
-name: create-component
+name: component-create
 description: >-
   Creates a new UI component with implementation, index, tests, and Storybook
   stories following PageZERO conventions. Use when adding a UI component or when
   the user asks to scaffold a component in packages/ui or apps.
-disable-model-invocation: true
 ---
 
 # Create Component
@@ -16,7 +15,6 @@ Create a new UI component following the PageZERO component structure pattern.
 Ask the user in a single question:
 
 > What component would you like to create and where should it go?
->
 > - **Purpose**: What should it do/display?
 > - **Location**: `packages/ui/` (reusable) or `apps/{feature}/components/` (feature-specific)
 

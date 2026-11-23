@@ -4,7 +4,6 @@ description: >-
   Upgrade a PageZERO-based project to the latest starter while keeping
   project-specific business logic and marketing content. Invoke only via
   /pagezero-upgrade; do not apply from ambient context.
-disable-model-invocation: true
 ---
 
 # PageZERO Upgrade
