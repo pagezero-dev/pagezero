@@ -162,16 +162,6 @@ useQuery({ queryKey: ["user"], queryFn: () => getUser() })
 2. Register routes in `apps/routes.ts`.
 3. Generate DB migrations if the schema changed.
 
-## Skills
-
-| Skill                                      | When                                                     |
-| ------------------------------------------ | -------------------------------------------------------- |
-| `.agents/skills/pagezero-upgrade/SKILL.md` | `/pagezero-upgrade` only — do not apply automatically    |
-| `.agents/skills/component-create/SKILL.md` | New UI component in `packages/ui` or `apps/*/components` |
-| `.agents/skills/theme-change/SKILL.md`     | Colors / theme in `apps/core/styles/tailwind.css`        |
-| `.agents/skills/pr-create/SKILL.md`        | Open or push a pull request                              |
-| `.agents/skills/pr-merge/SKILL.md`         | Squash-merge the PR for the current branch               |
-
 ## Scripts
 
 ```bash
