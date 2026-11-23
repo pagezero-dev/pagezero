@@ -211,7 +211,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -o pipefail
-          url=$(./node_modules/.bin/cf previews deploy --prebuilt --mode preview | bun ./packages/config/scripts/cf-deployment-url.ts)
+          url=$(./node_modules/.bin/cf previews deploy --prebuilt --mode preview | jq -r '.preview_urls[0] // .deployment_urls[0]')
           echo "deployment-url=$url" >> "$GITHUB_OUTPUT"
 
   smoke-tests:
