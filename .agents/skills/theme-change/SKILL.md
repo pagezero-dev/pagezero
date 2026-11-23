@@ -1,10 +1,9 @@
 ---
-name: change-theme
+name: theme-change
 description: >-
   Updates the shadcn/ui theme by editing OKLCH CSS custom properties in
   apps/core/styles/tailwind.css. Use when the user wants to change colors,
   theme appearance, or match a brand palette.
-disable-model-invocation: true
 ---
 
 # Change Theme
@@ -25,9 +24,9 @@ The theme is defined in `apps/core/styles/tailwind.css` with CSS custom properti
 
 The file contains three main sections:
 
-1. **`:root`** - Light mode colors (lines 73-106)
-2. **`.dark`** - Dark mode colors (lines 110-142)
-3. **`@theme inline`** - Tailwind color mappings (lines 33-69)
+1. **`:root`** - Light mode colors
+2. **`.dark`** - Dark mode colors
+3. **`@theme inline`** - Tailwind color mappings
 
 ## Available Color Variables
 

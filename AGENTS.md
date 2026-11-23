@@ -71,7 +71,7 @@ import { Button } from "@/ui/button"
 
 ### Components
 
-Use the `create-component` skill. Folder shape:
+Use the `component-create` skill. Folder shape:
 
 ```
 component-name/
@@ -81,7 +81,7 @@ component-name/
 └── component-name.stories.tsx
 ```
 
-Function components, `ComponentNameProps`, `cn()` from `@/ui/utils`, `cva` for variants. Story titles: `"Apps/ModuleName/ComponentName"` or `"Packages/UI/ComponentName"`. Theme tokens live in `apps/core/styles/tailwind.css` (`change-theme` skill).
+Function components, `ComponentNameProps`, `cn()` from `@/ui/utils`, `cva` for variants. Story titles: `"Apps/ModuleName/ComponentName"` or `"Packages/UI/ComponentName"`. Theme tokens live in `apps/core/styles/tailwind.css` (`theme-change` skill).
 
 ### Routes and RPC
 
@@ -161,16 +161,6 @@ useQuery({ queryKey: ["user"], queryFn: () => getUser() })
 1. `apps/feature-name/` with `index.ts`, `routes/`, `components/`, and `db/schema.ts` if needed.
 2. Register routes in `apps/routes.ts`.
 3. Generate DB migrations if the schema changed.
-
-## Skills
-
-| Skill                                      | When                                                     |
-| ------------------------------------------ | -------------------------------------------------------- |
-| `.agents/skills/pagezero-upgrade/SKILL.md` | `/pagezero-upgrade` only — do not apply automatically    |
-| `.agents/skills/create-component/SKILL.md` | New UI component in `packages/ui` or `apps/*/components` |
-| `.agents/skills/change-theme/SKILL.md`     | Colors / theme in `apps/core/styles/tailwind.css`        |
-| `.agents/skills/create-pr/SKILL.md`        | Open or push a pull request                              |
-| `.agents/skills/merge-pr/SKILL.md`         | Squash-merge the PR for the current branch               |
 
 ## Scripts
 

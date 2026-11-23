@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "skills": {
+    "component-create": {
+      "source": "pagezero-dev/skills",
+      "commit": "ea1ae05e76edf12652918f8f9f25cfbcdbea146d",
+      "sourceType": "github",
+      "skillPath": "skills/component-create/SKILL.md",
+      "computedHash": "852d9f60745fddc08c378accd877f3f7098107fb972c740cda19ba0d4ee29939"
+    },
+    "pagezero-upgrade": {
+      "source": "pagezero-dev/skills",
+      "commit": "ea1ae05e76edf12652918f8f9f25cfbcdbea146d",
+      "sourceType": "github",
+      "skillPath": "skills/pagezero-upgrade/SKILL.md",
+      "computedHash": "fc9394629ea21c9e0f39c5fab8e1bbfdde438c9a849578bca1ed86ba580bd54e"
+    },
+    "pr-create": {
+      "source": "pagezero-dev/skills",
+      "commit": "ea1ae05e76edf12652918f8f9f25cfbcdbea146d",
+      "sourceType": "github",
+      "skillPath": "skills/pr-create/SKILL.md",
+      "computedHash": "bd4309caefa296891ccd317f8c5102c37b4431472be58a6d7bc67dbdf1d11fdc"
+    },
+    "pr-merge": {
+      "source": "pagezero-dev/skills",
+      "commit": "ea1ae05e76edf12652918f8f9f25cfbcdbea146d",
+      "sourceType": "github",
+      "skillPath": "skills/pr-merge/SKILL.md",
+      "computedHash": "91bd2ef774afd4d4f09fb4111e3bfada8b67c0b19cbfb4105744a326ac6192a2"
+    },
+    "theme-change": {
+      "source": "pagezero-dev/skills",
+      "commit": "ea1ae05e76edf12652918f8f9f25cfbcdbea146d",
+      "sourceType": "github",
+      "skillPath": "skills/theme-change/SKILL.md",
+      "computedHash": "6e5964979aaebc0f863e64e8fc36043c64610a251bae115eb8f1178b425e4ca2"
+    }
+  }
+}
