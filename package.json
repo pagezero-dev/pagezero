@@ -19,7 +19,7 @@
     "db:reset": "rm -rf ./packages/db/*/migrations && bun run db:generate --name=init",
     "db:studio": "drizzle-kit studio",
     "deploy:production": "CLOUDFLARE_ENV=production bun run build && cf deploy --prebuilt --mode production",
-    "deploy:preview": "CLOUDFLARE_ENV=preview bun run build && cf workers versions create --prebuilt --mode preview",
+    "deploy:preview": "CLOUDFLARE_ENV=preview bun run build && cf previews deploy --prebuilt --mode preview",
     "dev": "NODE_OPTIONS=\"--inspect\" vite dev",
     "dev:email": "email dev -d ./apps/email/templates -p 3001",
     "doctor": "bun run check && bun run test && bun run test:e2e",

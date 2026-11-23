@@ -166,9 +166,9 @@ jobs:
     needs: [database]
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
-      url: ${{ steps.deploy.outputs.deployment-url }}
+      url: ${{ steps.deploy-production.outputs.deployment-url || steps.deploy-preview.outputs.deployment-url }}
     outputs:
-      page_url: ${{ steps.deploy.outputs.deployment-url }}
+      page_url: ${{ steps.deploy-production.outputs.deployment-url || steps.deploy-preview.outputs.deployment-url }}
     permissions:
       contents: read
       deployments: write
@@ -192,19 +192,26 @@ jobs:
       - name: 🛠️ Build
         run: CLOUDFLARE_ENV=${{ env.APP_ENV }} bun run build
 
-      - name: 🚀 Deploy
-        id: deploy
+      - name: 🚀 Deploy production
+        id: deploy-production
+        if: ${{ env.APP_ENV == 'production' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          ./node_modules/.bin/cf deploy --prebuilt --mode production
+          url=$(bun -e 'import config from "./packages/config/index.ts"; console.log(config.core.websiteUrl)')
+          echo "deployment-url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: 🚀 Deploy preview
+        id: deploy-preview
+        if: ${{ env.APP_ENV == 'preview' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -o pipefail
-          if [ "${APP_ENV}" = "production" ]; then
-            ./node_modules/.bin/cf deploy --prebuilt --mode production 2>&1 | tee /tmp/cf-deploy.out
-          else
-            ./node_modules/.bin/cf workers versions create --prebuilt --mode preview 2>&1 | tee /tmp/cf-deploy.out
-          fi
-          url=$(bun ./packages/config/scripts/cf-deployment-url.ts < /tmp/cf-deploy.out)
+          url=$(./node_modules/.bin/cf previews deploy --prebuilt --mode preview | bun ./packages/config/scripts/cf-deployment-url.ts)
           echo "deployment-url=$url" >> "$GITHUB_OUTPUT"
 
   smoke-tests:

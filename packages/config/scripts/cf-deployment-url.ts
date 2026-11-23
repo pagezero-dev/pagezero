@@ -1,81 +1,26 @@
-const preferredKeys = [
-  "url",
-  "preview_url",
-  "deployment_url",
-  "workers_dev_url",
-  "preview_urls",
-  "deployment_urls",
-  "urls",
-]
-
-const httpsUrl = /https:\/\/[^\s"'<>\\]+/g
-
-function stripTrailingPunctuation(url: string) {
-  return url.replace(/[),.;]+$/u, "")
-}
-
-export function firstHttpsUrl(value: unknown): string | undefined {
-  if (typeof value === "string" && value.startsWith("https://")) {
-    return value
-  }
-  if (Array.isArray(value)) {
-    for (const item of value) {
-      const url = firstHttpsUrl(item)
-      if (url) {
-        return url
-      }
-    }
-  }
-  if (value && typeof value === "object") {
-    const record = value as Record<string, unknown>
-    for (const key of preferredKeys) {
-      const url = firstHttpsUrl(record[key])
-      if (url) {
-        return url
-      }
-    }
-    for (const nested of Object.values(record)) {
-      const url = firstHttpsUrl(nested)
-      if (url) {
-        return url
-      }
-    }
-  }
-}
-
-function preferredUrl(urls: string[]) {
-  const cleaned = urls.map(stripTrailingPunctuation)
-  return (
-    cleaned.find((url) => url.includes(".workers.dev") || url.includes(".cloudflare.app")) ??
-    cleaned[0]
-  )
-}
-
-export function deploymentUrlFromCfOutput(text: string): string | undefined {
-  const trimmed = text.trim()
-  if (!trimmed) {
+/**
+ * `cf previews deploy` prints JSON on stdout:
+ * `{ preview_urls, deployment_urls, ... }`. Progress stays on stderr.
+ */
+export function previewUrlFromCfJson(value: unknown): string | undefined {
+  if (!value || typeof value !== "object") {
     return
   }
-
-  try {
-    const fromJson = firstHttpsUrl(JSON.parse(trimmed))
-    if (fromJson) {
-      return fromJson
+  const record = value as Record<string, unknown>
+  for (const key of ["preview_urls", "deployment_urls"]) {
+    const urls = record[key]
+    if (Array.isArray(urls) && typeof urls[0] === "string" && urls[0].startsWith("https://")) {
+      return urls[0]
     }
-  } catch {
-    // cf deploy writes progress on stderr; mixed logs are not JSON.
   }
-
-  const urls = trimmed.match(httpsUrl) ?? []
-  return preferredUrl(urls)
 }
 
 if (import.meta.main) {
-  const text = await Bun.stdin.text()
-  const url = deploymentUrlFromCfOutput(text)
+  const json = await new Response(Bun.stdin).json()
+  const url = previewUrlFromCfJson(json)
   if (!url) {
-    console.error("Could not find a deployment URL in cf output:")
-    console.error(text)
+    console.error("Could not find a preview URL in cf previews deploy JSON:")
+    console.error(json)
     process.exit(1)
   }
   console.log(url)
