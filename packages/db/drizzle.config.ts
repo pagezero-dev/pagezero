@@ -2,13 +2,13 @@ import crypto from "node:crypto"
 
 import type { Config } from "drizzle-kit"
 
-import { getD1Main } from "../config/cloudflare-identity.ts"
+import { getConfig as getAppConfig } from "../config/index.ts"
 
 const DEFAULT_DB_BINDING = "DB_MAIN"
 const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
 
 function getDbId(cloudflareEnv?: string) {
-  const databaseId = getD1Main(cloudflareEnv).id
+  const databaseId = getAppConfig(cloudflareEnv).cloudflare.d1.id
 
   if (!databaseId) {
     throw new Error(`D1 database ID not found for mode: ${cloudflareEnv ?? "development"}`)

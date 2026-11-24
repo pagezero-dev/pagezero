@@ -1,6 +1,6 @@
 import { bindings, defineConfig } from "cf/config"
 
-import { getD1Main, getModeVars, workerName } from "./packages/config/cloudflare-identity.ts"
+import { getConfig } from "./packages/config/index.ts"
 
 /**
  * `production` is Vite's default build mode. `bun run build` is
@@ -16,13 +16,12 @@ import { getD1Main, getModeVars, workerName } from "./packages/config/cloudflare
  * here; `htmlHandling` is the runtime equivalent.
  */
 function worker(mode?: string) {
-  const vars = getModeVars(mode)
-  const database = getD1Main(mode)
+  const { cloudflare } = getConfig(mode)
 
   return {
-    name: workerName,
-    compatibilityDate: "2026-08-30",
-    compatibilityFlags: ["nodejs_compat"],
+    name: cloudflare.workerName,
+    compatibilityDate: cloudflare.compatibilityDate,
+    compatibilityFlags: cloudflare.compatibilityFlags,
     entrypoint: "@tanstack/react-start/server-entry",
     previewUrls: true,
     observability: {
@@ -32,8 +31,10 @@ function worker(mode?: string) {
       htmlHandling: "drop-trailing-slash" as const,
     },
     env: {
-      CLOUDFLARE_TURNSTILE_PUBLIC_KEY: bindings.text(vars.CLOUDFLARE_TURNSTILE_PUBLIC_KEY),
-      NEWSLETTER_SEGMENT_ID: bindings.text(vars.NEWSLETTER_SEGMENT_ID),
+      CLOUDFLARE_TURNSTILE_PUBLIC_KEY: bindings.text(
+        cloudflare.vars.CLOUDFLARE_TURNSTILE_PUBLIC_KEY,
+      ),
+      NEWSLETTER_SEGMENT_ID: bindings.text(cloudflare.vars.NEWSLETTER_SEGMENT_ID),
       BETTER_AUTH_SECRET: bindings.secret(),
       OTP_SECRET: bindings.secret(),
       RESEND_API_KEY: bindings.secret(),
@@ -41,8 +42,8 @@ function worker(mode?: string) {
       POLAR_WEBHOOK_SECRET: bindings.secret(),
       CLOUDFLARE_TURNSTILE_SECRET_KEY: bindings.secret(),
       DB_MAIN: bindings.d1({
-        name: database.name,
-        ...(database.id ? { id: database.id } : {}),
+        name: cloudflare.d1.name,
+        ...(cloudflare.d1.id ? { id: cloudflare.d1.id } : {}),
       }),
       ASSETS: bindings.assets(),
     },

@@ -1,6 +1,6 @@
 import { spawnSync } from "bun"
 
-import { d1MigrationsDir, getD1Main } from "../cloudflare-identity.ts"
+import { getConfig } from "../index.ts"
 
 /**
  * `cf migrate` drops Wrangler `migrations_dir` / `migrations_table`.
@@ -9,9 +9,9 @@ import { d1MigrationsDir, getD1Main } from "../cloudflare-identity.ts"
  */
 const local = process.argv.includes("--local")
 const mode = process.env.CLOUDFLARE_ENV
-const database = getD1Main(mode)
+const { cloudflare } = getConfig(mode)
 
-if (!database.id) {
+if (!cloudflare.d1.id) {
   console.error(`D1 database ID is missing for mode "${mode ?? "development"}".`)
   process.exit(1)
 }
@@ -20,9 +20,9 @@ const args = [
   "d1",
   "migrations",
   "apply",
-  database.id,
+  cloudflare.d1.id,
   "--dir",
-  d1MigrationsDir,
+  cloudflare.migrationsDir,
   "--table",
   "d1_migrations",
 ]
