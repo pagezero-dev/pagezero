@@ -8,11 +8,7 @@ import e2e from "./e2e.ts"
 import preview from "./preview.ts"
 import production from "./production.ts"
 
-export type Config = CoreConfig &
-  EmailConfig &
-  PaymentsConfig & {
-    cloudflare: CloudflareConfig
-  }
+export type Config = CoreConfig & EmailConfig & PaymentsConfig & CloudflareConfig
 
 export type ConfigMode = "production" | "preview" | "development" | "e2e"
 
