@@ -15,8 +15,19 @@ import { getConfig } from "./packages/config/index.ts"
  * previous Wrangler `assets.directory` (`./dist/client`) is not copied
  * here; `htmlHandling` is the runtime equivalent.
  */
+function d1Binding(database: { name: string; id?: string }) {
+  return bindings.d1({
+    name: database.name,
+    ...(database.id ? { id: database.id } : {}),
+  })
+}
+
 function worker(mode?: string) {
   const { cloudflare } = getConfig(mode)
+  const dbMain = cloudflare.d1.find((database) => database.binding === "DB_MAIN")
+  if (!dbMain) {
+    throw new Error("Cloudflare config must include a DB_MAIN D1 database.")
+  }
 
   return {
     name: cloudflare.workerName,
@@ -41,10 +52,12 @@ function worker(mode?: string) {
       POLAR_ACCESS_TOKEN: bindings.secret(),
       POLAR_WEBHOOK_SECRET: bindings.secret(),
       CLOUDFLARE_TURNSTILE_SECRET_KEY: bindings.secret(),
-      DB_MAIN: bindings.d1({
-        name: cloudflare.d1.name,
-        ...(cloudflare.d1.id ? { id: cloudflare.d1.id } : {}),
-      }),
+      ...Object.fromEntries(
+        cloudflare.d1
+          .filter((database) => database.binding !== "DB_MAIN")
+          .map((database) => [database.binding, d1Binding(database)]),
+      ),
+      DB_MAIN: d1Binding(dbMain),
       ASSETS: bindings.assets(),
     },
   }

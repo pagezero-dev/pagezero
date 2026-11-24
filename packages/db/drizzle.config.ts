@@ -7,14 +7,18 @@ import { getConfig as getAppConfig } from "../config/index.ts"
 const DEFAULT_DB_BINDING = "DB_MAIN"
 const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
 
-function getDbId(cloudflareEnv?: string) {
-  const databaseId = getAppConfig(cloudflareEnv).cloudflare.d1.id
+function getDatabase(cloudflareEnv?: string, dbBinding = DEFAULT_DB_BINDING) {
+  const database = getAppConfig(cloudflareEnv).cloudflare.d1.find(
+    (entry) => entry.binding === dbBinding,
+  )
 
-  if (!databaseId) {
-    throw new Error(`D1 database ID not found for mode: ${cloudflareEnv ?? "development"}`)
+  if (!database?.id) {
+    throw new Error(
+      `D1 database ID not found for binding ${dbBinding} in mode: ${cloudflareEnv ?? "development"}`,
+    )
   }
 
-  return databaseId
+  return { ...database, id: database.id }
 }
 
 function getLocalSqliteDbUrl(databaseId: string) {
@@ -41,10 +45,10 @@ export function getConfig({
   const isRemote = cloudflareEnv && ["production", "preview"].includes(cloudflareEnv)
 
   const dbRootName = dbBinding.replace("DB_", "").toLowerCase()
-  const databaseId = getDbId(cloudflareEnv)
+  const database = getDatabase(cloudflareEnv, dbBinding)
   const dialect = "sqlite"
   const schema = `./packages/db/${dbRootName}/schema.ts`
-  const out = `./packages/db/${dbRootName}/migrations`
+  const out = database.migrationsDir ?? `./packages/db/${dbRootName}/migrations`
 
   if (isRemote) {
     if (!accountId || !token) {
@@ -59,7 +63,7 @@ export function getConfig({
       dbCredentials: {
         accountId,
         token,
-        databaseId,
+        databaseId: database.id,
       },
     }
   }
@@ -69,7 +73,7 @@ export function getConfig({
     schema,
     out,
     dbCredentials: {
-      url: getLocalSqliteDbUrl(databaseId),
+      url: getLocalSqliteDbUrl(database.id),
     },
   }
 }

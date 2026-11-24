@@ -1,1 +1,1 @@
-export type { CloudflareConfig } from "./types.ts"
+export type { CloudflareConfig, D1DatabaseConfig } from "./types.ts"
