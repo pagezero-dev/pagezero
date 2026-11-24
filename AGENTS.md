@@ -140,7 +140,7 @@ const db = getMainDb()
 
 Then `bun run db:generate` and `bun run db:migrate`.
 
-`cf d1 migrations apply` takes a D1 **database ID** (UUID v4, not a binding name or Wrangler `<DATABASE_ID>` placeholder) and **defaults to remote**. `bun run db:migrate` runs `packages/config/scripts/d1-migrate.ts --local`, which reads the ID from `@/config` (`getConfig`) and passes `--dir` / `--table` (Wrangler `migrations_dir` is not a `cloudflare.config.ts` field). Local development uses a fixed UUID (`00000000-0000-4000-8000-000000000000`) so persist hashing stays stable. Do not run `cf d1 migrations apply` without `--local` unless you intend to migrate a remote database. CI remote migrate is the deploy workflow `database` job.
+`cf d1 migrations apply` takes a D1 **database ID** (UUID v4, not a binding name or Wrangler `<DATABASE_ID>` placeholder) and **defaults to remote**. `bun run db:migrate` runs `packages/cloudflare/scripts/d1-migrate.ts --local`, which reads the ID from `@/config` (`getConfig`) and passes `--dir` / `--table` (Wrangler `migrations_dir` is not a `cloudflare.config.ts` field). Local development uses a fixed UUID (`00000000-0000-4000-8000-000000000000`) so persist hashing stays stable. Do not run `cf d1 migrations apply` without `--local` unless you intend to migrate a remote database. CI remote migrate is the deploy workflow `database` job.
 
 ### Content (MDX)
 

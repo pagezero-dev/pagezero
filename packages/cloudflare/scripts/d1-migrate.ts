@@ -1,6 +1,6 @@
 import { spawnSync } from "bun"
 
-import { getConfig } from "../index.ts"
+import { getConfig } from "@/config"
 
 /**
  * `cf migrate` drops Wrangler `migrations_dir` / `migrations_table`.
