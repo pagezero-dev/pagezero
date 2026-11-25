@@ -165,9 +165,9 @@ jobs:
     needs: [database]
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
-      url: ${{ steps.deploy-production.outputs.deployment-url || steps.deploy-preview.outputs.deployment-url }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
     outputs:
-      page_url: ${{ steps.deploy-production.outputs.deployment-url || steps.deploy-preview.outputs.deployment-url }}
+      page_url: ${{ steps.deploy.outputs.deployment-url }}
     permissions:
       contents: read
       deployments: write
@@ -191,26 +191,19 @@ jobs:
       - name: 🛠️ Build
         run: bun run build --mode ${{ env.APP_ENV }}
 
-      - name: 🚀 Deploy production
-        id: deploy-production
-        if: ${{ env.APP_ENV == 'production' }}
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          bun run deploy --mode production
-          url=$(bun -e 'import config from "./packages/config/index.ts"; console.log(config.core.websiteUrl)')
-          echo "deployment-url=$url" >> "$GITHUB_OUTPUT"
-
-      - name: 🚀 Deploy preview
-        id: deploy-preview
-        if: ${{ env.APP_ENV == 'preview' }}
+      - name: 🚀 Deploy
+        id: deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -o pipefail
-          url=$(bunx cf previews deploy --prebuilt --mode preview | jq -r '.preview_urls[0] // .deployment_urls[0]')
+          if [ "$APP_ENV" = "production" ]; then
+            bun run deploy --mode production
+            url=$(bun -e 'import config from "./packages/config/index.ts"; console.log(config.core.websiteUrl)')
+          else
+            url=$(bunx cf previews deploy --prebuilt --mode preview | jq -r '.preview_urls[0] // .deployment_urls[0]')
+          fi
           echo "deployment-url=$url" >> "$GITHUB_OUTPUT"
 
   smoke-tests:
