@@ -2,19 +2,17 @@ import crypto from "node:crypto"
 
 import type { Config } from "drizzle-kit"
 
-import { getConfig as getAppConfig } from "../config/index.ts"
+import { detectMode, getConfig as getAppConfig } from "../config/index.ts"
 
 const DEFAULT_DB_BINDING = "DB_MAIN"
 const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
 
-function getDatabase(cloudflareEnv?: string, dbBinding = DEFAULT_DB_BINDING) {
-  const database = getAppConfig(cloudflareEnv).cloudflare.d1.find(
-    (entry) => entry.binding === dbBinding,
-  )
+function getDatabase(mode?: string, dbBinding = DEFAULT_DB_BINDING) {
+  const database = getAppConfig(mode).cloudflare.d1.find((entry) => entry.binding === dbBinding)
 
   if (!database?.id) {
     throw new Error(
-      `D1 database ID not found for binding ${dbBinding} in mode: ${cloudflareEnv ?? "development"}`,
+      `D1 database ID not found for binding ${dbBinding} in mode: ${mode ?? "development"}`,
     )
   }
 
@@ -33,19 +31,19 @@ function getLocalSqliteDbUrl(databaseId: string) {
 
 export function getConfig({
   dbBinding = DEFAULT_DB_BINDING,
-  cloudflareEnv,
+  mode,
   accountId,
   token,
 }: {
   dbBinding?: string
-  cloudflareEnv?: string
+  mode?: string
   accountId?: string
   token?: string
 }): Config {
-  const isRemote = cloudflareEnv && ["production", "preview"].includes(cloudflareEnv)
+  const isRemote = mode && ["production", "preview"].includes(mode)
 
   const dbRootName = dbBinding.replace("DB_", "").toLowerCase()
-  const database = getDatabase(cloudflareEnv, dbBinding)
+  const database = getDatabase(mode, dbBinding)
   const dialect = "sqlite"
   const schema = `./packages/db/${dbRootName}/schema.ts`
   const out = database.migrationsDir ?? `./packages/db/${dbRootName}/migrations`
@@ -80,7 +78,7 @@ export function getConfig({
 
 export default getConfig({
   dbBinding: process.env.DB_BINDING,
-  cloudflareEnv: process.env.CLOUDFLARE_ENV,
+  mode: detectMode(),
   accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
   token: process.env.CLOUDFLARE_API_TOKEN,
 })

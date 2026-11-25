@@ -1,6 +1,6 @@
 import { spawnSync } from "bun"
 
-import { getConfig } from "@/config"
+import { detectMode, getConfig } from "@/config"
 
 /**
  * `cf migrate` drops Wrangler `migrations_dir` / `migrations_table`.
@@ -8,7 +8,7 @@ import { getConfig } from "@/config"
  * defaults to the remote database — local scripts must pass `--local`.
  */
 const local = process.argv.includes("--local")
-const mode = process.env.CLOUDFLARE_ENV
+const mode = detectMode()
 const { cloudflare } = getConfig(mode)
 const binding = process.env.DB_BINDING
 

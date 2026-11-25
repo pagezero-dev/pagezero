@@ -25,12 +25,21 @@ export function getConfig(mode?: string): Config {
   }
 }
 
-function detectMode() {
+export function detectMode() {
   const viteMode = import.meta.env?.MODE
   if (typeof viteMode === "string" && viteMode.length > 0) {
     return viteMode
   }
-  return process.env.CLOUDFLARE_ENV
+
+  const index = process.argv.indexOf("--mode")
+  if (index === -1) {
+    return undefined
+  }
+  const value = process.argv[index + 1]
+  if (value === undefined || value.startsWith("-")) {
+    return undefined
+  }
+  return value
 }
 
 const config: Config = getConfig(detectMode())

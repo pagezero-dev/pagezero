@@ -178,7 +178,7 @@ bun run db:migrate   # apply D1 migrations locally (`cf d1 migrations apply --lo
 bun run generate:types  # cf workers types → .cloudflare/types/index.d.ts
 ```
 
-CI is `.github/workflows/deploy.yml` (check → unit → e2e → migrate → deploy → smoke). `main` is production; PRs are preview. `bun run build` is `vite build --mode` (the Vite plugin writes `.cloudflare/output/v1/`). Deploy uses `cf deploy --prebuilt --mode production` on `main` and `cf previews deploy --prebuilt --mode preview` on PRs. Production smoke tests use `config.core.websiteUrl`; preview smoke tests use `preview_urls` from `cf previews deploy` JSON. Local sign-in is `cf auth login`; CI uses `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. `cf` loads `cloudflare.config.ts` with Node, not Bun.
+CI is `.github/workflows/deploy.yml` (check → unit → e2e → migrate → deploy → smoke). `main` is production; PRs are preview. `bun run build` is `vite build` (pass `--mode` for preview/test; the Vite plugin writes `.cloudflare/output/v1/`). Deploy uses `cf deploy --prebuilt --mode production` on `main` and `cf previews deploy --prebuilt --mode preview` on PRs. Production smoke tests use `config.core.websiteUrl`; preview smoke tests use `preview_urls` from `cf previews deploy` JSON. Local sign-in is `cf auth login`; CI uses `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. `cf` loads `cloudflare.config.ts` with Node, not Bun.
 
 ## Environment
 
