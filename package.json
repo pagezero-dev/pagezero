@@ -14,7 +14,7 @@
     "db:drop": "drizzle-kit drop",
     "db:export": "drizzle-kit export > ./packages/db/main/schema.sql",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "bun ./packages/cloudflare/scripts/d1-migrate.ts --local",
+    "db:migrate": "bun ./packages/db/d1-migrate.ts --local",
     "db:push": "drizzle-kit push",
     "db:reset": "rm -rf ./packages/db/*/migrations && bun run db:generate --name=init",
     "db:studio": "drizzle-kit studio",
