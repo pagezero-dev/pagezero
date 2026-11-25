@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "build": "vite build",
-    "check": "oxfmt --check && oxlint && bun run generate:types && tsc",
+    "check": "oxfmt --check && oxlint && tsc",
     "check:fix": "oxfmt && oxlint --fix",
     "db:clean": "rm -rf ./.cloudflare/state/v3/d1 ./.wrangler/state/v3/d1",
     "db:drop": "drizzle-kit drop",

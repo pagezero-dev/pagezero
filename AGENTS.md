@@ -168,7 +168,7 @@ useQuery({ queryKey: ["user"], queryFn: () => getUser() })
 ## Scripts
 
 ```bash
-bun run check        # oxfmt --check, oxlint, cf workers types, tsc
+bun run check        # oxfmt --check, oxlint, tsc
 bun run check:fix    # oxfmt + oxlint --fix (does not run tsc)
 bun run test         # unit tests
 bun run test:e2e     # local Playwright
