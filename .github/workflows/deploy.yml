@@ -198,7 +198,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          bunx cf deploy --prebuilt --mode production
+          bun run deploy --mode production
           url=$(bun -e 'import config from "./packages/config/index.ts"; console.log(config.core.websiteUrl)')
           echo "deployment-url=$url" >> "$GITHUB_OUTPUT"
 

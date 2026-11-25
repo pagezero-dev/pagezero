@@ -5,8 +5,9 @@ import { getConfig } from "./packages/config/index.ts"
 /**
  * `production` is Vite's default build mode. Pass `--mode` to
  * `bun run build` (`vite build --mode`) and the same `--mode` to
- * `cf deploy --prebuilt`. `cf build --mode` is rejected for TanStack
- * Start in cf 1.0.0-rc.2 (framework is not marked as supporting `--mode`).
+ * `bun run deploy` (`cf deploy --prebuilt`). `cf build --mode` is
+ * rejected for TanStack Start in cf 1.0.0-rc.2 (framework is not
+ * marked as supporting `--mode`).
  *
  * D1 `migrations_dir` is not a binding field in `cloudflare.config.ts`.
  * Apply migrations with `bun run db:migrate` (`--dir` is set there).
