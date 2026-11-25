@@ -1,4 +1,6 @@
 /// <reference types="vitest/config" />
+import path from "node:path"
+
 import { cloudflare } from "@cloudflare/vite-plugin"
 import mdx from "@mdx-js/rollup"
 import tailwindcss from "@tailwindcss/vite"
@@ -7,13 +9,38 @@ import react from "@vitejs/plugin-react"
 import rehypeHighlight from "rehype-highlight"
 import remarkGfm from "remark-gfm"
 import { visualizer } from "rollup-plugin-visualizer"
-import { defineConfig } from "vite"
+import { defineConfig, normalizePath } from "vite"
 
 import { routes } from "./apps/routes.ts"
 
 // import config from "./packages/config"
 
 const isStorybook = process.argv[1]?.includes("storybook")
+
+/**
+ * `@cloudflare/vite-plugin` adds every file imported by `cloudflare.config.ts`
+ * to `server.fs.deny`. `packages/config` is also imported by the Worker via
+ * `@/config`, so allow those files while still denying `cloudflare.config.ts`
+ * and env files. Deny is checked before `server.fs.allow`.
+ */
+function allowAppConfig() {
+  return {
+    name: "allow-app-config",
+    configResolved(config: import("vite").ResolvedConfig) {
+      const appConfigDir = normalizePath(path.resolve(config.root, "packages/config"))
+      const resolved = config as typeof config & {
+        fsDenyGlob: (filePath: string) => boolean
+      }
+      const deny = resolved.fsDenyGlob
+      resolved.fsDenyGlob = (filePath) => {
+        if (filePath === appConfigDir || filePath.startsWith(`${appConfigDir}/`)) {
+          return false
+        }
+        return deny(filePath)
+      }
+    },
+  }
+}
 
 export default defineConfig({
   server: {
@@ -69,6 +96,7 @@ export default defineConfig({
             // },
           }),
           react(),
+          allowAppConfig(),
         ]
       : []),
     ...(!process.env.CI

@@ -68,7 +68,7 @@ export default defineConfig(({ mode }) => {
   switch (mode) {
     case "production":
     case "preview":
-    case "test":
+    case "e2e":
       return { worker: worker(mode) }
     default:
       return { worker: worker("development") }

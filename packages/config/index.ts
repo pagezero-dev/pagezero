@@ -25,21 +25,29 @@ export function getConfig(mode?: string): Config {
   }
 }
 
+function getArgvMode() {
+  try {
+    const index = process.argv.indexOf("--mode")
+    if (index === -1) {
+      return undefined
+    }
+    const value = process.argv[index + 1]
+    if (value === undefined || value.startsWith("-")) {
+      return undefined
+    }
+    return value
+  } catch {
+    // `process.argv` throws in the Workers runtime.
+    return undefined
+  }
+}
+
 export function detectMode() {
   const viteMode = import.meta.env?.MODE
   if (typeof viteMode === "string" && viteMode.length > 0) {
     return viteMode
   }
-
-  const index = process.argv.indexOf("--mode")
-  if (index === -1) {
-    return undefined
-  }
-  const value = process.argv[index + 1]
-  if (value === undefined || value.startsWith("-")) {
-    return undefined
-  }
-  return value
+  return getArgvMode()
 }
 
 const config: Config = getConfig(detectMode())
