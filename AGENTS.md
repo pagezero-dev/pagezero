@@ -138,9 +138,9 @@ import { getMainDb } from "@/db/main"
 const db = getMainDb()
 ```
 
-Then `bun run db:generate` and `bun run db:migrate`.
+Then `bun run db:generate` and `bun run db:migrate --local`.
 
-`cf d1 migrations apply` takes a D1 **database ID** (UUID v4, not a binding name or Wrangler `<DATABASE_ID>` placeholder) and **defaults to remote**. `bun run db:migrate` runs `packages/db/d1-migrate.ts --local`, which reads the ID from `@/config` (`getConfig`) and passes `--dir` / `--table` (Wrangler `migrations_dir` is not a `cloudflare.config.ts` field). Local development uses a fixed UUID (`00000000-0000-4000-8000-000000000000`) so persist hashing stays stable. Do not run `cf d1 migrations apply` without `--local` unless you intend to migrate a remote database. CI remote migrate is the deploy workflow `database` job.
+`cf d1 migrations apply` takes a D1 **database ID** (UUID v4, not a binding name or Wrangler `<DATABASE_ID>` placeholder) and **defaults to remote**. `bun run db:migrate` runs `packages/db/d1-migrate.ts`, which reads the ID from `@/config` (`getConfig`) and passes `--dir` / `--table` (Wrangler `migrations_dir` is not a `cloudflare.config.ts` field). Pass `--local` for the local database. Local development uses a fixed UUID (`00000000-0000-4000-8000-000000000000`) so persist hashing stays stable. Do not run `bun run db:migrate` without `--local` unless you intend to migrate a remote database. CI remote migrate is the deploy workflow `database` job.
 
 ### Content (MDX)
 
@@ -174,7 +174,7 @@ bun run test         # unit tests
 bun run test:e2e     # local Playwright
 bun run test:smoke   # deployed Playwright
 bun run db:generate  # after schema changes
-bun run db:migrate   # apply D1 migrations locally (`cf d1 migrations apply --local`)
+bun run db:migrate --local  # apply D1 migrations locally (`cf d1 migrations apply --local`)
 bun run generate:types  # cf workers types → .cloudflare/types/index.d.ts
 ```
 
