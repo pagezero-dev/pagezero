@@ -76,7 +76,7 @@ jobs:
         run: bun run setup:env
 
       - name: 🗄️ Database setup
-        run: bun run db:migrate
+        run: bun run db:migrate --local
 
       - name: ⚡️ Run Vitest
         run: bun run test:coverage
