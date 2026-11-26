@@ -7,8 +7,6 @@ export type D1DatabaseConfig = {
 
 export type CloudflareConfig = {
   workerName: string
-  compatibilityDate: string
-  compatibilityFlags: string[]
   d1: D1DatabaseConfig[]
   vars: {
     CLOUDFLARE_TURNSTILE_PUBLIC_KEY: string

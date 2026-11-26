@@ -36,8 +36,8 @@ function worker(mode?: string) {
 
   return {
     name: cloudflare.workerName,
-    compatibilityDate: cloudflare.compatibilityDate,
-    compatibilityFlags: cloudflare.compatibilityFlags,
+    compatibilityDate: "2026-08-30",
+    compatibilityFlags: ["nodejs_compat"],
     entrypoint: "@tanstack/react-start/server-entry",
     previewUrls: true,
     observability: {

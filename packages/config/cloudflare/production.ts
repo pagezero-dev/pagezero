@@ -4,8 +4,6 @@ const workerName = "pagezero"
 
 const production: CloudflareConfig = {
   workerName,
-  compatibilityDate: "2026-08-30",
-  compatibilityFlags: ["nodejs_compat"],
   d1: [
     {
       binding: "DB_MAIN",
