@@ -1,4 +1,3 @@
-import type { CloudflareConfig } from "@/cloudflare"
 import type { CoreConfig } from "@/core"
 import type { EmailConfig } from "@/email"
 import type { PaymentsConfig } from "@/payments"
@@ -8,7 +7,7 @@ import e2e from "./e2e.ts"
 import preview from "./preview.ts"
 import production from "./production.ts"
 
-export type Config = CoreConfig & EmailConfig & PaymentsConfig & CloudflareConfig
+export type Config = CoreConfig & EmailConfig & PaymentsConfig
 
 export type ConfigMode = "production" | "preview" | "development" | "e2e"
 

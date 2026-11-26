@@ -6,14 +6,12 @@ export type D1DatabaseConfig = {
 }
 
 export type CloudflareConfig = {
-  cloudflare: {
-    workerName: string
-    compatibilityDate: string
-    compatibilityFlags: string[]
-    d1: D1DatabaseConfig[]
-    vars: {
-      CLOUDFLARE_TURNSTILE_PUBLIC_KEY: string
-      NEWSLETTER_SEGMENT_ID: string
-    }
+  workerName: string
+  compatibilityDate: string
+  compatibilityFlags: string[]
+  d1: D1DatabaseConfig[]
+  vars: {
+    CLOUDFLARE_TURNSTILE_PUBLIC_KEY: string
+    NEWSLETTER_SEGMENT_ID: string
   }
 }

@@ -1,6 +1,8 @@
 import { spawnSync } from "bun"
 
-import { detectMode, getConfig } from "@/config"
+import { detectMode } from "@/config"
+
+import { getCloudflareConfig } from "../../cloudflare.config.ts"
 
 /**
  * `cf migrate` drops Wrangler `migrations_dir` / `migrations_table`.
@@ -9,12 +11,10 @@ import { detectMode, getConfig } from "@/config"
  */
 const local = process.argv.includes("--local")
 const mode = detectMode()
-const { cloudflare } = getConfig(mode)
+const { d1 } = getCloudflareConfig(mode)
 const binding = process.env.DB_BINDING
 
-const databases = cloudflare.d1.filter((database) =>
-  binding ? database.binding === binding : true,
-)
+const databases = d1.filter((database) => (binding ? database.binding === binding : true))
 
 if (databases.length === 0) {
   console.error(

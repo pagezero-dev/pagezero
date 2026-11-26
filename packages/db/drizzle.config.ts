@@ -2,13 +2,14 @@ import crypto from "node:crypto"
 
 import type { Config } from "drizzle-kit"
 
-import { detectMode, getConfig as getAppConfig } from "../config/index.ts"
+import { getCloudflareConfig } from "../../cloudflare.config.ts"
+import { detectMode } from "../config/index.ts"
 
 const DEFAULT_DB_BINDING = "DB_MAIN"
 const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
 
 function getDatabase(mode?: string, dbBinding = DEFAULT_DB_BINDING) {
-  const database = getAppConfig(mode).cloudflare.d1.find((entry) => entry.binding === dbBinding)
+  const database = getCloudflareConfig(mode).d1.find((entry) => entry.binding === dbBinding)
 
   if (!database?.id) {
     throw new Error(

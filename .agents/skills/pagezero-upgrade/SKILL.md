@@ -39,7 +39,7 @@ Do not assume a local starter checkout or a fixed PageZERO layout. Discover what
 `PRE_HEAD=$(git rev-parse HEAD)`. Record (no secrets):
 
 - Directories under `apps/` (used modules). Ignore root route/entry files.
-- `cloudflare.config.ts` / `packages/config/{production,preview,development,e2e}.ts` identity: worker name, D1 names/IDs, project-specific env vars
+- `cloudflare.config.ts` identity: worker name, D1 names/IDs; `packages/config/{production,preview,development,e2e}.ts` project-specific app values
 - `package.json` deps this project's code actually imports
 - Project-specific `AGENTS.md` rules and extra skills
 - Env **key names** this project already uses

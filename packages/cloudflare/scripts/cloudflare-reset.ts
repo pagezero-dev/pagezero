@@ -6,24 +6,19 @@ const projectName = basename(process.cwd())
 
 console.log(`🔄 Resetting Cloudflare identity for "${projectName}"...`)
 
-const productionPath = "./packages/config/production.ts"
-const previewPath = "./packages/config/preview.ts"
+const configPath = "./cloudflare.config.ts"
 
-let production = await file(productionPath).text()
-production = production.replace(
+let config = await file(configPath).text()
+config = config.replace(
   /const workerName = "[^"]+"/,
   `const workerName = ${JSON.stringify(projectName)}`,
 )
-production = production.replace(/\n\s*id: "[0-9a-f-]+",/, "")
-production = production.replace(
-  /CLOUDFLARE_TURNSTILE_PUBLIC_KEY: "[^"]*"/,
+config = config.replaceAll(/\n\s*id: "(?!00000000)[0-9a-f-]+",/g, "")
+config = config.replace(
+  /CLOUDFLARE_TURNSTILE_PUBLIC_KEY: "0x[^"]*"/,
   `CLOUDFLARE_TURNSTILE_PUBLIC_KEY: ""`,
 )
-production = production.replace(/NEWSLETTER_SEGMENT_ID: "[^"]*"/, `NEWSLETTER_SEGMENT_ID: ""`)
-await write(productionPath, production)
-
-let preview = await file(previewPath).text()
-preview = preview.replace(/\n\s*id: "[0-9a-f-]+",/, "")
-await write(previewPath, preview)
+config = config.replace(/NEWSLETTER_SEGMENT_ID: "f7ba881f[^"]*"/, `NEWSLETTER_SEGMENT_ID: ""`)
+await write(configPath, config)
 
 console.log(`✅ Finished resetting Cloudflare identity for "${projectName}".`)
