@@ -3,6 +3,7 @@ import { render } from "react-email"
 import { Resend } from "resend"
 
 import config from "@/config"
+import { getAppMode } from "@/core"
 
 export type EmailConfig = {
   email: {
@@ -37,7 +38,8 @@ export async function sendEmail({
   const resendApiKey = env.RESEND_API_KEY
 
   if (!resendApiKey) {
-    if (import.meta.env.PROD) {
+    const mode = getAppMode()
+    if (mode === "production" || mode === "preview") {
       throw new Error("RESEND_API_KEY is not set")
     }
     const body = await render(react, { plainText: true })
