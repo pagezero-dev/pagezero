@@ -2,7 +2,7 @@ import crypto from "node:crypto"
 
 import type { Config } from "drizzle-kit"
 
-import { getCloudflareConfig } from "../../cloudflare.config.ts"
+import { getCloudflareConfig } from "../config/cloudflare/index.ts"
 import { detectMode } from "../config/index.ts"
 
 const DEFAULT_DB_BINDING = "DB_MAIN"

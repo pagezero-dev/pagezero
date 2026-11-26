@@ -1,8 +1,7 @@
 import { spawnSync } from "bun"
 
 import { detectMode } from "@/config"
-
-import { getCloudflareConfig } from "../../cloudflare.config.ts"
+import { getCloudflareConfig } from "@/config/cloudflare"
 
 /**
  * `cf migrate` drops Wrangler `migrations_dir` / `migrations_table`.
