@@ -76,6 +76,7 @@ export function getConfig({
   }
 }
 
+// drizzle-kit is local-only. Pass mode "production" | "preview" to getConfig() for d1-http later.
 export default getConfig({
   dbBinding: process.env.DB_BINDING,
   accountId: process.env.CLOUDFLARE_ACCOUNT_ID,

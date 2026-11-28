@@ -200,7 +200,7 @@ jobs:
           set -o pipefail
           if [ "$APP_ENV" = "production" ]; then
             bun run deploy --mode production
-            url=$(bun -e 'import config from "./packages/config/index.ts"; console.log(config.core.websiteUrl)')
+            url=$(bun -e 'import { getConfig } from "./packages/config/index.ts"; console.log(getConfig("production").core.websiteUrl)')
           else
             url=$(bunx cf previews deploy --prebuilt --mode preview | jq -r '.preview_urls[0] // .deployment_urls[0]')
           fi

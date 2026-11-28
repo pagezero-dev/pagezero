@@ -3,19 +3,6 @@ import { bindings, defineConfig } from "cf/config"
 import { getCloudflareConfig } from "./packages/config/cloudflare/index.ts"
 
 /**
- * `production` is Vite's default build mode. Pass `--mode` to
- * `bun run build` (`vite build --mode`) and the same `--mode` to
- * `bun run deploy` (`cf deploy --prebuilt`). `cf build --mode` is
- * rejected for TanStack Start in cf 1.0.0-rc.2 (framework is not
- * marked as supporting `--mode`).
- *
- * D1 `migrations_dir` is not a binding field in `cloudflare.config.ts`.
- * Apply migrations with `bun run db:migrate` (`--dir` is set there).
- *
- * Static assets come from the Vite / TanStack Start client build. The
- * previous Wrangler `assets.directory` (`./dist/client`) is not copied
- * here; `htmlHandling` is the runtime equivalent.
- *
  * Import `packages/config/cloudflare`, not `packages/config`. The
  * Cloudflare Vite plugin adds every file imported here to
  * `server.fs.deny`, and the Worker loads `@/config` during `vite dev`.
