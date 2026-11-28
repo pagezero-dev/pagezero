@@ -17,7 +17,7 @@ Do not assume a local starter checkout or a fixed PageZERO layout. Discover what
 ## Hard rules
 
 - Do **not** add starter modules this project did not already use.
-- Do **not** run `bun run setup:cloudflare` (resets live D1 IDs and related vars).
+- Do **not** overwrite live Cloudflare identity in `packages/config/cloudflare/*` (worker name, D1 IDs, Turnstile, newsletter segment).
 - Do **not** apply migrations that belong only to dropped modules.
 - Do **not** commit `.env` or `.env.e2e`.
 - Do **not** commit unless the user asks.
