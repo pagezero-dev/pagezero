@@ -25,42 +25,8 @@ export function getConfig(mode?: string): Config {
   }
 }
 
-function getArgvMode() {
-  try {
-    const index = process.argv.indexOf("--mode")
-    if (index === -1) {
-      return undefined
-    }
-    const value = process.argv[index + 1]
-    if (value === undefined || value.startsWith("-")) {
-      return undefined
-    }
-    return value
-  } catch {
-    // `process.argv` throws in the Workers runtime.
-    return undefined
-  }
-}
-
-function getCloudflareEnv() {
-  try {
-    const value = process.env.CLOUDFLARE_ENV
-    if (typeof value === "string" && value.length > 0) {
-      return value
-    }
-    return undefined
-  } catch {
-    // `process.env` can throw in the Workers runtime.
-    return undefined
-  }
-}
-
 export function detectMode() {
-  const viteMode = import.meta.env?.MODE
-  if (typeof viteMode === "string" && viteMode.length > 0) {
-    return viteMode
-  }
-  return getCloudflareEnv() ?? getArgvMode()
+  return import.meta.env?.MODE
 }
 
 const config: Config = getConfig(detectMode())
