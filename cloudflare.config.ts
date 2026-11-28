@@ -20,13 +20,6 @@ import { getCloudflareConfig } from "./packages/config/cloudflare/index.ts"
  * Cloudflare Vite plugin adds every file imported here to
  * `server.fs.deny`, and the Worker loads `@/config` during `vite dev`.
  */
-function d1Binding(database: { name: string; id?: string }) {
-  return bindings.d1({
-    name: database.name,
-    ...(database.id ? { id: database.id } : {}),
-  })
-}
-
 function worker(mode?: string) {
   const cloudflare = getCloudflareConfig(mode)
   const dbMain = cloudflare.d1.find((database) => database.binding === "DB_MAIN")
@@ -60,9 +53,12 @@ function worker(mode?: string) {
       ...Object.fromEntries(
         cloudflare.d1
           .filter((database) => database.binding !== "DB_MAIN")
-          .map((database) => [database.binding, d1Binding(database)]),
+          .map((database) => [
+            database.binding,
+            bindings.d1({ name: database.name, id: database.id }),
+          ]),
       ),
-      DB_MAIN: d1Binding(dbMain),
+      DB_MAIN: bindings.d1({ name: dbMain.name, id: dbMain.id }),
       ASSETS: bindings.assets(),
     },
   }
