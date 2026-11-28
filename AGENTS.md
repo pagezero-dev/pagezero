@@ -179,4 +179,4 @@ CI is `.github/workflows/deploy.yml` (check → unit → e2e → migrate → dep
 
 ## Environment
 
-Node.js >= 24, Bun >= 1.3. Local env: `.env` / `.env.test` from `.init.env` / `.init.env.test`.
+Node.js >= 24, Bun >= 1.3. Local env: `.env` / `.env.test` from `.init.env` / `.init.env.test`. App values live in `packages/config/{production,preview,development,e2e}.ts`; `getConfig(mode)` (and the default export via `detectMode()`) selects among them. Vite/Wrangler mode `test` maps to e2e app config. Wrangler identity stays in `wrangler.json` (`env.production` / `env.preview` / `env.test`) and `CLOUDFLARE_ENV`.

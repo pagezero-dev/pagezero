@@ -32,10 +32,7 @@ vi.mock("@/config", () => ({
         pro: {
           name: "Pro",
           userRoleToGrant: "premium",
-          polarProductId: {
-            preview: "pro-preview-product-id",
-            production: "pro-production-product-id",
-          },
+          polarProductId: "pro-preview-product-id",
         },
       },
     },

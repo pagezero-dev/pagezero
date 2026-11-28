@@ -8,10 +8,7 @@ export type PaymentsConfig = {
       {
         name: string
         userRoleToGrant: PaidRole
-        polarProductId: {
-          preview: string
-          production: string
-        }
+        polarProductId: string
       }
     >
   }
