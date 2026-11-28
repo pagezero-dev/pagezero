@@ -19,7 +19,7 @@ Do not assume a local starter checkout or a fixed PageZERO layout. Discover what
 - Do **not** add starter modules this project did not already use.
 - Do **not** run `bun run setup:wrangler` (resets live D1 IDs and related vars).
 - Do **not** apply migrations that belong only to dropped modules.
-- Do **not** commit `.env` or `.env.test`.
+- Do **not** commit `.env` or `.env.e2e`.
 - Do **not** commit unless the user asks.
 
 ## Workflow

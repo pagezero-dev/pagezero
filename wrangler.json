@@ -54,7 +54,7 @@
         }
       ]
     },
-    "test": {
+    "e2e": {
       "vars": {
         "CLOUDFLARE_TURNSTILE_PUBLIC_KEY": "",
         "NEWSLETTER_SEGMENT_ID": ""

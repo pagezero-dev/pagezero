@@ -60,7 +60,7 @@ import { Button } from "@/ui/button"
 - Reuse existing auth guards from `@/auth/rpc` (`requireUserId`, `requireGuestUser`, `requireUserPermissions`, `requireUserRole`). Do not invent new redirects.
 - Mutations use `@/form` (`parseFormData` in the RPC validator, `useFormAction` on the client). Do not ad-hoc `fetch`.
 - Prefer `packages/ui` before adding a new primitive. `env` from `cloudflare:workers` only inside server functions / `*.server.ts`.
-- Do not commit `.env` or `.env.test`. Copy from `.init.env` / `.init.env.test`.
+- Do not commit `.env` or `.env.e2e`. Copy from `.init.env` / `.init.env.e2e`.
 
 ## How we do work
 
@@ -179,4 +179,4 @@ CI is `.github/workflows/deploy.yml` (check → unit → e2e → migrate → dep
 
 ## Environment
 
-Node.js >= 24, Bun >= 1.3. Local env: `.env` / `.env.test` from `.init.env` / `.init.env.test`. App values live in `packages/config/{production,preview,development,e2e}.ts`; `getConfig(mode)` (and the default export via `detectMode()`) selects among them from Vite `import.meta.env.MODE` (`--mode`). Vite/Wrangler mode `test` maps to e2e app config. Wrangler identity stays in `wrangler.json` (`env.production` / `env.preview` / `env.test`) and `CLOUDFLARE_ENV`.
+Node.js >= 24, Bun >= 1.3. Local env: `.env` / `.env.e2e` from `.init.env` / `.init.env.e2e`. App values live in `packages/config/{production,preview,development,e2e}.ts`; `getConfig(mode)` (and the default export via `detectMode()`) selects among them from Vite `import.meta.env.MODE` (`--mode`). Wrangler identity stays in `wrangler.json` (`env.production` / `env.preview` / `env.e2e`) and `CLOUDFLARE_ENV`. Vite `--mode test` is reserved by Vitest.

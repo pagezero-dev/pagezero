@@ -18,7 +18,6 @@ export function getConfig(mode?: string): Config {
     case "preview":
       return preview
     case "e2e":
-    case "test":
       return e2e
     default:
       return development

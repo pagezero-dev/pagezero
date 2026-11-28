@@ -49,11 +49,11 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   ...(!process.env.TEST_PAGE_URL && {
     webServer: {
-      command: process.env.CI ? "vite preview" : "bun run dev",
+      command: process.env.CI ? "vite preview --mode e2e" : "bun run dev --mode e2e",
       url: baseURL,
       reuseExistingServer: !process.env.CI,
       env: {
-        CLOUDFLARE_ENV: "test",
+        CLOUDFLARE_ENV: "e2e",
       },
     },
   }),
