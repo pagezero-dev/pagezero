@@ -2,32 +2,21 @@ import crypto from "node:crypto"
 
 import type { Config } from "drizzle-kit"
 
-import wranglerConfig from "../../wrangler.json"
+import { getCloudflareConfig } from "../config/cloudflare/index.ts"
 
 const DEFAULT_DB_BINDING = "DB_MAIN"
 const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
 
-type CloudflareEnv = keyof typeof wranglerConfig.env
+function getDatabase(mode?: string, dbBinding = DEFAULT_DB_BINDING) {
+  const database = getCloudflareConfig(mode).d1.find((entry) => entry.binding === dbBinding)
 
-function isValidCloudflareEnv(value?: string): value is CloudflareEnv {
-  return !!value && value in wranglerConfig.env
-}
-
-function getDbId(binding: string, cloudflareEnv?: string) {
-  const databases = isValidCloudflareEnv(cloudflareEnv)
-    ? wranglerConfig.env[cloudflareEnv].d1_databases
-    : wranglerConfig.d1_databases
-  const database = databases.find((db) => db.binding === binding)
-
-  if (!database) {
-    throw new Error(`D1 database binding not found: ${binding}`)
+  if (!database?.id) {
+    throw new Error(
+      `D1 database ID not found for binding ${dbBinding} in mode: ${mode ?? "development"}`,
+    )
   }
 
-  if (!("database_id" in database)) {
-    throw new Error(`D1 database ID not found: ${binding}`)
-  }
-
-  return database.database_id
+  return { ...database, id: database.id }
 }
 
 function getLocalSqliteDbUrl(databaseId: string) {
@@ -37,27 +26,27 @@ function getLocalSqliteDbUrl(databaseId: string) {
 
   const hash = Buffer.concat([nameHmac, hmac]).toString("hex")
 
-  return `./.wrangler/state/v3/d1/${MINIFLARE_D1_UNIQUE_KEY}/${hash}.sqlite`
+  return `./.cloudflare/state/v3/d1/${MINIFLARE_D1_UNIQUE_KEY}/${hash}.sqlite`
 }
 
 export function getConfig({
   dbBinding = DEFAULT_DB_BINDING,
-  cloudflareEnv,
+  mode,
   accountId,
   token,
 }: {
   dbBinding?: string
-  cloudflareEnv?: string
+  mode?: string
   accountId?: string
   token?: string
 }): Config {
-  const isRemote = cloudflareEnv && ["production", "preview"].includes(cloudflareEnv)
+  const isRemote = mode && ["production", "preview"].includes(mode)
 
   const dbRootName = dbBinding.replace("DB_", "").toLowerCase()
-  const databaseId = getDbId(dbBinding, cloudflareEnv)
+  const database = getDatabase(mode, dbBinding)
   const dialect = "sqlite"
   const schema = `./packages/db/${dbRootName}/schema.ts`
-  const out = `./packages/db/${dbRootName}/migrations`
+  const out = database.migrationsDir ?? `./packages/db/${dbRootName}/migrations`
 
   if (isRemote) {
     if (!accountId || !token) {
@@ -72,7 +61,7 @@ export function getConfig({
       dbCredentials: {
         accountId,
         token,
-        databaseId,
+        databaseId: database.id,
       },
     }
   }
@@ -82,14 +71,14 @@ export function getConfig({
     schema,
     out,
     dbCredentials: {
-      url: getLocalSqliteDbUrl(databaseId),
+      url: getLocalSqliteDbUrl(database.id),
     },
   }
 }
 
+// drizzle-kit is local-only. Pass mode "production" | "preview" to getConfig() for d1-http later.
 export default getConfig({
   dbBinding: process.env.DB_BINDING,
-  cloudflareEnv: process.env.CLOUDFLARE_ENV,
   accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
   token: process.env.CLOUDFLARE_API_TOKEN,
 })

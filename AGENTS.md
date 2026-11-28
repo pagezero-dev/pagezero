@@ -27,7 +27,7 @@ PageZERO is a full-stack TypeScript starter for Cloudflare: TanStack Start, Work
 │
 ├── packages/                  # Shared code (`@/` maps here first)
 │   ├── cloudflare/            # Turnstile, Workers test stub
-│   ├── config/                # App configuration
+│   ├── config/                # App (`index.ts`, env files) and Worker (`cloudflare/`)
 │   ├── crypto/                # Server-side crypto
 │   ├── date/                  # Date helpers
 │   ├── db/                    # D1 access, generated schema barrel, migrations
@@ -40,6 +40,7 @@ PageZERO is a full-stack TypeScript starter for Cloudflare: TanStack Start, Work
 │
 ├── e2e/                       # Playwright (local `*.spec.ts`, deployed `smoke.spec.ts`)
 ├── public/                    # Static assets
+├── cloudflare.config.ts       # Cloudflare Worker config (`cf --mode`)
 └── .agents/skills/            # Agent skills — use these instead of hand-rolling
 ```
 
@@ -55,7 +56,7 @@ import { Button } from "@/ui/button"
 - `import type` is required (`verbatimModuleSyntax`). Prefer `interface` for object shapes; export types next to implementations.
 - Never import `*.server.ts` from client components, hooks, or route `component` functions. Call `createServerFn` exports from `rpc/` instead.
 - Never put `createServerFn` in a route file. It lives in the feature's `rpc/` directory.
-- Never edit `apps/routeTree.gen.ts` or `worker-configuration.d.ts` (`bun run generate:types`).
+- Never edit `apps/routeTree.gen.ts` or `.cloudflare/types` (`bun run generate:types`).
 - Register every route in `apps/routes.ts`. After schema changes run `bun run db:generate`.
 - Reuse existing auth guards from `@/auth/rpc` (`requireUserId`, `requireGuestUser`, `requireUserPermissions`, `requireUserRole`). Do not invent new redirects.
 - Mutations use `@/form` (`parseFormData` in the RPC validator, `useFormAction` on the client). Do not ad-hoc `fetch`.
@@ -137,7 +138,9 @@ import { getMainDb } from "@/db/main"
 const db = getMainDb()
 ```
 
-Then `bun run db:generate` and `bun run db:migrate`.
+Then `bun run db:generate` and `bun run db:migrate --local`.
+
+`cf d1 migrations apply` takes a D1 **database ID** (UUID v4, not a binding name or Wrangler `<DATABASE_ID>` placeholder) and **defaults to remote**. `bun run db:migrate` runs `packages/db/d1-migrate.ts`, which reads the ID from `packages/config/cloudflare` (`getCloudflareConfig`) and passes `--dir` / `--table` (Wrangler `migrations_dir` is not a `cloudflare.config.ts` field). Pass `--local` for the local database. Local development uses a fixed UUID (`00000000-0000-4000-8000-000000000000`) so persist hashing stays stable. Do not run `bun run db:migrate` without `--local` unless you intend to migrate a remote database. CI remote migrate is the deploy workflow `database` job.
 
 ### Content (MDX)
 
@@ -171,12 +174,12 @@ bun run test         # unit tests
 bun run test:e2e     # local Playwright
 bun run test:smoke   # deployed Playwright
 bun run db:generate  # after schema changes
-bun run db:migrate   # apply D1 migrations locally
-bun run generate:types  # wrangler types → worker-configuration.d.ts
+bun run db:migrate --local  # apply D1 migrations locally (`cf d1 migrations apply --local`)
+bun run generate:types  # cf workers types → .cloudflare/types/index.d.ts
 ```
 
-CI is `.github/workflows/deploy.yml` (check → unit → e2e → migrate → deploy → smoke). `main` is production; PRs are preview.
+CI is `.github/workflows/deploy.yml` (check → unit → e2e → migrate → deploy → smoke). `main` is production; PRs are preview. `bun run build` is `vite build` (pass `--mode` for preview/e2e; the Vite plugin writes `.cloudflare/output/v1/`). Production deploy is `bun run deploy --mode production` (`cf deploy --prebuilt`). PR deploy is `cf previews deploy --prebuilt --mode preview`. Production smoke tests use `getConfig("production").core.websiteUrl`; preview smoke tests use `preview_urls` from `cf previews deploy` JSON. Local sign-in is `cf auth login`; CI uses `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. `cf` loads `cloudflare.config.ts` with Node, not Bun.
 
 ## Environment
 
-Node.js >= 24, Bun >= 1.3. Local env: `.env` / `.env.e2e` from `.init.env` / `.init.env.e2e`. App values live in `packages/config/{production,preview,development,e2e}.ts`; `getConfig(mode)` (and the default export via `detectMode()`) selects among them from Vite `import.meta.env.MODE` (`--mode`). Wrangler identity stays in `wrangler.json` (`env.production` / `env.preview` / `env.e2e`) and `CLOUDFLARE_ENV`. Vite `--mode test` is reserved by Vitest.
+Node.js >= 24, Bun >= 1.3. Local env: `.env` / `.env.e2e` from `.init.env` / `.init.env.e2e`. App values live in `packages/config/` (`production.ts`, `preview.ts`, `development.ts`, `e2e.ts`; `index.ts` selects by mode). Worker name, D1, and text vars live in `packages/config/cloudflare/` (`getCloudflareConfig(mode)`). Compatibility date and flags live in `cloudflare.config.ts`. `cloudflare.config.ts` reads that subtree and must not import `packages/config` (the Vite plugin denies the import graph). Select a mode with `--mode` (production, preview, e2e) rather than Wrangler `--env`. Vite `--mode test` is reserved by Vitest and TanStack Start. `wrangler.json` is gone; D1 migration paths are CLI flags on `cf d1 migrations apply`, not config fields.

@@ -17,7 +17,7 @@ Do not assume a local starter checkout or a fixed PageZERO layout. Discover what
 ## Hard rules
 
 - Do **not** add starter modules this project did not already use.
-- Do **not** run `bun run setup:wrangler` (resets live D1 IDs and related vars).
+- Do **not** overwrite live Cloudflare identity in `packages/config/cloudflare/*` (worker name, D1 IDs, Turnstile, newsletter segment).
 - Do **not** apply migrations that belong only to dropped modules.
 - Do **not** commit `.env` or `.env.e2e`.
 - Do **not** commit unless the user asks.
@@ -39,12 +39,12 @@ Do not assume a local starter checkout or a fixed PageZERO layout. Discover what
 `PRE_HEAD=$(git rev-parse HEAD)`. Record (no secrets):
 
 - Directories under `apps/` (used modules). Ignore root route/entry files.
-- `wrangler.json` identity: worker name, D1 names/IDs, project-specific env vars. App values live in `packages/config/{production,preview,development,e2e}.ts`; Wrangler identity stays in `wrangler.json`.
+- `packages/config/cloudflare/{production,preview,development,e2e}.ts` identity: worker name, D1 names/IDs; `packages/config/{production,preview,development,e2e}.ts` project-specific app values
 - `package.json` deps this project's code actually imports
 - Project-specific `AGENTS.md` rules and extra skills
 - Env **key names** this project already uses
 
-Working tree must be clean. Confirm `wrangler.json` exists and `rsync` is available.
+Working tree must be clean. Confirm `cloudflare.config.ts` exists and `rsync` is available.
 
 ### Upgrade
 
@@ -88,7 +88,7 @@ Placeholder starter copy left unchanged in `PRE_HEAD` can KEEP_STARTER. The CLI 
 
 **Drop site** obsolete project paths that only existed because an older starter put them there. Do not resurrect files the new starter deleted unless they hold unique product logic. After dropping, remove dangling imports, routes, and tests.
 
-**Merge** by comparing `$PRE_HEAD` with the working tree. Take starter mechanical changes (APIs, types, scripts, tooling, dependency versions). Keep this project's values and behavior. Typical merge surfaces: package manifest/lockfile, route table, wrangler identity (`wrangler.json`) vs new structural keys, Vite/test config, app config (`packages/config/{production,preview,development,e2e}.ts`), `AGENTS.md`, env templates, schema barrels, CI. After merging `package.json`, regenerate the lockfile with `bun install`. Do not add deps, env, or config for dropped modules.
+**Merge** by comparing `$PRE_HEAD` with the working tree. Take starter mechanical changes (APIs, types, scripts, tooling, dependency versions). Keep this project's values and behavior. Typical merge surfaces: package manifest/lockfile, route table, Cloudflare identity (`packages/config/cloudflare/*`) and app config (`packages/config/{production,preview,development,e2e}.ts`) vs new structural keys, Vite/test config, `AGENTS.md`, env templates, schema barrels, CI. After merging `package.json`, regenerate the lockfile with `bun install`. Do not add deps, env, or config for dropped modules.
 
 ### Verify
 
