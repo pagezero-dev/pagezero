@@ -3,7 +3,18 @@ import crypto from "node:crypto"
 import type { Config } from "drizzle-kit"
 
 import { getCloudflareConfig } from "../config/cloudflare/index.ts"
-import { detectMode } from "../config/index.ts"
+
+function getArg(flag: string) {
+  const index = process.argv.indexOf(flag)
+  if (index === -1) {
+    return undefined
+  }
+  const value = process.argv[index + 1]
+  if (value === undefined || value.startsWith("-")) {
+    return undefined
+  }
+  return value
+}
 
 const DEFAULT_DB_BINDING = "DB_MAIN"
 const MINIFLARE_D1_UNIQUE_KEY = "miniflare-D1DatabaseObject"
@@ -79,7 +90,7 @@ export function getConfig({
 
 export default getConfig({
   dbBinding: process.env.DB_BINDING,
-  mode: detectMode(),
+  mode: getArg("--mode"),
   accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
   token: process.env.CLOUDFLARE_API_TOKEN,
 })
