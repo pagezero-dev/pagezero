@@ -12,9 +12,8 @@ export const POLAR_NOT_CONFIGURED_MESSAGE =
   "Polar is not configured. Set POLAR_ACCESS_TOKEN to enable payments."
 
 function getPolarProducts() {
-  const mode = getAppMode() === "production" ? "production" : "preview"
   return Object.entries(config.payments.products).map(([slug, product]) => ({
-    productId: product.polarProductId[mode],
+    productId: product.polarProductId,
     slug,
   }))
 }

@@ -119,7 +119,7 @@ jobs:
         run: bunx playwright install --with-deps chromium
 
       - name: 🛠️ Build
-        run: CLOUDFLARE_ENV=test NODE_ENV=test bun run build
+        run: CLOUDFLARE_ENV=e2e NODE_ENV=test bun run build
 
       - name: 🗄️ Database setup
         run: bun run db:migrate

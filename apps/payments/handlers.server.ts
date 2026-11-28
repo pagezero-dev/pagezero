@@ -6,7 +6,6 @@ import type { WebhookSubscriptionRevokedPayload } from "@polar-sh/sdk/models/com
 import { grantUserRole, hasUserRole, revokeUserRole } from "@/auth/roles.server"
 import { getOrCreateUserByEmail, getUserByEmail } from "@/auth/user.server"
 import config from "@/config"
-import { getAppMode } from "@/core"
 import {
   sendAccessFailureEmail,
   sendAccessGrantedEmail,
@@ -21,9 +20,8 @@ function getProductConfig(productId: string | null | undefined) {
     return undefined
   }
 
-  const mode = getAppMode() === "production" ? "production" : "preview"
   return Object.values(config.payments.products).find(
-    (product) => product.polarProductId[mode] === productId,
+    (product) => product.polarProductId === productId,
   )
 }
 

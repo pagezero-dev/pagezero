@@ -12,7 +12,7 @@ wranglerJson.name = projectName
 wranglerJson.d1_databases[0].database_name = `${projectName}-development`
 wranglerJson.env.production.d1_databases[0].database_name = `${projectName}-production`
 wranglerJson.env.preview.d1_databases[0].database_name = `${projectName}-preview`
-wranglerJson.env.test.d1_databases[0].database_name = `${projectName}-test`
+wranglerJson.env.e2e.d1_databases[0].database_name = `${projectName}-e2e`
 delete wranglerJson.env.production.d1_databases[0].database_id
 delete wranglerJson.env.preview.d1_databases[0].database_id
 wranglerJson.env.production.vars.CLOUDFLARE_TURNSTILE_PUBLIC_KEY = ""

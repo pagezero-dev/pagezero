@@ -29,7 +29,7 @@
     "git:reset": "rm -rf .git && git init .",
     "preview": "NODE_ENV=development CLOUDFLARE_ENV=preview bun run build && vite preview",
     "setup": "bun run setup:precheck && bun install && bun run setup:env && playwright install --with-deps chromium && CI=1 bun run db:migrate",
-    "setup:env": "cp .init.env .env && cp .init.env.test .env.test",
+    "setup:env": "cp .init.env .env && cp .init.env.e2e .env.e2e",
     "setup:precheck": "bun ./packages/config/scripts/check-tool-versions.ts",
     "setup:reset": "git clean -fdxq && bun run setup",
     "setup:wrangler": "bun ./packages/config/scripts/wrangler-reset.ts && bun check:fix",
