@@ -1,3 +1,5 @@
+import { parseArgs } from "node:util"
+
 import { spawnSync } from "bun"
 
 import { getCloudflareConfig } from "@/config/cloudflare"
@@ -7,20 +9,14 @@ import { getCloudflareConfig } from "@/config/cloudflare"
  * `cf d1 migrations apply` takes a database ID (not a binding name) and
  * defaults to the remote database — local scripts must pass `--local`.
  */
-function getArg(flag: string) {
-  const index = process.argv.indexOf(flag)
-  if (index === -1) {
-    return undefined
-  }
-  const value = process.argv[index + 1]
-  if (value === undefined || value.startsWith("-")) {
-    return undefined
-  }
-  return value
-}
-
-const local = process.argv.includes("--local")
-const mode = getArg("--mode")
+const {
+  values: { local = false, mode },
+} = parseArgs({
+  options: {
+    local: { type: "boolean" },
+    mode: { type: "string" },
+  },
+})
 const { d1 } = getCloudflareConfig(mode)
 const binding = process.env.DB_BINDING
 
